@@ -1,0 +1,215 @@
+<?xml version="1.0"?>
+<schema 
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://cbear.sourceforge.net/cpp"
+	xmlns:cpp="http://cbear.sourceforge.net/cpp"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+
+	<!-- 
+		A unit contains a header file (.hpp) and a code file (.cpp).	
+		A unit has a name.
+	-->
+	<element name="unit">
+		<complexType>
+			<sequence>
+				<element ref="cpp:header"/>
+				<element ref="cpp:code" minOccurs="0"/>
+			</sequence>
+			<attribute name="id" type="cpp:id"/>
+		</complexType>
+	</element>
+
+	<element name="header" type="cpp:content"/>
+	<element name="code" type="cpp:content"/>
+
+	<!-- A content contains namespaces, templates and classes. -->
+	<complexType name="content">
+		<sequence>
+			<element ref="cpp:include" minOccurs="0" maxOccurs="unbounded"/>
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<element ref="cpp:namespace"/>
+				<element ref="cpp:template"/>
+				<element ref="cpp:class"/>
+			</choice>
+		</sequence>
+	</complexType>
+
+	<!-- An include. -->
+	<element name="include">
+		<complexType>
+			<attribute name="href" type="cpp:href"/>
+		</complexType>
+	</element>
+
+	<!-- href. -->
+	<simpleType name="href">
+		<restriction base="string"/>
+	</simpleType>
+
+	<!-- 
+		A namespace contains everything a content has. 
+		A namespace has a name.
+
+			namespace Example
+			{
+				...
+			}
+	-->
+	<element name="namespace">
+		<complexType>
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<element ref="cpp:namespace"/>
+				<element ref="cpp:template"/>
+				<element ref="cpp:class"/>
+			</choice>
+			<attribute name="id" type="cpp:id"/>
+		</complexType>
+	</element>
+
+	<!--
+		A template contains parameters and a class.
+
+			template<class Id1, class Id2>
+			class Id
+			{
+				...
+			};
+	-->
+	<element name="template">
+		<complexType>
+			<sequence>
+				<element ref="cpp:id" minOccurs="0" maxOccurs="unbounded"/>
+				<element ref="cpp:class"/>
+			</sequence>
+		</complexType>
+	</element>
+
+	<!--
+		A class has a type name, references on parent types and methods.
+	
+			class Name1::Name2<Name3, Name4<Name5::Name6 > >::Name7: public Parent1
+			{
+				...
+			};
+	-->
+	<element name="class">
+		<complexType>
+			<sequence>
+				<element ref="cpp:type.ref"/>
+				<element ref="cpp:access" minOccurs="0" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+
+	<!-- An access. public/private/protected. -->
+	<element name="access">
+		<complexType>
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<element ref="cpp:type.ref"/>
+				<element ref="cpp:method"/>
+				<element ref="cpp:class"/>
+				<element ref="cpp:template"/>
+			</choice>		
+			<attribute name="access" type="cpp:access"/>
+		</complexType>	
+	</element>
+
+	<!-- An access: public, private or protected. -->
+	<simpleType name="access">
+		<restriction base="string">
+			<enumeration value="public"/>
+			<enumeration value="private"/>
+			<enumeration value="protected"/>
+		</restriction>
+	</simpleType>
+
+	<!-- A method 
+
+				virtual Name1::Name2 Method(Name1, Name2<Name3>::Name4) const = 0;
+	-->
+	<element name="method">
+		<complexType>
+			<sequence>
+				<element ref="cpp:virtual" minOccurs="0"/>
+				<element ref="cpp:type.ref"/>
+				<element ref="cpp:parameter" minOccurs="0" maxOccurs="unbounded"/>
+				<element ref="cpp:const" minOccurs="0"/>
+				<element ref="cpp:abstract" minOccurs="0"/>
+			</sequence>
+			<attribute name="id" type="cpp:id"/>
+		</complexType>
+	</element>
+
+	<!-- A virtual option. -->
+	<element name="virtual"/>
+
+	<!-- A virtual option. -->
+	<element name="abstract"/>
+
+	<!-- A method parameter -->
+	<element name="parameter">
+		<complexType>
+			<sequence>
+				<element ref="cpp:type.ref"/>
+			</sequence>
+			<attribute name="id" type="cpp:id" use="optional"/>
+		</complexType>
+	</element>
+
+	<!--
+		A type reference is a sequence (path) of type names.
+
+			Name1::Name2::Name3::Name4
+	-->
+	<element name="type.ref">
+		<complexType>
+			<sequence>
+				<element ref="cpp:type.id" maxOccurs="unbounded"/>				
+			</sequence>
+		</complexType>
+	</element>
+
+	<!--
+		A type name contains a name and optional type parameters.
+
+			Name1<Name2, Name3, Name4>
+	-->
+	<element name="type.id">
+		<complexType>
+			<sequence>
+				<element ref="cpp:type.parameters" minOccurs="0"/>
+			</sequence>
+			<attribute name="id" type="cpp:id"/>
+		</complexType>
+	</element>
+
+	<!--
+		Type parameters.
+
+			<Name1, Name2, Name3>
+	-->
+	<element name="type.parameters">
+		<complexType>
+			<sequence>
+				<element ref="cpp:type.ref" minOccurs="0" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+
+	<!-- A constant. -->
+	<element name="const"/>
+
+	<!-- An id. -->
+	<element name="id">
+		<complexType>
+			<attribute name="id" type="cpp:id"/>
+		</complexType>
+	</element>
+
+	<!-- An id type. -->
+	<simpleType name="id">
+		<restriction base="token"/>
+	</simpleType>
+
+</schema>

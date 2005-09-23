@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<schema 
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://cbear.sourceforge.net/project"
+	xmlns:api="http://cbear.sourceforge.net/project"
+	elementFormDefault="qualified">
+
+	<element name="project">
+		<complexType>
+			<sequence>
+				<element ref="prj:paragraph" minOccurs="0" maxOccurs="unbounded"/>
+				<element ref="prj:project" minOccurs="0" maxOccurs="unbounded"/>
+			</sequence>
+			<attribute name="name" type="prj:name"/>
+			<attribute name="id" type="prj:id"/>
+		</complexType>
+	</element>
+
+	<simpleType name="name">
+		<restriction base="string"/>
+	</simpleType>
+
+	<simpleType name="id">
+		<restriction base="string"/>
+	</simpleType>
+
+</schema>

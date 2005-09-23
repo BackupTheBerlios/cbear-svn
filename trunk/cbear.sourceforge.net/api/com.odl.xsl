@@ -1,0 +1,412 @@
+<?xml version="1.0"?>
+<!--
+The MIT License
+
+Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of 
+this software and associated documentation files (the "Software"), to deal in 
+the Software without restriction, including without limitation the rights to 
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so, 
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<xsl:stylesheet 
+	version="1.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:api="http://cbear.sourceforge.net/api"
+	xmlns:exsl="http://exslt.org/common"
+	xmlns="http://cbear.sourceforge.net/com"
+	xmlns:odl="http://cbear.sourceforge.net/com"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	extension-element-prefixes="exsl"
+	exclude-result-prefixes="xi api odl">
+
+<xsl:output method="xml" indent="yes"/>
+
+<xsl:param name="api:com.odl.xsd"/>
+<xsl:param name="api:com.odl.xsl"/>
+<xsl:param name="api:com.odl.prefix"/>
+
+<!-- -->
+
+<xsl:template match="@*" mode="api:body"/>
+
+<xsl:template match="*" mode="api:body">
+	<xsl:copy-of select="."/>
+</xsl:template>
+
+<xsl:template match="api:*" mode="api:body">
+	<xsl:element 
+		namespace="http://cbear.sourceforge.net/com"
+		name="{local-name()}">
+		<xsl:apply-templates select="@id" mode="api:body"/>
+		<xsl:apply-templates select="@uuid" mode="api:body"/>
+		<xsl:apply-templates select="*" mode="api:body"/>
+	</xsl:element>
+</xsl:template>
+
+<!-- comment -->
+
+<xsl:template match="api:comment" mode="api:body">
+	<xsl:comment>
+		<xsl:value-of select="api:public"/>
+	</xsl:comment>
+</xsl:template>
+
+<!-- @id -->
+
+<xsl:template match="@id" mode="api:body">	
+	<xsl:attribute name="id">
+		<xsl:value-of select="translate(., '.', '_')"/>
+	</xsl:attribute>
+</xsl:template>
+
+<xsl:template match="@id[../api:pragma/odl:alias]" mode="api:body"/>
+
+<xsl:template match="@id[../api:pragma/odl:alias/@id]" mode="api:body">
+	<xsl:attribute name="id">
+		<xsl:value-of select="../api:pragma/odl:alias/@id"/>
+	</xsl:attribute>
+</xsl:template>
+
+<!-- @brief -->
+
+<xsl:template match="@brief" mode="api:body">
+	<attribute id="helpstring" value="{concat('&#x22;', ., '&#x22;')}"/>
+</xsl:template>
+
+<!-- @uuid -->
+
+<xsl:template match="@uuid" mode="api:body">
+	<attribute id="uuid" value="{.}"/>
+</xsl:template>
+
+<!-- @version -->
+
+<xsl:template match="@version" mode="api:body">
+	<attribute id="version" value="{.}"/>
+</xsl:template>
+
+<!-- const -->
+
+<xsl:template match="api:const" mode="api:body">
+	<const value="{@value}"/>
+</xsl:template>
+
+<!-- type.ref -->
+
+<xsl:template match="*" mode="api:body.type.ref">
+	<xsl:param name="content"/>
+	<type.ref>
+		<xsl:apply-templates select="@id" mode="api:body"/>	
+		<xsl:copy-of select="$content"/>
+	</type.ref>
+</xsl:template>
+
+<xsl:template match="api:interface" mode="api:body.type.ref">
+	<type.ref id="*">
+		<type.ref>
+			<xsl:apply-templates select="@id" mode="api:body"/>
+		</type.ref>
+	</type.ref>
+</xsl:template>
+
+<xsl:template match="/api:library" mode="api:body.type.ref">
+	<xsl:param name="id"/>
+	<xsl:param name="content"/>
+	<xsl:apply-templates select="*[@id=$id]" mode="api:body.type.ref">
+		<xsl:with-param name="content" select="$content"/>
+	</xsl:apply-templates>
+</xsl:template>
+
+<xsl:template match="api:type.ref" mode="api:body.type.ref">
+	<xsl:apply-templates select="/api:library" mode="api:body.type.ref">
+		<xsl:with-param name="id" select="@id"/>
+		<xsl:with-param name="content">
+			<xsl:apply-templates select="*" mode="api:body"/>
+		</xsl:with-param>
+	</xsl:apply-templates>
+</xsl:template>
+
+<xsl:template match="api:type.ref[@library]" mode="api:body.type.ref">
+	<xsl:variable name="library" select="@library"/>
+	<xsl:apply-templates 
+		select="document(/api:library/api:using[@id=$library]/@href)/
+			api:library"
+		mode="api:body.type.ref">
+		<xsl:with-param name="id" select="@id"/>
+		<xsl:with-param name="content">
+			<xsl:apply-templates select="*" mode="api:body"/>
+		</xsl:with-param>
+	</xsl:apply-templates>
+</xsl:template>
+
+<xsl:template match="api:type.ref" mode="api:body">
+	<xsl:apply-templates select="." mode="api:body.type.ref"/>
+</xsl:template>
+
+<!-- method -->
+
+<xsl:template match="api:in|api:out" mode="api:body">
+	<attribute id="{local-name()}"/>
+</xsl:template>
+
+<xsl:template match="api:type.ref" mode="api:com.odl.method.count">
+	<xsl:variable name="id" select="@id"/>
+	<xsl:apply-templates 
+		select="/api:library/api:interface[@id=$id]" 
+		mode="api:com.odl.method.count"/>
+</xsl:template>
+
+<xsl:template match="api:type.ref[@library]" mode="api:com.odl.method.count">
+	<xsl:variable name="id" select="@id"/>
+	<xsl:apply-templates 
+		select="document(@library)/api:library/api:interface[@id=$id]" 
+		mode="api:com.odl.method.count"/>
+</xsl:template>
+
+<xsl:template match="api:interface" mode="api:com.odl.method.count.parents">
+	<xsl:value-of select="'0'"/>
+</xsl:template>
+
+<xsl:template 
+	match="api:interface[api:type.ref]" mode="api:com.odl.method.count.parents">
+	<xsl:apply-templates 
+		select="api:type.ref[1]" mode="api:com.odl.method.count"/>
+</xsl:template>
+
+<xsl:template 
+	match="api:interface" mode="api:com.odl.method.count">
+	<xsl:variable name="parents">
+		<xsl:apply-templates 
+			select="." mode="api:com.odl.method.count.parents"/>
+	</xsl:variable>
+	<xsl:value-of select="
+		count(api:method) + count(api:property) + number($parents)"/>
+</xsl:template>
+
+<xsl:template match="*" mode="api:com.odl.method.id">
+	<xsl:variable name="parents">
+		<xsl:apply-templates 
+			select=".." mode="api:com.odl.method.count.parents"/>
+	</xsl:variable>
+	<xsl:value-of select="number($parents) +
+		count(preceding-sibling::api:method) + 
+		count(preceding-sibling::api:property) + 1"/>
+</xsl:template>
+
+<xsl:template match="api:property[api:parameter]" mode="api:com.odl.method.id">
+	<xsl:text>0</xsl:text>
+</xsl:template>
+
+<xsl:template name="api:method.header">
+	<xsl:variable name="id">
+		<xsl:apply-templates select="." mode="api:com.odl.method.id"/>
+	</xsl:variable>
+	<attribute id="id" value="{$id}"/>
+	<xsl:apply-templates select="@brief" mode="api:body"/>
+	<type.ref id="HRESULT"/>
+</xsl:template>
+
+<xsl:template match="api:type.ref" mode="api:body.result">
+	<parameter id="_result">
+		<attribute id="retval"/>
+		<attribute id="out"/>
+		<type.ref id="*">
+			<xsl:apply-templates select="." mode="api:body.type.ref"/>
+		</type.ref>
+	</parameter>
+</xsl:template>
+
+<xsl:template match="api:parameter/api:type.ref[../api:out]" mode="api:body">
+	<type.ref id="*">
+		<xsl:apply-templates select="." mode="api:body.type.ref"/>
+	</type.ref>
+</xsl:template>
+
+<xsl:template match="api:parameter" mode="api:body">
+	<parameter id="{concat('_', count(preceding-sibling::api:parameter))}">
+		<xsl:apply-templates select="*" mode="api:body"/>
+	</parameter>
+</xsl:template>
+
+<xsl:template match="api:method" mode="api:body">
+	<method>
+		<xsl:apply-templates select="@id" mode="api:body"/>
+		<xsl:call-template name="api:method.header"/>
+		<xsl:apply-templates select="api:parameter" mode="api:body"/>
+		<xsl:apply-templates select="api:type.ref" mode="api:body.result"/>
+	</method>
+</xsl:template>
+
+<!-- property -->
+
+<xsl:template match="api:get" mode="api:body">
+	<xsl:for-each select="..">
+		<method>
+			<xsl:apply-templates select="@id" mode="api:body"/>
+			<attribute id="propget"/>
+			<xsl:call-template name="api:method.header"/>
+			<xsl:apply-templates select="api:parameter" mode="api:body"/>
+			<xsl:apply-templates select="api:type.ref" mode="api:body.result"/>
+		</method>
+	</xsl:for-each>
+</xsl:template>
+
+<xsl:template match="api:set" mode="api:body">
+	<xsl:for-each select="..">
+		<method>
+			<xsl:apply-templates select="@id" mode="api:body"/>
+			<attribute id="propput"/>
+			<xsl:call-template name="api:method.header"/>
+			<xsl:apply-templates select="api:parameter" mode="api:body"/>
+			<parameter id="_value">
+				<attribute id="in"/>
+				<xsl:apply-templates select="api:type.ref" mode="api:body.type.ref"/>
+			</parameter>
+		</method>
+	</xsl:for-each>
+</xsl:template>
+
+<xsl:template match="api:property" mode="api:body">
+	<xsl:apply-templates select="api:get|api:set" mode="api:body"/>
+</xsl:template>
+
+<!-- interface -->
+
+<xsl:template match="api:interface/api:type.ref" mode="api:body">
+	<xsl:variable name="type.ref">
+		<xsl:apply-templates select="." mode="api:body.type.ref"/>
+	</xsl:variable>
+	<method id="{exsl:node-set($type.ref)/odl:type.ref/odl:type.ref/@id}">
+		<attribute id="propget"/>
+		<xsl:call-template name="api:method.header"/>
+		<xsl:apply-templates select="." mode="api:body.result"/>
+	</method>
+</xsl:template>
+
+<xsl:template 
+	match="api:interface/api:type.ref[count(preceding-sibling::api:type.ref)=0]"
+	mode="api:body">
+	<xsl:variable name="type">
+		<xsl:apply-templates select="." mode="api:body.type.ref"/>
+	</xsl:variable>
+	<xsl:copy-of select="exsl:node-set($type)/odl:type.ref/odl:type.ref"/>
+</xsl:template>
+
+<xsl:template match="api:interface" mode="api:body">
+	<interface>
+		<xsl:apply-templates select="@id" mode="api:body"/>
+		<xsl:apply-templates select="@uuid" mode="api:body"/>
+		<xsl:apply-templates select="@brief" mode="api:body"/>
+		<attribute id="dual"/>
+		<attribute id="oleautomation"/>
+		<xsl:if test="not(api:type.ref)">
+			<odl:type.ref id="IDispatch"/>
+		</xsl:if>
+		<xsl:apply-templates select="*" mode="api:body"/>
+	</interface>
+</xsl:template>
+
+<!-- typedef -->
+
+<xsl:template match="*" mode="api:body.typedef"/>
+
+<xsl:template match="api:struct" mode="api:body.typedef">
+	<struct>
+		<xsl:apply-templates select="@id" mode="api:body"/>
+		<xsl:apply-templates select="@uuid" mode="api:body"/>
+		<xsl:apply-templates select="@brief" mode="api:body"/>
+		<xsl:apply-templates select="*" mode="api:body"/>
+	</struct>
+</xsl:template>
+
+<xsl:template match="api:enum" mode="api:body.typedef">
+	<enum>
+		<xsl:apply-templates select="@id" mode="api:body"/>
+		<xsl:apply-templates select="@uuid" mode="api:body"/>
+		<xsl:apply-templates select="@brief" mode="api:body"/>
+		<xsl:apply-templates select="*" mode="api:body"/>
+	</enum>
+</xsl:template>
+
+<xsl:template match="api:struct|api:enum" mode="api:body">
+	<typedef>
+		<xsl:apply-templates select="@id" mode="api:body"/>
+		<xsl:apply-templates select="." mode="api:body.typedef"/>
+	</typedef>
+</xsl:template>
+
+<!-- object -->
+
+<xsl:template match="api:library/api:object" mode="api:body">
+	<coclass>
+		<xsl:apply-templates select="@id" mode="api:body"/>
+		<xsl:apply-templates select="@uuid" mode="api:body"/>
+		<xsl:apply-templates select="@brief" mode="api:body"/>
+		<attribute id="appobject"/>
+		<xsl:variable name="type.ref">
+			<xsl:apply-templates select="api:type.ref" mode="api:body.type.ref"/>
+		</xsl:variable>
+		<xsl:copy-of select="exsl:node-set($type.ref)/odl:type.ref/odl:type.ref"/>
+	</coclass>
+</xsl:template>
+
+<!-- using -->
+
+<xsl:template match="odl:importlib" mode="api:body"/>
+
+<xsl:template match="odl:importlib[@id]" mode="api:body">
+	<odl:importlib href="{@id}"/>
+</xsl:template>
+
+<xsl:template match="api:using" mode="api:body">
+	<xsl:variable name="importlib">
+		<odl:importlib>
+			<xsl:apply-templates 
+				select="document(@href)/api:library/@id" mode="api:body"/>
+		</odl:importlib>
+	</xsl:variable>
+	<xsl:apply-templates 
+		select="exsl:node-set($importlib)/odl:importlib" mode="api:body"/>
+</xsl:template>
+
+<!-- library -->
+
+<xsl:template match="api:library" mode="api:body">
+	<xsl:processing-instruction name="xml-stylesheet">
+		<xsl:text>type="text/xsl" href="</xsl:text>
+		<xsl:value-of select="$api:com.odl.xsl"/>
+		<xsl:text>"</xsl:text>
+	</xsl:processing-instruction>
+	<library
+		xsi:schemaLocation="{concat(
+			'http://cbear.sourceforge.net/com ', $api:com.odl.xsd)}">
+		<xsl:apply-templates select="@id" mode="api:body"/>
+		<xsl:apply-templates select="@uuid" mode="api:body"/>
+		<xsl:apply-templates select="@version" mode="api:body"/>
+		<xsl:apply-templates select="@brief" mode="api:body"/>
+		<xsl:apply-templates select="api:using" mode="api:body"/>
+		<xsl:apply-templates select="api:enum" mode="api:body"/>
+		<xsl:apply-templates select="api:interface" mode="api:body"/>
+		<xsl:apply-templates select="api:object" mode="api:body"/>
+	</library>	
+</xsl:template>
+
+<xsl:template match="/api:library">
+	<xsl:apply-templates select="." mode="api:body"/>
+</xsl:template>
+
+</xsl:stylesheet>

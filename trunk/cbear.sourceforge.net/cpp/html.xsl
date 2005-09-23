@@ -1,0 +1,373 @@
+<?xml version="1.0"?>
+<!--
+The MIT License
+
+Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of 
+this software and associated documentation files (the "Software"), to deal in 
+the Software without restriction, including without limitation the rights to 
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<!-- XHTML 1.1. -->
+<xsl:stylesheet 
+	version="1.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:cpp="http://cbear.sourceforge.net/cpp"
+	exclude-result-prefixes="cpp xi">
+
+<!-- XHTML 1.1. -->
+<xsl:output 
+	method="xml"
+	doctype-public="-//W3C//DTD XHTML 1.1//EN"
+	doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
+
+<!-- Styles -->
+
+<xsl:variable name="cpp:html.header">
+	border-style: solid;
+	border-width: 1px;
+	margin: 5px 5px 5px 5px;
+</xsl:variable>
+
+<xsl:variable name="cpp:html.code" select="$cpp:html.header"/>
+
+<xsl:variable name="cpp:html.preprocessor">
+	color: navy;
+</xsl:variable>
+
+<xsl:variable name="cpp:html.keyword">
+	color: green;
+</xsl:variable>
+
+<xsl:variable name="cpp:html.id">
+	color: blue;
+</xsl:variable>
+
+<xsl:variable name="cpp:html.const">
+	color: magenta;
+</xsl:variable>
+
+<!-- Line -->
+
+<xsl:template match="*" mode="cpp:html.indent">
+	<xsl:text>&#9;</xsl:text>
+</xsl:template>
+
+<xsl:template name="cpp:html.line">
+	<xsl:param name="text"/>
+	<xsl:apply-templates select="ancestor::*" mode="cpp:html.indent"/>
+	<xsl:copy-of select="$text"/>
+	<xsl:text>&#10;</xsl:text>
+</xsl:template>
+
+<!-- Preprocessor Line -->
+
+<xsl:template name="cpp:html.preprocessor">
+	<xsl:param name="text"/>
+	<xsl:call-template name="cpp:html.line">
+		<xsl:with-param name="text">
+			<span style="{$cpp:html.preprocessor}">
+				<xsl:copy-of select="$text"/>
+			</span>
+		</xsl:with-param>
+	</xsl:call-template>
+</xsl:template>
+
+<!-- * -->
+
+<xsl:template match="*" mode="cpp:html">
+	<xsl:message terminate="no">
+		<xsl:value-of select="concat(
+			'Unknown tag &#x22;', name(), '&#x22; was skipped.')"/>
+	</xsl:message>
+</xsl:template>
+
+<!-- block -->
+
+<xsl:template name="cpp:html.block">
+	<xsl:param name="begin" select="'{'"/>
+	<xsl:param name="end" select="'}'"/>
+	<xsl:call-template name="cpp:html.line">
+		<xsl:with-param name="text" select="$begin"/>
+	</xsl:call-template>
+	<xsl:apply-templates select="*" mode="cpp:html"/>
+	<xsl:call-template name="cpp:html.line">
+		<xsl:with-param name="text" select="$end"/>
+	</xsl:call-template>	
+</xsl:template>
+
+<!-- type.parameters -->
+
+<xsl:template match="cpp:type.parameters" mode="cpp:html">
+	<xsl:text>&lt;</xsl:text>
+	<xsl:apply-templates select="cpp:type.ref" mode="cpp:html"/>
+	<xsl:text> &gt;</xsl:text>
+</xsl:template>
+
+<!-- type.id -->
+
+<xsl:template name="cpp:html.type.id">
+	<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
+	<xsl:apply-templates select="cpp:type.parameters" mode="cpp:html"/>
+</xsl:template>
+
+<xsl:template match="cpp:type.id" mode="cpp:html">
+	<xsl:call-template name="cpp:html.type.id"/>
+	<xsl:text>::</xsl:text>
+</xsl:template>
+
+<xsl:template match="cpp:type.id[position()=last()]" mode="cpp:html">
+	<xsl:call-template name="cpp:html.type.id"/>
+</xsl:template>
+
+<!-- type.ref -->
+
+<xsl:template name="cpp:html.type.ref">
+	<xsl:apply-templates select="cpp:type.id" mode="cpp:html"/>
+</xsl:template>
+
+<xsl:template match="cpp:type.ref" mode="cpp:html">
+	<xsl:call-template name="cpp:html.type.ref"/>	
+</xsl:template>
+
+<xsl:template 
+	match="cpp:type.parameters/cpp:type.ref[position()!=last()]" mode="cpp:html">
+	<xsl:call-template name="cpp:html.type.ref"/>
+	<xsl:text>, </xsl:text>
+</xsl:template>
+
+<xsl:template match="cpp:class/cpp:type.ref" mode="cpp:html"/>
+
+<xsl:template match="cpp:access/cpp:type.ref" mode="cpp:html"/>
+
+<!-- const -->
+
+<xsl:template match="cpp:const" mode="cpp:html">
+	<xsl:text> </xsl:text>
+	<span style="{$cpp:html.keyword}">const</span>
+</xsl:template>
+
+<!-- abstract -->
+
+<xsl:template match="cpp:abstract" mode="cpp:html">
+	<xsl:text> = </xsl:text>
+	<span style="{$cpp:html.const}">0</span>
+</xsl:template>
+
+<!-- virtual -->
+
+<xsl:template match="cpp:virtual" mode="cpp:html">
+	<span style="{$cpp:html.keyword}">virtual</span>
+	<xsl:text> </xsl:text>
+</xsl:template>
+
+<!-- parameter -->
+
+<xsl:template name="cpp:html.parameter">
+	<xsl:apply-templates select="cpp:type.ref" mode="cpp:html"/>
+</xsl:template>
+
+<xsl:template match="cpp:parameter" mode="cpp:html">
+	<xsl:call-template name="cpp:html.parameter"/>
+	<xsl:text>, </xsl:text>
+</xsl:template>
+
+<xsl:template match="cpp:parameter[position()=last()]" mode="cpp:html">
+	<xsl:call-template name="cpp:html.parameter"/>
+</xsl:template>
+
+<!-- method -->
+
+<xsl:template match="cpp:method" mode="cpp:html">
+	<xsl:call-template name="cpp:html.line">
+		<xsl:with-param name="text">
+			<xsl:apply-templates select="cpp:virtual" mode="cpp:html"/>
+			<xsl:apply-templates select="cpp:type.ref" mode="cpp:html"/>
+			<xsl:text> </xsl:text>
+			<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
+			<xsl:text>(</xsl:text>
+			<xsl:apply-templates select="cpp:parameter" mode="cpp:html"/>
+			<xsl:text>)</xsl:text>
+			<xsl:apply-templates select="cpp:const" mode="cpp:html"/>
+			<xsl:apply-templates select="cpp:abstract" mode="cpp:html"/>
+			<xsl:text>;</xsl:text>
+		</xsl:with-param>
+	</xsl:call-template>
+</xsl:template>
+
+<!-- access -->
+
+<xsl:template match="cpp:access" mode="cpp:html.indent"/>
+
+<xsl:template match="cpp:access" mode="cpp:html">
+	<xsl:variable name="access" select="@access"/>
+	<xsl:for-each select="..">
+		<xsl:call-template name="cpp:html.line">
+			<xsl:with-param name="text">
+				<span style="{$cpp:html.keyword}">
+					<xsl:value-of select="$access"/>
+				</span>
+				<xsl:text>:</xsl:text>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:for-each>
+	<xsl:apply-templates select="*" mode="cpp:html"/>
+</xsl:template>
+
+<xsl:template 
+	match="cpp:access[count(cpp:type.ref) = count(*)]" mode="cpp:html"/>
+
+<!-- class -->
+
+<xsl:template match="cpp:class" mode="cpp:html">
+	<xsl:call-template name="cpp:html.line">
+		<xsl:with-param name="text">
+			<span style="{$cpp:html.keyword}">class</span>
+			<xsl:text> </xsl:text>
+			<xsl:for-each select="cpp:type.ref">
+				<xsl:call-template name="cpp:html.type.ref"/>
+			</xsl:for-each>
+			<xsl:if test="cpp:access/cpp:type.ref">:</xsl:if>
+		</xsl:with-param>
+	</xsl:call-template>
+	<xsl:for-each select="cpp:access/cpp:type.ref">
+		<xsl:call-template name="cpp:html.line">
+			<xsl:with-param name="text">
+				<span style="{$cpp:html.keyword}">
+					<xsl:value-of select="../@access"/>
+				</span>
+				<xsl:text> </xsl:text>
+				<xsl:call-template name="cpp:html.type.ref"/>
+				<xsl:if test="position()!=last()">,</xsl:if>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:for-each>
+	<xsl:call-template name="cpp:html.block">
+		<xsl:with-param name="end" select="'};'"/>
+	</xsl:call-template>
+</xsl:template>
+
+<!-- id -->
+
+<xsl:template name="cpp:html.id">
+	<span style="{$cpp:html.keyword}">class</span>
+	<xsl:text> </xsl:text>
+	<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
+	<xsl:if test="position()!=last()">, </xsl:if>
+</xsl:template>
+
+<xsl:template match="cpp:id" mode="cpp:html"/>
+
+<!-- template -->
+
+<xsl:template match="cpp:template" mode="cpp:html.indent"/>
+
+<xsl:template match="cpp:template" mode="cpp:html">
+	<xsl:call-template name="cpp:html.line">
+		<xsl:with-param name="text">
+			<span style="{$cpp:html.keyword}">template</span>
+			<xsl:text>&lt;</xsl:text>
+			<xsl:for-each select="cpp:id">
+				<xsl:call-template name="cpp:html.id"/>
+			</xsl:for-each>
+			<xsl:text>&gt;</xsl:text>
+		</xsl:with-param>
+	</xsl:call-template>
+	<xsl:apply-templates select="*" mode="cpp:html"/>
+</xsl:template>
+
+<!-- namespace -->
+
+<xsl:template match="cpp:namespace" mode="cpp:html">
+	<xsl:call-template name="cpp:html.line">
+		<xsl:with-param name="text">
+			<span style="{$cpp:html.keyword}">namespace</span>
+			<xsl:text> </xsl:text>
+			<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
+		</xsl:with-param>
+	</xsl:call-template>
+	<xsl:call-template name="cpp:html.block"/>
+</xsl:template>
+
+<!-- include -->
+
+<xsl:template match="cpp:include" mode="cpp:html">
+	<xsl:call-template name="cpp:html.preprocessor">
+		<xsl:with-param 
+			name="text" select="concat('#include &lt;', @href, '&gt;')"/>
+	</xsl:call-template>
+</xsl:template>
+
+<!-- header -->
+
+<xsl:template match="cpp:header" mode="cpp:html.indent"/>
+
+<xsl:template match="cpp:header" mode="cpp:html">
+	<div style="{$cpp:html.header}">
+		<xsl:variable name="define" select="concat(
+			translate(../@id, './', '__'), '_hpp_included')"/>
+		<xsl:call-template name="cpp:html.preprocessor">
+			<xsl:with-param name="text" select="concat('#ifndef ', $define)"/>
+		</xsl:call-template>
+		<xsl:call-template name="cpp:html.preprocessor">
+			<xsl:with-param name="text" select="concat('#define ', $define)"/>
+		</xsl:call-template>
+		<xsl:apply-templates select="*" mode="cpp:html"/>
+		<xsl:call-template name="cpp:html.preprocessor">
+			<xsl:with-param name="text" select="'#endif'"/>
+		</xsl:call-template>
+	</div>
+</xsl:template>
+
+<!-- code -->
+
+<xsl:template match="cpp:code" mode="cpp:html.indent"/>
+
+<xsl:template match="cpp:code" mode="cpp:html">
+	<div style="{$cpp:html.code}">
+		<xsl:call-template name="cpp:html.preprocessor">
+			<xsl:with-param 
+				name="text" select="concat('#include &lt;', ../@id, '.hpp&gt;')"/>
+		</xsl:call-template>
+		<xsl:apply-templates select="*" mode="cpp:html"/>
+	</div>
+</xsl:template>
+
+<!-- unit -->
+
+<xsl:template match="cpp:unit" mode="cpp:html.indent"/>
+
+<xsl:template name="cpp:html.unit">
+	<xsl:apply-templates select="*" mode="cpp:html"/>
+</xsl:template>
+
+<xsl:template match="cpp:unit" mode="cpp:html">
+	<xsl:call-template name="cpp:html.unit"/>
+</xsl:template>
+
+<xsl:template match="/cpp:unit" mode="cpp:html">
+	<html><body><pre><xsl:call-template name="cpp:html.unit"/></pre></body></html>
+</xsl:template>
+
+<!-- Entry Point -->
+
+<xsl:template match="cpp:*">
+	<xsl:apply-templates select="." mode="cpp:html"/>
+</xsl:template>
+
+</xsl:stylesheet>
