@@ -46,13 +46,13 @@
 				href="_build.bat"
 				method="text"
 				encoding="iso-8859-1">
-<xsl:text>cd ../../..
+<xsl:text>cd ..
 </xsl:text>
 	<xsl:value-of select="concat(
 		'&#x22;c:\Program Files\7-zip\7z&#x22; a -r -tzip -x!*.zip ',
-		'net/sourceforge/cbear/',
+		'cbear.sourceforge.net/',
 		$name, 
-		' net/sourceforge/cbear/*')"/>
+		' cbear.sourceforge.net/*')"/>
 		</document>
 	</xsl:variable>
 	<xsl:apply-templates 
