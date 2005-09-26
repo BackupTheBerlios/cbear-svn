@@ -34,6 +34,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:output method="text" encoding="ascii"/>
 
+<xsl:param name="cpp:cpp.root"/>
+
 <xsl:template match="*" mode="cpp:cpp">
 	<xsl:apply-templates select="." mode="cpp:html"/>
 </xsl:template>
@@ -42,7 +44,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 	<xsl:variable name="header">
 		<document
-			href="{concat(@id, '.hpp')}"
+			href="{concat($cpp:cpp.root, @id, '.hpp')}"
 			method="text"
 			encoding="ascii">
 			<xsl:apply-templates select="cpp:header" mode="cpp:cpp"/>
@@ -55,7 +57,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:if test="cpp:code">
 		<xsl:variable name="code">
 			<document
-				href="{concat(@id, '.cpp')}"
+				href="{concat($cpp:cpp.root, @id, '.cpp')}"
 				method="text"
 				encoding="ascii">
 				<xsl:apply-templates select="cpp:code" mode="cpp:cpp"/>

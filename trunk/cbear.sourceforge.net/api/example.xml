@@ -27,7 +27,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://cbear.sourceforge.net/api main.xsd"
 	xmlns:html="http://www.w3.org/1999/xhtml"
-	id="net/sourceforge/cbear/api/example"
+	id="cbear.sourceforge.net/api/example"
 	uuid="C06BCE4E-E1D6-4c62-9A4F-D593091816A6">
 
 <comment>

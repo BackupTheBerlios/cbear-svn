@@ -35,10 +35,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:output method="xml" indent="yes"/>
 
-<xsl:param name="api:com.cpp.xsl.xsd"/>
-<xsl:param name="api:com.cpp.xsl.xsl"/>
+<xsl:param name="api:com.cpp.xsd"/>
+<xsl:param name="api:com.cpp.xsl"/>
 
+<!--
 <xsl:param name="api:com.cpp.name" select="/api:library/@id"/>
+-->
 
 <!-- * -->
 
@@ -63,12 +65,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="api:library" mode="api:com.cpp">
 	<xsl:processing-instruction name="xml-stylesheet">
 		<xsl:text>type="text/xsl" href="</xsl:text>
-		<xsl:value-of select="$api:com.cpp.xsl.xsl"/>
+		<xsl:value-of select="$api:com.cpp.xsl"/>
 		<xsl:text>"</xsl:text>
 	</xsl:processing-instruction>
 	<unit
 		xsi:schemaLocation="{concat(
-			'http://cbear.sourceforge.net/cpp ', $api:com.cpp.xsl.xsd)}"
+			'http://cbear.sourceforge.net/cpp ', $api:com.cpp.xsd)}"
 		id="{@id}">
 		<header>
 			<include href="{concat(@id, '.odl.h')}"/>
