@@ -37,14 +37,45 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	doctype-public="-//W3C//DTD XHTML 1.1//EN"
 	doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
 
+<!-- * -->
+
+<xsl:template match="*" mode="odl:doc.html.content.table">
+	<li>
+		<a href="{concat('#', @id)}"><xsl:value-of select="@id"/></a>
+	</li>
+</xsl:template>
+	
+<xsl:template match="*" mode="odl:doc.html">
+	<span class="error">
+		<xsl:value-of select="concat('&lt;', local-name(), '&gt;')"/>
+	</span>
+	<xsl:apply-templates select="*" mode="odl:doc.html"/>
+	<span class="error">
+		<xsl:value-of select="concat('&lt;/', local-name(), '&gt;')"/>
+	</span>
+</xsl:template>
+
+<!-- attribute -->
+
+<xsl:template match="odl:attribute" mode="odl:doc.html.content.table"/>
+	
 <!-- library -->
 
 <xsl:template match="odl:library" mode="odl:doc.html">
 	<html>
+		<head>
+			<style type="text/css">
+.error { color: red; }
+			</style>
+		</head>
 		<body>
 			<div>
-				<h1>Table Of Contents</h1>
+				<h2>Table Of Contents</h2>
+				<ul>
+					<xsl:apply-templates select="*" mode="odl:doc.html.content.table"/>
+				</ul>
 			</div>
+			<xsl:apply-templates select="*" mode="odl:doc.html"/>
 		</body>
 	</html>
 </xsl:template>
