@@ -38,10 +38,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:param name="api:com.cpp.xsd"/>
 <xsl:param name="api:com.cpp.xsl"/>
 
-<!--
-<xsl:param name="api:com.cpp.name" select="/api:library/@id"/>
--->
-
 <!-- * -->
 
 <xsl:template match="*" mode="api:com.cpp">
