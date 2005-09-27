@@ -25,7 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:import href="html.xsl"/>
+<xsl:import href="colored.xsl"/>
 
 <xsl:output method="text" encoding="ascii"/>
 
