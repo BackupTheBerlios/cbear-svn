@@ -53,23 +53,24 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		name="{local-name()}">
 		<xsl:apply-templates select="@id" mode="api:body"/>
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
+		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:apply-templates select="*" mode="api:body"/>
 	</xsl:element>
 </xsl:template>
 
 <!-- comment -->
 
-<xsl:template match="api:comment" mode="api:body">
-	<xsl:comment>
-		<xsl:value-of select="api:public"/>
-	</xsl:comment>
+<xsl:template match="api:comment" mode="api:body"/>
+
+<xsl:template match="api:comment" mode="api:body.comment">
+	<comment><xsl:copy-of select="*|text()"/></comment>
 </xsl:template>
 
 <!-- @id -->
 
 <xsl:template match="@id" mode="api:body">	
 	<xsl:attribute name="id">
-		<xsl:value-of select="translate(., '.', '_')"/>
+		<xsl:value-of select="translate(., './', '__')"/>
 	</xsl:attribute>
 </xsl:template>
 
@@ -217,6 +218,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:variable>
 	<attribute id="id" value="{$id}"/>
 	<xsl:apply-templates select="@brief" mode="api:body"/>
+	<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 	<type.ref id="HRESULT"/>
 </xsl:template>
 
@@ -313,8 +315,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:apply-templates select="@brief" mode="api:body"/>
 		<attribute id="dual"/>
 		<attribute id="oleautomation"/>
+		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:if test="not(api:type.ref)">
-			<odl:type.ref id="IDispatch"/>
+			<type.ref id="IDispatch"/>
 		</xsl:if>
 		<xsl:apply-templates select="*" mode="api:body"/>
 	</interface>
@@ -329,6 +332,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:apply-templates select="@id" mode="api:body"/>
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
+		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:apply-templates select="*" mode="api:body"/>
 	</struct>
 </xsl:template>
@@ -338,6 +342,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:apply-templates select="@id" mode="api:body"/>
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
+		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:apply-templates select="*" mode="api:body"/>
 	</enum>
 </xsl:template>
@@ -357,6 +362,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
 		<attribute id="appobject"/>
+		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:variable name="type.ref">
 			<xsl:apply-templates select="api:type.ref" mode="api:body.type.ref"/>
 		</xsl:variable>
@@ -398,6 +404,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
 		<xsl:apply-templates select="@version" mode="api:body"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
+		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:apply-templates select="api:using" mode="api:body"/>
 		<xsl:apply-templates select="api:enum" mode="api:body"/>
 		<xsl:apply-templates select="api:interface" mode="api:body"/>

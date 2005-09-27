@@ -231,22 +231,10 @@
 
 	<element name="comment">
 		<complexType mixed="true">
-			<sequence>
-				<element ref="api:title" minOccurs="0"/>
-				<element ref="api:public" minOccurs="0"/>
-				<element ref="api:private" minOccurs="0"/>
-			</sequence>
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<any processContents="skip"/>
+			</choice>
 		</complexType>
 	</element>
-
-	<element name="title" type="string"/>
-	<element name="public" type="api:anything"/>
-	<element name="private" type="api:anything"/>
-
-	<complexType name="anything" mixed="true">
-		<choice minOccurs="0" maxOccurs="unbounded">
-			<any processContents="skip"/>
-		</choice>
-	</complexType>
 
 </schema>

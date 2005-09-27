@@ -253,6 +253,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:call-template name="odl:br"/>
 </xsl:template>
 
+<xsl:template match="odl:comment" mode="odl:body"/>
+
 <xsl:template match="/odl:library">
 	<html>
 		<body style="font-family: monospace;">

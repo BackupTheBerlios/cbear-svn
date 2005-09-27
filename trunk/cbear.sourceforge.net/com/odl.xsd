@@ -158,6 +158,9 @@
 	<complexType name="definition">
 		<complexContent>
 			<extension base="odl:list.attribute">
+				<sequence>
+					<element ref="odl:comment" minOccurs="0"/>
+				</sequence>
 				<attribute name="id" use="required" type="odl:id"/>
 			</extension>
 		</complexContent>

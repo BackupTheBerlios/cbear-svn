@@ -28,6 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xsi:schemaLocation="http://cbear.sourceforge.net/api main.xsd"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	id="cbear.sourceforge.net/api/example"
+	brief="C Bear, API Example"
 	uuid="C06BCE4E-E1D6-4c62-9A4F-D593091816A6">
 
 <comment>
