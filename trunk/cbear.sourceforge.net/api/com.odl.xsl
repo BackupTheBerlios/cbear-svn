@@ -369,7 +369,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="odl:importlib" mode="api:body"/>
 
 <xsl:template match="odl:importlib[@id]" mode="api:body">
-	<odl:importlib href="{@id}"/>
+	<importlib href="{@id}"/>
 </xsl:template>
 
 <xsl:template match="api:using" mode="api:body">
