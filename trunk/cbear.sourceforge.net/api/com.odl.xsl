@@ -374,10 +374,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="api:using" mode="api:body">
 	<xsl:variable name="importlib">
-		<odl:importlib>
+		<importlib>
 			<xsl:apply-templates 
 				select="document(@href)/api:library/@id" mode="api:body"/>
-		</odl:importlib>
+		</importlib>
 	</xsl:variable>
 	<xsl:apply-templates 
 		select="exsl:node-set($importlib)/odl:importlib" mode="api:body"/>
