@@ -76,17 +76,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="*" mode="odl:html.intro"/>
 
 <xsl:template match="*" mode="odl:html.header">
-<!--
-	<xsl:if test="odl:attribute">
-		<table>
-			<tbody>
-				<tr><th>Attribute</th><th>Value</th></tr>
-				<xsl:apply-templates select="*" mode="odl:html.intro"/>
-			</tbody>
-		</table>
-	</xsl:if>
--->
-	<div class="comment"><xsl:copy-of select="odl:comment"/></div>
+	<xsl:for-each select="odl:comment">
+		<div class="comment"><xsl:copy-of select="*|text()"/></div>
+	</xsl:for-each>
 </xsl:template>
 
 <xsl:template match="*" mode="odl:html.content">
@@ -116,16 +108,32 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="odl:attribute" mode="odl:html.content.table"/>
 
+<!--
 <xsl:template match="odl:attribute" mode="odl:html.intro">
 	<tr>
 		<td class="id"><xsl:value-of select="@id"/></td>
 		<td class="const"><xsl:value-of select="@value"/></td>
 	</tr> 
 </xsl:template>
+-->
 
 <xsl:template match="odl:attribute" mode="odl:html.content"/>
 
 <xsl:template match="odl:attribute" mode="odl:html"/>
+
+<xsl:template match="odl:attribute" mode="odl:html.parameter.base">
+	<span class="keyword"><xsl:value-of select="@id"/></span>
+</xsl:template>
+
+<xsl:template match="odl:attribute" mode="odl:html.parameter">
+	<xsl:apply-templates select="." mode="odl:html.parameter.base"/>
+	<xsl:text>, </xsl:text>
+</xsl:template>
+
+<xsl:template 
+	match="odl:attribute[position()=last()]" mode="odl:html.parameter">
+	<xsl:apply-templates select="." mode="odl:html.parameter.base"/>
+</xsl:template>
 
 <!-- importlib -->
 
@@ -137,23 +145,27 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="odl:type.ref" mode="odl:html.a">
 	<xsl:variable name="id" select="@id"/>
-	<xsl:apply-templates 
-		select="/odl:library/odl:interface[@id=$id]" mode="odl:html.a"/>
+	<xsl:choose>
+		<xsl:when test="/odl:library/odl:interface[@id=$id]">
+			<xsl:apply-templates 
+				select="/odl:library/odl:interface[@id=$id]" mode="odl:html.a"/>
+		</xsl:when>
+		<xsl:otherwise>
+			<span class="id"><xsl:value-of select="@id"/></span>
+		</xsl:otherwise>
+	</xsl:choose>
+	<xsl:if test="odl:type.ref">
+		<xsl:text>(</xsl:text>
+		<xsl:apply-templates select="odl:type.ref" mode="odl:html.a"/>
+		<xsl:text>)</xsl:text>
+	</xsl:if>
 </xsl:template>
 
-<xsl:template match="odl:type.ref[@id='IDispatch']" mode="odl:html.a">
-	<xsl:text>IDispatch</xsl:text>
+<xsl:template match="odl:type.ref[@id='*']" mode="odl:html.a">
+	<xsl:apply-templates select="odl:type.ref" mode="odl:html.a"/>
 </xsl:template>
 
-<xsl:template match="odl:type.ref" mode="odl:html.content">
-<!--
-	<div>
-		<xsl:text>Based on </xsl:text>
-		<xsl:apply-templates select="." mode="odl:html.content.a"/>
-		<xsl:text>.</xsl:text>
-	</div>
--->
-</xsl:template>
+<xsl:template match="odl:type.ref" mode="odl:html.content"/>
 
 <!-- item -->
 
@@ -165,12 +177,96 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- typedef -->
 
+<xsl:template match="odl:typedef" mode="odl:html.id">
+	<xsl:apply-templates select="*" mode="odl:html.id"/>
+</xsl:template>
+
 <xsl:template match="odl:typedef" mode="odl:html.title">
 	<xsl:apply-templates select="*" mode="odl:html.title"/>
 </xsl:template>
 
 <xsl:template match="odl:typedef" mode="odl:html">
 	<xsl:apply-templates select="*" mode="odl:html"/>
+</xsl:template>
+
+<!-- parameter -->
+
+<xsl:template match="odl:parameter" mode="odl:html.name.base">
+	<xsl:text>[</xsl:text>
+	<xsl:apply-templates select="odl:attribute" mode="odl:html.parameter"/>
+	<xsl:text>]</xsl:text>
+	<xsl:apply-templates select="odl:type.ref" mode="odl:html.a"/>
+</xsl:template>
+
+<xsl:template match="odl:parameter" mode="odl:html.name">
+	<xsl:param name="number"/>
+	<xsl:apply-templates select="." mode="odl:html.name.base"/>
+	<xsl:if test="position() &lt; $number">
+		<xsl:text>, </xsl:text>
+	</xsl:if>
+</xsl:template>
+
+<!-- method -->
+
+<xsl:template match="odl:method" mode="odl:html.name.header">
+	<xsl:for-each select="odl:parameter[odl:attribute/@id='retval']">
+		<xsl:apply-templates select="odl:type.ref" mode="odl:html.a"/>
+		<xsl:text> </xsl:text>
+	</xsl:for-each>
+	<span class="id"><xsl:value-of select="@id"/></span>
+</xsl:template>
+
+<xsl:template match="odl:method" mode="odl:html.name">
+	<xsl:apply-templates select="." mode="odl:html.name.header"/>
+	<xsl:variable 
+		name="number" 
+		select="
+			count(odl:parameter) - count(odl:parameter/odl:attribute[@id='retval'])"/>
+	<xsl:text>(</xsl:text>
+	<xsl:apply-templates 
+		select="odl:parameter[position()&lt;=$number]" mode="odl:html.name">
+		<xsl:with-param name="number" select="$number"/>
+	</xsl:apply-templates>
+	<xsl:text>)</xsl:text>
+</xsl:template>
+
+<xsl:template 
+	match="odl:method[odl:attribute/@id='propget']" mode="odl:html.name">
+	<xsl:text>[</xsl:text>
+	<span class="keyword">propget</span>
+	<xsl:text>] </xsl:text>
+	<xsl:apply-templates select="." mode="odl:html.name.header"/>
+	
+	<xsl:variable name="number" select="count(odl:parameter) - 1"/>
+	<xsl:if test="$number &gt;= 1">
+		<xsl:text>(</xsl:text>
+		<xsl:apply-templates 
+			select="odl:parameter[position()&lt;=$number]" mode="odl:html.name">
+			<xsl:with-param name="number" select="$number"/>
+		</xsl:apply-templates>		
+		<xsl:text>)</xsl:text>
+	</xsl:if>
+</xsl:template>
+
+<xsl:template 
+	match="odl:method[odl:attribute/@id='propput']" mode="odl:html.name">
+	<xsl:text>[</xsl:text>
+	<span class="keyword">propput</span>
+	<xsl:text>] </xsl:text>
+	<xsl:apply-templates 
+		select="odl:parameter[position()=last()]/odl:type.ref" mode="odl:html.a"/>
+	<xsl:text> </xsl:text>
+	<span class="id"><xsl:value-of select="@id"/></span>
+	
+	<xsl:variable name="number" select="count(odl:parameter) - 1"/>
+	<xsl:if test="$number &gt;= 1">
+		<xsl:text>(</xsl:text>
+		<xsl:apply-templates 
+			select="odl:parameter[position()&lt;=$number]" mode="odl:html.name">
+			<xsl:with-param name="number" select="$number"/>
+		</xsl:apply-templates>		
+		<xsl:text>)</xsl:text>
+	</xsl:if>
 </xsl:template>
 
 <!-- interface -->
