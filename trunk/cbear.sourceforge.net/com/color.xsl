@@ -42,15 +42,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- Style -->
 
 <xsl:param name="odl:color.keyword">
-	color: green;
+	color: navy;
 </xsl:param>
 
 <xsl:param name="odl:color.id">
-	color: blue;
+	color: teal;
 </xsl:param>
 
 <xsl:param name="odl:color.const">
-	color: magenta;
+	color: green;
 </xsl:param>
 
 <!-- * -->
@@ -89,11 +89,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <xsl:template match="odl:*" mode="odl:color.header">
-	<span class="{$odl:color.keyword}">
+	<span style="{$odl:color.keyword}">
 		<xsl:value-of select="local-name()"/>
 	</span>
 	<xsl:text> </xsl:text>
-	<span class="{$odl:color.id}"><xsl:value-of select="@id"/></span>
+	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 </xsl:template>
 
 <xsl:template match="odl:*" mode="odl:color.begin">
@@ -111,13 +111,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- attribute -->
 
 <xsl:template match="odl:attribute" mode="odl:color.attribute.body">
-	<span class="{$odl:color.keyword}"><xsl:value-of select="@id"/></span>
+	<span style="{$odl:color.keyword}"><xsl:value-of select="@id"/></span>
 </xsl:template>
 
 <xsl:template match="odl:attribute[@value]" mode="odl:color.attribute.body">
-	<span class="{$odl:color.keyword}"><xsl:value-of select="@id"/></span>
+	<span style="{$odl:color.keyword}"><xsl:value-of select="@id"/></span>
 	<xsl:text>(</xsl:text>
-	<span class="{$odl:color.const}"><xsl:value-of select="@value"/></span>
+	<span style="{$odl:color.const}"><xsl:value-of select="@value"/></span>
 	<xsl:text>)</xsl:text>
 </xsl:template>
 
@@ -169,9 +169,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="odl:item" mode="odl:color">
 	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
-			<span class="{$odl:color.id}"><xsl:value-of select="@id"/></span>
+			<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 			<xsl:text> = </xsl:text>
-			<span class="{$odl:color.const}">
+			<span style="{$odl:color.const}">
 				<xsl:value-of select="odl:const/@value"/>
 			</span>
 			<xsl:text>,</xsl:text>
@@ -194,14 +194,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="odl:typedef/odl:*" mode="odl:color.end">
 	<xsl:text>} </xsl:text>
-	<span class="{$odl:color.id}"><xsl:value-of select="../@id"/></span>
+	<span style="{$odl:color.id}"><xsl:value-of select="../@id"/></span>
 	<xsl:text>;</xsl:text>
 </xsl:template>
 
 <!-- type.ref -->
 
 <xsl:template match="odl:type.ref" mode="odl:color.type.ref.header">
-	<span class="id"><xsl:value-of select="@id"/></span>
+	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 </xsl:template>
 
 <xsl:template match="odl:type.ref" mode="odl:color.type.ref">
@@ -232,7 +232,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
 			<xsl:apply-templates select="." mode="odl:color.attribute.list.line"/>
-			<span class="{$odl:color.id}">interface</span>
+			<span style="{$odl:color.id}">interface</span>
 			<xsl:text> </xsl:text>
 			<xsl:apply-templates select="." mode="odl:color.type.ref"/>
 			<xsl:text>;</xsl:text>
@@ -246,7 +246,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:apply-templates select="." mode="odl:color.attribute.list.line"/>
 	<xsl:apply-templates select="odl:type.ref" mode="odl:color"/>
 	<xsl:text> </xsl:text>
-	<span class="{$odl:color.id}"><xsl:value-of select="@id"/></span>
+	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 </xsl:template>
 
 <xsl:template match="odl:parameter" mode="odl:color">
@@ -261,16 +261,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- method -->
 
+<xsl:template match="odl:method" mode="odl:color.header">
+	<xsl:apply-templates select="odl:type.ref" mode="odl:color.type.ref"/>
+	<xsl:text> </xsl:text>
+	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
+	<xsl:text>(</xsl:text>
+	<xsl:apply-templates select="odl:parameter" mode="odl:color"/>
+	<xsl:text>);</xsl:text>
+</xsl:template>
+
 <xsl:template match="odl:method" mode="odl:color">
 	<xsl:apply-templates select="." mode="odl:color.attribute.list"/>
 	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
-			<xsl:apply-templates select="odl:type.ref" mode="odl:color.type.ref"/>
-			<xsl:text> </xsl:text>
-			<span class="{$odl:color.id}"><xsl:value-of select="@id"/></span>
-			<xsl:text>(</xsl:text>
-			<xsl:apply-templates select="odl:parameter" mode="odl:color"/>
-			<xsl:text>);</xsl:text>
+			<xsl:apply-templates select="." mode="odl:color.header"/>
 		</xsl:with-param>
 	</xsl:call-template>
 </xsl:template>
@@ -278,11 +282,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- interface -->
 
 <xsl:template match="odl:interface" mode="odl:color.header">
-	<span class="{$odl:color.keyword}">interface</span>
+	<span style="{$odl:color.keyword}">interface</span>
 	<xsl:text> </xsl:text>
-	<span class="{$odl:color.id}"><xsl:value-of select="@id"/></span>
+	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 	<xsl:text>: </xsl:text>
-	<span class="{$odl:color.id}">
+	<span style="{$odl:color.id}">
 		<xsl:apply-templates select="odl:type.ref" mode="odl:color.type.ref"/>
 	</span>
 </xsl:template>

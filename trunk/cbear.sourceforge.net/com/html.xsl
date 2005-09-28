@@ -30,6 +30,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns:odl="http://cbear.sourceforge.net/com"
 	exclude-result-prefixes="xi odl">
 
+<xsl:import href="color.xsl"/>
+
 <!-- XHTML 1.1. -->
 <xsl:output 
 	method="xml"
@@ -60,9 +62,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <xsl:template match="*" mode="odl:html.name">
-	<span class="keyword"><xsl:value-of select="local-name()"/></span>
+	<span style="{$odl:color.keyword}">
+		<xsl:value-of select="local-name()"/>
+	</span>
 	<xsl:text> </xsl:text>
-	<span class="id"><xsl:value-of select="@id"/></span>
+	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 </xsl:template>
 
 <xsl:template match="*" mode="odl:html.title">
@@ -81,9 +85,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:for-each>
 </xsl:template>
 
+<xsl:template match="*" mode="odl:html.details">
+	<pre>
+		<xsl:apply-templates select="." mode="odl:color.attribute.list.line"/>
+	</pre>
+</xsl:template>
+
 <xsl:template match="*" mode="odl:html.content">
 	<div id="{concat(../@id, '.', @id)}" class="h3">
 		<h3><xsl:apply-templates select="." mode="odl:html.name"/></h3>
+		<xsl:apply-templates select="." mode="odl:html.details"/>
 		<xsl:apply-templates select="." mode="odl:html.header"/>
 	</div>
 </xsl:template>
@@ -91,6 +102,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="*" mode="odl:html">
 	<div id="{@id}" class="h2">
 		<h2><xsl:apply-templates select="." mode="odl:html.name"/></h2>
+		<xsl:apply-templates select="." mode="odl:html.details"/>
 		<xsl:apply-templates select="." mode="odl:html.header"/>
 		<xsl:apply-templates select="*" mode="odl:html.content"/>
 	</div>
@@ -113,7 +125,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="odl:attribute" mode="odl:html"/>
 
 <xsl:template match="odl:attribute" mode="odl:html.parameter.base">
-	<span class="keyword"><xsl:value-of select="@id"/></span>
+	<span style="{$odl:color.keyword}"><xsl:value-of select="@id"/></span>
 </xsl:template>
 
 <xsl:template match="odl:attribute" mode="odl:html.parameter">
@@ -142,7 +154,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				select="/odl:library/odl:interface[@id=$id]" mode="odl:html.a"/>
 		</xsl:when>
 		<xsl:otherwise>
-			<span class="id"><xsl:value-of select="@id"/></span>
+			<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 		</xsl:otherwise>
 	</xsl:choose>
 	<xsl:if test="odl:type.ref">
@@ -161,9 +173,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- item -->
 
 <xsl:template match="odl:item" mode="odl:html.name">
-	<span class="id"><xsl:value-of select="@id"/></span>
+	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 	<xsl:text> = </xsl:text>
-	<span class="const"><xsl:value-of select="odl:const/@value"/></span>
+	<span style="{$odl:color.const}">
+		<xsl:value-of select="odl:const/@value"/>
+	</span>
 </xsl:template>
 
 <!-- typedef -->
@@ -204,7 +218,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:apply-templates select="odl:type.ref" mode="odl:html.a"/>
 		<xsl:text> </xsl:text>
 	</xsl:for-each>
-	<span class="id"><xsl:value-of select="@id"/></span>
+	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
+</xsl:template>
+
+<xsl:template match="odl:method" mode="odl:html.details">
+	<pre>
+		<xsl:apply-templates select="." mode="odl:color.attribute.list.line"/>
+		<xsl:text>&#10;</xsl:text>
+		<xsl:apply-templates select="." mode="odl:color.header"/>
+	</pre>
 </xsl:template>
 
 <xsl:template match="odl:method" mode="odl:html.name">
@@ -218,13 +240,23 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		select="odl:parameter[position()&lt;=$number]" mode="odl:html.name">
 		<xsl:with-param name="number" select="$number"/>
 	</xsl:apply-templates>
-	<xsl:text>)</xsl:text>
+	<xsl:text>);</xsl:text>
 </xsl:template>
 
-<xsl:template 
-	match="odl:method[odl:attribute/@id='propget']" mode="odl:html.name">
+<xsl:template match="odl:method" mode="odl:html.name.property">
+	<xsl:variable name="id" select="@id"/>
 	<xsl:text>[</xsl:text>
-	<span class="keyword">propget</span>
+	<xsl:for-each select="../odl:method[@id=$id]">
+		<span style="{$odl:color.keyword}">
+			<xsl:choose>
+				<xsl:when test="odl:attribute/@id='propput'">propput</xsl:when>
+				<xsl:otherwise>propget</xsl:otherwise>
+			</xsl:choose>
+		</span>
+		<xsl:if test="position()!=last()">
+			<xsl:text>, </xsl:text>
+		</xsl:if>
+	</xsl:for-each>
 	<xsl:text>] </xsl:text>
 	<xsl:apply-templates select="." mode="odl:html.name.header"/>
 	
@@ -237,35 +269,40 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		</xsl:apply-templates>		
 		<xsl:text>)</xsl:text>
 	</xsl:if>
+	<xsl:text>;</xsl:text>
+</xsl:template>
+
+<xsl:template match="odl:method" mode="odl:html.content.property">
+	<div id="{concat(../@id, '.', @id)}" class="h3">
+		<h3><xsl:apply-templates select="." mode="odl:html.name.property"/></h3>
+		<xsl:variable name="id" select="@id"/>
+		<xsl:for-each select="../odl:method[@id=$id]">
+			<xsl:apply-templates select="." mode="odl:html.details"/>
+		</xsl:for-each>
+		<xsl:apply-templates select="." mode="odl:html.header"/>
+	</div>
 </xsl:template>
 
 <xsl:template 
-	match="odl:method[odl:attribute/@id='propput']" mode="odl:html.name">
-	<xsl:text>[</xsl:text>
-	<span class="keyword">propput</span>
-	<xsl:text>] </xsl:text>
-	<xsl:apply-templates 
-		select="odl:parameter[position()=last()]/odl:type.ref" mode="odl:html.a"/>
-	<xsl:text> </xsl:text>
-	<span class="id"><xsl:value-of select="@id"/></span>
-	
-	<xsl:variable name="number" select="count(odl:parameter) - 1"/>
-	<xsl:if test="$number &gt;= 1">
-		<xsl:text>(</xsl:text>
-		<xsl:apply-templates 
-			select="odl:parameter[position()&lt;=$number]" mode="odl:html.name">
-			<xsl:with-param name="number" select="$number"/>
-		</xsl:apply-templates>		
-		<xsl:text>)</xsl:text>
-	</xsl:if>
+	match="odl:method[preceding-sibling::odl:method/@id=@id]" 
+	mode="odl:html.content.property"/>
+
+<xsl:template 
+	match="odl:method[odl:attribute/@id='propput']" mode="odl:html.content">
+	<xsl:apply-templates select="." mode="odl:html.content.property"/>
+</xsl:template>
+
+<xsl:template 
+	match="odl:method[odl:attribute/@id='propget']" mode="odl:html.content">
+	<xsl:apply-templates select="." mode="odl:html.content.property"/>
 </xsl:template>
 
 <!-- interface -->
 
 <xsl:template match="odl:interface" mode="odl:html.name">
-	<span class="keyword">interface</span>
+	<span style="{$odl:color.keyword}">interface</span>
 	<xsl:text> </xsl:text>
-	<span class="id"><xsl:value-of select="@id"/></span>
+	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 	<xsl:text>: </xsl:text>
 	<xsl:apply-templates select="odl:type.ref" mode="odl:html.a"/>
 </xsl:template>
@@ -292,9 +329,7 @@ a:hover { text-decoration: underline; }
 .error { color: red; }
 table { border-collapse: collapse; }
 th, td { padding: 3px 3px 3px 3px; border: solid 1px black; }
-.keyword { color: black; }
-.id { color: navy; }
-.const { color: green; }
+pre { margin-left: 20px; padding-left: 5px; border-left: solid 1px black; }
 			</style>
 		</head>
 		<body>
@@ -308,6 +343,7 @@ th, td { padding: 3px 3px 3px 3px; border: solid 1px black; }
 			</div>
 			<div id="Introduction" class="h2">
 				<h2>Introduction</h2>
+				<xsl:apply-templates select="." mode="odl:html.details"/>
 				<xsl:apply-templates select="." mode="odl:html.header"/>
 			</div>
 			<xsl:apply-templates select="*" mode="odl:html"/>
