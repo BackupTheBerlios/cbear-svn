@@ -366,7 +366,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:variable name="type.ref">
 			<xsl:apply-templates select="api:type.ref" mode="api:body.type.ref"/>
 		</xsl:variable>
+		<type.ref id="{exsl:node-set($type.ref)/odl:type.ref/odl:type.ref/@id}">
+			<attribute id="default"/>
+		</type.ref>
+		<!--
 		<xsl:copy-of select="exsl:node-set($type.ref)/odl:type.ref/odl:type.ref"/>
+		-->
 	</coclass>
 </xsl:template>
 

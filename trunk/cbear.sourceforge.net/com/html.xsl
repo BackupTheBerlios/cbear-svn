@@ -108,15 +108,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="odl:attribute" mode="odl:html.content.table"/>
 
-<!--
-<xsl:template match="odl:attribute" mode="odl:html.intro">
-	<tr>
-		<td class="id"><xsl:value-of select="@id"/></td>
-		<td class="const"><xsl:value-of select="@value"/></td>
-	</tr> 
-</xsl:template>
--->
-
 <xsl:template match="odl:attribute" mode="odl:html.content"/>
 
 <xsl:template match="odl:attribute" mode="odl:html"/>

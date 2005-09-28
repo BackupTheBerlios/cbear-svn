@@ -28,7 +28,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	xmlns:cpp="http://cbear.sourceforge.net/cpp"
-	exclude-result-prefixes="cpp xi">
+	xmlns:txt="http://cbear.sourceforge.net/text"
+	exclude-result-prefixes="cpp txt xi">
+
+<xsl:import href="../text/main.xsl"/>
 
 <!-- XHTML 1.1. -->
 <xsl:output 
@@ -62,24 +65,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	color: magenta;
 </xsl:variable>
 
-<!-- Line -->
-
-<xsl:template match="*" mode="cpp:html.indent">
-	<xsl:text>&#9;</xsl:text>
-</xsl:template>
-
-<xsl:template name="cpp:html.line">
-	<xsl:param name="text"/>
-	<xsl:apply-templates select="ancestor::*" mode="cpp:html.indent"/>
-	<xsl:copy-of select="$text"/>
-	<xsl:text>&#10;</xsl:text>
-</xsl:template>
-
 <!-- Preprocessor Line -->
 
 <xsl:template name="cpp:html.preprocessor">
 	<xsl:param name="text"/>
-	<xsl:call-template name="cpp:html.line">
+	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
 			<span style="{$cpp:html.preprocessor}">
 				<xsl:copy-of select="$text"/>
@@ -102,13 +92,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template name="cpp:html.block">
 	<xsl:param name="begin" select="'{'"/>
 	<xsl:param name="end" select="'}'"/>
-	<xsl:call-template name="cpp:html.line">
-		<xsl:with-param name="text" select="$begin"/>
+	<xsl:call-template name="txt:main.block">
+		<xsl:with-param name="begin" select="$begin"/>
+		<xsl:with-param name="end" select="$end"/>
+		<xsl:with-param name="content">
+			<xsl:apply-templates select="*" mode="cpp:html"/>
+		</xsl:with-param>
 	</xsl:call-template>
-	<xsl:apply-templates select="*" mode="cpp:html"/>
-	<xsl:call-template name="cpp:html.line">
-		<xsl:with-param name="text" select="$end"/>
-	</xsl:call-template>	
 </xsl:template>
 
 <!-- type.parameters -->
@@ -194,7 +184,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- method -->
 
 <xsl:template match="cpp:method" mode="cpp:html">
-	<xsl:call-template name="cpp:html.line">
+	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
 			<xsl:apply-templates select="cpp:virtual" mode="cpp:html"/>
 			<xsl:apply-templates select="cpp:type.ref" mode="cpp:html"/>
@@ -212,12 +202,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- access -->
 
-<xsl:template match="cpp:access" mode="cpp:html.indent"/>
+<xsl:template match="cpp:access" mode="txt:main.indent"/>
 
 <xsl:template match="cpp:access" mode="cpp:html">
 	<xsl:variable name="access" select="@access"/>
 	<xsl:for-each select="..">
-		<xsl:call-template name="cpp:html.line">
+		<xsl:call-template name="txt:main.line">
 			<xsl:with-param name="text">
 				<span style="{$cpp:html.keyword}">
 					<xsl:value-of select="$access"/>
@@ -235,7 +225,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- class -->
 
 <xsl:template match="cpp:class" mode="cpp:html">
-	<xsl:call-template name="cpp:html.line">
+	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
 			<span style="{$cpp:html.keyword}">class</span>
 			<xsl:text> </xsl:text>
@@ -246,7 +236,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		</xsl:with-param>
 	</xsl:call-template>
 	<xsl:for-each select="cpp:access/cpp:type.ref">
-		<xsl:call-template name="cpp:html.line">
+		<xsl:call-template name="txt:main.line">
 			<xsl:with-param name="text">
 				<span style="{$cpp:html.keyword}">
 					<xsl:value-of select="../@access"/>
@@ -275,10 +265,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- template -->
 
-<xsl:template match="cpp:template" mode="cpp:html.indent"/>
+<xsl:template match="cpp:template" mode="txt:main.indent"/>
 
 <xsl:template match="cpp:template" mode="cpp:html">
-	<xsl:call-template name="cpp:html.line">
+	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
 			<span style="{$cpp:html.keyword}">template</span>
 			<xsl:text>&lt;</xsl:text>
@@ -294,7 +284,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- namespace -->
 
 <xsl:template match="cpp:namespace" mode="cpp:html">
-	<xsl:call-template name="cpp:html.line">
+	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
 			<span style="{$cpp:html.keyword}">namespace</span>
 			<xsl:text> </xsl:text>
@@ -315,7 +305,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- header -->
 
-<xsl:template match="cpp:header" mode="cpp:html.indent"/>
+<xsl:template match="cpp:header" mode="txt:main.indent"/>
 
 <xsl:template match="cpp:header" mode="cpp:html">
 	<div style="{$cpp:html.header}">
@@ -336,7 +326,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- code -->
 
-<xsl:template match="cpp:code" mode="cpp:html.indent"/>
+<xsl:template match="cpp:code" mode="txt:main.indent"/>
 
 <xsl:template match="cpp:code" mode="cpp:html">
 	<div style="{$cpp:html.code}">
@@ -350,7 +340,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- unit -->
 
-<xsl:template match="cpp:unit" mode="cpp:html.indent"/>
+<xsl:template match="cpp:unit" mode="txt:main.indent"/>
 
 <xsl:template name="cpp:html.unit">
 	<xsl:apply-templates select="*" mode="cpp:html"/>

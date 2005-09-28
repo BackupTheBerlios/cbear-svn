@@ -8,7 +8,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in 
 the Software without restriction, including without limitation the rights to 
 use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so, 
+the Software, and to permit persons to whom the Software is furnished to do so,
 subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all 
@@ -21,12 +21,43 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
+<!-- XHTML 1.1. -->
 <xsl:stylesheet 
 	version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:txt="http://cbear.sourceforge.net/text"
+	exclude-result-prefixes="txt xi">
 
-<xsl:import href="color.xsl"/>
+<!-- Indent -->
 
-<xsl:output method="text" encoding="ascii"/>
+<xsl:template match="*" mode="txt:main.indent">
+	<xsl:text>&#9;</xsl:text>
+</xsl:template>
+
+<!-- Line -->
+
+<xsl:template name="txt:main.line">
+	<xsl:param name="text"/>
+	<xsl:apply-templates select="ancestor::*" mode="txt:main.indent"/>
+	<xsl:copy-of select="$text"/>
+	<xsl:text>&#10;</xsl:text>
+</xsl:template>
+
+<!-- Block -->
+
+<xsl:template name="txt:main.block">
+	<xsl:param name="begin" select="'{'"/>
+	<xsl:param name="end" select="'}'"/>
+	<xsl:param name="content"/>
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text" select="$begin"/>
+	</xsl:call-template>
+	<xsl:copy-of select="$content"/>
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text" select="$end"/>
+	</xsl:call-template>
+</xsl:template>
 
 </xsl:stylesheet>

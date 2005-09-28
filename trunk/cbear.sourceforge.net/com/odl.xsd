@@ -141,11 +141,15 @@
 
 	<element name="type.ref">
 		<complexType>
-			<choice minOccurs="0" maxOccurs="unbounded">
-				<element ref="odl:type.ref"/>
-				<element ref="odl:const"/>
-			</choice>
-			<attribute name="id" type="odl:id"/>
+			<complexContent>
+				<extension base="odl:list.attribute">
+					<choice minOccurs="0" maxOccurs="unbounded">
+						<element ref="odl:type.ref"/>
+						<element ref="odl:const"/>
+					</choice>
+					<attribute name="id" type="odl:id"/>
+				</extension>
+			</complexContent>
 		</complexType>
 	</element>
 
