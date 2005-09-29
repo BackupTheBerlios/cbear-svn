@@ -145,6 +145,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="cpp:access/cpp:type.ref" mode="cpp:html"/>
 
+<!-- typedef -->
+
+<xsl:template match="cpp:typedef" mode="cpp:html">
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">
+			<span style="{$cpp:html.keyword}">typedef</span>
+			<xsl:text> </xsl:text>
+			<xsl:apply-templates select="cpp:type.ref" mode="cpp:html"/>
+			<xsl:text> </xsl:text>
+			<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
+			<xsl:text>;</xsl:text>
+		</xsl:with-param>
+	</xsl:call-template>
+</xsl:template>
+
 <!-- const -->
 
 <xsl:template match="cpp:const" mode="cpp:html">

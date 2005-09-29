@@ -24,5 +24,5 @@
 ..\xsd\bin\Debug\xsd.exe examples/class.cpp.xml
 ..\xsd\bin\Debug\xsd.exe examples/template.cpp.xml
 ..\xsd\bin\Debug\xsd.exe examples/method.cpp.xml
-c:\python24\scripts\4xslt --outfile=class.cpp.html examples/class.cpp.xml html.xsl
-c:\python24\scripts\4xslt examples/method.cpp.xml cpp.xsl
+..\xsd\bin\Debug\xsd.exe examples/typedef.cpp.xml
+c:\python24\scripts\4xslt --define=cpp:cpp.root="../../../" examples/typedef.cpp.xml cpp.xsl

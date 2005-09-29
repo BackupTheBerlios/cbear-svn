@@ -31,6 +31,7 @@
 				<element ref="cpp:namespace"/>
 				<element ref="cpp:template"/>
 				<element ref="cpp:class"/>
+				<element ref="cpp:typedef"/>
 			</choice>
 		</sequence>
 	</complexType>
@@ -62,6 +63,7 @@
 				<element ref="cpp:namespace"/>
 				<element ref="cpp:template"/>
 				<element ref="cpp:class"/>
+				<element ref="cpp:typedef"/>
 			</choice>
 			<attribute name="id" type="cpp:id"/>
 		</complexType>
@@ -154,6 +156,20 @@
 				<element ref="cpp:type.ref"/>
 			</sequence>
 			<attribute name="id" type="cpp:id" use="optional"/>
+		</complexType>
+	</element>
+
+	<!-- 
+		A type definition 
+		
+			typedef ... Name;	
+	-->
+	<element name="typedef">
+		<complexType>
+			<sequence>
+				<element ref="cpp:type.ref"/>
+			</sequence>
+			<attribute name="id" type="cpp:id"/>
 		</complexType>
 	</element>
 

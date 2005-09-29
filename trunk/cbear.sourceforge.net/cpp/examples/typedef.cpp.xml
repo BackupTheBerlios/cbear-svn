@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<!--
+The MIT License
+
+Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of 
+this software and associated documentation files (the "Software"), to deal in 
+the Software without restriction, including without limitation the rights to 
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so, 
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<?xml-stylesheet type="text/xsl" href="../html.xsl"?>
+<unit
+	xmlns="http://cbear.sourceforge.net/cpp"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://cbear.sourceforge.net/cpp ../main.xsd"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	id="cbear.sourceforge.net/cpp/examples/typedef">
+
+<header>
+
+<namespace id="cbear_sourceforge_net">
+<namespace id="cpp">
+<namespace id="examples">
+
+	<typedef id="Type1">
+		<type.ref><type.id id="ClassN"/></type.ref>
+	</typedef>
+
+	<template>
+		<id id="Class3"/>
+		<id id="Class6"/>
+		<class>
+			<type.ref>
+				<type.id id="Class1"/>
+				<type.id id="Class2">
+					<type.parameters>
+						<type.ref>
+							<type.id id="Class3"/>
+						</type.ref>
+						<type.ref>
+							<type.id id="Class4">
+								<type.parameters/>
+							</type.id>
+						</type.ref>
+					</type.parameters>
+				</type.id>
+				<type.id id="Class5"/>
+			</type.ref>
+
+			<access access="protected">
+				<type.ref>
+					<type.id id="Class6"/>
+				</type.ref>
+			</access>
+
+			<access access="protected">
+				<template>
+					<id id="Class100"/>
+					<class>
+						<type.ref>
+							<type.id id="Class10"/>
+						</type.ref>
+
+					</class>
+				</template>
+			</access>
+
+			<access access="private">
+
+				<method id="Function">
+					<type.ref><type.id id="void"/></type.ref>
+				</method>
+
+				<method id="Function">
+					<virtual/>
+					<type.ref>
+						<type.id id="Class5">
+							<type.parameters>
+								<type.ref><type.id id="void"/></type.ref>
+							</type.parameters>
+						</type.id>
+					</type.ref>
+					<parameter><type.ref><type.id id="int"/></type.ref></parameter>
+				</method>
+
+				<method id="Function">
+					<virtual/>
+					<type.ref><type.id id="void"/></type.ref>
+					<parameter><type.ref><type.id id="int"/></type.ref></parameter>
+					<parameter><type.ref><type.id id="Class3"/></type.ref></parameter>
+					<const/>
+					<abstract/>
+				</method>
+			</access>
+
+		</class>
+	</template>
+
+	<template>
+		<id id="Class100"/>
+		<class>
+			<type.ref>
+				<type.id id="Class10"/>
+			</type.ref>
+
+		</class>
+	</template>
+
+	<template>
+		<class>
+			<type.ref>
+				<type.id id="Class11"/>
+			</type.ref>
+
+			<access access="public">
+
+				<type.ref>
+					<type.id id="Class16"/>
+				</type.ref>
+
+				<type.ref>
+					<type.id id="Class17">
+						<type.parameters>
+							<type.ref>
+								<type.id id="Class23"/>
+								<type.id id="Class24"/>
+								<type.id id="Class25"/>
+							</type.ref>
+								<type.ref>
+								<type.id id="Class18">
+									<type.parameters>
+									<type.ref>
+											<type.id id="Class19"/>
+										</type.ref>
+									</type.parameters>
+								</type.id>
+								</type.ref>
+						</type.parameters>
+					</type.id>
+				</type.ref>
+
+				<class>
+					<type.ref>
+						<type.id id="Class10"/>
+					</type.ref>
+
+				</class>
+			</access>
+
+		</class>
+	</template>
+
+</namespace>
+</namespace>
+</namespace>
+
+</header>
+
+<code>
+
+<namespace id="cbear_sourceforge_net">
+<namespace id="cpp">
+<namespace id="examples">
+</namespace>
+</namespace>
+</namespace>
+
+</code>
+
+</unit>
