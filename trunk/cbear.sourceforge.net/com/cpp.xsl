@@ -51,50 +51,129 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="odl:attribute" mode="odl:cpp"/>
 
+<!-- importlib -->
+
+<xsl:template match="odl:importlib" mode="odl:cpp"/>
+
+<!-- item -->
+
+<xsl:template match="odl:item" mode="odl:cpp">
+	<item id="{@id}" value="{odl:const/@value}"/>
+</xsl:template>
+
+<!-- enum -->
+
+<xsl:template match="odl:enum" mode="odl:cpp">
+	<xsl:variable name="name">
+		<name.ref><id.ref id="{@id}"/></name.ref>
+	</xsl:variable>
+	<xsl:variable name="internal">
+		<name.ref><id.ref/><id.ref id="{@id}"/></name.ref>
+	</xsl:variable>
+	<xsl:variable name="base">
+		<name.ref>
+			<id.ref/>
+			<id.ref id="cbear_sourceforge_net"/>
+			<id.ref id="policy"/>
+			<id.ref id="wrap">
+				<type.parameters>
+					<xsl:copy-of select="$name"/>
+					<xsl:copy-of select="$internal"/>
+				</type.parameters>
+			</id.ref>
+		</name.ref>
+	</xsl:variable>
+	<class>
+		<name.ref><id.ref id="{@id}"/></name.ref>
+		<access access="public">
+			<xsl:copy-of select="$base"/>
+			<enum id="type">
+				<xsl:apply-templates select="odl:item" mode="odl:cpp"/>
+			</enum>
+			<method id="{@id}"/>
+			<method id="{@id}">
+				<parameter id="X">
+					<xsl:copy-of select="$internal"/>
+				</parameter>
+				<call>
+					<xsl:copy-of select="$base"/>
+					<exp><name.ref><id.ref id="X"/></name.ref></exp>
+				</call>
+				<body>
+				</body>
+			</method>
+			<method id="{@id}">
+				<parameter id="X">
+					<name.ref><id.ref id="type"/></name.ref>
+				</parameter>
+				<call>
+					<xsl:copy-of select="$base"/>
+					<exp><name.ref><id.ref id="X"/></name.ref></exp>
+				</call>
+				<body>
+				</body>
+			</method>
+		</access>
+	</class>
+</xsl:template>
+
+<!-- typedef -->
+
+<xsl:template match="odl:typedef" mode="odl:cpp">
+	<xsl:apply-templates select="*" mode="odl:cpp"/>
+</xsl:template>
+
 <!-- interface -->
 
 <xsl:template match="odl:interface" mode="odl:cpp">
 	<typedef id="{@id}">
-		<type.ref>
-			<type.id/>
-			<type.id id="cbear_sourceforge_net"/>
-			<type.id id="com"/>
-			<type.id id="object">				
+		<name.ref>
+			<id.ref/>
+			<id.ref id="cbear_sourceforge_net"/>
+			<id.ref id="com"/>
+			<id.ref id="object">				
 				<type.parameters>
-					<type.ref>
-						<type.id/>
-						<type.id id="{@id}"/>
-					</type.ref>
+					<name.ref>
+						<id.ref/>
+						<id.ref id="{@id}"/>
+					</name.ref>
 				</type.parameters>
-			</type.id>
-		</type.ref>
+			</id.ref>
+		</name.ref>
 	</typedef>
-<!--
-	<class>
-		<type.ref><type.id id="{@id}"/></type.ref>
-		<access access="public">
-			<type.ref>
-				<type.id/>
-				<type.id id="cbear_sourceforge_net"/>
-				<type.id id="com"/>
-				<type.id id="object">				
-					<type.parameters>
-						<type.ref>
-							<type.id/>
-							<type.id id="{@id}"/>
-						</type.ref>
-					</type.parameters>
-				</type.id>
-			</type.ref>
-			<xsl:apply-templates select="*" mode="odl:cpp"/>
-		</access>
-	</class>
--->
 </xsl:template>
 
-<!-- importlib -->
-
-<xsl:template match="odl:importlib" mode="odl:cpp"/>
+<xsl:template match="odl:interface" mode="odl:cpp.object">
+	<template>
+		<id id="Base"/>
+		<class>
+			<name.ref>
+				<id.ref id="object_content">				
+					<type.parameters>
+						<name.ref>
+							<id.ref/>
+							<id.ref id="{@id}"/>
+						</name.ref>
+						<name.ref><id.ref id="Base"/></name.ref>
+					</type.parameters>
+				</id.ref>
+			</name.ref>
+			<access access="public">
+				<name.ref>
+					<id.ref id="object_content">
+						<type.parameters>
+							<name.ref>
+								<id.ref/>
+								<id.ref id="{odl:type.ref/@id}"/>
+							</name.ref>
+							<name.ref><id.ref id="Base"/></name.ref>
+						</type.parameters>
+					</id.ref>
+				</name.ref>
+			</access>
+		</class>
+	</template>
+</xsl:template>
 
 <!-- libray -->
 
@@ -113,6 +192,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<include href="cbear.sourceforge.net/com/object.hpp"/>
 			<namespace id="{translate(@id, '.\/', '___')}">
 				<xsl:apply-templates select="*" mode="odl:cpp"/>
+			</namespace>
+			<namespace id="cbear_sourceforge_net">
+				<namespace id="com">
+					<xsl:apply-templates select="odl:interface" mode="odl:cpp.object"/>
+				</namespace>
 			</namespace>
 		</header>
 	</unit>

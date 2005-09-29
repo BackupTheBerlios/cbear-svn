@@ -105,45 +105,78 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="cpp:type.parameters" mode="cpp:html">
 	<xsl:text>&lt; </xsl:text>
-	<xsl:apply-templates select="cpp:type.ref" mode="cpp:html"/>
+	<xsl:apply-templates select="cpp:name.ref" mode="cpp:html"/>
 	<xsl:text> &gt;</xsl:text>
 </xsl:template>
 
-<!-- type.id -->
+<!-- id.ref -->
 
-<xsl:template name="cpp:html.type.id">
+<xsl:template name="cpp:html.id.ref">
 	<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
 	<xsl:apply-templates select="cpp:type.parameters" mode="cpp:html"/>
 </xsl:template>
 
-<xsl:template match="cpp:type.id" mode="cpp:html">
-	<xsl:call-template name="cpp:html.type.id"/>
+<xsl:template match="cpp:id.ref" mode="cpp:html">
+	<xsl:call-template name="cpp:html.id.ref"/>
 	<xsl:text>::</xsl:text>
 </xsl:template>
 
-<xsl:template match="cpp:type.id[position()=last()]" mode="cpp:html">
-	<xsl:call-template name="cpp:html.type.id"/>
+<xsl:template match="cpp:id.ref[position()=last()]" mode="cpp:html">
+	<xsl:call-template name="cpp:html.id.ref"/>
 </xsl:template>
 
-<!-- type.ref -->
+<!-- name.ref -->
 
-<xsl:template name="cpp:html.type.ref">
-	<xsl:apply-templates select="cpp:type.id" mode="cpp:html"/>
+<xsl:template name="cpp:html.name.ref">
+	<xsl:apply-templates select="cpp:id.ref" mode="cpp:html"/>
 </xsl:template>
 
-<xsl:template match="cpp:type.ref" mode="cpp:html">
-	<xsl:call-template name="cpp:html.type.ref"/>	
+<xsl:template match="cpp:name.ref" mode="cpp:html">
+	<xsl:call-template name="cpp:html.name.ref"/>	
 </xsl:template>
 
 <xsl:template 
-	match="cpp:type.parameters/cpp:type.ref[position()!=last()]" mode="cpp:html">
-	<xsl:call-template name="cpp:html.type.ref"/>
+	match="cpp:type.parameters/cpp:name.ref[position()!=last()]" mode="cpp:html">
+	<xsl:call-template name="cpp:html.name.ref"/>
 	<xsl:text>, </xsl:text>
 </xsl:template>
 
-<xsl:template match="cpp:class/cpp:type.ref" mode="cpp:html"/>
+<xsl:template match="cpp:class/cpp:name.ref" mode="cpp:html"/>
 
-<xsl:template match="cpp:access/cpp:type.ref" mode="cpp:html"/>
+<xsl:template match="cpp:access/cpp:name.ref" mode="cpp:html"/>
+
+<xsl:template match="cpp:method/cpp:name.ref" mode="cpp:html">
+	<xsl:call-template name="cpp:html.name.ref"/>	
+	<xsl:text> </xsl:text>
+</xsl:template>
+
+<!-- item -->
+
+<xsl:template match="cpp:item" mode="cpp:html">
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">
+			<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
+			<xsl:text> = </xsl:text>
+			<span style="{$cpp:html.const}"><xsl:value-of select="@value"/></span>
+			<xsl:text>,</xsl:text>
+		</xsl:with-param>
+	</xsl:call-template>
+</xsl:template>
+
+<!-- enum -->
+
+<xsl:template match="cpp:enum" mode="cpp:html">
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">
+			<span style="{$cpp:html.keyword}">enum</span>
+			<xsl:text> </xsl:text>
+			<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
+		</xsl:with-param>
+	</xsl:call-template>
+	<xsl:call-template name="cpp:html.block">
+		<xsl:with-param name="end" select="'};'"/>
+	</xsl:call-template>
+</xsl:template>
 
 <!-- typedef -->
 
@@ -152,7 +185,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:with-param name="text">
 			<span style="{$cpp:html.keyword}">typedef</span>
 			<xsl:text> </xsl:text>
-			<xsl:apply-templates select="cpp:type.ref" mode="cpp:html"/>
+			<xsl:apply-templates select="cpp:name.ref" mode="cpp:html"/>
 			<xsl:text> </xsl:text>
 			<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
 			<xsl:text>;</xsl:text>
@@ -184,7 +217,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- parameter -->
 
 <xsl:template name="cpp:html.parameter">
-	<xsl:apply-templates select="cpp:type.ref" mode="cpp:html"/>
+	<xsl:apply-templates select="cpp:name.ref" mode="cpp:html"/>
+	<xsl:if test="@id">
+		<xsl:text> </xsl:text>
+		<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
+	</xsl:if>
 </xsl:template>
 
 <xsl:template match="cpp:parameter" mode="cpp:html">
@@ -196,23 +233,66 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:call-template name="cpp:html.parameter"/>
 </xsl:template>
 
+<!-- exp -->
+
+<xsl:template match="cpp:call/cpp:exp" mode="cpp:html">
+	<xsl:apply-templates select="*" mode="cpp:html"/>
+	<xsl:text>, </xsl:text>
+</xsl:template>
+
+<xsl:template match="cpp:call/cpp:exp[position()=last()]" mode="cpp:html">
+	<xsl:apply-templates select="*" mode="cpp:html"/>
+</xsl:template>
+
+<!-- call -->
+
+<xsl:template match="cpp:call" mode="cpp:html.call">
+	<xsl:apply-templates select="cpp:name.ref" mode="cpp:html"/>
+	<xsl:text>(</xsl:text>
+	<xsl:apply-templates select="cpp:exp" mode="cpp:html"/>
+	<xsl:text>)</xsl:text>
+</xsl:template>
+
+<xsl:template match="cpp:call" mode="cpp:html">
+	<xsl:apply-templates select="." mode="cpp:html.call"/>
+	<xsl:text>, </xsl:text>
+</xsl:template>
+
+<xsl:template match="cpp:call[position()=last()]" mode="cpp:html">
+	<xsl:apply-templates select="." mode="cpp:html.call"/>
+</xsl:template>
+
+<!-- body -->
+
+<xsl:template match="cpp:body" mode="cpp:html">
+	<xsl:call-template name="cpp:html.block"/>
+</xsl:template>
+
 <!-- method -->
+
+<xsl:template match="cpp:method" mode="txt:main.indent"/>
 
 <xsl:template match="cpp:method" mode="cpp:html">
 	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
 			<xsl:apply-templates select="cpp:virtual" mode="cpp:html"/>
-			<xsl:apply-templates select="cpp:type.ref" mode="cpp:html"/>
-			<xsl:text> </xsl:text>
+			<xsl:apply-templates select="cpp:name.ref" mode="cpp:html"/>
 			<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
 			<xsl:text>(</xsl:text>
 			<xsl:apply-templates select="cpp:parameter" mode="cpp:html"/>
 			<xsl:text>)</xsl:text>
 			<xsl:apply-templates select="cpp:const" mode="cpp:html"/>
 			<xsl:apply-templates select="cpp:abstract" mode="cpp:html"/>
-			<xsl:text>;</xsl:text>
+			<xsl:if test="cpp:call">
+				<xsl:text>: </xsl:text>
+				<xsl:apply-templates select="cpp:call" mode="cpp:html"/>
+			</xsl:if>
+			<xsl:if test="not(cpp:body)">
+				<xsl:text>;</xsl:text>
+			</xsl:if>
 		</xsl:with-param>
 	</xsl:call-template>
+	<xsl:apply-templates select="cpp:body" mode="cpp:html"/>
 </xsl:template>
 
 <!-- access -->
@@ -235,7 +315,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <xsl:template 
-	match="cpp:access[count(cpp:type.ref) = count(*)]" mode="cpp:html"/>
+	match="cpp:access[count(cpp:name.ref) = count(*)]" mode="cpp:html"/>
 
 <!-- class -->
 
@@ -244,20 +324,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:with-param name="text">
 			<span style="{$cpp:html.keyword}">class</span>
 			<xsl:text> </xsl:text>
-			<xsl:for-each select="cpp:type.ref">
-				<xsl:call-template name="cpp:html.type.ref"/>
+			<xsl:for-each select="cpp:name.ref">
+				<xsl:call-template name="cpp:html.name.ref"/>
 			</xsl:for-each>
-			<xsl:if test="cpp:access/cpp:type.ref">:</xsl:if>
+			<xsl:if test="cpp:access/cpp:name.ref">:</xsl:if>
 		</xsl:with-param>
 	</xsl:call-template>
-	<xsl:for-each select="cpp:access/cpp:type.ref">
+	<xsl:for-each select="cpp:access/cpp:name.ref">
 		<xsl:call-template name="txt:main.line">
 			<xsl:with-param name="text">
 				<span style="{$cpp:html.keyword}">
 					<xsl:value-of select="../@access"/>
 				</span>
 				<xsl:text> </xsl:text>
-				<xsl:call-template name="cpp:html.type.ref"/>
+				<xsl:call-template name="cpp:html.name.ref"/>
 				<xsl:if test="position()!=last()">,</xsl:if>
 			</xsl:with-param>
 		</xsl:call-template>

@@ -115,7 +115,7 @@ public:
 	public:
 		const char *what() throw() 
 		{ 
-			return "net::sourceforge::cbear::com::object<...> uninitialized.";
+			return "cbear_sourceforge_net::com::object<...> uninitialized.";
 		}
 	};
 

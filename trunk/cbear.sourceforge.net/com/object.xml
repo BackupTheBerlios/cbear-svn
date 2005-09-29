@@ -61,7 +61,7 @@ public:
 
 	explicit object(Interface *);
 };]]></programlisting>
-<programlisting role="cpp"><![CDATA[template<class Interface, class Part>
+<programlisting role="cpp"><![CDATA[template<class Interface, class Base>
 class object_contetn: public object_base<Interface>
 {
 };]]></programlisting>

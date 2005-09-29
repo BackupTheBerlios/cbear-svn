@@ -30,33 +30,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	id="net/sourceforge/cbear/cpp/examples/empty">
 
 <header>
-
-<namespace id="net">
-<namespace id="sourceforge">
-<namespace id="cbear">
-<namespace id="cpp">
-<namespace id="examples">
-</namespace>
-</namespace>
-</namespace>
-</namespace>
-</namespace>
-
 </header>
 
 <code>
-
-<namespace id="net">
-<namespace id="sourceforge">
-<namespace id="cbear">
-<namespace id="cpp">
-<namespace id="examples">
-</namespace>
-</namespace>
-</namespace>
-</namespace>
-</namespace>
-
 </code>
 
 </unit>

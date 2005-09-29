@@ -51,6 +51,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="api:comment" mode="api:com.cpp"/>
 
+<!-- attribute -->
+
+<xsl:template match="api:attribute" mode="api:com.cpp">
+</xsl:template>
+
+<!-- using -->
+
+<xsl:template match="api:using" mode="api:com.cpp"/>
+
+<!-- enum -->
+
+<xsl:template match="api:enum" mode="api:com.cpp"/>
+
 <!-- interface -->
 
 <xsl:template match="api:interface" mode="api:com.cpp">
@@ -66,9 +79,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</class>
 </xsl:template>
 
-<!-- using -->
+<!-- object -->
 
-<xsl:template match="api:using" mode="api:com.cpp"/>
+<xsl:template match="api:coclass" mode="api:com.cpp"/>
 
 <!-- libray -->
 
@@ -85,6 +98,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<header>
 			<include href="{concat(@id, '.odl.h')}"/>
 			<include href="cbear.sourceforge.net/com/object.hpp"/>
+			<namespace id="cbear_sourceforge_net">
+			</namespace>
 			<namespace id="{translate(@id, '.\/', '___')}">
 				<xsl:apply-templates select="*" mode="api:com.cpp"/>
 			</namespace>

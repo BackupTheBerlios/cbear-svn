@@ -38,13 +38,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <namespace id="examples">
 </namespace>
 
-	<class>
-		<type.ref>
-			<type.id id="Class10"/>
-		</type.ref>
-
-	</class>
-
 </namespace>
 </namespace>
 </namespace>
