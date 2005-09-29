@@ -21,11 +21,11 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <net/sourceforge/cbear/base/integer.hpp>
+#include <cbear.sourceforge.net/base/integer.hpp>
 
 #include <boost/test/minimal.hpp>
 
-namespace Base = net::sourceforge::cbear::base;
+namespace Base = cbear_sourceforge_net::base;
 
 int test_main(int, char *[])
 {

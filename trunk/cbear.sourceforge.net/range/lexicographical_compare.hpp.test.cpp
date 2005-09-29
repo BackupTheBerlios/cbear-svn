@@ -21,13 +21,13 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <net/sourceforge/cbear/range/lexicographical_compare.hpp>
+#include <cbear.sourceforge.net/range/lexicographical_compare.hpp>
 
 #include <boost/test/minimal.hpp>
 
 #include <boost/range/size.hpp>
 
-namespace Container = net::sourceforge::cbear::range;
+namespace Container = cbear_sourceforge_net::range;
 
 int a[] = { 1, 2, 3 };
 

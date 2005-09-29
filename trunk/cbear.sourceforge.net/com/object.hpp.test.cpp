@@ -21,11 +21,11 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <net/sourceforge/cbear/com/object.hpp>
+#include <cbear.sourceforge.net/com/object.hpp>
 
 #include <boost/test/minimal.hpp>
 
-namespace Com = net::sourceforge::cbear::com;
+namespace Com = cbear_sourceforge_net::com;
 
 template<class T>
 class MyBase: public T //Com::iunknown::interface_type

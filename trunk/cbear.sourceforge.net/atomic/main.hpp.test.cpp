@@ -1,7 +1,7 @@
 /*
 The MIT License
 
-Copyright (c) 2005 Sergey Shandar
+Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -21,14 +21,14 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <net/sourceforge/cbear/atomic/main.hpp>
+#include <cbear.sourceforge.net/atomic/main.hpp>
 
 #include <boost/test/minimal.hpp>
 
 // boost::thread
 #include <boost/thread/thread.hpp>
 
-namespace Atomic = net::sourceforge::cbear::atomic;
+namespace Atomic = cbear_sourceforge_net::atomic;
 
 template<class T, class T1, class T2, class T3, class T4>
 void TestBase(volatile T &X, T1 A1, T2 A2, T3 A3, T4 A4)

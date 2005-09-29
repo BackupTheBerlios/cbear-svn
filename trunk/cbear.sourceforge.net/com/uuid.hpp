@@ -20,8 +20,8 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef NET_SOURCEFORGE_CBEAR_COM_UUID_HPP_INCLUDED
-#define NET_SOURCEFORGE_CBEAR_COM_UUID_HPP_INCLUDED
+#ifndef CBEAR_SOURCEFORGE_NET_COM_UUID_HPP_INCLUDED
+#define CBEAR_SOURCEFORGE_NET_COM_UUID_HPP_INCLUDED
 
 // ::UUID
 #include <basetyps.h>
@@ -31,15 +31,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // boost::uint32_t, boost::uint16_t, boost::uint8_t.
 #include <boost/cstdint.hpp>
 
-#include <net/sourceforge/cbear/policy/main.hpp>
-#include <net/sourceforge/cbear/range/lexicographical_compare.hpp>
-#include <net/sourceforge/cbear/base/integer.hpp>
+#include <cbear.sourceforge.net/policy/main.hpp>
+#include <cbear.sourceforge.net/range/lexicographical_compare.hpp>
+#include <cbear.sourceforge.net/base/integer.hpp>
 
-namespace net
-{
-namespace sourceforge
-{
-namespace cbear
+namespace cbear_sourceforge_net
 {
 namespace com
 {
@@ -119,14 +115,13 @@ public:
 
 }
 }
-}
-}
 
-#define NET_SOURCEFORGE_CBEAR_COM_UUID_DECLARE(Interface)\
-	namespace net { namespace sourceforge { namespace cbear {\
-	namespace com {	template<> struct uuid::of_type< ::Interface>\
-	{ static uuid create() { return uuid(::IID_##Interface);	} }; } } } }
+#define CBEAR_SOURCEFORGE_NET_COM_UUID_DECLARE(Interface)\
+	namespace cbear_sourceforge_net { namespace com {	\
+	template<> struct uuid::of_type< ::Interface>	\
+	{ static uuid create() { return uuid(::IID_##Interface); } }; \
+	} }
 
-NET_SOURCEFORGE_CBEAR_COM_UUID_DECLARE(IUnknown);
+CBEAR_SOURCEFORGE_NET_COM_UUID_DECLARE(IUnknown);
 
 #endif

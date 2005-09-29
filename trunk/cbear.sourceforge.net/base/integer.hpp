@@ -20,8 +20,8 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef NET_SOURCEFORGE_CBEAR_BASE_INTEGER_HPP_INCLUDED
-#define NET_SOURCEFORGE_CBEAR_BASE_INTEGER_HPP_INCLUDED
+#ifndef CBEAR_SOURCEFORGE_NET_BASE_INTEGER_HPP_INCLUDED
+#define CBEAR_SOURCEFORGE_NET_BASE_INTEGER_HPP_INCLUDED
 
 // std::size_t
 #include <cstddef>
@@ -39,11 +39,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // boost::mpl::bool_
 #include <boost/mpl/bool.hpp>
 
-namespace net
-{
-namespace sourceforge
-{
-namespace cbear
+namespace cbear_sourceforge_net
 {
 namespace base
 {
@@ -178,8 +174,6 @@ typename compose_result<Half>::type compose(const Half &High, const Half &Low)
 	return Result;
 }
 
-}
-}
 }
 }
 

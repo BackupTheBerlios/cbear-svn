@@ -21,11 +21,11 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <net/sourceforge/cbear/com/uuid.hpp>
+#include <cbear.sourceforge.net/com/uuid.hpp>
 
 #include <boost/test/minimal.hpp>
 
-namespace Cbear = net::sourceforge::cbear;
+namespace Cbear = cbear_sourceforge_net;
 namespace Com = Cbear::com;
 
 class IDMy: public ::IUnknown

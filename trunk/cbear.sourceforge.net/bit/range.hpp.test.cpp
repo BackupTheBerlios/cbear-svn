@@ -21,7 +21,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <net/sourceforge/cbear/bit/range.hpp>
+#include <cbear.sourceforge.net/bit/range.hpp>
 
 // boost::uint32_t
 #include <boost/cstdint.hpp>
@@ -30,7 +30,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <boost/test/minimal.hpp>
 
-namespace Cbear = net::sourceforge::cbear;
+namespace Cbear = cbear_sourceforge_net;
 
 template<class T>
 void print(T X) 

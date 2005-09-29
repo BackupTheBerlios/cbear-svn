@@ -21,15 +21,15 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <net/sourceforge/cbear/com/hresult.hpp>
+#include <cbear.sourceforge.net/com/hresult.hpp>
 
 // BOOST_STATIC_ASSERT
 #include <boost/static_assert.hpp>
 
 #include <boost/test/minimal.hpp>
 
-namespace Cbear = net::sourceforge::cbear;
-namespace Com = net::sourceforge::cbear::com;
+namespace Cbear = cbear_sourceforge_net;
+namespace Com = cbear_sourceforge_net::com;
 
 template<class T>
 void print(T X) 

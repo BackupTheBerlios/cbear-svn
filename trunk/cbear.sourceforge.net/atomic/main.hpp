@@ -21,8 +21,8 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef NET_SOURCEFORGE_CBEAR_ATOMIC_MAIN_HPP_INCLUDED
-#define NET_SOURCEFORGE_CBEAR_ATOMIC_MAIN_HPP_INCLUDED
+#ifndef CBEAR_SOURCEFORGE_NET_ATOMIC_MAIN_HPP_INCLUDED
+#define CBEAR_SOURCEFORGE_NET_ATOMIC_MAIN_HPP_INCLUDED
 
 #include <windows.h>
 
@@ -34,13 +34,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // boost::noncopyable
 #include <boost/noncopyable.hpp>
 
-#include <net/sourceforge/cbear/base/integer.hpp>
+#include <cbear.sourceforge.net/integer.hpp>
 
-namespace net
-{
-namespace sourceforge
-{
-namespace cbear
+namespace cbear_sourceforge_net
 {
 namespace atomic
 {
@@ -289,8 +285,6 @@ private:
 template<class Id, class T>
 volatile T static_wrap<Id, T>::This = 0;
 
-}
-}
 }
 }
 

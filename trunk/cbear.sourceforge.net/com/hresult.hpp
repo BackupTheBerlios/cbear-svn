@@ -20,8 +20,8 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef NET_SOURCEFORGE_CBEAR_COM_HRESULT_HPP_INCLUDED
-#define NET_SOURCEFORGE_CBEAR_COM_HRESULT_HPP_INCLUDED
+#ifndef CBEAR_SOURCEFORGE_NET_COM_HRESULT_HPP_INCLUDED
+#define CBEAR_SOURCEFORGE_NET_COM_HRESULT_HPP_INCLUDED
 
 // ::HRESULT
 #include <windef.h>
@@ -32,11 +32,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <net/sourceforge/cbear/bit/range.hpp>
 #include <net/sourceforge/cbear/policy/main.hpp>
 
-namespace net
-{
-namespace sourceforge
-{
-namespace cbear
+namespace cbear_sourceforge_net
 {
 namespace com
 {
@@ -256,8 +252,6 @@ public:
 	explicit hresult(const internal_type &X): hresult_wrap(X) {}
 };
 
-}
-}
 }
 }
 

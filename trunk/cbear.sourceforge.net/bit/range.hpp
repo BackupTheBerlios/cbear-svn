@@ -20,19 +20,15 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef NET_SOURCEFORGE_CBEAR_BIT_RANGE_HPP_INCLUDED
-#define NET_SOURCEFORGE_CBEAR_BIT_RANGE_HPP_INCLUDED
+#ifndef CBEAR_SOURCEFORGE_NET_BIT_RANGE_HPP_INCLUDED
+#define CBEAR_SOURCEFORGE_NET_BIT_RANGE_HPP_INCLUDED
 
 // std::size_t
 #include <cstddef>
 
-#include <net/sourceforge/cbear/base/integer.hpp>
+#include <cbear.sourceforge.net/base/integer.hpp>
 
-namespace net
-{
-namespace sourceforge
-{
-namespace cbear
+namespace cbear_sourceforge_net
 {
 namespace bit
 {
@@ -97,8 +93,6 @@ struct range
 template<class Type, std::size_t Number>
 struct one: range<Type, Number, Number, bool> {};
 
-}
-}
 }
 }
 

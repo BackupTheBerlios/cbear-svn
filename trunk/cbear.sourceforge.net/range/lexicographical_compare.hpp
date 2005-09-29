@@ -20,8 +20,8 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef NET_SOURCEFORGE_CBEAR_RANGE_LEXICOGRAPHICAL_COMPARE_HPP_INCLUDED
-#define NET_SOURCEFORGE_CBEAR_RANGE_LEXICOGRAPHICAL_COMPARE_HPP_INCLUDED
+#ifndef CBEAR_SOURCEFORGE_NET_RANGE_LEXICOGRAPHICAL_COMPARE_HPP_INCLUDED
+#define CBEAR_SOURCEFORGE_NET_RANGE_LEXICOGRAPHICAL_COMPARE_HPP_INCLUDED
 
 // std::lexicographical_compare
 #include <algorithm>
@@ -31,11 +31,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // boost::end
 #include <boost/range/end.hpp>
 
-namespace net
-{
-namespace sourceforge
-{
-namespace cbear
+namespace cbear_sourceforge_net
 {
 namespace range
 {
@@ -47,8 +43,6 @@ bool lexicographical_compare(const Range1 &A, const Range2 &B)
 		::boost::begin(A), ::boost::end(A), ::boost::begin(B), ::boost::end(B));
 }
 
-}
-}
 }
 }
 
