@@ -170,6 +170,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="odl:type.ref" mode="odl:html.content"/>
 
+<xsl:template match="odl:coclass/odl:type.ref" mode="odl:html.name">
+	<span style="{$odl:color.keyword}">interface</span>
+	<xsl:text> </xsl:text>
+	<xsl:apply-templates select="." mode="odl:html.a"/>
+</xsl:template>
+
+<xsl:template match="odl:coclass/odl:type.ref" mode="odl:html.content">
+	<div id="{concat(../@id, '.', @id)}" class="h3">
+		<h3><xsl:apply-templates select="." mode="odl:html.name"/></h3>
+		<xsl:apply-templates select="." mode="odl:html.details"/>
+		<xsl:apply-templates select="." mode="odl:html.header"/>
+	</div>
+</xsl:template>
+
 <!-- item -->
 
 <xsl:template match="odl:item" mode="odl:html.name">
