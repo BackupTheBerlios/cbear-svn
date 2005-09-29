@@ -30,6 +30,11 @@ c:\python24\scripts\4xslt --ignore --noxinclude --outfile=example.odl example.od
 ..\xsd\bin\Debug\xsd.exe example.odl.xml
 
 rem CPP file.
-c:\python24\scripts\4xslt --ignore --noxinclude --outfile=example.com.cpp.xml --define=api:com.cpp.xsd="../cpp/main.xsd" --define=api:com.cpp.xsl="../cpp/html.xsl" --define=api:com.cpp.name="_example.com" example.xml com.cpp.xsl
-c:\python24\scripts\4xslt --ignore --noxinclude --define=cpp:cpp.root="../../" example.com.cpp.xml ../cpp/cpp.xsl
-..\xsd\bin\Debug\xsd.exe example.com.cpp.xml
+rem c:\python24\scripts\4xslt --ignore --noxinclude --outfile=example.com.cpp.xml --define=api:com.cpp.xsd="../cpp/main.xsd" --define=api:com.cpp.xsl="../cpp/html.xsl" --define=api:com.cpp.name="_example.com" example.xml com.cpp.xsl
+rem c:\python24\scripts\4xslt --ignore --noxinclude --define=cpp:cpp.root="../../" example.com.cpp.xml ../cpp/cpp.xsl
+rem ..\xsd\bin\Debug\xsd.exe example.com.cpp.xml
+
+rem CPP file.
+c:\python24\scripts\4xslt --ignore --noxinclude --outfile=example.odl.cpp.xml --define=odl:cpp.xsd="../cpp/main.xsd" --define=odl:cpp.xsl="../cpp/html.xsl" --define=odl:cpp.name="_example.com" example.odl.xml ../com/cpp.xsl
+c:\python24\scripts\4xslt --ignore --noxinclude example.odl.cpp.xml ../cpp/cpp.xsl
+..\xsd\bin\Debug\xsd.exe example.odl.cpp.xml

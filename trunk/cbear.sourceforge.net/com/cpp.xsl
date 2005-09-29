@@ -26,67 +26,93 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns="http://cbear.sourceforge.net/cpp"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:xi="http://www.w3.org/2001/XInclude"
-	xmlns:api="http://cbear.sourceforge.net/api"
+	xmlns:odl="http://cbear.sourceforge.net/com"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:cpp="http://cbear.sourceforge.net/cpp"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	extension-element-prefixes="exsl"
-	exclude-result-prefixes="xi api cpp">
+	exclude-result-prefixes="xi odl cpp">
 
 <xsl:output method="xml" indent="yes"/>
 
-<xsl:param name="api:com.cpp.xsd"/>
-<xsl:param name="api:com.cpp.xsl"/>
+<xsl:param name="odl:cpp.xsd"/>
+<xsl:param name="odl:cpp.xsl"/>
 
 <!-- * -->
 
-<xsl:template match="*" mode="api:com.cpp">
+<xsl:template match="*" mode="odl:cpp">
 	<xsl:message terminate="no">
 		<xsl:value-of select="concat(
 			'Unknown tag: &#x22;', name(), '&#x22; was skipped.')"/>
 	</xsl:message>
 </xsl:template>
 
-<!-- comment -->
+<!-- attribute -->
 
-<xsl:template match="api:comment" mode="api:com.cpp"/>
+<xsl:template match="odl:attribute" mode="odl:cpp"/>
 
 <!-- interface -->
 
-<xsl:template match="api:interface" mode="api:com.cpp">
+<xsl:template match="odl:interface" mode="odl:cpp">
+	<typedef id="{@id}">
+		<type.ref>
+			<type.id/>
+			<type.id id="cbear_sourceforge_net"/>
+			<type.id id="com"/>
+			<type.id id="object">				
+				<type.parameters>
+					<type.ref>
+						<type.id/>
+						<type.id id="{@id}"/>
+					</type.ref>
+				</type.parameters>
+			</type.id>
+		</type.ref>
+	</typedef>
+<!--
 	<class>
 		<type.ref><type.id id="{@id}"/></type.ref>
 		<access access="public">
 			<type.ref>
-				<type.id id=""/>
-				<type.id id="{@id}"/>
+				<type.id/>
+				<type.id id="cbear_sourceforge_net"/>
+				<type.id id="com"/>
+				<type.id id="object">				
+					<type.parameters>
+						<type.ref>
+							<type.id/>
+							<type.id id="{@id}"/>
+						</type.ref>
+					</type.parameters>
+				</type.id>
 			</type.ref>
-			<xsl:apply-templates select="*" mode="api:com.cpp"/>
+			<xsl:apply-templates select="*" mode="odl:cpp"/>
 		</access>
 	</class>
+-->
 </xsl:template>
 
-<!-- using -->
+<!-- importlib -->
 
-<xsl:template match="api:using" mode="api:com.cpp"/>
+<xsl:template match="odl:importlib" mode="odl:cpp"/>
 
 <!-- libray -->
 
-<xsl:template match="api:library" mode="api:com.cpp">
+<xsl:template match="odl:library" mode="odl:cpp">
 	<xsl:processing-instruction name="xml-stylesheet">
 		<xsl:text>type="text/xsl" href="</xsl:text>
-		<xsl:value-of select="$api:com.cpp.xsl"/>
+		<xsl:value-of select="$odl:cpp.xsl"/>
 		<xsl:text>"</xsl:text>
 	</xsl:processing-instruction>
 	<unit
 		xsi:schemaLocation="{concat(
-			'http://cbear.sourceforge.net/cpp ', $api:com.cpp.xsd)}"
+			'http://cbear.sourceforge.net/cpp ', $odl:cpp.xsd)}"
 		id="{@id}">
 		<header>
 			<include href="{concat(@id, '.odl.h')}"/>
 			<include href="cbear.sourceforge.net/com/object.hpp"/>
 			<namespace id="{translate(@id, '.\/', '___')}">
-				<xsl:apply-templates select="*" mode="api:com.cpp"/>
+				<xsl:apply-templates select="*" mode="odl:cpp"/>
 			</namespace>
 		</header>
 	</unit>
@@ -94,8 +120,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- Entry Point -->
 
-<xsl:template match="api:*">
-	<xsl:apply-templates select="." mode="api:com.cpp"/>
+<xsl:template match="odl:*">
+	<xsl:apply-templates select="." mode="odl:cpp"/>
 </xsl:template>
 
 </xsl:stylesheet>
