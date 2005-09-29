@@ -104,7 +104,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- type.parameters -->
 
 <xsl:template match="cpp:type.parameters" mode="cpp:html">
-	<xsl:text>&lt;</xsl:text>
+	<xsl:text>&lt; </xsl:text>
 	<xsl:apply-templates select="cpp:type.ref" mode="cpp:html"/>
 	<xsl:text> &gt;</xsl:text>
 </xsl:template>
