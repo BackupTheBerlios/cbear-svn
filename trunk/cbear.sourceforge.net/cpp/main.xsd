@@ -100,7 +100,7 @@
 	<element name="class">
 		<complexType>
 			<sequence>
-				<element ref="cpp:name.ref"/>
+				<element ref="cpp:id.ref"/>
 				<element ref="cpp:access" minOccurs="0" maxOccurs="unbounded"/>
 			</sequence>
 		</complexType>
@@ -110,7 +110,7 @@
 	<element name="access">
 		<complexType>
 			<choice minOccurs="0" maxOccurs="unbounded">
-				<element ref="cpp:name.ref"/>
+				<element ref="cpp:id.ref"/>
 				<element ref="cpp:method"/>
 				<element ref="cpp:class"/>
 				<element ref="cpp:template"/>
@@ -138,12 +138,12 @@
 		<complexType>
 			<sequence>
 				<element ref="cpp:virtual" minOccurs="0"/>
-				<element ref="cpp:name.ref" minOccurs="0"/>
+				<element ref="cpp:id.ref" minOccurs="0"/>
 				<element ref="cpp:parameter" minOccurs="0" maxOccurs="unbounded"/>
 				<element ref="cpp:const" minOccurs="0"/>
 				<element ref="cpp:abstract" minOccurs="0"/>
 				<sequence minOccurs="0">
-					<element ref="cpp:call" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="cpp:ctor" minOccurs="0" maxOccurs="unbounded"/>
 					<element ref="cpp:body"/>
 				</sequence>
 			</sequence>
@@ -161,7 +161,7 @@
 	<element name="parameter">
 		<complexType>
 			<sequence>
-				<element ref="cpp:name.ref"/>
+				<element ref="cpp:id.ref"/>
 			</sequence>
 			<attribute name="id" type="cpp:id" use="optional"/>
 		</complexType>
@@ -171,17 +171,16 @@
 	<element name="body">
 		<complexType>
 			<choice minOccurs="0" maxOccurs="unbounded">
-				<element ref="cpp:call"/>
+				<element ref="cpp:id.ref"/>
 			</choice>
 		</complexType>
 	</element>
 
 	<!-- A call -->
-	<element name="call">
+	<element name="ctor">
 		<complexType>
 			<sequence>
-				<element ref="cpp:name.ref"/>
-				<element ref="cpp:call" minOccurs="0" maxOccurs="unbounded"/>
+				<element ref="cpp:id.ref"/>
 			</sequence>
 		</complexType>
 	</element>
@@ -194,7 +193,7 @@
 	<element name="typedef">
 		<complexType>
 			<sequence>
-				<element ref="cpp:name.ref"/>
+				<element ref="cpp:id.ref"/>
 			</sequence>
 			<attribute name="id" type="cpp:id"/>
 		</complexType>
@@ -219,19 +218,6 @@
 	</element>
 
 	<!--
-		A type reference is a sequence (path) of type names.
-
-			Name1::Name2::Name3::Name4
-	-->
-	<element name="name.ref">
-		<complexType>
-			<sequence>
-				<element ref="cpp:id.ref" maxOccurs="unbounded"/>				
-			</sequence>
-		</complexType>
-	</element>
-
-	<!--
 		A type name contains a name and optional type parameters.
 
 			Name1<Name2, Name3, Name4>
@@ -239,22 +225,10 @@
 	<element name="id.ref">
 		<complexType>
 			<sequence>
-				<element ref="cpp:type.parameters" minOccurs="0"/>
+				<element ref="cpp:id.ref" minOccurs="0" maxOccurs="unbounded"/>
 			</sequence>
 			<attribute name="id" type="cpp:id"/>
-		</complexType>
-	</element>
-
-	<!--
-		Type parameters.
-
-			<Name1, Name2, Name3>
-	-->
-	<element name="type.parameters">
-		<complexType>
-			<sequence>
-				<element ref="cpp:name.ref" minOccurs="0" maxOccurs="unbounded"/>
-			</sequence>
+			<attribute name="type" type="cpp:type"/>
 		</complexType>
 	</element>
 
@@ -264,6 +238,18 @@
 	<!-- A value type. -->
 	<simpleType name="value">
 		<restriction base="string"/>
+	</simpleType>
+
+	<!-- A type. -->
+	<simpleType name="type">
+		<restriction base="string">
+			<enumeration value="&lt;&gt;"/>
+			<enumeration value="::"/>
+			<enumeration value="."/>
+			<enumeration value="()"/>
+			<enumeration value="[]"/>
+			<enumeration value="->"/>
+		</restriction>
 	</simpleType>
 
 	<!-- An id element. -->

@@ -38,79 +38,50 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <namespace id="examples">
 
 	<class>
-		<name.ref>
+		<id.ref type="::">
 			<id.ref id="Class1"/>
-			<id.ref id="Class2">
-				<type.parameters>
-					<name.ref>
-						<id.ref id="Class3"/>
-					</name.ref>
-					<name.ref>
-						<id.ref id="Class4">
-							<type.parameters/>
-						</id.ref>
-					</name.ref>
-				</type.parameters>
+			<id.ref id="Class2" type="&lt;&gt;">
+				<id.ref id="Class3"/>
+				<id.ref id="Class4"/>
 			</id.ref>
 			<id.ref id="Class5"/>
-		</name.ref>
+		</id.ref>
 
 		<access access="public">
-			<name.ref>
-				<id.ref id="Class6"/>
-			</name.ref>
+			<id.ref id="Class6"/>
 		</access>
 
 		<access access="private">
 			<class>
-				<name.ref>
-					<id.ref id="Class10"/>
-				</name.ref>
-
+				<id.ref id="Class10"/>
 			</class>
 		</access>
 
 	</class>
 
 	<class>
-		<name.ref>
-			<id.ref id="Class10"/>
-		</name.ref>
+		<id.ref id="Class10"/>
 
 	</class>
 
 	<class>
-		<name.ref>
-			<id.ref id="Class11"/>
-		</name.ref>
+		<id.ref id="Class11"/>
 
 		<access access="protected">
-			<name.ref>
-				<id.ref id="Class16"/>
-			</name.ref>
+			<id.ref id="Class16"/>
 		</access>
 
 		<access access="private">
-			<name.ref>
-				<id.ref id="Class17">
-					<type.parameters>
-						<name.ref>
-							<id.ref id="Class23"/>
-							<id.ref id="Class24"/>
-							<id.ref id="Class25"/>
-						</name.ref>
-						<name.ref>
-							<id.ref id="Class18">
-								<type.parameters>
-									<name.ref>
-										<id.ref id="Class19"/>
-									</name.ref>
-								</type.parameters>
-							</id.ref>
-						</name.ref>
-					</type.parameters>
+			<id.ref id="Class17" type="&lt;&gt;">
+				<id.ref type="::">
+					<id.ref id="Class23"/>
+					<id.ref id="Class24"/>
+					<id.ref id="Class25"/>
 				</id.ref>
-			</name.ref>
+				<id.ref id="Class18" type="&lt;&gt;">
+					<id.ref id="Class19"/>
+				</id.ref>
+			</id.ref>
 		</access>
 
 	</class>
@@ -118,10 +89,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </namespace>
 
 	<class>
-		<name.ref>
-			<id.ref id="Class10"/>
-		</name.ref>
-
+		<id.ref id="Class10"/>
 	</class>
 
 </namespace>
