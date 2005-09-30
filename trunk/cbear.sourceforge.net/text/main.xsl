@@ -60,4 +60,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:call-template>
 </xsl:template>
 
+<!-- lower case characters -->
+
+<xsl:variable name="txt:main.lowercase" select="'abcdefghijklmnopqrstuvwxyz'"/>
+
+<!-- upper case characters -->
+
+<xsl:variable name="txt:main.uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
+
 </xsl:stylesheet>

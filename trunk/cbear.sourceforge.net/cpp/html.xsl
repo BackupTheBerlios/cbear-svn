@@ -249,16 +249,25 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="cpp:call" mode="cpp:html.call">
 	<xsl:apply-templates select="cpp:name.ref" mode="cpp:html"/>
 	<xsl:text>(</xsl:text>
-	<xsl:apply-templates select="cpp:exp" mode="cpp:html"/>
+	<xsl:apply-templates select="cpp:*" mode="cpp:html"/>
 	<xsl:text>)</xsl:text>
 </xsl:template>
 
 <xsl:template match="cpp:call" mode="cpp:html">
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">	
+			<xsl:apply-templates select="." mode="cpp:html.call"/>
+			<xsl:text>;</xsl:text>
+		</xsl:with-param>
+	</xsl:call-template>
+</xsl:template>
+
+<xsl:template match="cpp:method/cpp:call" mode="cpp:html">
 	<xsl:apply-templates select="." mode="cpp:html.call"/>
 	<xsl:text>, </xsl:text>
 </xsl:template>
 
-<xsl:template match="cpp:call[position()=last()]" mode="cpp:html">
+<xsl:template match="cpp:method/cpp:call[position()=last()]" mode="cpp:html">
 	<xsl:apply-templates select="." mode="cpp:html.call"/>
 </xsl:template>
 

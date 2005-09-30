@@ -168,24 +168,21 @@
 	</element>
 
 	<!-- A method body -->
-	<element name="body"/>
+	<element name="body">
+		<complexType>
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<element ref="cpp:call"/>
+			</choice>
+		</complexType>
+	</element>
 
-	<!-- A constructor call -->
+	<!-- A call -->
 	<element name="call">
 		<complexType>
 			<sequence>
 				<element ref="cpp:name.ref"/>
-				<element ref="cpp:exp" minOccurs="0" maxOccurs="unbounded"/>
+				<element ref="cpp:call" minOccurs="0" maxOccurs="unbounded"/>
 			</sequence>
-		</complexType>
-	</element>
-
-	<!-- Expression -->
-	<element name="exp">
-		<complexType>
-			<choice>
-				<element ref="cpp:name.ref"/>
-			</choice>
 		</complexType>
 	</element>
 

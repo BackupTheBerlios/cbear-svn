@@ -30,8 +30,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:cpp="http://cbear.sourceforge.net/cpp"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:txt="http://cbear.sourceforge.net/text"
 	extension-element-prefixes="exsl"
-	exclude-result-prefixes="xi odl cpp">
+	exclude-result-prefixes="xi odl cpp txt">
+
+<xsl:import href="../text/main.xsl"/>
 
 <xsl:output method="xml" indent="no"/>
 
@@ -123,6 +126,94 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:apply-templates select="*" mode="odl:cpp"/>
 </xsl:template>
 
+<!-- type.ref -->
+
+<xsl:template match="odl:type.ref" mode="odl:cpp">
+	<name.ref>
+		<id.ref id="{concat(
+			translate(@id, $txt:main.uppercase, $txt:main.lowercase), '_t')}">
+			<xsl:if test="odl:type.ref">
+				<type.parameters>
+					<xsl:apply-templates select="odl:type.ref" mode="odl:cpp"/>
+				</type.parameters>
+			</xsl:if>
+		</id.ref>
+	</name.ref>
+</xsl:template>
+
+<xsl:template 
+	match="odl:type.ref[/odl:library/odl:*/@id=@id]" mode="odl:cpp">
+	<name.ref>
+		<id.ref id="{/odl:library/@id}"/>
+		<id.ref id="{@id}"/>
+	</name.ref>
+</xsl:template>
+
+<xsl:template match="odl:type.ref[@id='*']" mode="odl:cpp">
+	<xsl:apply-templates select="odl:type.ref" mode="odl:cpp"/>
+</xsl:template>
+
+<!-- parameter -->
+
+<xsl:template match="odl:parameter" mode="odl:cpp">
+	<parameter id="{concat('_', position())}">
+		<xsl:apply-templates select="odl:type.ref" mode="odl:cpp"/>
+	</parameter>
+</xsl:template>
+
+<xsl:template match="odl:parameter[odl:attribute/@id='retval']" mode="odl:cpp"/>
+
+<!-- method -->
+
+<xsl:template match="odl:method" mode="odl:cpp.method.name.ref">
+	<name.ref><id.ref id="void"/></name.ref>
+</xsl:template>
+
+<xsl:template 
+	match="odl:method[odl:parameter/odl:attribute/@id='retval']" 
+	mode="odl:cpp.method.name.ref">
+	<xsl:apply-templates select="
+		odl:parameter[odl:attribute/@id='retval']/odl:type.ref" mode="odl:cpp"/>
+</xsl:template>
+
+<xsl:template match="odl:method" mode="odl:cpp.method.id">
+	<xsl:value-of select="@id"/>
+</xsl:template>
+
+<xsl:template 
+	match="odl:method[odl:attribute/@id='propget']" mode="odl:cpp.method.id">
+	<xsl:value-of select="concat('get_', @id)"/>
+</xsl:template>
+
+<xsl:template 
+	match="odl:method[odl:attribute/@id='propput']" mode="odl:cpp.method.id">
+	<xsl:value-of select="concat('put_', @id)"/>
+</xsl:template>
+
+<xsl:template match="odl:method" mode="odl:cpp">
+	<xsl:variable name="id">
+		<xsl:apply-templates select="." mode="odl:cpp.method.id"/>
+	</xsl:variable>
+	<method id="{$id}">
+		<xsl:apply-templates select="." mode="odl:cpp.method.name.ref"/>
+		<xsl:apply-templates select="odl:parameter" mode="odl:cpp"/>
+		<body>
+			<call>
+				<name.ref>
+					<id.ref id="exception"/>
+					<id.ref id="handle"/>
+				</name.ref>
+				<exp>
+					<name.ref>
+						<id.ref id="this"/>
+						<id.ref id="{@id}"/>
+					</name.ref>
+				</exp>
+			</call>
+		</body>
+	</method>	
+</xsl:template>
+
 <!-- interface -->
 
 <xsl:template match="odl:interface" mode="odl:cpp">
@@ -170,6 +261,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 						</type.parameters>
 					</id.ref>
 				</name.ref>
+				<xsl:apply-templates select="odl:method" mode="odl:cpp"/>
 			</access>
 		</class>
 	</template>
