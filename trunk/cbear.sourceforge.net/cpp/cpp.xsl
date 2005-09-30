@@ -42,12 +42,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="cpp:unit" mode="cpp:cpp">
 
+	<xsl:variable name="header.content">
+		<xsl:apply-templates select="cpp:header" mode="cpp:cpp"/>
+	</xsl:variable>
+
 	<xsl:variable name="header">
 		<document
 			href="{concat($cpp:cpp.root, @id, '.hpp')}"
 			method="text"
 			encoding="ascii">
-			<xsl:apply-templates select="cpp:header" mode="cpp:cpp"/>
+			<xsl:value-of select="$header.content"/>
 		</document>
 	</xsl:variable>
 
@@ -55,15 +59,17 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		select="exsl:node-set($header)/*" mode="cbear.exslt.common:document"/>
 
 	<xsl:if test="cpp:code">
+		<xsl:variable name="code.content">
+			<xsl:apply-templates select="cpp:header" mode="cpp:cpp"/>
+		</xsl:variable>
 		<xsl:variable name="code">
 			<document
 				href="{concat($cpp:cpp.root, @id, '.cpp')}"
 				method="text"
 				encoding="ascii">
-				<xsl:apply-templates select="cpp:code" mode="cpp:cpp"/>
+				<xsl:value-of select="$code.content"/>
 			</document>
 		</xsl:variable>
-
 		<xsl:apply-templates 
 			select="exsl:node-set($code)/*" mode="cbear.exslt.common:document"/>
 	</xsl:if>

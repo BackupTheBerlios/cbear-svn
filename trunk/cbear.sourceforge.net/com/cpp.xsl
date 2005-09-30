@@ -33,7 +33,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="xi odl cpp">
 
-<xsl:output method="xml" indent="yes"/>
+<xsl:output method="xml" indent="no"/>
 
 <xsl:param name="odl:cpp.xsd"/>
 <xsl:param name="odl:cpp.xsl"/>
