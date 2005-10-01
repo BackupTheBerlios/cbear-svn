@@ -25,7 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <section xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>Component Object Model, COM</title>
 	<para>
-Namespace <emphasis>net::sourceforge::cbear::com</emphasis>.
+Namespace <emphasis>cbear_sourceforge_net::com</emphasis>.
 	</para>
 	<section>
 		<title>Type Traits</title>
