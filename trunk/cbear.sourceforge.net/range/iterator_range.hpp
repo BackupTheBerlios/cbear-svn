@@ -23,6 +23,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_SOURCEFORGE_NET_RANGE_ITERATOR_RANGE_HPP_INCLUDED
 #define CBEAR_SOURCEFORGE_NET_RANGE_ITERATOR_RANGE_HPP_INCLUDED
 
+#include <cbear.sourceforge.net/range/traits.hpp>
+
 namespace cbear_sourceforge_net
 {
 namespace range
@@ -81,6 +83,12 @@ iterator_range<Iterator> make_iterator_range(
 {
 	return iterator_range<Iterator>::type(B, E);
 }
+
+template<class Range>
+struct sub_range 
+{ 
+	typedef iterator_range<typename iterator<Range>::type> type; 
+};
 
 template<class Range>
 typename sub_range<const Range>::type make_iterator_range(const Range &R)
