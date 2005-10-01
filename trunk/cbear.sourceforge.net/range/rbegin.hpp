@@ -20,24 +20,26 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_SOURCEFORGE_NET_RANGE_LEXICOGRAPHICAL_COMPARE_HPP_INCLUDED
-#define CBEAR_SOURCEFORGE_NET_RANGE_LEXICOGRAPHICAL_COMPARE_HPP_INCLUDED
+#ifndef CBEAR_SOURCEFORGE_NET_RANGE_RBEGIN_HPP_INCLUDED
+#define CBEAR_SOURCEFORGE_NET_RANGE_RBEGIN_HPP_INCLUDED
 
-// std::lexicographical_compare
-#include <algorithm>
-
-#include <cbear_sourceforge_net/range/begin.hpp>
-#include <cbear_sourceforge_net/range/end.hpp>
+#include <cbear.sourceforge.net/range/iterator.hpp>
 
 namespace cbear_sourceforge_net
 {
 namespace range
 {
 
-template<class Range1, class Range2>
-bool lexicographical_compare(const Range1 &A, const Range2 &B)
-{
-	return ::std::lexicographical_compare(begin(A), end(A), begin(B), end(B));
+template<class Container>
+typename reverse_iterator<Container>::type rbegin(Container &X) 
+{ 
+	return traits<Container>::rbegin(X); 
+}
+
+template<class Container>
+typename reverse_iterator<const Container>::type rbegin(const Container &X) 
+{ 
+	return traits<const Container>::rbegin(X);
 }
 
 }

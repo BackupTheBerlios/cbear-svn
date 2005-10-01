@@ -1,4 +1,5 @@
-/*
+<?xml version="1.0"?>
+<!--
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
@@ -19,28 +20,28 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-#ifndef CBEAR_SOURCEFORGE_NET_RANGE_LEXICOGRAPHICAL_COMPARE_HPP_INCLUDED
-#define CBEAR_SOURCEFORGE_NET_RANGE_LEXICOGRAPHICAL_COMPARE_HPP_INCLUDED
+-->
+<?xml-stylesheet type="text/xsl" href="../cpp/html.xsl"?>
+<unit 
+	xmlns="http://cbear.sourceforge.net/cpp" 
+	id="cbear.sourceforge.net/range/iterator"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://cbear.sourceforge.net/cpp ../cpp/main.xsd">
+<header>
+<namespace id="cbear_sourceforge_net">
+<namespace id="range">
 
-// std::lexicographical_compare
-#include <algorithm>
+<template>
+	<id id="Container"/>
+	<class>
+		<id.ref id="iterator"/>
+		<access access="public">
+			<typedef id="type"><id.ref id="..."/></typedef>
+		</access>
+	</class>
+</template>
 
-#include <cbear_sourceforge_net/range/begin.hpp>
-#include <cbear_sourceforge_net/range/end.hpp>
-
-namespace cbear_sourceforge_net
-{
-namespace range
-{
-
-template<class Range1, class Range2>
-bool lexicographical_compare(const Range1 &A, const Range2 &B)
-{
-	return ::std::lexicographical_compare(begin(A), end(A), begin(B), end(B));
-}
-
-}
-}
-
-#endif
+</namespace>
+</namespace>
+</header>
+</unit>

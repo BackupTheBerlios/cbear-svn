@@ -173,6 +173,23 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:apply-templates>
 </xsl:template>
 
+<xsl:template match="cpp:id.ref[@type='&amp;']" mode="cpp:html.id.ref">
+	<xsl:apply-templates select="." mode="cpp:html.id.ref.type"/>
+	<xsl:text> &amp;</xsl:text>
+</xsl:template>
+
+<xsl:template match="cpp:id.ref[@type='const']" mode="cpp:html.id.ref">
+	<span style="{$cpp:html.keyword}">const</span>
+	<xsl:text> </xsl:text>
+	<xsl:apply-templates select="." mode="cpp:html.id.ref.type"/>
+</xsl:template>
+
+<xsl:template match="cpp:id.ref[@type='typename']" mode="cpp:html.id.ref">
+	<span style="{$cpp:html.keyword}">typename</span>
+	<xsl:text> </xsl:text>
+	<xsl:apply-templates select="." mode="cpp:html.id.ref.type"/>
+</xsl:template>
+
 <xsl:template match="cpp:id.ref" mode="cpp:html">
 	<xsl:apply-templates select="." mode="cpp:html.id.ref"/>	
 </xsl:template>
@@ -247,6 +264,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="cpp:abstract" mode="cpp:html">
 	<xsl:text> = </xsl:text>
 	<span style="{$cpp:html.const}">0</span>
+</xsl:template>
+
+<!-- static -->
+
+<xsl:template match="cpp:static" mode="cpp:html">
+	<span style="{$cpp:html.keyword}">static</span>
+	<xsl:text> </xsl:text>	
 </xsl:template>
 
 <!-- virtual -->
@@ -326,6 +350,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="cpp:method" mode="cpp:html">
 	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
+			<xsl:apply-templates select="cpp:static" mode="cpp:html"/>
 			<xsl:apply-templates select="cpp:virtual" mode="cpp:html"/>
 			<xsl:apply-templates select="cpp:id.ref" mode="cpp:html"/>
 			<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
