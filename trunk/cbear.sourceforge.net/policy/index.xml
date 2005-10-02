@@ -25,7 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <section>
 	<title>Type Policies</title>
 	<para>
-Namespace <emphasis>net::sourceforge::cbear::policy</emphasis>.
+Namespace <emphasis>cbear_sourceforge_net::policy</emphasis>.
 	</para>
 	<para>
 Header <filename>main.hpp</filename>.
