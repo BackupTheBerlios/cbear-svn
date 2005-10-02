@@ -50,9 +50,9 @@
 </xsl:text>
 	<xsl:value-of select="concat(
 		'&#x22;c:\Program Files\7-zip\7z&#x22; a -r -tzip -x!*.zip ',
-		'cbear.sourceforge.net/',
+		'cbear.berlios.de/',
 		$name, 
-		' cbear.sourceforge.net/*')"/>
+		' cbear.berlios.de/*')"/>
 		</document>
 	</xsl:variable>
 	<xsl:apply-templates 
