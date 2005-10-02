@@ -82,10 +82,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					</a>
 				</td>
 				<td style="{$td}">
-					<a href="http://cbear.sourceforge.net">
+					<a href="http://cbear.berlios.de">
 						<img
-							src="http://cbear.sourceforge.net/logo.png"
-							alt="Sea Bear" 
+							src="http://cbear.berlios.de/logo.png"
+							alt="C Bear" 
 							height="31" 
 							width="88" />
 					</a>
