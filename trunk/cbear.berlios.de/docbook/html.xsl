@@ -274,9 +274,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template name="cbear.docbook:footer">
 	<div class="footer">
-		<a href="http://cbear.sourceforge.net/">
+		<a href="http://cbear.berlios.de/">
 			<img
-				src="http://cbear.sourceforge.net/logo.png"
+				src="http://cbear.berlios.de/logo.png"
 				alt="C Bear Framework"
 				height="31"
 				width="88"/>
