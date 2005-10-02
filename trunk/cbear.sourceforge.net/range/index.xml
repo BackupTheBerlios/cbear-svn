@@ -45,4 +45,155 @@ Header <filename>lexicographical_compare.hpp</filename>.
 <programlisting role="cpp"><![CDATA[template<class Range1, class Range2> 
 bool lexicographical_compare(const Range1 &A, const Range2 &B);]]></programlisting>
 	</section>
+	<section>
+		<title>Files</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+Description <filename>traits.xml</filename>, implementation 
+<filename>traits.hpp</filename>.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+Common functions and meta functions.
+				</para>
+				<itemizedlist>
+					<listitem>
+						<para>
+Description <filename>iterator.xml</filename>, implementation 
+<filename>iterator.hpp</filename>.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+Description <filename>value_type.xml</filename>, implementation 
+<filename>value_type.hpp</filename>.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+Description <filename>difference_type.xml</filename>, implementation 
+<filename>difference_type.hpp</filename>.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+Description <filename>size_type.xml</filename>, implementation 
+<filename>size_type.hpp</filename>.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+Description <filename>reference.xml</filename>, implementation 
+<filename>reference.hpp</filename>.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+Description <filename>pointer.xml</filename>, implementation 
+<filename>pointer.hpp</filename>.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+Description <filename>reverse_iterator.xml</filename>, implementation 
+<filename>reverse_iterator.hpp</filename>.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+Description <filename>begin.xml</filename>, implementation 
+<filename>begin.hpp</filename>.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+Description <filename>end.xml</filename>, implementation 
+<filename>end.hpp</filename>.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+Description <filename>empty.xml</filename>, implementation 
+<filename>empty.hpp</filename>.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+Description <filename>size.xml</filename>, implementation 
+<filename>size.hpp</filename>.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+Description <filename>front.xml</filename>, implementation 
+<filename>front.hpp</filename>.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+Description <filename>back.xml</filename>, implementation 
+<filename>back.hpp</filename>.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+Description <filename>at.xml</filename>, implementation 
+<filename>at.hpp</filename>.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+Description <filename>rbegin.xml</filename>, implementation 
+<filename>rbegin.hpp</filename>.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+Description <filename>rend.xml</filename>, implementation 
+<filename>rend.hpp</filename>.
+						</para>
+					</listitem>
+				</itemizedlist>
+			</listitem>
+			<listitem>
+				<para>
+Description <filename>helper.xml</filename>, implementation 
+<filename>helper.hpp</filename>.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+Description <filename>iterator_range.xml</filename>, implementation 
+<filename>iterator_range.hpp</filename>.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+Range functions and meta functions.
+				</para>
+				<itemizedlist>
+					<listitem>
+						<para>
+Description <filename>sub_range.xml</filename>, implementation 
+<filename>sub_range.hpp</filename>.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+Description <filename>reverse_iterator_range.xml</filename>, implementation 
+<filename>reverse_iterator_range.hpp</filename>.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+Description <filename>reverse_sub_range.xml</filename>, implementation 
+<filename>reverse_sub_range.hpp</filename>.
+						</para>
+					</listitem>
+				</itemizedlist>
+			</listitem>
+		</itemizedlist>
+	</section>
 </section>

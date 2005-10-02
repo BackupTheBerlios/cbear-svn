@@ -60,13 +60,22 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				alt="SourceForge.net Logo" />
 		</a>
 		<xsl:text> </xsl:text>
+		<a href="http://developer.berlios.de" title="BerliOS Developer">
+			<img 
+				src="http://developer.berlios.de/bslogo.php?group_id=4712" 
+				width="124px" 
+				height="32px" 
+				border="0" 
+				alt="BerliOS Developer Logo"/>
+		</a>
+		<xsl:text> </xsl:text>
 		<a href="http://cbear.sourceforge.net">
 			<img
     	 	src="http://cbear.sourceforge.net/logo.png"
       	alt="Sea Bear" 
 				height="31" 
 				width="88" />
-		</a>			
+		</a>
 		<xsl:text> </xsl:text>
 		<a href="http://validator.w3.org/check?uri=referer">
 			<img

@@ -34,14 +34,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <template>
 	<id id="Container"/>
 	<method id="begin">
-		<id.ref type="typename">
-			<id.ref type="::">
-				<id.ref id="iterator" type="&lt;&gt;">
-					<id.ref id="Container"/>
-				</id.ref>
-				<id.ref id="type"/>
-			</id.ref>
-		</id.ref>
+		<id.ref id="..."/>
 		<parameter>
 			<id.ref type="&amp;"><id.ref id="Container"/></id.ref>
 		</parameter>
@@ -51,14 +44,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <template>
 	<id id="Container"/>
 	<method id="begin">
-		<id.ref type="typename">
-			<id.ref type="::">
-				<id.ref id="iterator" type="&lt;&gt;">
-					<id.ref type="const"><id.ref id="Container"/></id.ref>
-				</id.ref>
-				<id.ref id="type"/>
-			</id.ref>
-		</id.ref>
+		<id.ref id="..."/>
 		<parameter>
 			<id.ref type="&amp;">
 				<id.ref type="const"><id.ref id="Container"/></id.ref>

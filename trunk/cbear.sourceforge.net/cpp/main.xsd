@@ -140,6 +140,7 @@
 	<element name="method">
 		<complexType>
 			<sequence>
+				<element ref="cpp:explicit" monOccurs="0"/>
 				<element ref="cpp:static" minOccurs="0"/>
 				<element ref="cpp:virtual" minOccurs="0"/>
 				<element ref="cpp:id.ref" minOccurs="0"/>

@@ -23,6 +23,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_SOURCEFORGE_NET_RANGE_TRAITS_HPP_INCLUDED
 #define CBEAR_SOURCEFORGE_NET_RANGE_TRAITS_HPP_INCLUDED
 
+// std::iterator_traits
+#include <iterator>
+
+// cbear_sourceforge_net::base::make_unsigned
+#include <cbear_sourceforge_net/base/integer.hpp>
+
 namespace cbear_sourceforge_net
 {
 namespace range

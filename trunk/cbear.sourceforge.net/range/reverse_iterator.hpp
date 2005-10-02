@@ -31,7 +31,10 @@ namespace range
 {
 
 template<class Container>
-struct reverese_iterator { typedef typename traits<Container>::reverese type; };
+struct reverese_iterator 
+{ 
+	typedef typename traits<Container>::reverese_iterator type;
+};
 
 }
 }

@@ -24,6 +24,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_SOURCEFORGE_NET_RANGE_ITERATOR_RANGE_HPP_INCLUDED
 
 #include <cbear.sourceforge.net/range/traits.hpp>
+#include <cbear.sourceforge.net/range/helper.hpp>
+#include <cbear.sourceforge.net/range/begin.hpp>
+#include <cbear.sourceforge.net/range/end.hpp>
 
 namespace cbear_sourceforge_net
 {
@@ -42,7 +45,7 @@ struct iterator_range_traits
 	typedef iterator_range<Iterator> type;
 	typedef std::pair<Iterator, Iterator> internal_type;
 	typedef policy::wrap<type, internal_type> wrap_type;
-	typedef helper<type> htlper_type;
+	typedef helper<type, Iterator, Iterator> htlper_type;
 };
 
 }
@@ -71,10 +74,15 @@ public:
 	iterator end() const { return this->internal().second; }
 	
 	template<class Range>
-	iterator_range(const Range &R): wrap_type(range::begin(R), range::end(R)) {}
+	explicit iterator_range(Range &R): wrap_type(range::begin(R), range::end(R)) 
+	{
+	}
 	
 	template<class Range>
-	iterator_range(Range &R): wrpa_type(range::begin(R), range::end(R)) {}
+	explicit iterator_range(const Range &R): 
+		wrap_type(range::begin(R), range::end(R)) 
+	{
+	}
 };
 
 template<class Iterator>
@@ -84,22 +92,25 @@ iterator_range<Iterator> make_iterator_range(
 	return iterator_range<Iterator>::type(B, E);
 }
 
-template<class Range>
-struct sub_range 
-{ 
-	typedef iterator_range<typename iterator<Range>::type> type; 
-};
-
-template<class Range>
-typename sub_range<const Range>::type make_iterator_range(const Range &R)
+template<class Iterator>
+iterator_range<Iterator> make_iterator_range(
+	const std::pair<Iterator, Iterator> &P)
 {
-	return sub_range<const Range>::type(R);
+	return iterator_range<Iterator>(P);
 }
 
 template<class Range>
-typename sub_range<Range>::type make_iterator_range(Range &R)
+iterator_range<typename iterator<Range>::type> make_iterator_range(
+	Range &R)
 {
-	return sub_range<Range>::type(R);
+	return iterator_range<typename iterator<Range>::type>(Pair);
+}
+
+template<class Range>
+iterator_range<typename iterator<const Range>::type> make_iterator_range(
+	const Range &R)
+{
+	return iterator_range<typename iterator<const Range>::type>(Pair);
 }
 
 }

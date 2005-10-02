@@ -266,6 +266,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<span style="{$cpp:html.const}">0</span>
 </xsl:template>
 
+<!-- explicit -->
+
+<xsl:template match="cpp:explicit" mode="cpp:html">
+	<span style="{$cpp:html.keyword}">explicit</span>
+	<xsl:text> </xsl:text>	
+</xsl:template>
+
 <!-- static -->
 
 <xsl:template match="cpp:static" mode="cpp:html">
@@ -347,13 +354,23 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="cpp:method" mode="txt:main.indent"/>
 
+<xsl:template match="cpp:method" mode="cpp:html.method.id">
+	<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
+</xsl:template>
+
+<xsl:template match="cpp:method[@id='[]']" mode="cpp:html.method.id">
+	<span style="{$cpp:html.keyword}">operator</span>
+	<xsl:text>[]</xsl:text>
+</xsl:template>
+
 <xsl:template match="cpp:method" mode="cpp:html">
 	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
+			<xsl:apply-templates select="cpp:explicit" mode="cpp:html"/>
 			<xsl:apply-templates select="cpp:static" mode="cpp:html"/>
 			<xsl:apply-templates select="cpp:virtual" mode="cpp:html"/>
 			<xsl:apply-templates select="cpp:id.ref" mode="cpp:html"/>
-			<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
+			<xsl:apply-templates select="." mode="cpp:html.method.id"/>
 			<xsl:text>(</xsl:text>
 			<xsl:apply-templates select="cpp:parameter" mode="cpp:html"/>
 			<xsl:text>)</xsl:text>

@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<!--
+/*
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
@@ -20,40 +19,33 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
--->
-<?xml-stylesheet type="text/xsl" href="../cpp/html.xsl"?>
-<unit 
-	xmlns="http://cbear.sourceforge.net/cpp" 
-	id="cbear.sourceforge.net/range/end"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://cbear.sourceforge.net/cpp ../cpp/main.xsd">
-<header>
-<namespace id="cbear_sourceforge_net">
-<namespace id="range">
+*/
+#ifndef CBEAR_SOURCEFORGE_NET_RANGE_REVERSE_ITERATOR_RANGE_HPP_INCLUDED
+#define CBEAR_SOURCEFORGE_NET_RANGE_REVERSE_ITERATOR_RANGE_HPP_INCLUDED
 
-<template>
-	<id id="Container"/>
-	<method id="end">
-		<id.ref id="..."/>
-		<parameter>
-			<id.ref type="&amp;"><id.ref id="Container"/></id.ref>
-		</parameter>
-	</method>
-</template>
+#include <cbear.sourceforge.net/range/iterator_range.hpp>
 
-<template>
-	<id id="Container"/>
-	<method id="end">
-		<id.ref id="..."/>
-		<parameter>
-			<id.ref type="&amp;">
-				<id.ref type="const"><id.ref id="Container"/></id.ref>
-			</id.ref>
-		</parameter>
-	</method>
-</template>
+namespace cbear_sourceforge_net
+{
+namespace range
+{
 
-</namespace>
-</namespace>
-</header>
-</unit>
+template<class Iterator>
+struct reverse_iterator_range
+{
+	typedef iterator_range< ::std::reverse_iterator<Iterator> > type;
+};
+
+template<class Iterator>
+typename reverse_iterator_range<Iterator>::type make_reverse_iterator_range(
+	const Iterator &B, const Iterator &E)
+{
+	typedef ::std::reverse_iterator<Iterator> reverse_iterator;
+	return reverse_iterator_range<Iterator>::type(
+		reverse_iterator(E), reverse_iterator(B));
+}
+
+}
+}
+
+#endif
