@@ -2,7 +2,7 @@
 <!--
 The MIT License
 
-Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -23,12 +23,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <xsl:stylesheet 
 	version="1.0"
-	xmlns="http://cbear.sourceforge.net/cpp"
+	xmlns="http://cbear.berlios.de/cpp"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:xi="http://www.w3.org/2001/XInclude"
-	xmlns:api="http://cbear.sourceforge.net/api"
+	xmlns:api="http://cbear.berlios.de/api"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns:cpp="http://cbear.sourceforge.net/cpp"
+	xmlns:cpp="http://cbear.berlios.de/cpp"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="xi api cpp">
@@ -93,12 +93,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:processing-instruction>
 	<unit
 		xsi:schemaLocation="{concat(
-			'http://cbear.sourceforge.net/cpp ', $api:com.cpp.xsd)}"
+			'http://cbear.berlios.de/cpp ', $api:com.cpp.xsd)}"
 		id="{@id}">
 		<header>
 			<include href="{concat(@id, '.odl.h')}"/>
-			<include href="cbear.sourceforge.net/com/object.hpp"/>
-			<namespace id="cbear_sourceforge_net">
+			<include href="cbear.berlios.de/com/object.hpp"/>
+			<namespace id="cbear_berlios_de">
 			</namespace>
 			<namespace id="{translate(@id, '.\/', '___')}">
 				<xsl:apply-templates select="*" mode="api:com.cpp"/>

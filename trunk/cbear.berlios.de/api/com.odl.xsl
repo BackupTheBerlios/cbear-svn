@@ -2,7 +2,7 @@
 <!--
 The MIT License
 
-Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -25,10 +25,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:xi="http://www.w3.org/2001/XInclude"
-	xmlns:api="http://cbear.sourceforge.net/api"
+	xmlns:api="http://cbear.berlios.de/api"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns="http://cbear.sourceforge.net/com"
-	xmlns:odl="http://cbear.sourceforge.net/com"
+	xmlns="http://cbear.berlios.de/com"
+	xmlns:odl="http://cbear.berlios.de/com"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="xi api odl">
@@ -49,7 +49,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="api:*" mode="api:body">
 	<xsl:element 
-		namespace="http://cbear.sourceforge.net/com"
+		namespace="http://cbear.berlios.de/com"
 		name="{local-name()}">
 		<xsl:apply-templates select="@id" mode="api:body"/>
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
@@ -404,7 +404,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:processing-instruction>
 	<library
 		xsi:schemaLocation="{concat(
-			'http://cbear.sourceforge.net/com ', $api:com.odl.xsd)}">
+			'http://cbear.berlios.de/com ', $api:com.odl.xsd)}">
 		<xsl:apply-templates select="@id" mode="api:body"/>
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
 		<xsl:apply-templates select="@version" mode="api:body"/>

@@ -1,7 +1,7 @@
 /*
 The MIT License
 
-Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -20,12 +20,12 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_SOURCEFORGE_NET_COM_OBJECT_HPP_INCLUDED
-#define CBEAR_SOURCEFORGE_NET_COM_OBJECT_HPP_INCLUDED
+#ifndef CBERA_BERLIOS_DE_COM_OBJECT_HPP_INCLUDED
+#define CBERA_BERLIOS_DE_COM_OBJECT_HPP_INCLUDED
 
-#include <cbear.sourceforge.net/com/uuid.hpp>
+#include <cbear.berlios.de/com/uuid.hpp>
 
-namespace cbear.sourceforge.net
+namespace cbear.berlios.de
 {
 namespace com
 {
@@ -115,7 +115,7 @@ public:
 	public:
 		const char *what() throw() 
 		{ 
-			return "cbear_sourceforge_net::com::object<...> uninitialized.";
+			return "cbear_berlios_de::com::object<...> uninitialized.";
 		}
 	};
 

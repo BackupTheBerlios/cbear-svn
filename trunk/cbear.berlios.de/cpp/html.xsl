@@ -2,7 +2,7 @@
 <!--
 The MIT License
 
-Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -27,8 +27,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:xi="http://www.w3.org/2001/XInclude"
-	xmlns:cpp="http://cbear.sourceforge.net/cpp"
-	xmlns:txt="http://cbear.sourceforge.net/text"
+	xmlns:cpp="http://cbear.berlios.de/cpp"
+	xmlns:txt="http://cbear.berlios.de/text"
 	exclude-result-prefixes="cpp txt xi">
 
 <xsl:import href="../text/main.xsl"/>
@@ -209,6 +209,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:text> </xsl:text>
 </xsl:template>
 
+<xsl:template match="cpp:body/cpp:id.ref" mode="cpp:html">
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">	
+			<xsl:apply-templates select="." mode="cpp:html.id.ref"/>
+			<xsl:text>;</xsl:text>
+		</xsl:with-param>
+	</xsl:call-template>
+</xsl:template>
+
 <!-- item -->
 
 <xsl:template match="cpp:item" mode="cpp:html">
@@ -317,31 +326,25 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:apply-templates select="*" mode="cpp:html"/>
 </xsl:template>
 
-<!-- call -->
+<!-- ctor -->
 
-<xsl:template match="cpp:call" mode="cpp:html.call">
+<xsl:template match="cpp:ctor" mode="cpp:html.ctor">
+	<xsl:apply-templates select="cpp:*" mode="cpp:html"/>
+	<!--
 	<xsl:apply-templates select="cpp:id.ref" mode="cpp:html"/>
 	<xsl:text>(</xsl:text>
 	<xsl:apply-templates select="cpp:*" mode="cpp:html"/>
 	<xsl:text>)</xsl:text>
+	-->
 </xsl:template>
 
-<xsl:template match="cpp:call" mode="cpp:html">
-	<xsl:call-template name="txt:main.line">
-		<xsl:with-param name="text">	
-			<xsl:apply-templates select="." mode="cpp:html.call"/>
-			<xsl:text>;</xsl:text>
-		</xsl:with-param>
-	</xsl:call-template>
-</xsl:template>
-
-<xsl:template match="cpp:method/cpp:call" mode="cpp:html">
-	<xsl:apply-templates select="." mode="cpp:html.call"/>
+<xsl:template match="cpp:method/cpp:ctor" mode="cpp:html">
+	<xsl:apply-templates select="." mode="cpp:html.ctor"/>
 	<xsl:text>, </xsl:text>
 </xsl:template>
 
-<xsl:template match="cpp:method/cpp:call[position()=last()]" mode="cpp:html">
-	<xsl:apply-templates select="." mode="cpp:html.call"/>
+<xsl:template match="cpp:method/cpp:ctor[position()=last()]" mode="cpp:html">
+	<xsl:apply-templates select="." mode="cpp:html.ctor"/>
 </xsl:template>
 
 <!-- body -->
@@ -376,9 +379,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:text>)</xsl:text>
 			<xsl:apply-templates select="cpp:const" mode="cpp:html"/>
 			<xsl:apply-templates select="cpp:abstract" mode="cpp:html"/>
-			<xsl:if test="cpp:call">
+			<xsl:if test="cpp:ctor">
 				<xsl:text>: </xsl:text>
-				<xsl:apply-templates select="cpp:call" mode="cpp:html"/>
+				<xsl:apply-templates select="cpp:ctor" mode="cpp:html"/>
 			</xsl:if>
 			<xsl:if test="not(cpp:body)">
 				<xsl:text>;</xsl:text>

@@ -2,7 +2,7 @@
 <!--
 The MIT License
 
-Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -23,20 +23,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <xsl:stylesheet 
 	version="1.0"
-	xmlns="http://cbear.sourceforge.net/cpp"
+	xmlns="http://cbear.berlios.de/cpp"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:xi="http://www.w3.org/2001/XInclude"
-	xmlns:odl="http://cbear.sourceforge.net/com"
+	xmlns:odl="http://cbear.berlios.de/com"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns:cpp="http://cbear.sourceforge.net/cpp"
+	xmlns:cpp="http://cbear.berlios.de/cpp"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:txt="http://cbear.sourceforge.net/text"
+	xmlns:txt="http://cbear.berlios.de/text"
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="xi odl cpp txt">
 
 <xsl:import href="../text/main.xsl"/>
 
-<xsl:output method="xml" indent="no"/>
+<xsl:output method="xml" indent="yes"/>
 
 <xsl:param name="odl:cpp.xsd"/>
 <xsl:param name="odl:cpp.xsl"/>
@@ -68,26 +68,24 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="odl:enum" mode="odl:cpp">
 	<xsl:variable name="name">
-		<name.ref><id.ref id="{@id}"/></name.ref>
+		<id.ref id="{@id}"/>
 	</xsl:variable>
 	<xsl:variable name="internal">
-		<name.ref><id.ref/><id.ref id="{@id}"/></name.ref>
+		<id.ref type="::"><id.ref/><id.ref id="{@id}"/></id.ref>
 	</xsl:variable>
 	<xsl:variable name="base">
-		<name.ref>
+		<id.ref type="::">
 			<id.ref/>
-			<id.ref id="cbear_sourceforge_net"/>
+			<id.ref id="cbear_berlios_de"/>
 			<id.ref id="policy"/>
-			<id.ref id="wrap">
-				<type.parameters>
-					<xsl:copy-of select="$name"/>
-					<xsl:copy-of select="$internal"/>
-				</type.parameters>
+			<id.ref id="wrap" type="&lt;&gt;">
+				<xsl:copy-of select="$name"/>
+				<xsl:copy-of select="$internal"/>
 			</id.ref>
-		</name.ref>
+		</id.ref>
 	</xsl:variable>
 	<class>
-		<name.ref><id.ref id="{@id}"/></name.ref>
+		<id.ref id="{@id}"/>
 		<access access="public">
 			<xsl:copy-of select="$base"/>
 			<enum id="type">
@@ -98,21 +96,27 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<parameter id="X">
 					<xsl:copy-of select="$internal"/>
 				</parameter>
-				<call>
-					<xsl:copy-of select="$base"/>
-					<exp><name.ref><id.ref id="X"/></name.ref></exp>
-				</call>
+				<ctor>
+					<id.ref>
+						<xsl:copy-of select="$base"/>
+						<id.ref type="()">
+							<id.ref id="X"/>
+						</id.ref>
+					</id.ref>
+				</ctor>
 				<body>
 				</body>
 			</method>
 			<method id="{@id}">
-				<parameter id="X">
-					<name.ref><id.ref id="type"/></name.ref>
-				</parameter>
-				<call>
-					<xsl:copy-of select="$base"/>
-					<exp><name.ref><id.ref id="X"/></name.ref></exp>
-				</call>
+				<parameter id="X"><id.ref id="type"/></parameter>
+				<ctor>
+					<id.ref>
+						<xsl:copy-of select="$base"/>
+						<id.ref type="()">
+							<id.ref id="X"/>
+						</id.ref>
+					</id.ref>
+				</ctor>
 				<body>
 				</body>
 			</method>
@@ -129,24 +133,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- type.ref -->
 
 <xsl:template match="odl:type.ref" mode="odl:cpp">
-	<name.ref>
-		<id.ref id="{concat(
-			translate(@id, $txt:main.uppercase, $txt:main.lowercase), '_t')}">
-			<xsl:if test="odl:type.ref">
-				<type.parameters>
-					<xsl:apply-templates select="odl:type.ref" mode="odl:cpp"/>
-				</type.parameters>
-			</xsl:if>
-		</id.ref>
-	</name.ref>
+	<id.ref id="{concat(
+		translate(@id, $txt:main.uppercase, $txt:main.lowercase), '_t')}">
+		<xsl:if test="odl:type.ref">
+			<xsl:attribute name="type">&lt;&gt;</xsl:attribute>
+			<xsl:apply-templates select="odl:type.ref" mode="odl:cpp"/>
+		</xsl:if>
+	</id.ref>
 </xsl:template>
 
 <xsl:template 
 	match="odl:type.ref[/odl:library/odl:*/@id=@id]" mode="odl:cpp">
-	<name.ref>
+	<id.ref type="::">
 		<id.ref id="{/odl:library/@id}"/>
 		<id.ref id="{@id}"/>
-	</name.ref>
+	</id.ref>
 </xsl:template>
 
 <xsl:template match="odl:type.ref[@id='*']" mode="odl:cpp">
@@ -165,13 +166,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- method -->
 
-<xsl:template match="odl:method" mode="odl:cpp.method.name.ref">
-	<name.ref><id.ref id="void"/></name.ref>
+<xsl:template match="odl:method" mode="odl:cpp.method.id.ref">
+	<id.ref id="void"/>
 </xsl:template>
 
 <xsl:template 
 	match="odl:method[odl:parameter/odl:attribute/@id='retval']" 
-	mode="odl:cpp.method.name.ref">
+	mode="odl:cpp.method.id.ref">
 	<xsl:apply-templates select="
 		odl:parameter[odl:attribute/@id='retval']/odl:type.ref" mode="odl:cpp"/>
 </xsl:template>
@@ -195,21 +196,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:apply-templates select="." mode="odl:cpp.method.id"/>
 	</xsl:variable>
 	<method id="{$id}">
-		<xsl:apply-templates select="." mode="odl:cpp.method.name.ref"/>
+		<xsl:apply-templates select="." mode="odl:cpp.method.id.ref"/>
 		<xsl:apply-templates select="odl:parameter" mode="odl:cpp"/>
 		<body>
-			<call>
-				<name.ref>
-					<id.ref id="exception"/>
-					<id.ref id="handle"/>
-				</name.ref>
-				<exp>
-					<name.ref>
-						<id.ref id="this"/>
-						<id.ref id="{@id}"/>
-					</name.ref>
-				</exp>
-			</call>
+			<id.ref type="::">
+				<id.ref id="exception"/>
+				<id.ref id="handle" type="()">
+					<id.ref id="this"/>
+					<id.ref id="{@id}"/>
+				</id.ref>
+			</id.ref>
 		</body>
 	</method>	
 </xsl:template>
@@ -218,19 +214,17 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="odl:interface" mode="odl:cpp">
 	<typedef id="{@id}">
-		<name.ref>
+		<id.ref type="::">
 			<id.ref/>
-			<id.ref id="cbear_sourceforge_net"/>
+			<id.ref id="cbear_berlios_de"/>
 			<id.ref id="com"/>
-			<id.ref id="object">				
-				<type.parameters>
-					<name.ref>
-						<id.ref/>
-						<id.ref id="{@id}"/>
-					</name.ref>
-				</type.parameters>
+			<id.ref id="object" type="&lt;&gt;">				
+				<id.ref type="::">
+					<id.ref/>
+					<id.ref id="{@id}"/>
+				</id.ref>
 			</id.ref>
-		</name.ref>
+		</id.ref>
 	</typedef>
 </xsl:template>
 
@@ -238,29 +232,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<template>
 		<id id="Base"/>
 		<class>
-			<name.ref>
-				<id.ref id="object_content">				
-					<type.parameters>
-						<name.ref>
-							<id.ref/>
-							<id.ref id="{@id}"/>
-						</name.ref>
-						<name.ref><id.ref id="Base"/></name.ref>
-					</type.parameters>
+			<id.ref id="object_content" type="&lt;&gt;">				
+				<id.ref type="::">
+					<id.ref/>
+					<id.ref id="{@id}"/>
 				</id.ref>
-			</name.ref>
+				<id.ref id="Base"/>
+			</id.ref>
 			<access access="public">
-				<name.ref>
-					<id.ref id="object_content">
-						<type.parameters>
-							<name.ref>
-								<id.ref/>
-								<id.ref id="{odl:type.ref/@id}"/>
-							</name.ref>
-							<name.ref><id.ref id="Base"/></name.ref>
-						</type.parameters>
+				<id.ref id="object_content" type="&lt;&gt;">
+					<id.ref type="::">
+						<id.ref/>
+						<id.ref id="{odl:type.ref/@id}"/>
 					</id.ref>
-				</name.ref>
+					<id.ref id="Base"/>
+				</id.ref>
 				<xsl:apply-templates select="odl:method" mode="odl:cpp"/>
 			</access>
 		</class>
@@ -277,15 +263,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:processing-instruction>
 	<unit
 		xsi:schemaLocation="{concat(
-			'http://cbear.sourceforge.net/cpp ', $odl:cpp.xsd)}"
+			'http://cbear.berlios.de/cpp ', $odl:cpp.xsd)}"
 		id="{@id}">
 		<header>
 			<include href="{concat(@id, '.odl.h')}"/>
-			<include href="cbear.sourceforge.net/com/object.hpp"/>
+			<include href="cbear.berlios.de/com/object.hpp"/>
 			<namespace id="{translate(@id, '.\/', '___')}">
 				<xsl:apply-templates select="*" mode="odl:cpp"/>
 			</namespace>
-			<namespace id="cbear_sourceforge_net">
+			<namespace id="cbear_berlios_de">
 				<namespace id="com">
 					<xsl:apply-templates select="odl:interface" mode="odl:cpp.object"/>
 				</namespace>

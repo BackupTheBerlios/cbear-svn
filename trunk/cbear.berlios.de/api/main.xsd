@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <schema 
 	xmlns="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://cbear.sourceforge.net/api"
-	xmlns:api="http://cbear.sourceforge.net/api"
+	targetNamespace="http://cbear.berlios.de/api"
+	xmlns:api="http://cbear.berlios.de/api"
 	elementFormDefault="qualified">
 
 	<element name="library">	

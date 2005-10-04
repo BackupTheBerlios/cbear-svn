@@ -1,6 +1,6 @@
 @rem The MIT License
 @rem
-@rem Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+@rem Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 @rem 
 @rem Permission is hereby granted, free of charge, to any person obtaining a 
 @rem copy of this software and associated documentation files (the "Software"),
@@ -19,4 +19,4 @@
 @rem LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 @rem FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 @rem DEALINGS IN THE SOFTWARE.
-c:\python24\scripts\4xslt --ignore --noxinclude --define=url=cbear.sourceforge.net index.xml docbook/list.cbear.xsl
+c:\python24\scripts\4xslt --ignore --noxinclude --define=url=cbear.berlios.de index.xml docbook/list.cbear.xsl

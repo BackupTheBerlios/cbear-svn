@@ -1,7 +1,7 @@
 /*
 The MIT License
 
-Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -21,11 +21,11 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <cbear.sourceforge.net/com/object.hpp>
+#include <cbear.berlios.de/com/object.hpp>
 
 #include <boost/test/minimal.hpp>
 
-namespace Com = cbear_sourceforge_net::com;
+namespace Com = cbear_berlios_de::com;
 
 template<class T>
 class MyBase: public T //Com::iunknown::interface_type
@@ -87,8 +87,8 @@ static const UUID IID_My_IDMy2 =
 
 //
 
-CBEAR_SOURCEFORGE_NET_COM_UUID_DECLARE(My_IDMy);
-CBEAR_SOURCEFORGE_NET_COM_UUID_DECLARE(My_IDMy2);
+CBERA_BERLIOS_DE_COM_UUID_DECLARE(My_IDMy);
+CBERA_BERLIOS_DE_COM_UUID_DECLARE(My_IDMy2);
 
 namespace net
 {

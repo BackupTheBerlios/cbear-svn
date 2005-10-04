@@ -2,7 +2,7 @@
 <!--
 The MIT License
 
-Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -25,7 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <section>
 	<title>Integer Bit Mask Operations</title>
 	<para>
-Namespace <emphasis>cbear_sourceforge_net::bit</emphasis>.
+Namespace <emphasis>cbear_berlios_de::bit</emphasis>.
 	</para>
 	<para>
 Header <filename>range.hpp</filename>.
@@ -51,7 +51,7 @@ struct range
 		<para>
 For example:
 		</para>
-<programlisting role="cpp"><![CDATA[namespace Bit = cbear_sourceforge_net::bit;
+<programlisting role="cpp"><![CDATA[namespace Bit = cbear_berlios_de::bit;
 int A = 0;
 Bit::range<int, 3, 7>::reference A_3_7(A);
 A_3_7 = 5; // A = 5 << 3;

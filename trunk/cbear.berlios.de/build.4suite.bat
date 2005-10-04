@@ -1,6 +1,6 @@
 @rem The MIT License
 @rem
-@rem Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+@rem Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 @rem 
 @rem Permission is hereby granted, free of charge, to any person obtaining a 
 @rem copy of this software and associated documentation files (the "Software"),

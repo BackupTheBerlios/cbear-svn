@@ -1,7 +1,7 @@
 /*
 The MIT License
 
-Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -21,13 +21,13 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <cbear.sourceforge.net/range/lexicographical_compare.hpp>
+#include <cbear.berlios.de/range/lexicographical_compare.hpp>
 
 #include <boost/test/minimal.hpp>
 
 #include <boost/range/size.hpp>
 
-namespace Container = cbear_sourceforge_net::range;
+namespace Container = cbear_berlios_de::range;
 
 int a[] = { 1, 2, 3 };
 

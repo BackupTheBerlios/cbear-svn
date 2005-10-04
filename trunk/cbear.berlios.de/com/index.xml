@@ -2,7 +2,7 @@
 <!--
 The MIT License
 
-Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -25,7 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <section xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>Component Object Model, COM</title>
 	<para>
-Namespace <emphasis>cbear_sourceforge_net::com</emphasis>.
+Namespace <emphasis>cbear_berlios_de::com</emphasis>.
 	</para>
 	<section>
 		<title>Type Traits</title>

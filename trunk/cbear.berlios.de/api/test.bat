@@ -1,6 +1,6 @@
 @rem The MIT License
 @rem
-@rem Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+@rem Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 @rem 
 @rem Permission is hereby granted, free of charge, to any person obtaining a 
 @rem copy of this software and associated documentation files (the "Software"),
@@ -23,7 +23,7 @@
 ..\xsd\bin\Debug\xsd.exe base.xml
 ..\xsd\bin\Debug\xsd.exe example.xml
 
-rem c:\nxslt-1.6\bin\nxslt example.xml com.xsl -o example.odl.xml api:com.xsl.xsd="../com/odl.xsd" xmlns:api="http://cbear.sourceforge.net/api"
+rem c:\nxslt-1.6\bin\nxslt example.xml com.xsl -o example.odl.xml api:com.xsl.xsd="../com/odl.xsd" xmlns:api="http://cbear.berlios.de/api"
 rem ODL file.
 c:\python24\scripts\4xslt --ignore --noxinclude --outfile=example.odl.xml --define=api:com.odl.xsd="../com/odl.xsd" --define=api:com.odl.xsl="../com/html.xsl" example.xml com.odl.xsl
 c:\python24\scripts\4xslt --ignore --noxinclude --outfile=example.odl example.odl.xml ../com/odl.xsl

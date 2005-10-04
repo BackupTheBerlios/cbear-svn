@@ -2,7 +2,7 @@
 <!--
 The MIT License
 
-Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -23,18 +23,18 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <?xml-stylesheet type="text/xsl" href="../api/html.xsl"?>
 <library 
-	xmlns="http://cbear.sourceforge.net/api"
+	xmlns="http://cbear.berlios.de/api"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://cbear.sourceforge.net/api main.xsd"
-	xmlns:com.idl="http://cbear.sourceforge.net/com"
-	id="cbear.sourceforge.net/api/base"
+	xsi:schemaLocation="http://cbear.berlios.de/api main.xsd"
+	xmlns:com.idl="http://cbear.berlios.de/com"
+	id="cbear.berlios.de/api/base"
 	uuid="1C5A19C7-7ADA-456b-B9A2-58C09AF5BAF8">
 
 <comment>
 	<public>
-See <html:a href="http://cbear.sourceforge.net/api"
->http://cbear.sourceforge.net/api</html:a>.
+See <html:a href="http://cbear.berlios.de/api"
+>http://cbear.berlios.de/api</html:a>.
 	</public>
 </comment>
 

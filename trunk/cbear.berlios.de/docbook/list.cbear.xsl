@@ -2,7 +2,7 @@
 <!--
 The MIT License
 
-Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -27,8 +27,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns:cbear.docbook="http://cbear.sourceforge.net/docbook"
-	xmlns:cbear.exslt.common="http://cbear.sourceforge.net/exslt/common"
+	xmlns:cbear.docbook="http://cbear.berlios.de/docbook"
+	xmlns:cbear.exslt.common="http://cbear.berlios.de/exslt/common"
 	exclude-result-prefixes="xi cbear.docbook cbear.exslt.common">
 
 <xsl:import href="list.xsl"/>

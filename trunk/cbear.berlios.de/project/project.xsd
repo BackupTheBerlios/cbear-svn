@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <schema 
 	xmlns="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://cbear.sourceforge.net/project"
-	xmlns:api="http://cbear.sourceforge.net/project"
+	targetNamespace="http://cbear.berlios.de/project"
+	xmlns:api="http://cbear.berlios.de/project"
 	elementFormDefault="qualified">
 
 	<element name="project">

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <schema 
 	xmlns="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://cbear.sourceforge.net/com"
-	xmlns:odl="http://cbear.sourceforge.net/com"
+	targetNamespace="http://cbear.berlios.de/com"
+	xmlns:odl="http://cbear.berlios.de/com"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified">
 

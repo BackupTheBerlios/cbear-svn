@@ -1,4 +1,4 @@
-License 'license.txt' or (http://cbear.sourceforge.net/license.txt) is based on
+License 'license.txt' or (http://cbear.berlios.de/license.txt) is based on
 the 'MIT license' (http://www.opensource.org/licenses/mit-license.php).
 
 The original documentation starts in 'index.xml'. It's a 'DocBook' file 

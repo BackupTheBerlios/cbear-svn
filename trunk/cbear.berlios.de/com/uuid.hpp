@@ -1,7 +1,7 @@
 /*
 The MIT License
 
-Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -31,11 +31,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // boost::uint32_t, boost::uint16_t, boost::uint8_t.
 #include <boost/cstdint.hpp>
 
-#include <cbear.sourceforge.net/policy/main.hpp>
-#include <cbear.sourceforge.net/range/lexicographical_compare.hpp>
-#include <cbear.sourceforge.net/base/integer.hpp>
+#include <cbear.berlios.de/policy/main.hpp>
+#include <cbear.berlios.de/range/lexicographical_compare.hpp>
+#include <cbear.berlios.de/base/integer.hpp>
 
-namespace cbear_sourceforge_net
+namespace cbear_berlios_de
 {
 namespace com
 {
@@ -116,12 +116,12 @@ public:
 }
 }
 
-#define CBEAR_SOURCEFORGE_NET_COM_UUID_DECLARE(Interface)\
-	namespace cbear_sourceforge_net { namespace com {	\
+#define CBERA_BERLIOS_DE_COM_UUID_DECLARE(Interface)\
+	namespace cbear_berlios_de { namespace com {	\
 	template<> struct uuid::of_type< ::Interface>	\
 	{ static uuid create() { return uuid(::IID_##Interface); } }; \
 	} }
 
-CBEAR_SOURCEFORGE_NET_COM_UUID_DECLARE(IUnknown);
+CBERA_BERLIOS_DE_COM_UUID_DECLARE(IUnknown);
 
 #endif

@@ -1,7 +1,7 @@
 /*
 The MIT License
 
-Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -21,15 +21,15 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <cbear.sourceforge.net/com/hresult.hpp>
+#include <cbear.berlios.de/com/hresult.hpp>
 
 // BOOST_STATIC_ASSERT
 #include <boost/static_assert.hpp>
 
 #include <boost/test/minimal.hpp>
 
-namespace Cbear = cbear_sourceforge_net;
-namespace Com = cbear_sourceforge_net::com;
+namespace Cbear = cbear_berlios_de;
+namespace Com = cbear_berlios_de::com;
 
 template<class T>
 void print(T X) 

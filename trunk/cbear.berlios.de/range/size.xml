@@ -2,7 +2,7 @@
 <!--
 The MIT License
 
-Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -23,12 +23,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <?xml-stylesheet type="text/xsl" href="../cpp/html.xsl"?>
 <unit 
-	xmlns="http://cbear.sourceforge.net/cpp" 
-	id="cbear.sourceforge.net/range/size"
+	xmlns="http://cbear.berlios.de/cpp" 
+	id="cbear.berlios.de/range/size"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://cbear.sourceforge.net/cpp ../cpp/main.xsd">
+	xsi:schemaLocation="http://cbear.berlios.de/cpp ../cpp/main.xsd">
 <header>
-<namespace id="cbear_sourceforge_net">
+<namespace id="cbear_berlios_de">
 <namespace id="range">
 
 <template>

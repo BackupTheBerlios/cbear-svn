@@ -6,7 +6,7 @@
 	xmlns:date="http://exslt.org/dates-and-times"
 	xmlns:str="http://exslt.org/strings"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns:cbear.exslt.common="http://cbear.sourceforge.net/exslt/common"
+	xmlns:cbear.exslt.common="http://cbear.berlios.de/exslt/common"
 	xmlns="http://www.w3.org/1999/xhtml"
 	extension-element-prefixes="date str exsl"
 	exclude-result-prefixes="xi cbear.exslt.common">

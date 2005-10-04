@@ -1,7 +1,7 @@
 /*
 The MIT License
 
-Copyright (c) 2005 C Bear (http://cbear.sourceforge.net)
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -20,15 +20,15 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_SOURCEFORGE_NET_BIT_RANGE_HPP_INCLUDED
-#define CBEAR_SOURCEFORGE_NET_BIT_RANGE_HPP_INCLUDED
+#ifndef CBERA_BERLIOS_DE_BIT_RANGE_HPP_INCLUDED
+#define CBERA_BERLIOS_DE_BIT_RANGE_HPP_INCLUDED
 
 // std::size_t
 #include <cstddef>
 
-#include <cbear.sourceforge.net/base/integer.hpp>
+#include <cbear.berlios.de/base/integer.hpp>
 
-namespace cbear_sourceforge_net
+namespace cbear_berlios_de
 {
 namespace bit
 {

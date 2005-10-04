@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <schema 
 	xmlns="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://cbear.sourceforge.net/cpp"
-	xmlns:cpp="http://cbear.sourceforge.net/cpp"
+	targetNamespace="http://cbear.berlios.de/cpp"
+	xmlns:cpp="http://cbear.berlios.de/cpp"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified">
 
@@ -140,7 +140,7 @@
 	<element name="method">
 		<complexType>
 			<sequence>
-				<element ref="cpp:explicit" monOccurs="0"/>
+				<element ref="cpp:explicit" minOccurs="0"/>
 				<element ref="cpp:static" minOccurs="0"/>
 				<element ref="cpp:virtual" minOccurs="0"/>
 				<element ref="cpp:id.ref" minOccurs="0"/>
@@ -155,6 +155,9 @@
 			<attribute name="id" type="cpp:id"/>
 		</complexType>
 	</element>
+
+	<!-- A virtual option. -->
+	<element name="explicit"/>
 
 	<!-- A virtual option. -->
 	<element name="static"/>
