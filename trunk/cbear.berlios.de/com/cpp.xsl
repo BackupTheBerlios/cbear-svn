@@ -202,8 +202,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<id.ref type="::">
 				<id.ref id="exception"/>
 				<id.ref id="handle" type="()">
-					<id.ref id="this"/>
-					<id.ref id="{@id}"/>
+					<id.ref type=".">
+						<id.ref type="-&gt;">
+							<id.ref id="this"/>
+							<id.ref id="internal_this" type="()"/>
+						</id.ref>
+						<id.ref id="{$id}" type="()"/>
+					</id.ref>
 				</id.ref>
 			</id.ref>
 		</body>
@@ -266,7 +271,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			'http://cbear.berlios.de/cpp ', $odl:cpp.xsd)}"
 		id="{@id}">
 		<header>
-			<include href="{concat(@id, '.odl.h')}"/>
+			<include href="{concat(@id, '.h')}"/>
 			<include href="cbear.berlios.de/com/object.hpp"/>
 			<namespace id="{translate(@id, '.\/', '___')}">
 				<xsl:apply-templates select="*" mode="odl:cpp"/>

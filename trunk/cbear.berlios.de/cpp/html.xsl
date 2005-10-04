@@ -157,6 +157,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:apply-templates>
 </xsl:template>
 
+<xsl:template match="cpp:id.ref[@type='.']" mode="cpp:html.id.ref">
+	<xsl:apply-templates select="." mode="cpp:html.id.ref.type">
+		<xsl:with-param name="separator" select="'.'"/>
+	</xsl:apply-templates>
+</xsl:template>
+
 <xsl:template match="cpp:id.ref[@type='()']" mode="cpp:html.id.ref">
 	<xsl:apply-templates select="." mode="cpp:html.id.ref.type">
 		<xsl:with-param name="begin" select="'('"/>

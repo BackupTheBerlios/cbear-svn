@@ -369,9 +369,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<type.ref id="{exsl:node-set($type.ref)/odl:type.ref/odl:type.ref/@id}">
 			<attribute id="default"/>
 		</type.ref>
-		<!--
-		<xsl:copy-of select="exsl:node-set($type.ref)/odl:type.ref/odl:type.ref"/>
-		-->
 	</coclass>
 </xsl:template>
 
