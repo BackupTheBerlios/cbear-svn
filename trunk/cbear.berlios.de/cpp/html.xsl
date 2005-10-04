@@ -196,6 +196,18 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:apply-templates select="." mode="cpp:html.id.ref.type"/>
 </xsl:template>
 
+<xsl:template match="cpp:id.ref[@type='declare']" mode="cpp:html.id.ref">
+	<xsl:apply-templates select="cpp:id.ref" mode="cpp:html.id.ref"/>
+	<xsl:text> </xsl:text>
+	<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
+</xsl:template>
+
+<xsl:template match="cpp:id.ref[@type='return']" mode="cpp:html.id.ref">
+	<span style="{$cpp:html.keyword}">return</span>
+	<xsl:text> </xsl:text>
+	<xsl:apply-templates select="cpp:id.ref" mode="cpp:html.id.ref"/>
+</xsl:template>
+
 <xsl:template match="cpp:id.ref" mode="cpp:html">
 	<xsl:apply-templates select="." mode="cpp:html.id.ref"/>	
 </xsl:template>

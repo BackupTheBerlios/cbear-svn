@@ -263,6 +263,8 @@
 			<enumeration value="&amp;"/>
 			<enumeration value="const"/>
 			<enumeration value="typename"/>
+			<enumeration value="declare"/>
+			<enumeration value="return"/>
 		</restriction>
 	</simpleType>
 
