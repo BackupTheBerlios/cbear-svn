@@ -116,12 +116,12 @@ public:
 }
 }
 
-#define CBERA_BERLIOS_DE_COM_UUID_DECLARE(Interface)\
+#define CBEAR_BERLIOS_DE_COM_UUID_DECLARE(Interface)\
 	namespace cbear_berlios_de { namespace com {	\
 	template<> struct uuid::of_type< ::Interface>	\
 	{ static uuid create() { return uuid(::IID_##Interface); } }; \
 	} }
 
-CBERA_BERLIOS_DE_COM_UUID_DECLARE(IUnknown);
+CBEAR_BERLIOS_DE_COM_UUID_DECLARE(IUnknown);
 
 #endif
