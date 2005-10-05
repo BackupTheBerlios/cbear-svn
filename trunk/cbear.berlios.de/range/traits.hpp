@@ -29,8 +29,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // boost::remove_const
 #include <boost/type_traits.hpp>
 
+// cbear_berlios_de::base::undefined
+#include <cbear.berlios.de/base/undefined.hpp>
 // cbear_berlios_de::base::make_unsigned
 #include <cbear.berlios.de/base/integer.hpp>
+// cbear_berlios_de::base::is_character
+#include <cbear.berlios.de/base/character.hpp>
 
 namespace cbear_berlios_de
 {
@@ -43,11 +47,23 @@ class iterator_range;
 namespace detail
 {
 
-template<class Container, class Iterator>
-struct std_traits
+template<class Container>
+struct std_traits_iterator
+{
+	typedef typename Container::iterator type;
+};
+
+template<class Container>
+struct std_traits_iterator<const Container>
+{
+	typedef typename Container::const_iterator type;
+};
+
+template<class Container>
+struct class_std_traits
 {
 	typedef Container container;
-	typedef Iterator iterator;
+	typedef typename std_traits_iterator<Container>::type iterator;
 	typedef std::iterator_traits<iterator> iterator_traits;
 	typedef typename iterator_traits::reverse_iterator reverse_iterator;
 	typedef typename iterator_traits::reference reference;
@@ -84,7 +100,7 @@ struct array_traits
 	typedef std::size_t size_type;
 	typedef std::reverse_iterator<iterator> reverse_iterator;
 	static const size_type const_size = 
-		is_character<Item>::value? RealSize-1: RealSize;
+		base::is_character<Item>::value? RealSize-1: RealSize;
 
 	static iterator begin(container &X) { return X; }
 	static iterator end(container &X) { return X + const_size; }
@@ -108,17 +124,26 @@ struct array_traits
 	}
 };
 
+template<class Container, bool IsClass = boost::is_class<Container>::value>
+struct std_traits
+{
+	typedef base::undefined iterator;
+};
+
+template<class Container>
+struct std_traits<Container, true>: class_std_traits<Container>
+{
+};
+
 }
 
 template<class Container>
-struct traits: 
-	detail::std_traits<Container, typename Container::iterator> 
+struct traits: detail::std_traits<Container> 
 {
 };
 
 template<class Container>
-struct traits<const Container>: 
-	detail::std_traits<const Container, typename Container::const_iterator> 
+struct traits<const Container>: detail::std_traits<const Container> 
 {
 };
 
