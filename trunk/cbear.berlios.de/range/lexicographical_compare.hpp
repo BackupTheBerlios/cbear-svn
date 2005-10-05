@@ -26,8 +26,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // std::lexicographical_compare
 #include <algorithm>
 
-#include <cbear_berlios_de/range/begin.hpp>
-#include <cbear_berlios_de/range/end.hpp>
+#include <cbear.berlios.de/range/begin.hpp>
+#include <cbear.berlios.de/range/end.hpp>
 
 namespace cbear_berlios_de
 {

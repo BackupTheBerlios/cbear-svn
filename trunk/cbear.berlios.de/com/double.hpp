@@ -20,40 +20,17 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_COM_TRAITS_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_COM_TRAITS_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_COM_DOUBLE_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_COM_DOUBLE_HPP_INCLUDED
 
-#include <cbear.berlios.de/policy/main.hpp>
-
-// boost::mpl::if_
-#include <boost/mpl/if.hpp>
-// boost::is_class
-#include <boost/type_traits/is_class.hpp>
+#include <cbear.berlios.de/com/traits.hpp>
 
 namespace cbear_berlios_de
 {
 namespace com
 {
 
-template<class Type>
-struct class_traits
-{
-	typedef Type type;
-	typedef typename type::internal_policy internal_policy;
-};
-
-template<class Type>
-struct default_traits
-{
-	typedef Type type;
-	typedef policy::standard_policy<type> internal_policy;
-};
-
-template<class Type>
-struct traits: boost::mpl::if_<
-	boost::is_class<Type>, class_traits<Type>, default_traits<Type> >::type
-{
-};
+typedef ::DOUBLE double_t;
 
 }
 }

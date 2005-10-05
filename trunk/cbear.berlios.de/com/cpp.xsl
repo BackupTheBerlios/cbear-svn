@@ -40,6 +40,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:param name="odl:cpp.xsd"/>
 <xsl:param name="odl:cpp.xsl"/>
+<xsl:param name="odl:cpp.path"/>
 
 <!-- * -->
 
@@ -113,7 +114,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					<id.ref>
 						<xsl:copy-of select="$base"/>
 						<id.ref type="()">
-							<id.ref id="X"/>
+							<id.ref>
+								<xsl:copy-of select="$internal"/>
+								<id.ref type="()">
+									<id.ref id="X"/>
+								</id.ref>
+							</id.ref>
 						</id.ref>
 					</id.ref>
 				</ctor>
@@ -316,12 +322,22 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:value-of select="$odl:cpp.xsl"/>
 		<xsl:text>"</xsl:text>
 	</xsl:processing-instruction>
+	<xsl:variable name="path" select="concat($odl:cpp.path, @id)"/>
 	<unit
 		xsi:schemaLocation="{concat(
 			'http://cbear.berlios.de/cpp ', $odl:cpp.xsd)}"
-		id="{@id}">
+		id="{$path}">
 		<header>
-			<include href="{concat(@id, '.h')}"/>
+			<include href="{concat($path, '.h')}"/>
+			<include href="cbear.berlios.de/com/variant_bool.hpp"/>
+			<include href="cbear.berlios.de/com/int.hpp"/>
+			<include href="cbear.berlios.de/com/byte.hpp"/>
+			<include href="cbear.berlios.de/com/ushort.hpp"/>
+			<include href="cbear.berlios.de/com/ulong.hpp"/>
+			<include href="cbear.berlios.de/com/double.hpp"/>
+			<include href="cbear.berlios.de/com/bstr.hpp"/>
+			<include href="cbear.berlios.de/com/date.hpp"/>
+			<include href="cbear.berlios.de/com/safearray.hpp"/>
 			<include href="cbear.berlios.de/com/object.hpp"/>
 			<namespace id="{translate(@id, '.\/', '___')}">
 				<xsl:apply-templates select="*" mode="odl:cpp"/>

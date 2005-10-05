@@ -26,8 +26,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // std::iterator_traits
 #include <iterator>
 
+// boost::remove_const
+#include <boost/type_traits.hpp>
+
 // cbear_berlios_de::base::make_unsigned
-#include <cbear_berlios_de/base/integer.hpp>
+#include <cbear.berlios.de/base/integer.hpp>
 
 namespace cbear_berlios_de
 {
@@ -41,7 +44,7 @@ namespace detail
 {
 
 template<class Container, class Iterator>
-public std_traits
+struct std_traits
 {
 	typedef Container container;
 	typedef Iterator iterator;
@@ -70,7 +73,7 @@ public std_traits
 };
 
 template<class Item, std::size_t RealSize>
-struct base_array_traits
+struct array_traits
 {
 	typedef Item container[RealSize];
 	typedef Item *iterator;

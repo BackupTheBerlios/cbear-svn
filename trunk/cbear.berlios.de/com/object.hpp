@@ -20,12 +20,12 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBERA_BERLIOS_DE_COM_OBJECT_HPP_INCLUDED
-#define CBERA_BERLIOS_DE_COM_OBJECT_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_COM_OBJECT_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_COM_OBJECT_HPP_INCLUDED
 
 #include <cbear.berlios.de/com/uuid.hpp>
 
-namespace cbear.berlios.de
+namespace cbear_berlios_de
 {
 namespace com
 {
@@ -130,12 +130,12 @@ protected:
 };
 
 template<class Interface, class Base>
-class object_contetn: public object_base<Base>
+class object_content: public object_base<Base>
 {
 };
 
 template<class Interface>
-class object: public object_contetn<Interface, Interface>
+class object: public object_content<Interface, Interface>
 {
 public:
 
