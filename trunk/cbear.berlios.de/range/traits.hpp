@@ -71,7 +71,6 @@ struct class_std_traits
 	typedef typename iterator_traits::value_type value_type;
 	typedef typename iterator_traits::difference_type difference_type;
 	typedef typename base::make_unsigned<difference_type>::type size_type;
-	typedef typename iterator_range<iterator> sub_range;
 	
 	static iterator begin(container &X) { return X.begin(); }
 	static iterator end(container &X) { return X.end(); }
@@ -127,7 +126,14 @@ struct array_traits
 template<class Container, bool IsClass = boost::is_class<Container>::value>
 struct std_traits
 {
+	typedef Container container;
 	typedef base::undefined iterator;
+	typedef base::undefined reverse_iterator;
+	typedef base::undefined reference;
+	typedef base::undefined pointer;
+	typedef base::undefined value_type;
+	typedef base::undefined difference_type;
+	typedef base::undefined size_type;
 };
 
 template<class Container>

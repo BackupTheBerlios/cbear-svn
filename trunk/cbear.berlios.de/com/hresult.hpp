@@ -29,8 +29,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // boost::uint16_t
 #include <boost/cstdint.hpp>
 
-#include <net/sourceforge/cbear/bit/range.hpp>
-#include <net/sourceforge/cbear/policy/main.hpp>
+#include <cbear.berlios.de/bit/range.hpp>
+#include <cbear.berlios.de/policy/main.hpp>
 
 namespace cbear_berlios_de
 {
@@ -250,6 +250,13 @@ public:
 
 
 	explicit hresult(const internal_type &X): hresult_wrap(X) {}
+
+
+	friend ::std::ostream &operator<<(::std::ostream &O, const hresult &This)
+	{
+		O << This.internal();
+		return O;
+	}
 };
 
 }

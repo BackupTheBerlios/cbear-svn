@@ -20,15 +20,10 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_COM_TRAITS_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_COM_TRAITS_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_COM_IN_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_COM_IN_HPP_INCLUDED
 
-#include <cbear.berlios.de/policy/main.hpp>
-
-// boost::mpl::if_
-#include <boost/mpl/if.hpp>
-// boost::is_class
-#include <boost/type_traits/is_class.hpp>
+#include <cbear.berlios.de/com/traits.hpp>
 
 namespace cbear_berlios_de
 {
@@ -36,53 +31,16 @@ namespace com
 {
 
 template<class Type>
-struct class_traits
+struct in_type
 {
-	typedef Type type;
-	typedef typename type::internal_policy internal_policy;
-	typedef typename internal_policy::type internal_type;
-
-	typedef internal_type in_type;
-	typedef internal_type *in_out_type;
-	typedef internal_type *out_type;
-
-	static in_type in(const type &X)
-	{
-		return X.internal();
-	}
-
-	static in_out_type in_out(type &X)
-	{
-		return &X.internal();
-	}
-
-	static in_out_type out(type &X)
-	{
-		X = type();
-		return &X.internal();
-	}
+	typedef typename traits<Type>::in_type type;
 };
 
 template<class Type>
-struct default_traits
-{
-	typedef Type type;
-	typedef policy::standard_policy<type> internal_policy;
-
-	typedef type in_type;
-	typedef type *in_out_type;
-	typedef type *out_type;
-
-	static in_type in(const type &X) { return X; }
-	static in_out_type in_out(type &X) { return &X; }
-	static out_type out(type &X) { return &X; }
-};
-
-template<class Type>
-struct traits: boost::mpl::if_<
-	boost::is_class<Type>, class_traits<Type>, default_traits<Type> >::type
-{
-};
+typename in_type<Type>::type in(const Type &X) 
+{ 
+	return traits<Type>::in(X); 
+}
 
 }
 }

@@ -257,7 +257,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					<id.ref type=".">
 						<id.ref type="-&gt;">
 							<id.ref id="this"/>
-							<id.ref id="internal_this" type="()"/>
+							<id.ref id="internal_reference" type="()"/>
 						</id.ref>
 						<id.ref id="{$id}" type="()">
 							<xsl:apply-templates 
@@ -329,6 +329,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		id="{$path}">
 		<header>
 			<include href="{concat($path, '.h')}"/>
+			<include href="cbear.berlios.de/com/in.hpp"/>
+			<include href="cbear.berlios.de/com/in_out.hpp"/>
+			<include href="cbear.berlios.de/com/out.hpp"/>
 			<include href="cbear.berlios.de/com/variant_bool.hpp"/>
 			<include href="cbear.berlios.de/com/int.hpp"/>
 			<include href="cbear.berlios.de/com/byte.hpp"/>
@@ -339,6 +342,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<include href="cbear.berlios.de/com/date.hpp"/>
 			<include href="cbear.berlios.de/com/safearray.hpp"/>
 			<include href="cbear.berlios.de/com/object.hpp"/>
+			<include href="cbear.berlios.de/com/exception.hpp"/>
 			<namespace id="{translate(@id, '.\/', '___')}">
 				<xsl:apply-templates select="*" mode="odl:cpp"/>
 			</namespace>

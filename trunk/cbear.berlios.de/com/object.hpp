@@ -23,6 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_COM_OBJECT_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_COM_OBJECT_HPP_INCLUDED
 
+#include <cbear.berlios.de/base/exception.hpp>
 #include <cbear.berlios.de/com/uuid.hpp>
 
 namespace cbear_berlios_de
@@ -82,21 +83,6 @@ public:
 	typedef interface_type *internal_type;
 	typedef object_policy<interface_type> internal_policy;
 
-	internal_type in() const 
-	{ 
-		return this->internal(); 
-	}
-	internal_type *in_out() 
-	{ 
-		return &this->internal(); 
-	}
-	internal_type *out()
-	{ 
-		internal_type &This = this->internal();
-		internal_policy::destroy(This);
-		internal_policy::construct(This);
-		return &This;
-	}
 	template<class Interface1>
 	object<Interface1> QueryInterface() const
 	{
@@ -105,23 +91,22 @@ public:
 		if(P)
 		{
 			P->QueryInterface(
-				uuid::of<Interface1>().internal(), (void **)Result.out());
+				uuid::of<Interface1>().internal(), (void **)out(Result));
 		}
 		return Result;
 	}		
 
-	class uninitialized: public std::exception
+	class uninitialized: public base::exception
 	{
 	public:
-		const char *what() throw() 
+		void what(::std::ostream &O) const 
 		{ 
-			return "cbear_berlios_de::com::object<...> uninitialized.";
+			O << "cbear_berlios_de::com::object<" << typeid(Interface).name() << 
+				"> uninitialized.";
 		}
 	};
 
-protected:
-
-	interface_type &internal_this() const
+	interface_type &internal_reference() const
 	{ 
 		internal_type P = this->internal();
 		if(!P) throw uninitialized();
