@@ -92,7 +92,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<enum id="type">
 				<xsl:apply-templates select="odl:item" mode="odl:cpp"/>
 			</enum>
-			<method id="{@id}"/>
+			<method id="{@id}"><body/></method>
 			<method id="{@id}">
 				<parameter id="X">
 					<xsl:copy-of select="$internal"/>
