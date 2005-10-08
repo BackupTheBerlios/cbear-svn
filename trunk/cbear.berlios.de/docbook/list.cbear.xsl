@@ -40,6 +40,37 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	standalone="yes"
 	doctype-public="" 
 	doctype-system=""/>
+
+<xsl:template name="cbear.docbook:style">
+.main-table { width: 100%; }
+.main, .ad { vertical-align: top; }
+.ad { text-align: center; }
+</xsl:template>
+
+<xsl:template name="cbear.docbook:body">
+	<xsl:param name="content"/>
+	<table class="main-table">
+		<tbody>
+			<tr>
+				<td rowspan="3" class="main">
+					<xsl:copy-of select="$content"/>
+				</td>
+				<td style="vertical-align: top; width: 200px;">
+					<table>
+						<tbody>
+							<tr>
+								<xsl:copy-of select="document('../google/search.xml')"/>
+							</tr>
+							<tr>
+								<xsl:copy-of select="document('../google/content.xml')"/>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</xsl:template>
 	
 <!-- Footer -->
 <xsl:template name="cbear.docbook:footer">
