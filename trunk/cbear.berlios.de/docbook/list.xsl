@@ -92,7 +92,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:variable name="output">
 		<document
 			href="{@output}"
-			encoding="iso-8859-1">
+			encoding="utf-8">
 			<xsl:apply-templates 
 				select="exsl:node-set($document)/section" mode="docbook.html.root">
 				<xsl:with-param 
