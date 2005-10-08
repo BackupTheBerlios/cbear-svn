@@ -16,11 +16,11 @@ border="0" alt="Google"></img></a>
 <table>
 <tr>
 <td>
-<input type="radio" name="sitesearch" value="" checked="checked"></input>
+<input type="radio" name="sitesearch" value=""></input>
 <font size="-1" color="#000000">Web</font>
 </td>
 <td>
-<input type="radio" name="sitesearch" value="cbear.berlios.de"></input>
+<input type="radio" name="sitesearch" value="cbear.berlios.de" checked="checked"></input>
 <font size="-1" color="#000000">cbear.berlios.de</font>
 </td>
 </tr>
