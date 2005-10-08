@@ -33,7 +33,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 // BOOST_STATIC_ASSERT
 #include <boost/static_assert.hpp>
-
+// BOOST_..._ENDIAN
+#include <boost/detail/endian.hpp>
 // boost::int_t, boost::uint_t.
 #include <boost/integer.hpp>
 // boost::mpl::bool_
@@ -100,8 +101,13 @@ struct make_unsigned: uint_t<sizeof(Type)*CHAR_BIT>
 namespace detail
 {
 
-// LITTLE ENDIAN
+#ifdef BOOST_LITTLE_ENDIAN
 enum endian_offset { low_offset, high_offset };
+#elif defined(BOOST_BIG_ENDIAN)
+enum endian_offset { high_offset, low_offset };
+#else
+#error Unknown machine endianness detected.
+#endif
 
 template<class Type>
 struct integer_parts
