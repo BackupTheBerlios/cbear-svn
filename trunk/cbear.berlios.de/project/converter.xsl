@@ -28,7 +28,18 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	xmlns="http://cbear.berlios.de/project"
 	xmlns:prj="http://cbear.berlios.de/project"
-	exclude-result-prefixes="prj xi">
+	xmlns:exsl="http://exslt.org/common"
+	xmlns:cbear.exslt.common="http://cbear.berlios.de/exslt/common"
+	extension-element-prefixes="exsl"
+	exclude-result-prefixes="prj xi cbear.exslt.common">
+
+<xsl:import href="../exslt/common/document.xsl"/>
+
+<xsl:param name="prj:converter.filename" select="'index.xml'"/>
+
+<xsl:template match="comment()" mode="prj:converter">
+	<xsl:comment><xsl:value-of select="."/></xsl:comment>
+</xsl:template>
 
 <xsl:template match="@*" mode="prj:converter">
 	<xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
@@ -42,16 +53,72 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:element>
 </xsl:template>
 
+<xsl:template match="emphasis" mode="prj:converter">
+	<em><xsl:value-of select="."/></em>
+</xsl:template>
+
+<xsl:template match="xi:include" mode="prj:converter">
+	<section href="{@href}"/>
+	<xsl:apply-templates select="document(@href)/*" mode="prj:converter">
+		<xsl:with-param name="filename" select="@href"/>
+	</xsl:apply-templates>
+</xsl:template>
+
+<xsl:template match="listitem" mode="prj:converter">
+	<li><xsl:apply-templates mode="prj:converter"/></li>
+</xsl:template>
+
+<xsl:template match="itemizedlist" mode="prj:converter">
+	<ul><xsl:apply-templates mode="prj:converter"/></ul>
+</xsl:template>
+
+<xsl:template match="filename" mode="prj:converter">
+	<a href="{.}"/>
+</xsl:template>
+
+<xsl:template match="ulink" mode="prj:converter">
+	<a href="{@url}"><xsl:apply-templates mode="prj:converter"/></a>
+</xsl:template>
+
+<xsl:template match="para" mode="prj:converter">
+	<p><xsl:apply-templates mode="prj:converter"/></p>
+</xsl:template>
+
 <xsl:template match="title" mode="prj:converter"/>
 
-<xsl:template match="section" mode="prj:converter">
+<xsl:template match="comment()" mode="prj:converter.section">
+	<xsl:apply-templates select="." mode="prj:converter"/>
+</xsl:template>
+
+<xsl:template match="section" mode="prj:converter.section">
 	<section name="{title}">
 		<xsl:apply-templates mode="prj:converter"/>
 	</section>
 </xsl:template>
 
+<xsl:template match="section" mode="prj:converter">
+	<xsl:apply-templates select="." mode="prj:converter.section"/>
+</xsl:template>
+
+<xsl:template match="/section" mode="prj:converter">
+	<xsl:param name="filename"/>
+	<exsl:document
+		href="{concat($filename, '.xml')}"
+		encoding="utf-8"
+		method="xml">
+		<xsl:processing-instruction name="xml-stylesheet">
+			<xsl:text>type="text/xsl" href="project/html.xsl"</xsl:text>
+		</xsl:processing-instruction>
+		<xsl:for-each select="/">
+			<xsl:apply-templates mode="prj:converter.section"/>
+		</xsl:for-each>
+	</exsl:document>
+</xsl:template>
+
 <xsl:template match="*">
-	<xsl:apply-templates select="." mode="prj:converter"/>
+	<xsl:apply-templates select="." mode="prj:converter">
+		<xsl:with-param name="filename" select="$prj:converter.filename"/>
+	</xsl:apply-templates>
 </xsl:template>
 
 </xsl:stylesheet>

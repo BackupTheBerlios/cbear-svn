@@ -24,11 +24,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <?xml-stylesheet type="text/xsl" href="docbook/html.xsl"?>
 <section xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>Home</title>
-<!--
-	<sectioninfo>
-		<imagedata fileref="mainlogo.png" height="92" width="148"/>
-	</sectioninfo>
--->
 	<para>
 The <emphasis>C Bear</emphasis> framework is a set of libraries and common 
 utilities for different programming languages and platforms.
