@@ -99,6 +99,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					name="top" select="cbear:parameter[@name='docbook.html.top']/@value"/>
 				<xsl:with-param 
 					name="up" select="cbear:parameter[@name='docbook.html.up']/@value"/>
+				<xsl:with-param 
+					name="root" select="cbear:parameter[@name='docbook.html.root']/@value"/>
 			</xsl:apply-templates>
 		</document>
 	</xsl:variable>
@@ -133,6 +135,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:param name="fullname"/>
 	<xsl:param name="top"/>
 	<xsl:param name="up"/>
+	<xsl:param name="root"/>
 
 	<map:url>
 		<map:loc>
@@ -150,6 +153,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			</xsl:if>
 			<xsl:if test="$up">
 				<cbear:parameter name="docbook.html.up" value="{$up}"/>
+			</xsl:if>
+			<xsl:if test="$root">
+				<cbear:parameter name="docbook.html.root" value="{$root}"/>
 			</xsl:if>
 		</cbear:parameters>
 	</xsl:variable>
@@ -184,6 +190,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:with-param name="fullname" select="$fullname"/>
 		<xsl:with-param name="top" select="concat($backpath, $top)"/>
 		<xsl:with-param name="up" select="concat($backpath, $up)"/>
+		<xsl:with-param name="root" select="$backpath"/>
 	</xsl:call-template>
 
 	<xsl:apply-templates select="exsl:node-set($document)/*" mode="docbook.list">

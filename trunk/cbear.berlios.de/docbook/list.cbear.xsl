@@ -45,6 +45,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 .main-table { width: 100%; }
 .main, .ad { vertical-align: top; }
 .ad { text-align: center; }
+div.header
+{ 
+	border-style: solid; 
+}
+span.header
+{
+	font-size: 50px;
+	font-weight: bold;
+}
 </xsl:template>
 
 <xsl:template name="cbear.docbook:body">
@@ -70,6 +79,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			</tr>
 		</tbody>
 	</table>
+</xsl:template>
+
+<xsl:template name="cbear.docbook:header">
+	<xsl:param name="root"/>
+	<div class="header">
+		<img src="{concat($root, 'mainlogo.png')}" height="92px" width="148px"/>
+		<span class="header">C BEAR</span>
+	</div>
 </xsl:template>
 	
 <!-- Footer -->
