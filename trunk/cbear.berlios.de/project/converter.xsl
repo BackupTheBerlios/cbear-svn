@@ -33,9 +33,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="prj xi cbear.exslt.common">
 
-<xsl:import href="../exslt/common/document.xsl"/>
-
-<xsl:param name="prj:converter.filename" select="'index.xml'"/>
+<xsl:import href="../url/main.xsl"/>
 
 <xsl:template match="comment()" mode="prj:converter">
 	<xsl:comment><xsl:value-of select="."/></xsl:comment>
@@ -53,14 +51,24 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:element>
 </xsl:template>
 
+<xsl:template match="programlisting" mode="prj:converter">
+	<pre><xsl:apply-templates mode="prj:converter"/></pre>
+</xsl:template>
+
 <xsl:template match="emphasis" mode="prj:converter">
 	<em><xsl:value-of select="."/></em>
 </xsl:template>
 
 <xsl:template match="xi:include" mode="prj:converter">
+	<xsl:param name="filename"/>
 	<section href="{@href}"/>
+	<xsl:variable name="path">
+		<xsl:call-template name="url.path">
+			<xsl:with-param name="path" select="$filename"/>
+		</xsl:call-template>
+	</xsl:variable>
 	<xsl:apply-templates select="document(@href)/*" mode="prj:converter">
-		<xsl:with-param name="filename" select="@href"/>
+		<xsl:with-param name="filename" select="concat($path, @href)"/>
 	</xsl:apply-templates>
 </xsl:template>
 
@@ -91,13 +99,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <xsl:template match="section" mode="prj:converter.section">
+	<xsl:param name="filename"/>
 	<section name="{title}">
-		<xsl:apply-templates mode="prj:converter"/>
+		<xsl:apply-templates mode="prj:converter">
+			<xsl:with-param name="filename" select="$filename"/>
+		</xsl:apply-templates>
 	</section>
 </xsl:template>
 
 <xsl:template match="section" mode="prj:converter">
-	<xsl:apply-templates select="." mode="prj:converter.section"/>
+	<xsl:param name="filename"/>
+	<xsl:apply-templates select="." mode="prj:converter.section">
+		<xsl:with-param name="filename" select="$filename"/>
+	</xsl:apply-templates>
 </xsl:template>
 
 <xsl:template match="/section" mode="prj:converter">
@@ -107,18 +121,22 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		encoding="utf-8"
 		method="xml">
 		<xsl:processing-instruction name="xml-stylesheet">
-			<xsl:text>type="text/xsl" href="project/html.xsl"</xsl:text>
+			<xsl:text>type="text/xsl" href="</xsl:text>
+			<xsl:call-template name="url.backpath">
+				<xsl:with-param name="path" select="$filename"/>
+			</xsl:call-template>
+			<xsl:text>project/html.xsl"</xsl:text>
 		</xsl:processing-instruction>
 		<xsl:for-each select="/">
-			<xsl:apply-templates mode="prj:converter.section"/>
+			<xsl:apply-templates mode="prj:converter.section">
+				<xsl:with-param name="filename" select="$filename"/>
+			</xsl:apply-templates>
 		</xsl:for-each>
 	</exsl:document>
 </xsl:template>
 
 <xsl:template match="*">
-	<xsl:apply-templates select="." mode="prj:converter">
-		<xsl:with-param name="filename" select="$prj:converter.filename"/>
-	</xsl:apply-templates>
+	<xsl:apply-templates select="." mode="prj:converter"/>
 </xsl:template>
 
 </xsl:stylesheet>
