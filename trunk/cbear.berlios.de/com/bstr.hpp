@@ -30,7 +30,58 @@ namespace cbear_berlios_de
 namespace com
 {
 
-typedef ::BSTR bstr_t;
+namespace detail
+{
+
+struct bstr_policy: private policy::standard_policy< ::BSTR>
+{
+	typedef ::BSTR type;
+	typedef policy::standard_policy<type> standard_policy_type;
+
+	using standard_policy_type::construct;
+
+	static void construct_copy(type &This, const type &Source) 
+	{ 
+		This = Source ? ::SysAllocStringLen(Source, ::SysStringLen(Source)): 0;
+	}
+
+	static void destroy(type &This) 
+	{
+		::SysFreeString(This);
+	}
+
+	static void assign(type &This, const type &Source)
+	{ 
+		type New;
+		construct_copy(New, Source);
+		destroy(This);
+		This = New;
+	}
+
+	/*
+	static bool equal(const type &A, const type &B)
+	{
+		return A==B;
+	}
+
+	static bool less(const type &A, const type &B)
+	{
+		return A<B;
+	}
+
+	typedef typename boost::remove_pointer<type>::type value_type;
+	typedef typename boost::add_reference<value_type>::type reference;
+	typedef typename boost::add_pointer<value_type>::type pointer;
+
+	static reference reference_of(const type &This) { return *This; }
+	*/
+};
+
+}
+
+class bstr_t: public policy::wrap<bstr_t, ::BSTR>
+{
+};
 
 }
 }

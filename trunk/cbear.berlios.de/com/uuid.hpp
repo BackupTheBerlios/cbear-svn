@@ -107,7 +107,10 @@ public:
 	explicit uuid(const internal_type &Value): detail::uuid_wrap(Value) {}
 
 	template<class Interface>
-	struct of_type {};
+	struct of_type 
+	{
+		static uuid create() { return uuid(__uuidof(Interface)); }
+	};
 
 	template<class Interface>
 	static uuid of() { return of_type<Interface>::create(); }
