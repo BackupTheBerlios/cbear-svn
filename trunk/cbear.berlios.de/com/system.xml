@@ -23,25 +23,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <?xml-stylesheet type="text/xsl" href="../docbook/html.xsl"?>
 <section xmlns:xi="http://www.w3.org/2001/XInclude">
-	<title>Component Object Model, COM</title>
+	<title>COM System</title>
 	<para>
 Namespace <emphasis>cbear_berlios_de::com</emphasis>.
 	</para>
-	<section>
-		<title>Type Traits</title>
-		<para>
-Header <filename>traits.hpp</filename>.
-		</para>
-<programlisting role="cpp"><![CDATA[template<class Type>
-class traits
-{
-	typedef ... internal_policy;
-};]]></programlisting>
-	</section>
-	<xi:include href="system.xml"/>
-	<xi:include href="uuid.xml"/>
-	<xi:include href="hresult.xml"/>
-	<xi:include href="object.xml"/>
-	<xi:include href="dynamic_adapter.xml"/>
-	<xi:include href="odl.xml"/>
+	<para>
+<filename>system.hpp</filename>. It can't be a singleton because it has to be
+created for each thread which uses <emphasis>COM</emphasis>.
+	</para>
 </section>

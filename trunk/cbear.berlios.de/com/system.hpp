@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<!--
+/*
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.berlios.de)
@@ -20,28 +19,37 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
--->
-<?xml-stylesheet type="text/xsl" href="../docbook/html.xsl"?>
-<section xmlns:xi="http://www.w3.org/2001/XInclude">
-	<title>Component Object Model, COM</title>
-	<para>
-Namespace <emphasis>cbear_berlios_de::com</emphasis>.
-	</para>
-	<section>
-		<title>Type Traits</title>
-		<para>
-Header <filename>traits.hpp</filename>.
-		</para>
-<programlisting role="cpp"><![CDATA[template<class Type>
-class traits
+*/
+#ifndef CBEAR_BERLIOS_DE_COM_SYSTEM_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_COM_SYSTEM_HPP_INCLUDED
+
+// COINIT
+#include <objbase.h>
+
+#include <cbear.berlios.de/com/exception.hpp>
+
+namespace cbear_berlios_de
 {
-	typedef ... internal_policy;
-};]]></programlisting>
-	</section>
-	<xi:include href="system.xml"/>
-	<xi:include href="uuid.xml"/>
-	<xi:include href="hresult.xml"/>
-	<xi:include href="object.xml"/>
-	<xi:include href="dynamic_adapter.xml"/>
-	<xi:include href="odl.xml"/>
-</section>
+namespace com
+{
+
+class system
+{
+public:
+
+	enum coinit_type
+	{
+		multithreaded = COINIT_MULTITHREADED,
+		apartmentthreaded = COINIT_APARTMENTTHREADED,
+		disable_ole1dde = COINIT_DISABLE_OLE1DDE,
+		speed_over_memory = COINIT_SPEED_OVER_MEMORY,
+	};
+
+	system(coinit_type C) { exception::handle(::CoInitializeEx(0, C)); }
+	~system() { ::CoUninitialize(); }
+};
+
+}
+}
+
+#endif

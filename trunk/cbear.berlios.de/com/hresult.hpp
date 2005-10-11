@@ -117,7 +117,7 @@ public:
 	}
 	severity_reference failed()
 	{
-		return severity_bit::reference(this->internal()); 
+		return severity_reference(this->internal()); 
 	}
 
 	// Facility
@@ -165,11 +165,12 @@ public:
 		};
 
 		facility_type() {}
-		facility_type(enumeration E): facility_wrap(E) {}
+		facility_type(enumeration E): facility_wrap(internal_type(E)) {}
 		explicit facility_type(internal_type Value): facility_wrap(Value) {}
 	};
 
-	typedef bit::range<internal_type, 16, 26> facility_range;
+	typedef bit::range<internal_type, 16, 26, facility_type::internal_type> 
+			facility_range;
 
 	facility_type facility() const
 	{
@@ -213,7 +214,7 @@ public:
 		explicit code_type(internal_type X): code_wrap(X) {}
 	};
 
-	typedef bit::range<internal_type, 0, 15> code_range;
+	typedef bit::range<internal_type, 0, 15, code_type::internal_type> code_range;
 
 	code_type code() const
 	{

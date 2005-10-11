@@ -26,12 +26,36 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // std::size_t
 #include <cstddef>
 
+// boost::noncopyable
+#include <boost/noncopyable.hpp>
+
 #include <cbear.berlios.de/base/integer.hpp>
 
 namespace cbear_berlios_de
 {
 namespace bit
 {
+
+namespace detail
+{
+
+// To avoid conversion warnings.
+template<class To>
+struct casting
+{
+	template<class From>
+	static To cast(From X) { return To(X); }
+};
+
+// To avoid conversion warnings.
+template<>
+struct casting<bool>
+{
+	template<class From>
+	static bool cast(From X) { return X != 0; }
+};
+
+}
 
 template<
 	class Type, std::size_t First, std::size_t Last, class ValueType = Type>
@@ -50,7 +74,8 @@ struct range
 
 	static value_type get(type X) 
 	{ 
-		return (unsigned_type(X) & mask) >> first; 
+		return detail::casting<value_type>::cast(
+			(unsigned_type(X) & mask) >> first); 
 	}
 	static void set(type &D, value_type S) 
 	{ 
@@ -62,17 +87,17 @@ struct range
 	class reference
 	{
 	public:
-		explicit reference(type &X): X(X) {}
+		explicit reference(type &X): X(&X) {}
 		operator value_type() const 
 		{ 
-			return get(this->X); 
+			return get(*this->X);
 		}
 		const reference &operator=(value_type V) const 
 		{ 
-			set(this->X, V); return *this; 
+			set(*this->X, V); return *this; 
 		}
 	private:
-		type &X;
+		type *X;
 	};
 
 	static reference make_reference(type &X) { return reference(X); }
