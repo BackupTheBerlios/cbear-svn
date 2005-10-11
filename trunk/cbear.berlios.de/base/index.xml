@@ -22,7 +22,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <?xml-stylesheet type="text/xsl" href="../docbook/html.xsl"?>
-<section>
+<section xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>Basic Types</title>
 	<para>
 Namespace <emphasis>cbear_berlios_de::base</emphasis>.
@@ -140,4 +140,5 @@ template<class Half>
 typename compose_result<Half>::type compose(const Half &High, const Half &Low);]]></programlisting>
 		</section>
 	</section>
+	<xi:include href="singleton.xml"/>
 </section>
