@@ -30,7 +30,44 @@ namespace cbear_berlios_de
 namespace com
 {
 
-typedef ::VARIANT_BOOL variant_bool_t;
+class variant_bool_t;
+
+namespace detail
+{
+
+class variant_bool_policy: policy::standard_policy< ::VARIANT_BOOL>
+{
+public:
+	typedef ::VARIANT_BOOL type;
+	typedef policy::standard_policy<type> standard_policy;
+	using standard_policy::construct;
+	using standard_policy::construct_copy;
+	using standard_policy::destroy;
+	using standard_policy::assign;
+
+	typedef base::undefined pointer;
+	typedef base::undefined reference;
+
+	static bool cast(type This) { return This!=FALSE; }
+
+	template<class Stream>
+	static void output(Stream &S, type This) 
+	{ 
+		S << cast(This); 
+	}
+};
+
+typedef policy::wrap<variant_bool_t, ::VARIANT_BOOL, variant_bool_policy> 
+	variant_bool_wrap;
+
+}
+
+class variant_bool_t: public detail::variant_bool_wrap
+{
+public:
+	typedef detail::variant_bool_wrap::internal_policy internal_policy;
+	operator bool() const { return internal_policy::cast(this->internal()); }
+};
 
 }
 }
