@@ -65,7 +65,7 @@ struct class_std_traits
 	typedef Container container;
 	typedef typename std_traits_iterator<Container>::type iterator;
 	typedef std::iterator_traits<iterator> iterator_traits;
-	typedef typename iterator_traits::reverse_iterator reverse_iterator;
+	typedef typename container::reverse_iterator reverse_iterator;
 	typedef typename iterator_traits::reference reference;
 	typedef typename iterator_traits::pointer pointer;
 	typedef typename iterator_traits::value_type value_type;
@@ -99,7 +99,7 @@ struct array_traits
 	typedef std::size_t size_type;
 	typedef std::reverse_iterator<iterator> reverse_iterator;
 	static const size_type const_size = 
-		base::is_character<Item>::value? RealSize-1: RealSize;
+		base::is_character<value_type>::value? RealSize-1: RealSize;
 
 	static iterator begin(container &X) { return X; }
 	static iterator end(container &X) { return X + const_size; }

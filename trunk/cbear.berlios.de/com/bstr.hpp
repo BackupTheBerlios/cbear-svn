@@ -24,11 +24,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_COM_BSTR_HPP_INCLUDED
 
 #include <cbear.berlios.de/com/traits.hpp>
+#include <cbear.berlios.de/range/equal.hpp>
+#include <cbear.berlios.de/range/iterator_range.hpp>
 
 namespace cbear_berlios_de
 {
 namespace com
 {
+
+class bstr_t;
 
 namespace detail
 {
@@ -40,9 +44,21 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 
 	using standard_policy_type::construct;
 
-	static void construct_copy(type &This, const type &Source) 
-	{ 
-		This = Source ? ::SysAllocStringLen(Source, ::SysStringLen(Source)): 0;
+	typedef range::iterator_range<type> iterator_range;
+
+	static iterator_range make_sub_range(type A)
+	{
+		return iterator_range(A, A + ::SysStringLen(A));
+	}
+
+	static void construct_copy(type &This, const iterator_range &Source)
+	{
+		This = ::SysAllocStringLen(Source.begin(), Source.size());
+	}
+
+	static void construct_copy(type &This, const type &Source)
+	{
+		construct_copy(This, make_sub_range(Source));
 	}
 
 	static void destroy(type &This) 
@@ -58,29 +74,42 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 		This = New;
 	}
 
-	/*
 	static bool equal(const type &A, const type &B)
 	{
-		return A==B;
+		return range::equal(make_sub_range(A), make_sub_range(B));
 	}
-
+	/*
 	static bool less(const type &A, const type &B)
 	{
 		return A<B;
 	}
+	*/
 
-	typedef typename boost::remove_pointer<type>::type value_type;
-	typedef typename boost::add_reference<value_type>::type reference;
-	typedef typename boost::add_pointer<value_type>::type pointer;
+	typedef standard_policy_type::value_type value_type;
+	typedef standard_policy_type::reference reference;
+	typedef standard_policy_type::pointer pointer;
 
+	/*
 	static reference reference_of(const type &This) { return *This; }
 	*/
+
+	using standard_policy_type::output;
 };
+
+typedef policy::wrap<bstr_t, ::BSTR, bstr_policy> bstr_wrap;
 
 }
 
-class bstr_t: public policy::wrap<bstr_t, ::BSTR>
+class bstr_t: public detail::bstr_wrap
 {
+public:
+	typedef detail::bstr_wrap wrap_type;
+	typedef wrap_type::internal_policy internal_policy;
+	typedef internal_policy::value_type value_type;
+	typedef internal_policy::iterator_range iterator_range;
+	bstr_t() {}
+	template< ::std::size_t Size>
+	bstr_t(const wchar_t (&X)[Size]): wrap_type(iterator_range(X), 0) {}
 };
 
 }

@@ -23,6 +23,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_POLICY_MAIN_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_POLICY_MAIN_HPP_INCLUDED
 
+#include <iostream>
+
 // boost::equality_comparable, boost::less_than_comparable, 
 // boost::dereferenceable
 #include <boost/operators.hpp>
@@ -82,6 +84,9 @@ struct standard_policy
 	typedef typename boost::add_pointer<value_type>::type pointer;
 
 	static reference reference_of(const type &This) { return *This; }
+
+	template<class Stream>
+	static void output(Stream &S, const type &This) { S << This; }
 };
 
 template<
@@ -119,17 +124,39 @@ public:
 		return internal_policy::reference_of(this->Internal);
 	}
 
+	friend ::std::basic_ostream<char> &operator<<(
+		::std::basic_ostream<char> &S, const type &A)
+	{
+		internal_policy::output(S, A.internal());
+		return S;
+	}
+
+	friend ::std::basic_ostream<wchar_t> &operator<<(
+		::std::basic_ostream<wchar_t> &S, const type &A)
+	{
+		internal_policy::output(S, A.internal());
+		return S;
+	}
+
 protected:
 
 	wrap() 
 	{ 
 		internal_policy::construct(this->Internal); 
 	}
+
 	wrap(const wrap &Source)
 	{
 		internal_policy::construct_copy(this->Internal, Source.Internal);
 	}
-	explicit wrap(const internal_type &Source) 
+
+	wrap(const internal_type &Source) 
+	{
+		internal_policy::construct_copy(this->Internal, Source);
+	}
+
+	template<class SourceType>
+	wrap(const SourceType &Source, int)
 	{
 		internal_policy::construct_copy(this->Internal, Source);
 	}

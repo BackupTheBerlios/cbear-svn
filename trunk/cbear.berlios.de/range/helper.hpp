@@ -29,6 +29,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // boost::prior, boost::next
 #include <boost/utility.hpp>
 
+#include <cbear.berlios.de/base/integer.hpp>
+
 namespace cbear_berlios_de
 {
 namespace range
@@ -47,7 +49,7 @@ public:
 	
 	typedef typename const_iterator_traits::value_type value_type;
 	typedef typename const_iterator_traits::difference_type difference_type;
-	typedef typename make_unsigned<difference_type>::type size_type;
+	typedef typename base::make_unsigned<difference_type>::type size_type;
 	
 	typedef typename iterator_traits::reference reference;
 	typedef typename const_iterator_traits::reference const_reference;
@@ -62,7 +64,7 @@ public:
 	bool empty() const { return This().begin()==This().end(); }
 	size_type size() const 
 	{ 
-		return ::std::distance(This().begin(), This().end()); 
+		return size_type(::std::distance(This().begin(), This().end())); 
 	}
 	
 	reference front() { return *This().begin(); }
@@ -84,7 +86,7 @@ public:
 	}
 	const_reverse_iterator rbegin() const 
 	{ 
-		return reverse_iterator(This().end()); 
+		return const_reverse_iterator(This().end()); 
 	}
 	
 	reverse_iterator end() 
@@ -93,12 +95,18 @@ public:
 	}
 	const_reverse_iterator end() const 
 	{ 
-		return reverse_iterator(This().begin());
+		return const_reverse_iterator(This().begin());
 	}
 	
 private:
-	container &This() { return *staitc_cast<constainer *>(this); }
-	const container &This() const { *staitc_cast<const constainer *>(this); }
+	container &This() 
+	{ 
+		return *static_cast<container *>(this); 
+	}
+	const container &This() const 
+	{ 
+		return *static_cast<const container *>(this); 
+	}
 };
 
 }

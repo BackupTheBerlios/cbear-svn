@@ -251,13 +251,6 @@ public:
 
 
 	explicit hresult(const internal_type &X): hresult_wrap(X) {}
-
-
-	friend ::std::ostream &operator<<(::std::ostream &O, const hresult &This)
-	{
-		O << This.internal();
-		return O;
-	}
 };
 
 }
