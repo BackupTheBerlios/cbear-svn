@@ -23,6 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_COM_VARIANT_BOOL_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_COM_VARIANT_BOOL_HPP_INCLUDED
 
+#include <cbear.berlios.de/base/undefined.hpp>
 #include <cbear.berlios.de/com/traits.hpp>
 
 namespace cbear_berlios_de
