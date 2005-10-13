@@ -99,28 +99,28 @@
     <text
        xml:space="preserve"
        style="font-size:12.000000px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Bitstream Vera Sans"
-       x="440.42651"
-       y="184.64114"
+       x="437.39606"
+       y="219.99649"
        id="text1310"><tspan
          sodipodi:role="line"
          id="tspan1312"
-         x="440.42651"
-         y="184.64114">class B: public IUnknown</tspan><tspan
+         x="437.39606"
+         y="219.99649">class B: public IUnknown</tspan><tspan
          sodipodi:role="line"
-         x="440.42651"
-         y="199.64114"
+         x="437.39606"
+         y="234.99649"
          id="tspan1344">{</tspan><tspan
          sodipodi:role="line"
-         x="440.42651"
-         y="214.64114"
+         x="437.39606"
+         y="249.99649"
          id="tspan2837">public:</tspan><tspan
          sodipodi:role="line"
-         x="440.42651"
-         y="229.64114"
+         x="437.39606"
+         y="264.99649"
          id="tspan1346">  virtual int F() = 0;</tspan><tspan
          sodipodi:role="line"
-         x="440.42651"
-         y="244.64114"
+         x="437.39606"
+         y="279.99649"
          id="tspan1348">};</tspan></text>
     <text
        xml:space="preserve"
@@ -138,7 +138,7 @@
        id="path1318" />
     <path
        style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
-       d="M 187.88837,140.19443 L 432.34529,173.52946"
+       d="M 187.88837,140.19443 L 442.44682,200.80358"
        id="path1320"
        sodipodi:nodetypes="cc" />
     <text
@@ -178,7 +178,7 @@
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
-       d="M 675.79205,642.24025 L 577.80726,235.14878"
+       d="M 675.79205,642.24025 L 510.12704,281.61580"
        id="path1328"
        sodipodi:nodetypes="cc" />
     <text
