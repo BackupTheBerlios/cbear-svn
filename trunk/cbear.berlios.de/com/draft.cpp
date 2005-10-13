@@ -10,6 +10,11 @@ struct B: IUnknown
 	virtual int F() = 0;
 };
 
+struct C: B
+{
+	virtual int FF() = 0;
+};
+
 struct base
 {
 	void query_interface() {}
@@ -35,10 +40,18 @@ struct wrap<B, Base>: wrap<IUnknown, Base>
 	int F() { return B_F(); }
 };
 
-struct I: wrap<A>, wrap<B> 
+template<class Base>
+struct wrap<C, Base>: wrap<B, Base>
+{
+	virtual int C_FF() = 0;
+	int FF() { return C_FF(); }
+};
+
+struct I: wrap<A>, wrap<C> 
 {
 	int A_F() { return 1; }
-	int B_F() { return 1; }
+	int B_F() { return 2; }
+	int C_FF() { return 3; }
 };
 
 int main()
@@ -46,5 +59,6 @@ int main()
 	I i;
 	A &a = static_cast<A &>(i);
 	B &b = static_cast<B &>(i);
+	C &c = static_cast<C &>(i);
 	return 0;
 }
