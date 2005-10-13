@@ -48,6 +48,20 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <rect
+       style="fill:#ffffd4;fill-opacity:1.0000000;stroke:#ff0000;stroke-width:0.95513070;stroke-miterlimit:4.0000000;stroke-dasharray:0.95513071 2.8653920;stroke-dashoffset:0.00000000;stroke-opacity:1.0000000"
+       id="rect2849"
+       width="664.77460"
+       height="155.54396"
+       x="16.115334"
+       y="152.32603" />
+    <rect
+       style="fill:#ffffd4;fill-opacity:1.0000000;stroke:#ff0000;stroke-width:0.95513070;stroke-miterlimit:4.0000000;stroke-dasharray:0.95513071 2.8653920;stroke-dashoffset:0.00000000;stroke-opacity:1.0000000"
+       id="rect3577"
+       width="664.77460"
+       height="155.54396"
+       x="24.196550"
+       y="650.33118" />
     <text
        xml:space="preserve"
        style="font-size:12.000000px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Bitstream Vera Sans"
@@ -57,7 +71,7 @@
          sodipodi:role="line"
          id="tspan1308"
          x="59.598999"
-         y="223.02695">class A</tspan><tspan
+         y="223.02695">class A: public IUnknown</tspan><tspan
          sodipodi:role="line"
          x="59.598999"
          y="238.02695"
@@ -65,40 +79,48 @@
          sodipodi:role="line"
          x="59.598999"
          y="253.02695"
-         id="tspan1378">  virtual int F() = 0;</tspan><tspan
+         id="tspan2839">public:</tspan><tspan
          sodipodi:role="line"
          x="59.598999"
          y="268.02695"
-         id="tspan1342">};</tspan><tspan
+         id="tspan1378">  virtual int F() = 0;</tspan><tspan
          sodipodi:role="line"
          x="59.598999"
          y="283.02695"
-         id="tspan1336" /><tspan
+         id="tspan1342">};</tspan><tspan
          sodipodi:role="line"
          x="59.598999"
          y="298.02695"
+         id="tspan1336" /><tspan
+         sodipodi:role="line"
+         x="59.598999"
+         y="313.02695"
          id="tspan1334" /></text>
     <text
        xml:space="preserve"
        style="font-size:12.000000px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Bitstream Vera Sans"
-       x="309.10669"
-       y="192.72237"
+       x="440.42651"
+       y="184.64114"
        id="text1310"><tspan
          sodipodi:role="line"
          id="tspan1312"
-         x="309.10669"
-         y="192.72237">class B</tspan><tspan
+         x="440.42651"
+         y="184.64114">class B: public IUnknown</tspan><tspan
          sodipodi:role="line"
-         x="309.10669"
-         y="207.72237"
+         x="440.42651"
+         y="199.64114"
          id="tspan1344">{</tspan><tspan
          sodipodi:role="line"
-         x="309.10669"
-         y="222.72237"
+         x="440.42651"
+         y="214.64114"
+         id="tspan2837">public:</tspan><tspan
+         sodipodi:role="line"
+         x="440.42651"
+         y="229.64114"
          id="tspan1346">  virtual int F() = 0;</tspan><tspan
          sodipodi:role="line"
-         x="309.10669"
-         y="237.72237"
+         x="440.42651"
+         y="244.64114"
          id="tspan1348">};</tspan></text>
     <text
        xml:space="preserve"
@@ -107,113 +129,148 @@
        y="134.13351"
        id="text1314"><tspan
          sodipodi:role="line"
-         id="tspan1316"
          x="126.26907"
-         y="134.13351">Interface IUnknown</tspan></text>
+         y="134.13351"
+         id="tspan1357">class IUnknown</tspan></text>
     <path
        style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
        d="M 88.893424,207.87465 L 144.45181,143.22489"
        id="path1318" />
     <path
        style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
-       d="M 187.88837,140.19443 L 309.10668,175.54977"
-       id="path1320" />
+       d="M 187.88837,140.19443 L 432.34529,173.52946"
+       id="path1320"
+       sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-size:12.000000px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Bitstream Vera Sans"
-       x="42.426407"
-       y="479.60568"
+       x="21.213203"
+       y="508.90009"
        id="text1322"><tspan
          sodipodi:role="line"
          id="tspan1324"
-         x="42.426407"
-         y="479.60568">class Wrap&lt;A&gt;: A, Base</tspan><tspan
+         x="21.213203"
+         y="508.90009">class Wrap&lt;A&gt;: public A, public Base</tspan><tspan
          sodipodi:role="line"
-         x="42.426407"
-         y="494.60568"
+         x="21.213203"
+         y="523.90009"
          id="tspan1350">{</tspan><tspan
          sodipodi:role="line"
-         x="42.426407"
-         y="509.60568"
-         id="tspan1376">  virtual A_F() = 0;</tspan><tspan
+         x="21.213203"
+         y="538.90009"
+         id="tspan2843">public:</tspan><tspan
          sodipodi:role="line"
-         x="42.426407"
-         y="524.60568"
+         x="21.213203"
+         y="553.90009"
+         id="tspan1376">  Wrap() { Base::add_interface(uuid::of(A), this); }</tspan><tspan
+         sodipodi:role="line"
+         x="21.213203"
+         y="568.90009"
+         id="tspan2097">  virtual A_F() = 0;</tspan><tspan
+         sodipodi:role="line"
+         x="21.213203"
+         y="583.90009"
          id="tspan1358">  int F() { return A_F(); }</tspan><tspan
          sodipodi:role="line"
-         x="42.426407"
-         y="539.60568"
+         x="21.213203"
+         y="598.90009"
          id="tspan1352">};</tspan></text>
     <path
        style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
-       d="M 89.903576,274.54472 L 147.48227,465.46355"
+       d="M 89.903576,274.54472 L 69.700524,492.73767"
        id="path1326"
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
-       d="M 583.86817,420.00669 L 356.58385,241.20969"
+       d="M 520.22856,469.50416 L 487.90368,233.12847"
        id="path1328"
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-size:12.000000px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Bitstream Vera Sans"
-       x="479.82245"
-       y="434.1488"
+       x="419.21329"
+       y="484.65643"
        id="text1330"><tspan
          sodipodi:role="line"
          id="tspan1332"
-         x="479.82245"
-         y="434.14880">class Wrap&lt;B&gt;: B, Base</tspan><tspan
+         x="419.21329"
+         y="484.65643">class Wrap&lt;B&gt;: public B, public Base</tspan><tspan
          sodipodi:role="line"
-         x="479.82245"
-         y="449.14880"
+         x="419.21329"
+         y="499.65643"
          id="tspan1362">{</tspan><tspan
          sodipodi:role="line"
-         x="479.82245"
-         y="464.14880"
-         id="tspan1374">  virtual int B_F() = 0;</tspan><tspan
+         x="419.21329"
+         y="514.65643"
+         id="tspan2845">public:</tspan><tspan
          sodipodi:role="line"
-         x="479.82245"
-         y="479.14880"
+         x="419.21329"
+         y="529.65643"
+         id="tspan1374">  Wrap() { Base::add_interface(uuid::of(B), this); }</tspan><tspan
+         sodipodi:role="line"
+         x="419.21329"
+         y="544.65643"
+         id="tspan2099">  virtual int B_F() = 0;</tspan><tspan
+         sodipodi:role="line"
+         x="419.21329"
+         y="559.65643"
          id="tspan1370">  int F() { return B_F(); }</tspan><tspan
          sodipodi:role="line"
-         x="479.82245"
-         y="494.14880"
+         x="419.21329"
+         y="574.65643"
          id="tspan1364">};</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:12.000000px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Bitstream Vera Sans"
-       x="250.51782"
-       y="335.15387"
+       x="201.02036"
+       y="327.07266"
        id="text1380"><tspan
          sodipodi:role="line"
          id="tspan1382"
-         x="250.51782"
-         y="335.15387">virtual class Base</tspan><tspan
+         x="201.02036"
+         y="327.07266">virtual class Base</tspan><tspan
          sodipodi:role="line"
-         x="250.51782"
-         y="350.15387"
+         x="201.02036"
+         y="342.07266"
          id="tspan1384">{</tspan><tspan
          sodipodi:role="line"
-         x="250.51782"
-         y="365.15387"
-         id="tspan1388">  AddRef();</tspan><tspan
+         x="201.02036"
+         y="357.07266"
+         id="tspan2101">public:</tspan><tspan
          sodipodi:role="line"
-         x="250.51782"
-         y="380.15387"
-         id="tspan1390">  Release();</tspan><tspan
+         x="201.02036"
+         y="372.07266"
+         id="tspan1359">  int AddRef();</tspan><tspan
          sodipodi:role="line"
-         x="250.51782"
-         y="395.15387"
+         x="201.02036"
+         y="387.07266"
+         id="tspan1390">  int Release();</tspan><tspan
+         sodipodi:role="line"
+         x="201.02036"
+         y="402.07266"
+         id="tspan2107">  HRESULT QueryInterface(::UUID, void**);</tspan><tspan
+         sodipodi:role="line"
+         x="201.02036"
+         y="417.07266"
+         id="tspan2103">protected:</tspan><tspan
+         sodipodi:role="line"
+         x="201.02036"
+         y="432.07266"
+         id="tspan1367">  void add_interface(uuid, void *);</tspan><tspan
+         sodipodi:role="line"
+         x="201.02036"
+         y="447.07266"
          id="tspan1386">};</tspan></text>
     <path
        style="fill:#000000;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;stroke-miterlimit:4.0000000;stroke-dasharray:1.0000000,2.0000000;stroke-dashoffset:0.00000000"
-       d="M 247.48737,397.78333 L 183.84776,463.44325"
-       id="path1392" />
+       d="M 188.89852,416.97623 L 105.05586,490.71737"
+       id="path1392"
+       sodipodi:nodetypes="cc" />
     <path
-       style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;stroke-miterlimit:4.0000000;stroke-dasharray:1.0000000,2.0000000;stroke-dashoffset:0.00000000"
-       d="M 332.34019,382.63105 L 562.65497,418.99654"
-       id="path3572" />
+       style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.0000000;stroke-dasharray:1.0000000 2.0000000 ;stroke-dashoffset:0.00000000;stroke-opacity:1.0000000"
+       d="M 425.27422,428.08792 L 505.07627,468.49402"
+       id="path3572"
+       sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-size:12.000000px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Bitstream Vera Sans"
@@ -242,11 +299,12 @@
          id="tspan4308">};</tspan></text>
     <path
        style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
-       d="M 162.63456,535.16408 L 287.89348,678.60574"
-       id="path4314" />
+       d="M 145.46197,598.80369 L 287.89348,678.60574"
+       id="path4314"
+       sodipodi:nodetypes="cc" />
     <path
        style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000"
-       d="M 505.07627,504.85950 L 372.74629,674.56513"
+       d="M 459.61941,580.62093 L 372.74629,674.56513"
        id="path4316"
        sodipodi:nodetypes="cc" />
   </g>
