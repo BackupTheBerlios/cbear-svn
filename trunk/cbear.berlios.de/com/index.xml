@@ -27,6 +27,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<para>
 Namespace <emphasis>cbear_berlios_de::com</emphasis>.
 	</para>
+	<para>
+Draft <filename>draft.svg</filename>.
+	</para>
 	<section>
 		<title>Type Traits</title>
 		<para>
