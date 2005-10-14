@@ -356,6 +356,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<include href="cbear.berlios.de/com/safearray.hpp"/>
 			<include href="cbear.berlios.de/com/object.hpp"/>
 			<include href="cbear.berlios.de/com/exception.hpp"/>
+			<include href="cbear.berlios.de/com/implementation.hpp"/>
 			<namespace id="{translate(@id, '.\/', '___')}">
 				<xsl:apply-templates select="*" mode="odl:cpp"/>
 			</namespace>

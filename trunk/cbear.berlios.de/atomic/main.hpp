@@ -33,7 +33,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // boost::noncopyable
 #include <boost/noncopyable.hpp>
 
-#include <cbear.berlios.de/integer.hpp>
+#include <cbear.berlios.de/base/integer.hpp>
 
 namespace cbear_berlios_de
 {
@@ -203,82 +203,84 @@ class wrap: boost::noncopyable
 {
 public:
 
-	typedef T type;
+	typedef T internal_type;
 
-	explicit wrap(type Internal = T()): Internal(Internal) {}
+	explicit wrap(internal_type Internal = T()): Internal(Internal) {}
 
-	type exchange(type Exchange)
+	internal_type exchange(internal_type Exchange)
 	{
 		return atomic::exchange(this->Internal, Exchange);
 	}
 
-	type compare_exchange(type Exchange, type Comperand)
+	internal_type compare_exchange(
+		internal_type Exchange, internal_type Comperand)
 	{
 		return atomic::compare_exchange(this->Internal, Exchange, Comperand);
 	}
 
-	type exchange_add(type Value)
+	internal_type exchange_add(internal_type Value)
 	{
 		return atomic::exchange_add(this->Internal, Value);
 	}
 
-	type decrement()
+	internal_type decrement()
 	{
 		return atomic::decrement(this->Internal);
 	}
 
-	type increment()
+	internal_type increment()
 	{
 		return atomic::increment(this->Internal);
 	}
 
-	type read()
+	internal_type read()
 	{
 		return atomic::read(this->Internal);
 	}
 
 private:
-	volatile type Internal;
+	volatile internal_type Internal;
 };
 
 template<class Id, class T>
 class static_wrap
 {
 public:
-	typedef T type;
+	typedef T internal_type;
 
-	static type exchange(type Exchange)
+	static internal_type exchange(internal_type Exchange)
 	{
 		return atomic::exchange(This, Exchange);
 	}
 
-	static type compare_exchange(type Exchange, type Comperand)
+	static internal_type compare_exchange(
+		internal_type Exchange, internal_type Comperand)
 	{
 		return atomic::compare_exchange(This, Exchange, Comperand);
 	}
 
-	static type exchange_add(type Value)
+	static internal_type exchange_add(internal_type Value)
 	{
 		return atomic::exchange_add(This, Value);
 	}
 
-	static type decrement()
+	static internal_type decrement()
 	{
 		return atomic::decrement(This);
 	}
 
-	static type increment()
+	static internal_type increment()
 	{
 		return atomic::increment(This);
 	}
 
-	static type read()
+	static internal_type read()
 	{
 		return atomic::read(This);
 	}
 
 private:
-	static volatile type This;
+	static volatile internal_type This;
 };
 
 template<class Id, class T>
