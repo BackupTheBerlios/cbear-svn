@@ -46,10 +46,12 @@ namespace base
 {
 
 /// Meta functions. Returns 'true' if the given type is an integer type.
+/// To be consistent with std library.
 template<class Type>
 struct is_integer: boost::mpl::bool_<std::numeric_limits<Type>::is_integer> {};
 
 /// Meta functions. Returns 'true' if the given type is signed integer type.
+/// Use boost::is_signed instead.
 template<class Type>
 struct is_signed: boost::mpl::bool_<std::numeric_limits<Type>::is_signed> {};
 
