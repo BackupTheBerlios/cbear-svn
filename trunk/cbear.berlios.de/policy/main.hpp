@@ -89,6 +89,8 @@ struct standard_policy
 	static void output(Stream &S, const type &This) { S << This; }
 };
 
+#pragma pack(push, 1)
+
 template<
 	class Type, 
 	class InternalType, 
@@ -176,6 +178,8 @@ private:
 
 	internal_type Internal;
 };
+
+#pragma pack(pop)
 
 }
 }

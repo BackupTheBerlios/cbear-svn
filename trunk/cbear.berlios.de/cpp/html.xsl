@@ -208,6 +208,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:apply-templates select="cpp:id.ref" mode="cpp:html.id.ref"/>
 </xsl:template>
 
+<xsl:template match="cpp:id.ref[@type='this']" mode="cpp:html.id.ref">
+	<span style="{$cpp:html.keyword}">this</span>
+</xsl:template>
+
 <xsl:template match="cpp:id.ref" mode="cpp:html">
 	<xsl:apply-templates select="." mode="cpp:html.id.ref"/>	
 </xsl:template>
@@ -314,6 +318,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:text> </xsl:text>
 </xsl:template>
 
+<!-- stdcall -->
+
+<xsl:template match="cpp:stdcall" mode="cpp:html">
+	<span style="{$cpp:html.keyword}">__stdcall</span>
+	<xsl:text> </xsl:text>
+</xsl:template>
+
 <!-- parameter -->
 
 <xsl:template name="cpp:html.parameter">
@@ -365,6 +376,35 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:apply-templates select="." mode="cpp:html.ctor"/>
 </xsl:template>
 
+<!-- catch -->
+
+<xsl:template match="cpp:catch" mode="txt:main.indent"/>
+
+<xsl:template match="cpp:catch" mode="cpp:html">
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">
+			<span style="{$cpp:html.keyword}">catch</span>
+			<xsl:text>(</xsl:text>
+			<xsl:apply-templates select="cpp:parameter" mode="cpp:html"/>
+			<xsl:text>)</xsl:text>
+		</xsl:with-param>
+	</xsl:call-template>
+	<xsl:apply-templates select="cpp:body" mode="cpp:html"/>
+</xsl:template>
+
+<!-- try -->
+
+<xsl:template match="cpp:try" mode="txt:main.indent"/>
+
+<xsl:template match="cpp:try" mode="cpp:html">
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">
+			<span style="{$cpp:html.keyword}">try</span>
+		</xsl:with-param>
+	</xsl:call-template>
+	<xsl:apply-templates select="*" mode="cpp:html"/>
+</xsl:template>
+
 <!-- body -->
 
 <xsl:template match="cpp:body" mode="cpp:html">
@@ -390,7 +430,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:apply-templates select="cpp:explicit" mode="cpp:html"/>
 			<xsl:apply-templates select="cpp:static" mode="cpp:html"/>
 			<xsl:apply-templates select="cpp:virtual" mode="cpp:html"/>
-			<xsl:apply-templates select="cpp:id.ref" mode="cpp:html"/>
+			<xsl:apply-templates select="cpp:id.ref" mode="cpp:html"/>		
+			<xsl:apply-templates select="cpp:stdcall" mode="cpp:html"/>
 			<xsl:apply-templates select="." mode="cpp:html.method.id"/>
 			<xsl:text>(</xsl:text>
 			<xsl:apply-templates select="cpp:parameter" mode="cpp:html"/>

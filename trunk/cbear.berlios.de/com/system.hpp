@@ -49,7 +49,7 @@ public:
 		speed_over_memory = COINIT_SPEED_OVER_MEMORY,
 	};
 
-	system(coinit_type C) { exception::handle(::CoInitializeEx(0, C)); }
+	system(coinit_type C) { exception::throw_unless(::CoInitializeEx(0, C)); }
 	~system() { ::CoUninitialize(); }
 };
 
@@ -87,7 +87,7 @@ static object<T> create_instance(
 	const uuid &Uuid, const object<IUnknown> &UnkOuter, clsctx ClsContext)
 {
 	object<T> Result;
-	exception::handle(::CoCreateInstance(
+	exception::throw_unless(::CoCreateInstance(
 		in(Uuid), 
 		in(UnkOuter), 
 		in(ClsContext), 

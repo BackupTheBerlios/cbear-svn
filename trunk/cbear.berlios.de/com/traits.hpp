@@ -25,6 +25,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/policy/main.hpp>
 
+// BOOST_STATIC_ASSERT
+#include <boost/static_assert.hpp>
 // boost::mpl::if_
 #include <boost/mpl/if.hpp>
 // boost::is_class
@@ -35,6 +37,13 @@ namespace cbear_berlios_de
 namespace com
 {
 
+enum io_type
+{
+	in = 0,
+	in_out = 1,
+	out = 2,
+};
+
 template<class Type>
 struct class_traits
 {
@@ -42,25 +51,60 @@ struct class_traits
 	typedef typename type::internal_policy internal_policy;
 	typedef typename internal_policy::type internal_type;
 
-	typedef internal_type in_type;
-	typedef internal_type *in_out_type;
-	typedef internal_type *out_type;
+	BOOST_STATIC_ASSERT(
 
-	static in_type in(const type &X)
-	{
-		return X.internal();
-	}
+	template<io_type Io>
+	struct io_traits;
 
-	static in_out_type in_out(type &X)
+	template<>
+	struct io_traits<in>
 	{
-		return &X.internal();
-	}
+		typedef internal_type internal_result;
+		typedef const type &result;
 
-	static in_out_type out(type &X)
+		static internal_result internal(result X) 
+		{ 
+			return X.internal(); 
+		}
+		static result external(internal_result X) 
+		{ 
+			return reinterpret_cast<result>(X);
+		}
+	};
+
+	template<>
+	struct io_traits<in_out>
 	{
-		X = type();
-		return &X.internal();
-	}
+		typedef internal_type *internal_result;
+		typedef type &result;
+
+		static internal_result internal(result X) 
+		{ 
+			return &X.internal(); 
+		}
+		static result external(internal_result X) 
+		{ 
+			return reinterpret_cast<result>(*X);
+		}
+	};
+
+	template<>
+	struct io_traits<out>
+	{
+		typedef internal_type *internal_result;
+		typedef type &type;
+
+		static internal_result internal(result X) 
+		{
+			X = type();
+			return &X.internal(); 
+		}
+		static result external(internal_result X) 
+		{
+			internal_policy::constructor(*X);
+			return reinterpret_cast<result>(*X);
+		}
+	};
 };
 
 template<class Type>
@@ -69,13 +113,48 @@ struct default_traits
 	typedef Type type;
 	typedef policy::standard_policy<type> internal_policy;
 
-	typedef type in_type;
-	typedef type *in_out_type;
-	typedef type *out_type;
+	typedef type internal_type;
 
-	static in_type in(const type &X) { return X; }
-	static in_out_type in_out(type &X) { return &X; }
-	static out_type out(type &X) { return &X; }
+	template<io_type Io>
+	struct io_traits;
+
+	template<>
+	struct io_traits<in>
+	{
+		typedef internal_type internal_result;
+		typedef type result;
+
+		static internal_result internal(result X) { return X; }
+		static result external(internal_result X) { return X; }
+	};
+
+	template<>
+	struct io_traits<in_out>
+	{
+		typedef internal_type *internal_result;
+		typedef type &result;
+
+		static internal_result internal(result X) { return &X; }
+		static result external(internal_result X) { return *X; }
+	};
+
+	template<>
+	struct io_traits<out>
+	{
+		typedef internal_type *internal_result;
+		typedef type &type;
+
+		static internal_result internal(result X) 
+		{ 
+			internal_policy::constructor(X);
+			return &X; 
+		}
+		static result external(internal_result X) 
+		{ 
+			internal_policy::constructor(*X);
+			return *X;
+		}
+	};
 };
 
 template<class Type>

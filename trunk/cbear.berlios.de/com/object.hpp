@@ -31,6 +31,9 @@ namespace cbear_berlios_de
 namespace com
 {
 
+template<class Interface, class Base = Interface>
+class implementation;
+
 template<class Interface>
 class object;
 
@@ -75,26 +78,36 @@ struct object_policy: private policy::standard_policy<Interface *>
 	typedef policy::wrap<object_type, type, object_policy> wrap;
 };
 
+template<class Interface1>
+struct add_object { typedef object<Interface1> type; };
+
+template<class Interface1>
+struct add_object<object<Interface1> > { typedef object<Interface1> type; };
+
 template<class Interface>
 class object_base: public object_policy<Interface>::wrap
 {
 public:
 	typedef Interface interface_type;
+	typedef implementation<interface_type> implementation_type;
 	typedef interface_type *internal_type;
 	typedef object_policy<interface_type> internal_policy;
 
-	template<class Interface1>
-	object<Interface1> QueryInterface() const
+	template<class Type>
+	typename add_object<Type>::type query_interface() const
 	{
-		object<Interface1> Result;
+		typedef typename add_object<Type>::type object_type;
+		object_type Result;
 		internal_type P = this->internal();
 		if(P)
 		{
 			P->QueryInterface(
-				uuid::of<Interface1>().internal(), (void **)out(Result));
+				object_type::uuid().internal(), (void **)out(Result));
 		}
 		return Result;
 	}		
+
+	static com::uuid uuid() { return uuid::of<interface_type>(); }
 
 	class uninitialized: public base::exception
 	{
@@ -105,6 +118,8 @@ public:
 				"> uninitialized.";
 		}
 	};
+
+protected:
 
 	interface_type &internal_reference() const
 	{ 
@@ -131,20 +146,24 @@ public:
 	object() {}
 
 	template<class Interface1>
-	explicit object(const object<Interface1> &P)
+	object(const object<Interface1> &P)
 	{
 		internal_policy::construct_copy(this->internal(), P.internal());
 	}
-
-	operator bool() const { return this->internal(); }
 
 	explicit object(internal_type X)
 	{
 		internal_policy::construct_copy(this->internal(), X);
 	}
+
+	operator bool() const { return this->internal(); }
 };
 
+template<class T>
+object<T> make_object(T *P) { return object<T>(P); }
+
 typedef object< ::IUnknown> iunknown;
+typedef object< ::IDispatch> idispatch;
 
 }
 }

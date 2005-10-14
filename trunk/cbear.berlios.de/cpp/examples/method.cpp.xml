@@ -67,6 +67,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 				<method id="Function">
 					<id.ref id="void"/>
+					<stdcall/>
 				</method>
 
 				<method id="My">

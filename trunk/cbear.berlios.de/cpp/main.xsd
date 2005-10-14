@@ -144,6 +144,7 @@
 				<element ref="cpp:static" minOccurs="0"/>
 				<element ref="cpp:virtual" minOccurs="0"/>
 				<element ref="cpp:id.ref" minOccurs="0"/>
+				<element ref="cpp:stdcall" minOccurs="0"/>
 				<element ref="cpp:parameter" minOccurs="0" maxOccurs="unbounded"/>
 				<element ref="cpp:const" minOccurs="0"/>
 				<element ref="cpp:abstract" minOccurs="0"/>
@@ -165,6 +166,9 @@
 	<!-- A virtual option. -->
 	<element name="virtual"/>
 
+	<!-- A stdcall. -->
+	<element name="stdcall"/>
+
 	<!-- A virtual option. -->
 	<element name="abstract"/>
 
@@ -183,11 +187,32 @@
 		<complexType>
 			<choice minOccurs="0" maxOccurs="unbounded">
 				<element ref="cpp:id.ref"/>
+				<element ref="cpp:try"/>
 			</choice>
 		</complexType>
 	</element>
 
-	<!-- A call -->
+	<!-- try -->
+	<element name="try">
+		<complexType>
+			<sequence>
+				<element ref="cpp:body"/>
+				<element ref="cpp:catch" minOccurs="1" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+
+	<!-- catch -->
+	<element name="catch">
+		<complexType>
+			<sequence>
+				<element ref="cpp:parameter"/>
+				<element ref="cpp:body"/>
+			</sequence>
+		</complexType>
+	</element>
+
+	<!-- A ctor -->
 	<element name="ctor">
 		<complexType>
 			<sequence>
@@ -265,6 +290,7 @@
 			<enumeration value="typename"/>
 			<enumeration value="declare"/>
 			<enumeration value="return"/>
+			<enumeration value="this"/>
 		</restriction>
 	</simpleType>
 

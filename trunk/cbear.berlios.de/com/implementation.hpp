@@ -72,9 +72,6 @@ private:
 
 }
 
-template<class Interface, class Base = Interface>
-class implementation;
-
 template<class Interface, class Base, class Parent>
 class implementation_base: public implementation<Parent, Base>
 {
@@ -113,7 +110,8 @@ protected:
 
 	typedef atomic::wrap<ulong_t>::internal_type internal_type;
 
-	virtual ~implementation_counter() = 0;
+	implementation_counter() {}
+	virtual ~implementation_counter() {}
 
 	internal_type add_ref() { return this->increment(); }
 
@@ -155,6 +153,30 @@ public:
 	{ 
 		return hresult::e_fail; 
 	}
+
+	hresult::internal_type __stdcall GetTypeInfo(uint_t, ::LCID, ::ITypeInfo ** )
+	{
+		return hresult::e_fail;
+	}
+
+	hresult::internal_type __stdcall GetIDsOfNames(
+		const uuid::internal_type &, LPOLESTR *, uint_t, ::LCID, ::DISPID *)
+	{
+		return hresult::e_fail;
+	}
+
+	hresult::internal_type __stdcall Invoke(
+		::DISPID, 
+		const uuid::internal_type &, 
+		::LCID, 
+		::WORD, 
+		::DISPPARAMS *, 
+		::VARIANT *, 
+		::EXCEPINFO *, 
+		::UINT *)
+	{
+		return hresult::e_fail;
+	}
 };
 
 }
@@ -165,13 +187,13 @@ struct new_result { typedef object<detail::implementation_instance<T> > type; };
 template<class T>
 typename new_result<T>::type new_()
 {
-	return new detail::implementation_instance<T>();
+	return new_result<T>::type(new detail::implementation_instance<T>());
 };
 
 template<class T, class P>
 typename new_result<T>::type new_(const P &X)
 {
-	return new detail::implementation_instance<T>(X);
+	return new_result<T>::type(new detail::implementation_instance<T>(X));
 }
 
 }

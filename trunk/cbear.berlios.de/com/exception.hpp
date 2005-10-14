@@ -41,13 +41,39 @@ public:
 			this->result() << "; };";
 	}
 	hresult result() const throw() { return this->Value; }
-	static void handle(hresult Value)
+	static void throw_unless(hresult Value)
 	{
 		if(Value.failed()) throw exception(Value);
 	}
-	static void handle(::HRESULT Value)
+	static void throw_unless(::HRESULT Value)
 	{
-		handle(hresult(Value));
+		throw_unless(hresult(Value));
+	}
+	static hresult catch_()
+	{
+		try
+		{
+			try
+			{
+				throw;				
+			}
+			catch(const com::exception &E)
+			{
+				return hresult::e_fail;
+			}
+			catch(const base::exception &E)
+			{
+				return hresult::e_fail;
+			}
+			catch(const ::std::exception &E)
+			{
+				return hresult::e_fail;
+			}
+		}
+		catch(...)
+		{
+			return hresult::e_fail;
+		}
 	}
 private:
 	hresult Value;
