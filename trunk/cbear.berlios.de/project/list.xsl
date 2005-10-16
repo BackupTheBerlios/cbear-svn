@@ -28,7 +28,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:prj="http://cbear.berlios.de/project"
+	xmlns:exsl="http://exslt.org/common"
+	xmlns:cbear.exslt.common="http://cbear.berlios.de/exslt/common"
+	extension-element-prefixes="exsl"
 	exclude-result-prefixes="prj xi">
+
+<xsl:import href="../url/main.xsl"/>
+<xsl:import href="../exslt/common/document.xsl"/>
+<xsl:import href="html.xsl"/>
 
 <!-- XHTML 1.1. -->
 <xsl:output 
@@ -37,9 +44,33 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	doctype-public="-//W3C//DTD XHTML 1.1//EN"
 	doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
 
-<xsl:import href="html.xsl"/>
+<xsl:template match="prj:section[@href]" mode="prj:html">
+	<xsl:apply-imports/>
+	<xsl:apply-templates 
+		select="document(concat(@href, '.xml'), .)/prj:section" mode="prj:list">
+		<xsl:with-param name="filename" select="@href"/>
+	</xsl:apply-templates>
+</xsl:template>
 
-<xsl:template match="prj:*">
+<xsl:template match="/prj:section" mode="prj:list">
+	<xsl:param name="filename"/>
+	<xsl:message terminate="no"><xsl:value-of select="$filename"/></xsl:message>
+	<xsl:variable name="output">
+		<document
+			href="{concat($filename, '.html')}"
+			encoding="utf-8"
+			method="xml">
+			<xsl:apply-templates select="." mode="prj:html"/>
+		</document>
+	</xsl:variable>
+	<xsl:apply-templates 
+		select="exsl:node-set($output)/*" mode="cbear.exslt.common:document"/>
+</xsl:template>
+
+<xsl:template match="*">
+	<xsl:apply-templates select="." mode="prj:list">
+		<xsl:with-param name="filename" select="'index.xml'"/>
+	</xsl:apply-templates>
 </xsl:template>
 
 </xsl:stylesheet>

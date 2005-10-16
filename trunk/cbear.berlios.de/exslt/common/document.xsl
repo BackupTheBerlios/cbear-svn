@@ -129,17 +129,23 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="*" mode="common:xhtml11">
 	<xsl:variable name="document">
-		<document>
-			<xsl:attribute name="method">xml</xsl:attribute>
-			<xsl:attribute name="doctype-public"
-				>-//W3C//DTD XHTML 1.1//EN</xsl:attribute>			
-	  	<xsl:attribute name="doctype-system"
-				>http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd</xsl:attribute>
+		<document
+			method="xml"
+			doctype-public="-//W3C//DTD XHTML 1.1//EN"
+	  	doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 			<xsl:copy-of select="@*|*|text()"/>
 		</document>
 	</xsl:variable>
 	<xsl:apply-templates 
 		select="exsl:node-set($document)/*" mode="common:document"/>
+</xsl:template>
+
+<xsl:template match="*" mode="common:xml">
+	<xsl:variable name="document">
+		<document method="xml">
+			<xsl:copy-of select="@*|*|text()"/>
+		</document>
+	</xsl:variable>
 </xsl:template>
 
 </xsl:stylesheet>
