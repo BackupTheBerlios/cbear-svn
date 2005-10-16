@@ -40,6 +40,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:param name="prj:html.style">
 body
 {
+	font-family: sans-serif;
 	margin-left: 0px;
 	margin-right: 0px;
 	margin-top: 0px;
@@ -86,9 +87,20 @@ h1, h2
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
+ul { list-style: disc; }
+pre 
+{ 
+	background-color: #F0F0F0;
+	border-left: solid 1px; 
+	border-color: #D0D0D0;
+
+	padding: 5px 5px 5px 5px;
+}
 </xsl:param>
 
 <!-- * -->
+
+<xsl:template match="prj:*" mode="prj:html.content.table.item"/>
 
 <xsl:template match="prj:*" mode="prj:html">
 	<xsl:element name="{local-name()}">
@@ -108,7 +120,28 @@ h1, h2
 
 <!-- section -->
 
-<xsl:template match="prj:section" mode="prj:html.content.table">
+<xsl:template match="prj:section" mode="prj:html.link">
+	<a href="{concat(@href, '.xml')}">
+		<xsl:value-of select="document(concat(@href, '.xml'), .)/prj:section/
+			@name"/>
+	</a>
+</xsl:template>
+
+<xsl:template match="prj:section" mode="prj:html.content.table.item">
+	<li>
+		<a href="{concat('#', @name)}"><xsl:value-of select="@name"/></a>
+		<xsl:apply-templates select="." mode="prj:html.content.table"/>
+	</li> 
+</xsl:template>
+
+<xsl:template match="prj:section[@href]" mode="prj:html.content.table.item">
+	<li><xsl:apply-templates select="." mode="prj:html.link"/></li>
+</xsl:template>
+
+<xsl:template match="prj:section" mode="prj:html.content.table"/>
+
+<xsl:template match="prj:section[prj:section]" mode="prj:html.content.table">
+	<ul><xsl:apply-templates mode="prj:html.content.table.item"/></ul>
 </xsl:template>
 
 <xsl:template match="prj:section" mode="prj:html">
@@ -116,6 +149,10 @@ h1, h2
 		<h2><xsl:value-of select="@name"/></h2>
 		<xsl:apply-templates mode="prj:html"/>
 	</div>
+</xsl:template>
+
+<xsl:template match="prj:section[@href]" mode="prj:html">
+	<div><h2><xsl:apply-templates select="." mode="prj:html.link"/></h2></div>
 </xsl:template>
 
 <xsl:template match="/prj:section" mode="prj:html">
@@ -126,7 +163,7 @@ h1, h2
 		<body>
 			<div id="{@name}">
 				<h1><xsl:value-of select="@name"/></h1>
-				<!--<xsl:apply-templates mode="prj:html.content.table"/>-->
+				<xsl:apply-templates select="." mode="prj:html.content.table"/>
 				<xsl:apply-templates mode="prj:html"/>
 			</div>
 		</body>

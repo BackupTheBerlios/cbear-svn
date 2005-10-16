@@ -43,7 +43,7 @@ namespace atomic
 namespace detail
 {
 
-struct nothing {};
+// struct nothing {};
 
 template<class T, std::size_t>
 struct integer_traits;

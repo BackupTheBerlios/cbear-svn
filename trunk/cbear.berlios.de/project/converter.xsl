@@ -115,7 +115,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <xsl:template match="/section" mode="prj:converter">
-	<xsl:param name="filename"/>
+	<xsl:param name="filename" select="'index.xml'"/>
 	<exsl:document
 		href="{concat($filename, '.xml')}"
 		encoding="utf-8"

@@ -55,7 +55,7 @@ T compare_exchange(volatile T &This, E Exchange, C Comperand);]]></programlistin
 		<section>
 			<title>exchange_add</title>
 			<para>
-Performs an atomic addition of an increment value to a addend value.
+Performs an atomic addition of an increment value to an added value.
 			</para>
 <programlisting role="cpp"><![CDATA[template<class T, class V>
 T exchange_add(volatile T &This, V Value);]]></programlisting>
