@@ -184,6 +184,22 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:text> &amp;</xsl:text>
 </xsl:template>
 
+<xsl:template match="cpp:id.ref[@type='|']" mode="cpp:html.id.ref">
+	<xsl:apply-templates 
+		select="cpp:id.ref[position()=1]" mode="cpp:html.id.ref"/>
+	<xsl:text>|</xsl:text>
+	<xsl:apply-templates 
+		select="cpp:id.ref[position()=2]" mode="cpp:html.id.ref"/>
+</xsl:template>
+
+<xsl:template match="cpp:id.ref[@type='=']" mode="cpp:html.id.ref">
+	<xsl:apply-templates 
+		select="cpp:id.ref[position()=1]" mode="cpp:html.id.ref"/>
+	<xsl:text>=</xsl:text>
+	<xsl:apply-templates 
+		select="cpp:id.ref[position()=2]" mode="cpp:html.id.ref"/>
+</xsl:template>
+
 <xsl:template match="cpp:id.ref[@type='const']" mode="cpp:html.id.ref">
 	<span style="{$cpp:html.keyword}">const</span>
 	<xsl:text> </xsl:text>

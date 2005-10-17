@@ -291,6 +291,8 @@
 			<enumeration value="declare"/>
 			<enumeration value="return"/>
 			<enumeration value="this"/>
+			<enumeration value="|"/>
+			<enumeration value="="/>
 		</restriction>
 	</simpleType>
 

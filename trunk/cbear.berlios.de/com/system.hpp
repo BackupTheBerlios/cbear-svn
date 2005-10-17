@@ -28,9 +28,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/com/exception.hpp>
 #include <cbear.berlios.de/com/object.hpp>
-#include <cbear.berlios.de/com/in.hpp>
-#include <cbear.berlios.de/com/out.hpp>
-#include <cbear.berlios.de/com/in_out.hpp>
 
 namespace cbear_berlios_de
 {
@@ -88,11 +85,11 @@ static object<T> create_instance(
 {
 	object<T> Result;
 	exception::throw_unless(::CoCreateInstance(
-		in(Uuid), 
-		in(UnkOuter), 
-		in(ClsContext), 
-		in(uuid::of<T>()), 
-		(void**)out(Result)));
+		internal<in>(Uuid), 
+		internal<in>(UnkOuter), 
+		internal<in>(ClsContext), 
+		internal<in>(uuid::of<T>()), 
+		(void**)internal<out>(Result)));
 	return Result;
 }
 

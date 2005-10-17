@@ -95,10 +95,7 @@ template<
 	class Type, 
 	class InternalType, 
 	class InternalPolicy = standard_policy<InternalType> >
-class wrap: 
-	public boost::equality_comparable<Type>,
-	public boost::less_than_comparable<Type>,
-	public boost::dereferenceable<Type, typename InternalPolicy::pointer>
+class wrap: public boost::operators<Type>
 {
 public:
 
@@ -124,6 +121,11 @@ public:
 	typename internal_policy::reference operator*() const
 	{
 		return internal_policy::reference_of(this->Internal);
+	}
+
+	typename internal_policy::pointer operator->() const
+	{
+		return &internal_policy::reference_of(this->Internal);
 	}
 
 	friend ::std::basic_ostream<char> &operator<<(

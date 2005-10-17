@@ -37,11 +37,14 @@ namespace cbear_berlios_de
 namespace com
 {
 
+template<class Type>
+struct traits;
+
 enum io_type
 {
-	in = 0,
-	in_out = 1,
+	in = 1,
 	out = 2,
+	in_out = in|out,
 };
 
 template<class Type>
@@ -51,7 +54,7 @@ struct class_traits
 	typedef typename type::internal_policy internal_policy;
 	typedef typename internal_policy::type internal_type;
 
-	BOOST_STATIC_ASSERT(
+	BOOST_STATIC_ASSERT(sizeof(type)==sizeof(internal_type));
 
 	template<io_type Io>
 	struct io_traits;
@@ -60,15 +63,15 @@ struct class_traits
 	struct io_traits<in>
 	{
 		typedef internal_type internal_result;
-		typedef const type &result;
+		typedef const type &wrap_result;
 
-		static internal_result internal(result X) 
-		{ 
-			return X.internal(); 
+		static internal_result internal(wrap_result X) 
+		{
+			return X.internal();
 		}
-		static result external(internal_result X) 
-		{ 
-			return reinterpret_cast<result>(X);
+		static wrap_result wrap(internal_result &X)
+		{
+			return reinterpret_cast<wrap_result>(X);
 		}
 	};
 
@@ -76,15 +79,15 @@ struct class_traits
 	struct io_traits<in_out>
 	{
 		typedef internal_type *internal_result;
-		typedef type &result;
+		typedef type &wrap_result;
 
-		static internal_result internal(result X) 
-		{ 
-			return &X.internal(); 
+		static internal_result internal(wrap_result X)
+		{
+			return &X.internal();
 		}
-		static result external(internal_result X) 
-		{ 
-			return reinterpret_cast<result>(*X);
+		static wrap_result wrap(internal_result &X)
+		{
+			return reinterpret_cast<wrap_result>(*X);
 		}
 	};
 
@@ -92,17 +95,17 @@ struct class_traits
 	struct io_traits<out>
 	{
 		typedef internal_type *internal_result;
-		typedef type &type;
+		typedef type &wrap_result;
 
-		static internal_result internal(result X) 
+		static internal_result internal(wrap_result X) 
 		{
 			X = type();
 			return &X.internal(); 
 		}
-		static result external(internal_result X) 
+		static wrap_result wrap(internal_result &X) 
 		{
-			internal_policy::constructor(*X);
-			return reinterpret_cast<result>(*X);
+			internal_policy::construct(*X);
+			return reinterpret_cast<wrap_result>(*X);
 		}
 	};
 };
@@ -122,36 +125,36 @@ struct default_traits
 	struct io_traits<in>
 	{
 		typedef internal_type internal_result;
-		typedef type result;
+		typedef type wrap_result;
 
-		static internal_result internal(result X) { return X; }
-		static result external(internal_result X) { return X; }
+		static internal_result internal(wrap_result X) { return X; }
+		static wrap_result wrap(internal_result &X) { return X; }
 	};
 
 	template<>
 	struct io_traits<in_out>
 	{
 		typedef internal_type *internal_result;
-		typedef type &result;
+		typedef type &wrap_result;
 
-		static internal_result internal(result X) { return &X; }
-		static result external(internal_result X) { return *X; }
+		static internal_result internal(wrap_result X) { return &X; }
+		static wrap_result wrap(internal_result &X) { return *X; }
 	};
 
 	template<>
 	struct io_traits<out>
 	{
 		typedef internal_type *internal_result;
-		typedef type &type;
+		typedef type &wrap_result;
 
-		static internal_result internal(result X) 
+		static internal_result internal(wrap_result X) 
 		{ 
-			internal_policy::constructor(X);
+			X = type();
 			return &X; 
 		}
-		static result external(internal_result X) 
+		static wrap_result wrap(internal_result &X) 
 		{ 
-			internal_policy::constructor(*X);
+			internal_policy::construct(*X);
 			return *X;
 		}
 	};
@@ -162,6 +165,97 @@ struct traits: boost::mpl::if_<
 	boost::is_class<Type>, class_traits<Type>, default_traits<Type> >::type
 {
 };
+
+template<io_type Io, class Type>
+struct io_traits: traits<Type>::template io_traits<Io> {};
+
+template<io_type Io, class Type>
+struct internal_result 
+{ 
+	typedef typename io_traits<Io, Type>::internal_result type; 
+};
+
+template<io_type Io, class Type>
+typename internal_result<Io, Type>::type internal(const Type &X)
+{
+	return io_traits<Io, Type>::internal(X);
+}
+
+template<io_type Io, class Type>
+typename internal_result<Io, Type>::type internal(Type &X)
+{
+	return io_traits<Io, Type>::internal(X);
+}
+
+template<class Type>
+struct internal_in_result: internal_result<in, Type> {};
+
+template<class Type>
+typename internal_in_result<Type>::type internal_in(const Type &X) 
+{ 
+	return internal<in>(X); 
+}
+
+template<class Type>
+struct internal_in_out_result: internal_result<in_out, Type> {};
+
+template<class Type>
+typename internal_in_out_result<Type>::type internal_in_out(Type &X)
+{ 
+	return internal<in_out>(X); 
+}
+
+template<class Type>
+struct internal_out_result: internal_result<out, Type> {};
+
+template<class Type>
+typename internal_out_result<Type>::type internal_out(Type &X)
+{ 
+	return internal<out>(X); 
+}
+
+template<io_type Io, class Type>
+struct wrap_result 
+{
+	typedef typename io_traits<Io, Type>::wrap_result type;
+};
+
+template<io_type Io, class Type>
+typename wrap_result<Io, Type>::type wrap(
+	typename internal_result<Io, Type>::type &X)
+{
+	return io_traits<Io, Type>::wrap(X);
+}
+
+template<class Type>
+struct wrap_in_result: wrap_result<in, Type> {};
+
+template<class Type>
+typename wrap_in_result<Type>::type wrap_in(
+	typename internal_in_result<Type>::type &X)
+{
+	return wrap<in, Type>(X);
+}
+
+template<class Type>
+struct wrap_in_out_result: wrap_result<in_out, Type> {};
+
+template<class Type>
+typename wrap_in_out_result<Type>::type wrap_in_out(
+	typename internal_in_out_result<Type>::type &X)
+{
+	return wrap<in_out, Type>(X);
+}
+
+template<class Type>
+struct wrap_out_result: wrap_result<out, Type> {};
+
+template<class Type>
+typename wrap_out_result<Type>::type wrap_out(
+	typename internal_out_result<Type>::type &X)
+{
+	return wrap<out, Type>(X);
+}
 
 }
 }

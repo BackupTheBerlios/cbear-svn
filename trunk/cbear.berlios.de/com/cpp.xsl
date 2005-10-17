@@ -164,7 +164,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="odl:parameter" mode="odl:cpp">
 	<parameter id="{@id}">
-		<xsl:apply-templates select="odl:type.ref" mode="odl:cpp"/>
+		<id.ref type="&amp;">
+			<id.ref type="const">
+				<xsl:apply-templates select="odl:type.ref" mode="odl:cpp"/>
+			</id.ref>
+		</id.ref>
 	</parameter>
 </xsl:template>
 
@@ -199,59 +203,70 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template 
 	match="odl:parameter[odl:attribute/@id='in']" 
 	mode="odl:cpp.parameter.io">
-	<xsl:text>in</xsl:text>
+	<id.ref id="in"/>
 </xsl:template>
 
 <xsl:template 
 	match="odl:parameter[odl:attribute/@id='out']" 
 	mode="odl:cpp.parameter.io">
-	<xsl:text>out</xsl:text>
+	<id.ref id="out"/>
 </xsl:template>
 
 <xsl:template 
 	match="odl:parameter[odl:attribute/@id='in' and odl:attribute/@id='out']"
 	mode="odl:cpp.parameter.io">
-	<xsl:text>in_out</xsl:text>
-</xsl:template>
-
-<xsl:template match="odl:parameter" mode="odl:cpp.method.call">
-	<xsl:variable name="io">
-		<xsl:apply-templates select="." mode="odl:cpp.parameter.io"/>
-	</xsl:variable>
-	<id.ref id="{$io}" type="()">
-		<id.ref id="{@id}"/>
+	<id.ref type="|">
+		<id.ref id="in"/>
+		<id.ref id="out"/>
 	</id.ref>
 </xsl:template>
 
-<xsl:template match="odl:parameter" mode="odl:cpp.implementation.io">
-	<xsl:text>in_type</xsl:text>
-</xsl:template>
-
-<xsl:template 
-	match="odl:parameter[odl:attribute/@id='out']" 
-	mode="odl:cpp.implementation.io">
-	<xsl:text>out_type</xsl:text>
-</xsl:template>
-
-<xsl:template 
-	match="odl:parameter[odl:attribute/@id='out' and odl:attribute/@id='in']" 
-	mode="odl:cpp.implementation.io">
-	<xsl:text>in_out_type</xsl:text>
+<xsl:template match="odl:parameter" mode="odl:cpp.method.call">
+	<id.ref>
+		<id.ref type="::">
+			<id.ref id="com"/>
+			<id.ref id="internal" type="&lt;&gt;">
+				<xsl:apply-templates select="." mode="odl:cpp.parameter.io"/>
+			</id.ref>
+		</id.ref>
+		<id.ref type="()">
+			<id.ref id="{@id}"/>
+		</id.ref>
+	</id.ref>
 </xsl:template>
 
 <xsl:template match="odl:parameter" mode="odl:cpp.implementation">
 	<parameter id="{@id}">
-		<xsl:variable name="io">
-			<xsl:apply-templates select="." mode="odl:cpp.implementation.io"/>
-		</xsl:variable>
 		<id.ref type="::">
-			<id.ref id="{$io}" type="&lt;&gt;">
+			<id.ref id="internal_result" type="&lt;&gt;">
+				<xsl:apply-templates select="." mode="odl:cpp.parameter.io"/>
 				<xsl:apply-templates select="odl:type.ref" mode="odl:cpp"/>
 			</id.ref>
 			<id.ref id="type"/>
 		</id.ref>
 	</parameter>
 </xsl:template>
+
+<xsl:template 
+	match="odl:parameter" mode="odl:cpp.implementation.call.parameter">
+	<id.ref>
+		<id.ref id="wrap" type="&lt;&gt;">
+			<xsl:apply-templates select="." mode="odl:cpp.parameter.io"/>
+			<xsl:apply-templates select="odl:type.ref" mode="odl:cpp"/>
+		</id.ref>
+		<id.ref type="()">
+			<id.ref id="{@id}"/>
+		</id.ref>
+	</id.ref>
+</xsl:template>
+
+<xsl:template match="odl:parameter" mode="odl:cpp.implementation.call">
+	<xsl:apply-templates select="." mode="odl:cpp.implementation.call.parameter"/>
+</xsl:template>
+
+<xsl:template 
+	match="odl:parameter[odl:attribute/@id='retval']" 
+	mode="odl:cpp.implementation.call"/>
 
 <!-- method -->
 
@@ -323,6 +338,39 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</method>	
 </xsl:template>
 
+<xsl:template match="odl:method" mode="odl:cpp.method.id.long">
+	<xsl:value-of select="concat(../@id, '_')"/>
+	<xsl:apply-templates select="." mode="odl:cpp.method.id.short"/>
+</xsl:template>
+
+<xsl:template match="odl:method" mode="odl:cpp.implementation.call">
+	<xsl:variable name="id.long">
+		<xsl:apply-templates select="." mode="odl:cpp.method.id.long"/>
+	</xsl:variable>
+	<id.ref type="-&gt;">
+		<id.ref type="this"/>
+		<id.ref id="{$id.long}" type="()">
+		<xsl:apply-templates 
+			select="odl:parameter" mode="odl:cpp.implementation.call"/>
+		</id.ref>
+	</id.ref>
+</xsl:template>
+
+<xsl:template match="odl:method" mode="odl:cpp.implementation.assign">
+	<xsl:apply-templates select="." mode="odl:cpp.implementation.call"/>
+</xsl:template>
+
+<xsl:template 
+	match="odl:method[odl:parameter/odl:attribute/@id='retval']" 
+	mode="odl:cpp.implementation.assign">
+	<id.ref type="=">
+		<xsl:apply-templates 
+			select="odl:parameter[odl:attribute/@id='retval']" 
+			mode="odl:cpp.implementation.call.parameter"/>
+		<xsl:apply-templates select="." mode="odl:cpp.implementation.call"/>
+	</id.ref>
+</xsl:template>
+
 <xsl:template match="odl:method" mode="odl:cpp.implementation">
 	<xsl:variable name="id.short">
 		<xsl:apply-templates select="." mode="odl:cpp.method.id.short"/>
@@ -330,7 +378,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:variable name="id">
 		<xsl:apply-templates select="." mode="odl:cpp.method.id"/>
 	</xsl:variable>
-	<xsl:variable name="id.long" select="concat(../@id, '_', $id.short)"/>
+	<xsl:variable name="id.long">
+		<xsl:apply-templates select="." mode="odl:cpp.method.id.long"/>
+	</xsl:variable>
 	<method id="{$id.long}">
 		<virtual/>
 		<xsl:apply-templates select="." mode="odl:cpp.method.id.ref"/>
@@ -347,10 +397,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<body>
 			<try>
 				<body>
-					<id.ref type="-&gt;">
-						<id.ref type="this"/>
-						<id.ref id="{$id.long}" type="()"/>
-					</id.ref>
+				  <xsl:apply-templates select="." mode="odl:cpp.implementation.assign"/>
 					<id.ref type="return">
 						<id.ref type="::">
 							<id.ref id="hresult"/>
@@ -362,9 +409,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					<parameter><id.ref id="..."/></parameter>
 					<body>
 						<id.ref type="return">
-							<id.ref type="::">
-								<id.ref id="exception"/>
-								<id.ref id="catch_" type="()"/>
+							<id.ref type=".">
+								<id.ref type="::">
+									<id.ref id="exception"/>
+									<id.ref id="catch_" type="()"/>
+								</id.ref>
+								<id.ref id="internal" type="()"/>
 							</id.ref>
 						</id.ref>
 					</body>
@@ -458,9 +508,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		id="{$path}">
 		<header>
 			<include href="{concat($path, '.h')}"/>
-			<include href="cbear.berlios.de/com/in.hpp"/>
-			<include href="cbear.berlios.de/com/in_out.hpp"/>
-			<include href="cbear.berlios.de/com/out.hpp"/>
 			<include href="cbear.berlios.de/com/variant_bool.hpp"/>
 			<include href="cbear.berlios.de/com/int.hpp"/>
 			<include href="cbear.berlios.de/com/byte.hpp"/>

@@ -102,7 +102,7 @@ public:
 		if(P)
 		{
 			P->QueryInterface(
-				object_type::uuid().internal(), (void **)out(Result));
+				object_type::uuid().internal(), (void **)com::internal<out>(Result));
 		}
 		return Result;
 	}		

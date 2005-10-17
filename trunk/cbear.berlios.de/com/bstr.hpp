@@ -100,6 +100,8 @@ typedef policy::wrap<bstr_t, ::BSTR, bstr_policy> bstr_wrap;
 
 }
 
+#pragma pack(push, 1)
+
 class bstr_t: public detail::bstr_wrap
 {
 public:
@@ -111,6 +113,8 @@ public:
 	template< ::std::size_t Size>
 	bstr_t(const wchar_t (&X)[Size]): wrap_type(iterator_range(X), 0) {}
 };
+
+#pragma pack(pop)
 
 }
 }
