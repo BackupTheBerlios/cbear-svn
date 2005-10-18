@@ -19,5 +19,5 @@
 @rem LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 @rem FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 @rem DEALINGS IN THE SOFTWARE.
-c:\nxslt-1.6\bin\nxslt index.xml test/main.xsl -o _test.bat -xi
+c:\nxslt-1.6.2\bin\nxslt index.xml test/main.xsl -o _test.bat -xi
 call _test.bat

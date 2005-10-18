@@ -29,7 +29,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns:cbear.exslt.common="http://cbear.berlios.de/exslt/common"
 	extension-element-prefixes="exsl">
 
-<xsl:import href="../exslt/common/document.xsl"/>
+<!-- <xsl:import href="../exslt/common/document.xsl"/> -->
 <xsl:import href="html.xsl"/>
 
 <xsl:output method="text" encoding="ascii"/>
@@ -46,32 +46,23 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:apply-templates select="cpp:header" mode="cpp:cpp"/>
 	</xsl:variable>
 
-	<xsl:variable name="header">
-		<document
-			href="{concat($cpp:cpp.root, @id, '.hpp')}"
-			method="text"
-			encoding="ascii">
-			<xsl:value-of select="$header.content"/>
-		</document>
-	</xsl:variable>
-
-	<xsl:apply-templates 
-		select="exsl:node-set($header)/*" mode="cbear.exslt.common:document"/>
+	<exsl:document
+		href="{concat($cpp:cpp.root, @id, '.hpp')}"
+		method="text"
+		encoding="ascii">
+		<xsl:value-of select="$header.content"/>
+	</exsl:document>
 
 	<xsl:if test="cpp:code">
 		<xsl:variable name="code.content">
 			<xsl:apply-templates select="cpp:header" mode="cpp:cpp"/>
 		</xsl:variable>
-		<xsl:variable name="code">
-			<document
-				href="{concat($cpp:cpp.root, @id, '.cpp')}"
-				method="text"
-				encoding="ascii">
-				<xsl:value-of select="$code.content"/>
-			</document>
-		</xsl:variable>
-		<xsl:apply-templates 
-			select="exsl:node-set($code)/*" mode="cbear.exslt.common:document"/>
+		<exsl:document
+			href="{concat($cpp:cpp.root, @id, '.cpp')}"
+			method="text"
+			encoding="ascii">
+			<xsl:value-of select="$code.content"/>
+		</exsl:document>
 	</xsl:if>
 </xsl:template>
 

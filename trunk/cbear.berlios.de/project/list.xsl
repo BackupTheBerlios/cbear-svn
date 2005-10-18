@@ -34,7 +34,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	exclude-result-prefixes="prj xi">
 
 <xsl:import href="../url/main.xsl"/>
-<xsl:import href="../exslt/common/document.xsl"/>
+<!-- <xsl:import href="../exslt/common/document.xsl"/> -->
 <xsl:import href="html.xsl"/>
 
 <!-- XHTML 1.1. -->

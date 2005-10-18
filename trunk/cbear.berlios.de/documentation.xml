@@ -35,7 +35,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<section>
 		<title>XSLT Libraires</title>
 		<xi:include href="text/index.xml"/>
+<!--
 		<xi:include href="exslt/index.xml"/>
+-->
 		<xi:include href="url/index.xml"/>
 		<xi:include href="docbook/index.xml"/>
 		<xi:include href="test/index.xml"/>

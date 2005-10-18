@@ -29,6 +29,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:cbear.docbook="http://cbear.berlios.de/docbook"
 	xmlns:cbear.exslt.common="http://cbear.berlios.de/exslt/common"
+	extension-element-prefixes="exsl"
 	exclude-result-prefixes="xi cbear.docbook cbear.exslt.common">
 
 <xsl:import href="list.xsl"/>

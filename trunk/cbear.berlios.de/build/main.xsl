@@ -11,7 +11,7 @@
 	extension-element-prefixes="date str exsl"
 	exclude-result-prefixes="xi cbear.exslt.common">
 
-<xsl:import href="../exslt/common/document.xsl"/>
+<!-- <xsl:import href="../exslt/common/document.xsl"/> -->
 
 <xsl:output method="text" encoding="iso-8859-1"/>
 
@@ -41,8 +41,7 @@
 			@value, 
 			$sub,
 			'.zip')"/>
-	<xsl:variable name="document">
-		<document
+	<exsl:document
 				href="_build.bat"
 				method="text"
 				encoding="iso-8859-1">
@@ -53,21 +52,20 @@
 		'cbear.berlios.de/',
 		$name, 
 		' cbear.berlios.de/*')"/>
-		</document>
-	</xsl:variable>
+	</exsl:document>
+<!--
 	<xsl:apply-templates 
 		select="exsl:node-set($document)/*" mode="cbear.exslt.common:document"/>
-	<xsl:variable name="nightbuild">
-		<document href="_nightbuild.html">
-			<html>
-				<body>
-					<a href="{$name}"><xsl:value-of select="$name"/></a>
-				</body>
-			</html>
-		</document>
-	</xsl:variable>
-	<xsl:apply-templates 
-		select="exsl:node-set($nightbuild)/*" mode="cbear.exslt.common:xhtml11"/>
+	<exsl:document 
+		href="_nightbuild.html"
+		method=>
+		<html>
+			<body>
+				<a href="{$name}"><xsl:value-of select="$name"/></a>
+			</body>
+		</html>
+	</exsl:document>
+-->
 </xsl:template>
 
 </xsl:stylesheet>

@@ -28,13 +28,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:cbear="http://cbear.berlios.de"
-	xmlns:cbear.exslt.common="http://cbear.berlios.de/exslt/common"
 	xmlns:map="http://www.google.com/schemas/sitemap/0.84"
 	extension-element-prefixes="exsl"
-	exclude-result-prefixes="cbear.exslt.common cbear xi map">
+	exclude-result-prefixes="cbear xi map">
 
 <xsl:import href="html.ex.xsl"/>
-<xsl:import href="../exslt/common/document.xsl"/>
 
 <xsl:output 
 	method="xml" 
@@ -89,44 +87,22 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:value-of select="exsl:node-set($document)/section/title"/>
 	</xsl:message>
 
-	<xsl:variable name="output">
-		<document
-			href="{@output}"
-			encoding="utf-8">
-			<xsl:apply-templates 
-				select="exsl:node-set($document)/section" mode="docbook.html.root">
-				<xsl:with-param 
-					name="top" select="cbear:parameter[@name='docbook.html.top']/@value"/>
-				<xsl:with-param 
-					name="up" select="cbear:parameter[@name='docbook.html.up']/@value"/>
-				<xsl:with-param 
-					name="root" select="cbear:parameter[@name='docbook.html.root']/@value"/>
-			</xsl:apply-templates>
-		</document>
-	</xsl:variable>
-	<xsl:apply-templates 
-		select="exsl:node-set($output)/*" mode="cbear.exslt.common:xhtml11"/>
-
-<!--
-	<xsl:variable name="output">
-		<document
-			href="{@output}"
-			method="xml"
-			encoding="iso-8859-1"
-			doctype-public="-//W3C//DTD XHTML 1.1//EN"
-			doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-			<xsl:apply-templates 
-				select="exsl:node-set($document)/section" mode="docbook.html.root">
-				<xsl:with-param 
-					name="top" select="cbear:parameter[@name='docbook.html.top']/@value"/>
-				<xsl:with-param 
-					name="up" select="cbear:parameter[@name='docbook.html.up']/@value"/>
-			</xsl:apply-templates>
-		</document>
-	</xsl:variable>
-	<xsl:apply-templates 
-		select="exsl:node-set($output)/*" mode="cbear.exslt.common:document"/>
--->
+	<exsl:document
+		href="{@output}"
+		encoding="utf-8"
+		method="xml"
+		doctype-public="-//W3C//DTD XHTML 1.1//EN"
+  	doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+		<xsl:apply-templates 
+			select="exsl:node-set($document)/section" mode="docbook.html.root">
+			<xsl:with-param 
+				name="top" select="cbear:parameter[@name='docbook.html.top']/@value"/>
+			<xsl:with-param 
+				name="up" select="cbear:parameter[@name='docbook.html.up']/@value"/>
+			<xsl:with-param 
+				name="root" select="cbear:parameter[@name='docbook.html.root']/@value"/>
+		</xsl:apply-templates>
+	</exsl:document>
 </xsl:template>
 
 <!-- Document -->
@@ -206,25 +182,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- Root -->
 <xsl:template match="/">
-	<xsl:variable name="sitemap">
-		<document
-			href="sitemap.xml"
-			doctype-public=" "
-			doctype-system=" ">
-			<map:urlset>
-				<xsl:call-template name="document">
-					<xsl:with-param name="document" select="."/>
-					<xsl:with-param name="fullname" select="'index'"/>
-				</xsl:call-template>
-				<xsl:apply-templates select="*" mode="docbook.list">
-					<xsl:with-param name="top" select="'index.html'"/>
-					<xsl:with-param name="up" select="'index.html'"/>
-				</xsl:apply-templates>
-			</map:urlset>
-		</document>
-	</xsl:variable>
-	<xsl:apply-templates 
-		select="exsl:node-set($sitemap)/*" mode="cbear.exslt.common:document"/>
+	<exsl:document
+		href="sitemap.xml"
+		method="xml">
+		<map:urlset>
+			<xsl:call-template name="document">
+				<xsl:with-param name="document" select="."/>
+				<xsl:with-param name="fullname" select="'index'"/>
+			</xsl:call-template>
+			<xsl:apply-templates select="*" mode="docbook.list">
+				<xsl:with-param name="top" select="'index.html'"/>
+				<xsl:with-param name="up" select="'index.html'"/>
+			</xsl:apply-templates>
+		</map:urlset>
+	</exsl:document>
 </xsl:template>
 
 </xsl:stylesheet>
