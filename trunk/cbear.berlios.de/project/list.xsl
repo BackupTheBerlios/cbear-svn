@@ -55,6 +55,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="/prj:section" mode="prj:list">
 	<xsl:param name="filename"/>
 	<xsl:message terminate="no"><xsl:value-of select="$filename"/></xsl:message>
+	<exsl:document 
+		href="{concat($filename, '.html')}"
+		encoding="utf-8"
+		method="xml">
+		<xsl:apply-templates select="." mode="prj:html"/>
+	</exsl:document>
+<!--
 	<xsl:variable name="output">
 		<document
 			href="{concat($filename, '.html')}"
@@ -65,6 +72,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:variable>
 	<xsl:apply-templates 
 		select="exsl:node-set($output)/*" mode="cbear.exslt.common:document"/>
+-->
 </xsl:template>
 
 <xsl:template match="*">

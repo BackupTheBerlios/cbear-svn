@@ -36,19 +36,30 @@ utilities for different programming languages and platforms.
 	</section>
 	<section>
 		<title>Download</title>
-		<itemizedlist>
-			<listitem>
-				<para>
-<ulink url="http://sourceforge.net/projects/cbear">Releases</ulink>.
+		<section>
+			<title>Releases</title>
+			<itemizedlist>
+				<listitem>
+					<para>
+<ulink url="http://sourceforge.net/projects/cbear"
+>Download from SourceForge</ulink>.
 				</para>
-			</listitem>
-			<listitem>
-				<para>
+				</listitem>
+				<listitem>
+					<para>
+<ulink url="http://developer.berlios.de/projects/cbear"
+>Download from BerliOS</ulink>.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</section>
+		<section>
+			<title>Night Build</title>
+			<para>
 <ulink url="ftp://ftp@ftp.berlios.de:/pub/cbear"
->Night Build (Public FTP)</ulink>.
-				</para>
-			</listitem>
-		</itemizedlist>
+>Download from public FTP</ulink>.
+			</para>
+		</section>
 	</section>
 	<section>
 		<title>Authors</title>
