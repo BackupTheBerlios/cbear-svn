@@ -78,8 +78,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<id.ref type="::">
 			<id.ref/>
 			<id.ref id="cbear_berlios_de"/>
-			<id.ref id="policy"/>
-			<id.ref id="wrap" type="&lt;&gt;">
+			<id.ref id="com"/>
+			<id.ref id="enum_t" type="&lt;&gt;">
 				<xsl:copy-of select="$name"/>
 				<xsl:copy-of select="$internal"/>
 			</id.ref>
@@ -508,6 +508,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		id="{$path}">
 		<header>
 			<include href="{concat($path, '.h')}"/>
+			<include href="cbear.berlios.de/com/enum.hpp"/>
 			<include href="cbear.berlios.de/com/variant_bool.hpp"/>
 			<include href="cbear.berlios.de/com/int.hpp"/>
 			<include href="cbear.berlios.de/com/byte.hpp"/>

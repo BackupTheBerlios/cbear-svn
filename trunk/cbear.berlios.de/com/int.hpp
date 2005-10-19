@@ -32,6 +32,10 @@ namespace com
 
 typedef ::INT int_t;
 
+template<> struct traits<int_t>: default_traits<int_t, ::VT_INT> {};
+
+//CBEAR_BERLIOS_DE_COM_DECLARE_DEFAULT_TRAITS(int_t, ::VT_INT);
+
 }
 }
 

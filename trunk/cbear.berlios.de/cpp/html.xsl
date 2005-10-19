@@ -202,25 +202,25 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="cpp:id.ref[@type='const']" mode="cpp:html.id.ref">
 	<span style="{$cpp:html.keyword}">const</span>
-	<xsl:text> </xsl:text>
+	<xsl:value-of select="' '"/>
 	<xsl:apply-templates select="." mode="cpp:html.id.ref.type"/>
 </xsl:template>
 
 <xsl:template match="cpp:id.ref[@type='typename']" mode="cpp:html.id.ref">
 	<span style="{$cpp:html.keyword}">typename</span>
-	<xsl:text> </xsl:text>
+	<xsl:value-of select="' '"/>
 	<xsl:apply-templates select="." mode="cpp:html.id.ref.type"/>
 </xsl:template>
 
 <xsl:template match="cpp:id.ref[@type='declare']" mode="cpp:html.id.ref">
 	<xsl:apply-templates select="cpp:id.ref" mode="cpp:html.id.ref"/>
-	<xsl:text> </xsl:text>
+	<xsl:value-of select="' '"/>
 	<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
 </xsl:template>
 
 <xsl:template match="cpp:id.ref[@type='return']" mode="cpp:html.id.ref">
 	<span style="{$cpp:html.keyword}">return</span>
-	<xsl:text> </xsl:text>
+	<xsl:value-of select="' '"/>
 	<xsl:apply-templates select="cpp:id.ref" mode="cpp:html.id.ref"/>
 </xsl:template>
 
@@ -244,7 +244,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="cpp:method/cpp:id.ref" mode="cpp:html">
 	<xsl:apply-templates select="." mode="cpp:html.id.ref"/>
-	<xsl:text> </xsl:text>
+	<xsl:value-of select="' '"/>
 </xsl:template>
 
 <xsl:template match="cpp:body/cpp:id.ref" mode="cpp:html">
@@ -275,7 +275,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
 			<span style="{$cpp:html.keyword}">enum</span>
-			<xsl:text> </xsl:text>
+			<xsl:value-of select="' '"/>
 			<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
 		</xsl:with-param>
 	</xsl:call-template>
@@ -290,9 +290,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
 			<span style="{$cpp:html.keyword}">typedef</span>
-			<xsl:text> </xsl:text>
+			<xsl:value-of select="' '"/>
 			<xsl:apply-templates select="cpp:id.ref" mode="cpp:html"/>
-			<xsl:text> </xsl:text>
+			<xsl:value-of select="' '"/>
 			<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
 			<xsl:text>;</xsl:text>
 		</xsl:with-param>
@@ -302,7 +302,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- const -->
 
 <xsl:template match="cpp:const" mode="cpp:html">
-	<xsl:text> </xsl:text>
+	<xsl:value-of select="' '"/>
 	<span style="{$cpp:html.keyword}">const</span>
 </xsl:template>
 
@@ -317,28 +317,28 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="cpp:explicit" mode="cpp:html">
 	<span style="{$cpp:html.keyword}">explicit</span>
-	<xsl:text> </xsl:text>	
+	<xsl:value-of select="' '"/>	
 </xsl:template>
 
 <!-- static -->
 
 <xsl:template match="cpp:static" mode="cpp:html">
 	<span style="{$cpp:html.keyword}">static</span>
-	<xsl:text> </xsl:text>	
+	<xsl:value-of select="' '"/>	
 </xsl:template>
 
 <!-- virtual -->
 
 <xsl:template match="cpp:virtual" mode="cpp:html">
 	<span style="{$cpp:html.keyword}">virtual</span>
-	<xsl:text> </xsl:text>
+	<xsl:value-of select="' '"/>
 </xsl:template>
 
 <!-- stdcall -->
 
 <xsl:template match="cpp:stdcall" mode="cpp:html">
 	<span style="{$cpp:html.keyword}">__stdcall</span>
-	<xsl:text> </xsl:text>
+	<xsl:value-of select="' '"/>
 </xsl:template>
 
 <!-- parameter -->
@@ -346,7 +346,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template name="cpp:html.parameter">
 	<xsl:apply-templates select="cpp:id.ref" mode="cpp:html"/>
 	<xsl:if test="@id">
-		<xsl:text> </xsl:text>
+		<xsl:value-of select="' '"/>
 		<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
 	</xsl:if>
 </xsl:template>
@@ -494,7 +494,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
 			<span style="{$cpp:html.keyword}">class</span>
-			<xsl:text> </xsl:text>
+			<xsl:value-of select="' '"/>
 			<xsl:apply-templates select="cpp:id.ref" mode="cpp:html.id.ref"/>
 			<xsl:if test="cpp:access/cpp:id.ref">:</xsl:if>
 		</xsl:with-param>
@@ -505,7 +505,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<span style="{$cpp:html.keyword}">
 					<xsl:value-of select="../@access"/>
 				</span>
-				<xsl:text> </xsl:text>
+				<xsl:value-of select="' '"/>
 				<xsl:apply-templates select="." mode="cpp:html.id.ref"/>
 				<xsl:if test="position()!=last()">,</xsl:if>
 			</xsl:with-param>
@@ -520,7 +520,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template name="cpp:html.id">
 	<span style="{$cpp:html.keyword}">class</span>
-	<xsl:text> </xsl:text>
+	<xsl:value-of select="' '"/>
 	<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
 	<xsl:if test="position()!=last()">, </xsl:if>
 </xsl:template>
@@ -551,7 +551,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
 			<span style="{$cpp:html.keyword}">namespace</span>
-			<xsl:text> </xsl:text>
+			<xsl:value-of select="' '"/>
 			<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
 		</xsl:with-param>
 	</xsl:call-template>

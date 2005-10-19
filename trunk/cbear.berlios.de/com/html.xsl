@@ -65,7 +65,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<span style="{$odl:color.keyword}">
 		<xsl:value-of select="local-name()"/>
 	</span>
-	<xsl:text> </xsl:text>
+	<xsl:value-of select="' '"/>
 	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 </xsl:template>
 
@@ -172,7 +172,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="odl:coclass/odl:type.ref" mode="odl:html.name">
 	<span style="{$odl:color.keyword}">interface</span>
-	<xsl:text> </xsl:text>
+	<xsl:value-of select="' '"/>
 	<xsl:apply-templates select="." mode="odl:html.a"/>
 </xsl:template>
 
@@ -230,7 +230,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="odl:method" mode="odl:html.name.header">
 	<xsl:for-each select="odl:parameter[odl:attribute/@id='retval']">
 		<xsl:apply-templates select="odl:type.ref" mode="odl:html.a"/>
-		<xsl:text> </xsl:text>
+		<xsl:value-of select="' '"/>
 	</xsl:for-each>
 	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 </xsl:template>
@@ -315,7 +315,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="odl:interface" mode="odl:html.name">
 	<span style="{$odl:color.keyword}">interface</span>
-	<xsl:text> </xsl:text>
+	<xsl:value-of select="' '"/>
 	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 	<xsl:text>: </xsl:text>
 	<xsl:apply-templates select="odl:type.ref" mode="odl:html.a"/>

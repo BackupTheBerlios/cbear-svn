@@ -77,11 +77,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<cbear:parameters source="{$test}" output="{$exe}"/>
 		</xsl:variable>
 		<xsl:apply-templates select="exsl:node-set($parameters)" mode="cpp"/>
-<xsl:text>
-</xsl:text>
+		<xsl:text>&#10;</xsl:text>
 		<xsl:value-of select="translate($exe, '/', '\')"/>
-<xsl:text>
-</xsl:text>
+		<xsl:text>&#10;</xsl:text>
 	</xsl:if>
 </xsl:template>
 

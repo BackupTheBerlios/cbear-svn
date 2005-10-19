@@ -32,6 +32,8 @@ namespace com
 
 typedef ::BYTE byte_t;
 
+CBEAR_BERLIOS_DE_COM_DECLARE_DEFAULT_TRAITS(byte_t, ::VT_UI1);
+
 }
 }
 

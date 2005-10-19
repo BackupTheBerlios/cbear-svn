@@ -30,7 +30,11 @@ namespace cbear_berlios_de
 namespace com
 {
 
-typedef ::DATE date_t;
+class date_t: public policy::wrap<date_t, ::DATE> 
+{
+public:
+	static const vartype_t vt = ::VT_DATE;
+};
 
 }
 }

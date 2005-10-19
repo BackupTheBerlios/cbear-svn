@@ -23,6 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_COM_TRAITS_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_COM_TRAITS_HPP_INCLUDED
 
+#include <cbear.berlios.de/base/undefined.hpp>
 #include <cbear.berlios.de/policy/main.hpp>
 
 // BOOST_STATIC_ASSERT
@@ -31,6 +32,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <boost/mpl/if.hpp>
 // boost::is_class
 #include <boost/type_traits/is_class.hpp>
+// boost::is_enum
+#include <boost/type_traits/is_enum.hpp>
 
 namespace cbear_berlios_de
 {
@@ -47,6 +50,8 @@ enum io_type
 	in_out = in|out,
 };
 
+typedef ::VARTYPE vartype_t;
+
 template<class Type>
 struct class_traits
 {
@@ -55,6 +60,8 @@ struct class_traits
 	typedef typename internal_policy::type internal_type;
 
 	BOOST_STATIC_ASSERT(sizeof(type)==sizeof(internal_type));
+
+	static const vartype_t vt = type::vt;
 
 	template<io_type Io>
 	struct io_traits;
@@ -110,13 +117,15 @@ struct class_traits
 	};
 };
 
-template<class Type>
+template<class Type, vartype_t Vt>
 struct default_traits
 {
 	typedef Type type;
 	typedef policy::standard_policy<type> internal_policy;
 
 	typedef type internal_type;
+
+	static const vartype_t vt = Vt;
 
 	template<io_type Io>
 	struct io_traits;
@@ -160,9 +169,22 @@ struct default_traits
 	};
 };
 
+struct undefined_traits
+{
+	template<io_type> struct io_traits 
+	{
+		typedef base::undefined internal_result;
+	};
+};
+
 template<class Type>
-struct traits: boost::mpl::if_<
-	boost::is_class<Type>, class_traits<Type>, default_traits<Type> >::type
+struct enum_traits: default_traits<Type, ::VT_INT> {};
+
+template<class Type>
+struct traits: 
+	boost::mpl::if_<boost::is_class<Type>, class_traits<Type>, 
+	typename boost::mpl::if_<boost::is_enum<Type>, enum_traits<Type>,
+	undefined_traits>::type>::type
 {
 };
 
@@ -256,6 +278,9 @@ typename wrap_out_result<Type>::type wrap_out(
 {
 	return wrap<out, Type>(X);
 }
+
+#define CBEAR_BERLIOS_DE_COM_DECLARE_DEFAULT_TRAITS(T, VT) \
+	template<> struct traits<T>: default_traits<T, VT> {}
 
 }
 }

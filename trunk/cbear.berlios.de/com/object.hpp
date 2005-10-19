@@ -93,6 +93,11 @@ public:
 	typedef interface_type *internal_type;
 	typedef object_policy<interface_type> internal_policy;
 
+	static const vartype_t vt = 
+		boost::is_base_of< ::IDispatch, Interface>::value ? 
+			::VT_DISPATCH: 
+			::VT_UNKNOWN;
+
 	template<class Type>
 	typename add_object<Type>::type query_interface() const
 	{

@@ -34,6 +34,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/range/lexicographical_compare.hpp>
 #include <cbear.berlios.de/base/integer.hpp>
+#include <cbear.berlios.de/com/traits.hpp>
 
 namespace cbear_berlios_de
 {
@@ -65,6 +66,8 @@ typedef policy::wrap<uuid, uuid_internal_type, uuid_policy> uuid_wrap;
 class uuid: public detail::uuid_wrap
 {
 public:
+
+	static const vartype_t vt = ::VT_EMPTY;
 
 	uuid() {}
 

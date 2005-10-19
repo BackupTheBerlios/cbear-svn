@@ -92,7 +92,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<span style="{$odl:color.keyword}">
 		<xsl:value-of select="local-name()"/>
 	</span>
-	<xsl:text> </xsl:text>
+	<xsl:value-of select="' '"/>
 	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 </xsl:template>
 
@@ -233,7 +233,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:with-param name="text">
 			<xsl:apply-templates select="." mode="odl:color.attribute.list.line"/>
 			<span style="{$odl:color.id}">interface</span>
-			<xsl:text> </xsl:text>
+			<xsl:value-of select="' '"/>
 			<xsl:apply-templates select="." mode="odl:color.type.ref"/>
 			<xsl:text>;</xsl:text>
 		</xsl:with-param>
@@ -245,7 +245,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="odl:parameter" mode="odl:color.parameter.body">
 	<xsl:apply-templates select="." mode="odl:color.attribute.list.line"/>
 	<xsl:apply-templates select="odl:type.ref" mode="odl:color"/>
-	<xsl:text> </xsl:text>
+	<xsl:value-of select="' '"/>
 	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 </xsl:template>
 
@@ -263,7 +263,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="odl:method" mode="odl:color.header">
 	<xsl:apply-templates select="odl:type.ref" mode="odl:color.type.ref"/>
-	<xsl:text> </xsl:text>
+	<xsl:value-of select="' '"/>
 	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 	<xsl:text>(</xsl:text>
 	<xsl:apply-templates select="odl:parameter" mode="odl:color"/>
@@ -283,7 +283,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="odl:interface" mode="odl:color.header">
 	<span style="{$odl:color.keyword}">interface</span>
-	<xsl:text> </xsl:text>
+	<xsl:value-of select="' '"/>
 	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 	<xsl:text>: </xsl:text>
 	<span style="{$odl:color.id}">

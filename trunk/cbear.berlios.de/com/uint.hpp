@@ -32,6 +32,8 @@ namespace com
 
 typedef ::UINT uint_t;
 
+CBEAR_BERLIOS_DE_COM_DECLARE_DEFAULT_TRAITS(uint_t, ::VT_UINT);
+
 }
 }
 

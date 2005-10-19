@@ -31,8 +31,50 @@ namespace com
 {
 
 template<class ValueType>
+class safearray_t;
+
+namespace detail
+{
+
+template<class ValueType>
+class safearray_policy: private policy::standard_policy< ::SAFEARRAY *>
+{
+public:
+	typedef ::SAFEARRAY *type;
+	typedef policy::standard_policy<type> standard_policy;
+
+	using standard_policy::construct;
+
+	static void construct_copy(type &X, const type &C) 
+	{ 
+		if(C)
+		{
+			exception::throw_unless(::SafeArrayCopy(C, &X));
+		}
+		else
+		{
+			X = 0;
+		}
+	}
+	static void destroy(type &X)
+	{
+		if(X) exception::throw_unless(::SafeArrayDestroy(X));
+	}
+	static void assign(type &X, const type &C)
+	{
+		destroy(X);
+		construct_copy(X, C);
+	}
+};
+
+}
+
+template<class ValueType>
 class safearray_t: public policy::wrap<safearray_t<ValueType>, ::SAFEARRAY *>
 {
+public:
+	static const vartype_t value_type_vt = traits<ValueType>::vt;
+	static const vartype_t vt = VT_ARRAY | value_type_vt;
 };
 
 }

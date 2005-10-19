@@ -109,6 +109,7 @@ public:
 	typedef wrap_type::internal_policy internal_policy;
 	typedef internal_policy::value_type value_type;
 	typedef internal_policy::iterator_range iterator_range;
+	static const vartype_t vt = ::VT_BSTR;
 	bstr_t() {}
 	template< ::std::size_t Size>
 	bstr_t(const wchar_t (&X)[Size]): wrap_type(iterator_range(X), 0) {}

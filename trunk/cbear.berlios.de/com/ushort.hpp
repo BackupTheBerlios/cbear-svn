@@ -32,6 +32,8 @@ namespace com
 
 typedef ::USHORT ushort_t;
 
+CBEAR_BERLIOS_DE_COM_DECLARE_DEFAULT_TRAITS(ushort_t, ::VT_UI2);
+
 }
 }
 

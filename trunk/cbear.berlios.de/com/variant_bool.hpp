@@ -66,6 +66,7 @@ typedef policy::wrap<variant_bool_t, ::VARIANT_BOOL, variant_bool_policy>
 class variant_bool_t: public detail::variant_bool_wrap
 {
 public:
+	static const vartype_t vt = ::VT_BOOL;
 	typedef detail::variant_bool_wrap::internal_policy internal_policy;
 	operator bool() const { return internal_policy::cast(this->internal()); }
 };

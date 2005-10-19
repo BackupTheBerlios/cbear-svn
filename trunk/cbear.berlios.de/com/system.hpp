@@ -28,6 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/com/exception.hpp>
 #include <cbear.berlios.de/com/object.hpp>
+#include <cbear.berlios.de/com/enum.hpp>
 
 namespace cbear_berlios_de
 {
@@ -50,10 +51,10 @@ public:
 	~system() { ::CoUninitialize(); }
 };
 
-class clsctx: public policy::wrap<clsctx, ::DWORD>
+class clsctx: public com::enum_t<clsctx, ::DWORD>
 {
 public:
-	typedef policy::wrap<clsctx, ::DWORD> wrap_type;
+	typedef com::enum_t<clsctx, ::DWORD> wrap_type;
 	enum enumeration_type 
 	{ 
     inproc_server = CLSCTX_INPROC_SERVER, 

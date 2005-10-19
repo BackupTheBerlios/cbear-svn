@@ -32,6 +32,8 @@ namespace com
 
 typedef ::DOUBLE double_t;
 
+CBEAR_BERLIOS_DE_COM_DECLARE_DEFAULT_TRAITS(double_t, ::VT_R8);
+
 }
 }
 
