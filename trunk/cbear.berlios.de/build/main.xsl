@@ -6,16 +6,27 @@
 	xmlns:date="http://exslt.org/dates-and-times"
 	xmlns:str="http://exslt.org/strings"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns:cbear.exslt.common="http://cbear.berlios.de/exslt/common"
+	xmlns:build="http://cbear.berlios.de/build"
+	xmlns:svn="svn:"
 	xmlns="http://www.w3.org/1999/xhtml"
 	extension-element-prefixes="date str exsl"
-	exclude-result-prefixes="xi cbear.exslt.common">
+	exclude-result-prefixes="xi">
 
 <!-- <xsl:import href="../exslt/common/document.xsl"/> -->
 
 <xsl:output method="text" encoding="iso-8859-1"/>
 
-<xsl:template match="version">
+<xsl:template match="build:build">
+	<xsl:variable 
+		name="name" 
+		select="concat(
+			@name, 
+			'-',  
+			@version,
+			'.', 
+			document('.svn/entries', .)/svn:wc-entries/svn:entry/@revision,
+			'.zip')"/>
+	<!--
 	<xsl:variable name="sub">
 		<xsl:if test="@stable=''">
 			<xsl:variable name="date" select="date:date-time()"/>
@@ -41,6 +52,7 @@
 			@value, 
 			$sub,
 			'.zip')"/>
+	-->
 	<exsl:document
 				href="_build.bat"
 				method="text"
@@ -53,19 +65,6 @@
 		$name, 
 		' cbear.berlios.de/*')"/>
 	</exsl:document>
-<!--
-	<xsl:apply-templates 
-		select="exsl:node-set($document)/*" mode="cbear.exslt.common:document"/>
-	<exsl:document 
-		href="_nightbuild.html"
-		method=>
-		<html>
-			<body>
-				<a href="{$name}"><xsl:value-of select="$name"/></a>
-			</body>
-		</html>
-	</exsl:document>
--->
 </xsl:template>
 
 </xsl:stylesheet>

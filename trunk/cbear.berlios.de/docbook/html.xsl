@@ -404,6 +404,7 @@ div.epigraph table.literallayout
 div.main { margin: 0 0 0 0; padding: 0 0 0 0; }
 <xsl:call-template name="cbear.docbook:style"/>
 			</style>
+			<link rel="icon" href="icon.png" type="image/png"/>
 		</head>
 		<body>
 			<xsl:call-template name="cbear.docbook:body">

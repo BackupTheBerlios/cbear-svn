@@ -76,6 +76,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<li><xsl:apply-templates mode="prj:converter"/></li>
 </xsl:template>
 
+<xsl:template match="orderedlist" mode="prj:converter">
+	<ol><xsl:apply-templates mode="prj:converter"/></ol>
+</xsl:template>
+
 <xsl:template match="itemizedlist" mode="prj:converter">
 	<ul><xsl:apply-templates mode="prj:converter"/></ul>
 </xsl:template>

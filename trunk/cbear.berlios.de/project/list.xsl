@@ -21,7 +21,6 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
-<!-- XHTML 1.1. -->
 <xsl:stylesheet 
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -29,20 +28,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:prj="http://cbear.berlios.de/project"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns:cbear.exslt.common="http://cbear.berlios.de/exslt/common"
+	xmlns:cbear.html="http://cbear.berlios.de/html"
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="prj xi">
 
 <xsl:import href="../url/main.xsl"/>
-<!-- <xsl:import href="../exslt/common/document.xsl"/> -->
+<xsl:import href="../html/main.xsl"/>
 <xsl:import href="html.xsl"/>
-
-<!-- XHTML 1.1. -->
-<xsl:output 
-	method="xml"
-	encoding="utf-8"
-	doctype-public="-//W3C//DTD XHTML 1.1//EN"
-	doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
 
 <xsl:template match="prj:section[@href]" mode="prj:html">
 	<xsl:apply-imports/>
@@ -58,21 +50,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<exsl:document 
 		href="{concat($filename, '.html')}"
 		encoding="utf-8"
-		method="xml">
+		method="xml"
+		doctype-public="{$cbear.html:main.xhtml11.doctype-public}"
+		doctype-system="{$cbear.html:main.xhtml11.doctype-system}">
 		<xsl:apply-templates select="." mode="prj:html"/>
 	</exsl:document>
-<!--
-	<xsl:variable name="output">
-		<document
-			href="{concat($filename, '.html')}"
-			encoding="utf-8"
-			method="xml">
-			<xsl:apply-templates select="." mode="prj:html"/>
-		</document>
-	</xsl:variable>
-	<xsl:apply-templates 
-		select="exsl:node-set($output)/*" mode="cbear.exslt.common:document"/>
--->
 </xsl:template>
 
 <xsl:template match="*">

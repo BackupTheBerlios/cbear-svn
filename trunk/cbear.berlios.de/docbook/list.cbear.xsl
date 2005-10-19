@@ -85,7 +85,7 @@ span.header
 <xsl:template name="cbear.docbook:header">
 	<xsl:param name="root"/>
 	<div class="header">
-		<img src="{concat($root, 'mainlogo.png')}" height="92px" width="148px"/>
+		<img src="{concat($root, 'mainlogo.png')}" height="160px" width="160px"/>
 		<span class="header">C BEAR</span>
 	</div>
 </xsl:template>

@@ -28,6 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:prj="http://cbear.berlios.de/project"
+	xmlns:cbear.html="http://cbear.berlios.de/html"
 	exclude-result-prefixes="prj xi">
 
 <!-- XHTML 1.1. -->
@@ -108,6 +109,10 @@ pre
 	</xsl:element>
 </xsl:template>
 
+<xsl:template match="prj:*" mode="prj:html.id">
+	<xsl:value-of select="translate(@name, ' ,()+', '_____')"/>
+</xsl:template>
+
 <!-- a -->
 
 <xsl:template match="prj:a[.='']" mode="prj:html.a">
@@ -128,8 +133,11 @@ pre
 </xsl:template>
 
 <xsl:template match="prj:section" mode="prj:html.content.table.item">
+	<xsl:variable name="id">
+		<xsl:apply-templates select="." mode="prj:html.id"/>
+	</xsl:variable>
 	<li>
-		<a href="{concat('#', @name)}"><xsl:value-of select="@name"/></a>
+		<a href="{concat('#', $id)}"><xsl:value-of select="@name"/></a>
 		<xsl:apply-templates select="." mode="prj:html.content.table"/>
 	</li> 
 </xsl:template>
@@ -145,7 +153,10 @@ pre
 </xsl:template>
 
 <xsl:template match="prj:section" mode="prj:html">
-	<div id="{@name}">
+	<xsl:variable name="id">
+		<xsl:apply-templates select="." mode="prj:html.id"/>
+	</xsl:variable>
+	<div id="{$id}">
 		<h2><xsl:value-of select="@name"/></h2>
 		<xsl:apply-templates mode="prj:html"/>
 	</div>
@@ -158,10 +169,14 @@ pre
 <xsl:template match="/prj:section" mode="prj:html">
 	<html>
 		<head>
+			<title><xsl:value-of select="@name"/></title>
 			<style type="text/css"><xsl:copy-of select="$prj:html.style"/></style>
 		</head>
 		<body>
-			<div id="{@name}">
+			<xsl:variable name="id">
+				<xsl:apply-templates select="." mode="prj:html.id"/>
+			</xsl:variable>
+			<div id="{$id}">
 				<h1><xsl:value-of select="@name"/></h1>
 				<xsl:apply-templates select="." mode="prj:html.content.table"/>
 				<xsl:apply-templates mode="prj:html"/>

@@ -20,6 +20,6 @@
 @rem FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 @rem DEALINGS IN THE SOFTWARE.
 call html.nxslt.bat
-c:\nxslt-1.6.3\bin\nxslt version.xml build/main.xsl -xi -mo nxslt=1
+c:\nxslt-1.6.3\bin\nxslt build.xml build/main.xsl -xi -mo nxslt=1
 call _build.bat
 
