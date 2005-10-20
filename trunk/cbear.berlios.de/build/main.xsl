@@ -20,48 +20,22 @@
 	<xsl:variable 
 		name="name" 
 		select="concat(
+			'cbear.berlios.de\',
 			@name, 
 			'-',  
 			@version,
 			'.', 
 			document('.svn/entries', .)/svn:wc-entries/svn:entry/@revision,
 			'.zip')"/>
-	<!--
-	<xsl:variable name="sub">
-		<xsl:if test="@stable=''">
-			<xsl:variable name="date" select="date:date-time()"/>
-			<xsl:value-of select="concat(
-				'-',
-				date:year($date),
-				'-',
-				str:align(date:month-in-year($date), '00', 'right'), 
-				'-', 
-				str:align(date:day-in-month($date), '00', 'right'), 
-				'-',
-				str:align(date:hour-in-day($date), '00', 'right'), 
-				'-',
-				str:align(date:minute-in-hour($date), '00', 'right'),
-				'-',
-				str:align(date:second-in-minute($date), '00', 'right'))"/>
-		</xsl:if>
-	</xsl:variable>
-	<xsl:variable 
-		name="name" 
-		select="concat(
-			'cbear-', 
-			@value, 
-			$sub,
-			'.zip')"/>
-	-->
 	<exsl:document
 				href="_build.bat"
 				method="text"
 				encoding="iso-8859-1">
-<xsl:text>cd ..
-</xsl:text>
+<xsl:value-of select="'cd ..&#10;'"/>
+<xsl:value-of select="concat('del ', $name, '&#10;')"/>
 	<xsl:value-of select="concat(
-		'&#x22;c:\Program Files\7-zip\7z&#x22; a -r -tzip -x!*.zip ',
-		'cbear.berlios.de/',
+		'&#x22;c:\Program Files\7-zip\7z&#x22; a -r -tzip ',
+		'-x@cbear.berlios.de/x.txt ',
 		$name, 
 		' cbear.berlios.de/*')"/>
 	</exsl:document>
