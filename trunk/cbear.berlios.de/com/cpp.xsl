@@ -447,19 +447,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<id id="Base"/>
 		<class>
 			<id.ref id="object_content" type="&lt;&gt;">				
+				<id.ref id="Base"/>
 				<id.ref type="::">
 					<id.ref/>
 					<id.ref id="{@id}"/>
 				</id.ref>
-				<id.ref id="Base"/>
 			</id.ref>
 			<access access="public">
 				<id.ref id="object_content" type="&lt;&gt;">
+					<id.ref id="Base"/>
 					<id.ref type="::">
 						<id.ref/>
 						<id.ref id="{odl:type.ref/@id}"/>
 					</id.ref>
-					<id.ref id="Base"/>
 				</id.ref>
 				<xsl:apply-templates select="odl:method" mode="odl:cpp"/>
 			</access>
@@ -469,19 +469,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<id id="Base"/>
 		<class>
 			<id.ref id="implementation" type="&lt;&gt;">
+				<id.ref id="Base"/>
 				<id.ref type="::">
 					<id.ref/>
 					<id.ref id="{@id}"/>
 				</id.ref>
-				<id.ref id="Base"/>
 			</id.ref>
 			<access access="public">
 				<id.ref id="implementation_base" type="&lt;&gt;">
+					<id.ref id="Base"/>
 					<id.ref type="::">
 						<id.ref/>
 						<id.ref id="{@id}"/>
 					</id.ref>
-					<id.ref id="Base"/>
 					<id.ref type="::">
 						<id.ref/>
 						<id.ref id="{odl:type.ref/@id}"/>

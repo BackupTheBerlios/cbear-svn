@@ -72,8 +72,8 @@ private:
 
 }
 
-template<class Interface, class Base, class Parent>
-class implementation_base: public implementation<Parent, Base>
+template<class Base, class Interface, class Parent>
+class implementation_base: public implementation<Base, Parent>
 {
 public:
 	implementation_base() 
@@ -82,20 +82,20 @@ public:
 	}
 };
 
-template<class Interface, class Base>
+template<class Base, class Interface>
 class implementation: 
-	public implementation_base<Interface, Base, iunknown::interface_type>
+	public implementation_base<Base, Interface, iunknown::interface_type>
 {
 };
 
 template<class Base>
-class implementation<IUnknown, Base>: 
-	public implementation_base<IUnknown, Base, detail::implementation_info>
+class implementation<Base, IUnknown>: 
+	public implementation_base<Base, IUnknown, detail::implementation_info>
 {
 };
 
 template<class Base>
-class implementation<detail::implementation_info, Base>: 
+class implementation<Base, detail::implementation_info>: 
 	protected virtual detail::implementation_info,
 	public Base
 {

@@ -31,7 +31,7 @@ namespace cbear_berlios_de
 namespace com
 {
 
-template<class Interface, class Base = Interface>
+template<class Base, class Interface = Base>
 class implementation;
 
 template<class Interface>
@@ -134,7 +134,7 @@ protected:
 	}
 };
 
-template<class Interface, class Base>
+template<class Base, class Interface>
 class object_content: public object_base<Base>
 {
 };

@@ -100,6 +100,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<attribute id="version" value="{.}"/>
 </xsl:template>
 
+<!-- pragma -->
+
+<xsl:template match="api:pragma" mode="api:body"/>
+
+<xsl:template match="api:pragma" mode="api:body.pragma">
+	<xsl:copy-of select="odl:attribute"/>
+</xsl:template>
+
 <!-- const -->
 
 <xsl:template match="api:const" mode="api:body">
@@ -186,6 +194,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	match="api:interface[api:type.ref]" mode="api:com.odl.method.count.parents">
 	<xsl:apply-templates 
 		select="api:type.ref[1]" mode="api:com.odl.method.count"/>
+</xsl:template>
+
+<xsl:template
+	match="api:interface[api:type.ref/@library]" 
+	mode="api:com.odl.method.count.parents">
+	<xsl:for-each select="api:type.ref">
+		<xsl:variable name="library" select="@library"/>
+		<xsl:variable name="id" select="@id"/>
+		<xsl:apply-templates 
+			select="document(/api:library/api:using[@id=$library]/@href)/api:library/
+				api:interface[@id=$id]"
+			mode="api:com.odl.method.count.parents"/>
+	</xsl:for-each>
 </xsl:template>
 
 <xsl:template 
@@ -308,16 +329,40 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:copy-of select="exsl:node-set($type)/odl:type.ref/odl:type.ref"/>
 </xsl:template>
 
+<xsl:template match="api:interface" mode="api:body.dual"/>
+
+<xsl:template match="api:interface[api:type.ref]" mode="api:body.dual">
+	<xsl:variable name="id" select="api:type.ref/@id"/>
+	<xsl:apply-templates 
+		select="/api:library/api:interface[@id=$id]" mode="api:body.dual"/>
+</xsl:template>
+
+<xsl:template match="api:interface[api:type.ref/@library]" mode="api:body.dual">
+	<xsl:variable name="library" select="api:type.ref/@library"/>
+	<xsl:variable name="id" select="api:type.ref/@id"/>
+	<xsl:apply-templates
+		select="document(/api:library/api:using[@id=$library]/@href)/api:library/
+			api:interface[@id=$id]"
+		mode="api:body.dual"/>
+</xsl:template>
+
+<xsl:template 
+	match="api:interface[api:pragma/odl:alias/@id='IDispatch']" 
+	mode="api:body.dual">
+	<attribute id="dual"/>
+</xsl:template>
+
 <xsl:template match="api:interface" mode="api:body">
 	<interface>
 		<xsl:apply-templates select="@id" mode="api:body"/>
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
-		<attribute id="dual"/>
+		<xsl:apply-templates select="." mode="api:body.dual"/>
 		<attribute id="oleautomation"/>
+		<xsl:apply-templates select="api:pragma" mode="api:body.pragma"/>
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:if test="not(api:type.ref)">
-			<type.ref id="IDispatch"/>
+			<type.ref id="IUnknown"/>
 		</xsl:if>
 		<xsl:apply-templates select="*" mode="api:body"/>
 	</interface>
