@@ -146,37 +146,6 @@ public:
   { 
      return implementation_info::query_interface(U, PP); 
   }
-
-	// IDispatch
-
-	hresult::internal_type __stdcall GetTypeInfoCount(uint_t *) 
-	{ 
-		return hresult::e_fail; 
-	}
-
-	hresult::internal_type __stdcall GetTypeInfo(uint_t, ::LCID, ::ITypeInfo ** )
-	{
-		return hresult::e_fail;
-	}
-
-	hresult::internal_type __stdcall GetIDsOfNames(
-		const uuid::internal_type &, LPOLESTR *, uint_t, ::LCID, ::DISPID *)
-	{
-		return hresult::e_fail;
-	}
-
-	hresult::internal_type __stdcall Invoke(
-		::DISPID, 
-		const uuid::internal_type &, 
-		::LCID, 
-		::WORD, 
-		::DISPPARAMS *, 
-		::VARIANT *, 
-		::EXCEPINFO *, 
-		::UINT *)
-	{
-		return hresult::e_fail;
-	}
 };
 
 }

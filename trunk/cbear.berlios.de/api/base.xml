@@ -153,6 +153,12 @@ See <html:a href="http://cbear.berlios.de/api"
 	<type.parameter id="dimension"/>
 </type>
 
+<interface id="iunknown">
+	<pragma>
+		<com.idl:alias id="IUnknown"/>
+	</pragma>	
+</interface>
+
 <interface id="idispatch">
 	<pragma>
 		<com.idl:alias id="IDispatch"/>
