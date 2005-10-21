@@ -113,6 +113,8 @@ public:
 	bstr_t() {}
 	template< ::std::size_t Size>
 	bstr_t(const wchar_t (&X)[Size]): wrap_type(iterator_range(X), 0) {}
+
+	wchar_t *c_str() const { return this->internal(); }
 };
 
 #pragma pack(pop)

@@ -39,7 +39,7 @@ namespace com
 namespace detail
 {
 
-class implementation_info: private std::map<uuid, iunknown::internal_type>
+class implementation_info
 {
 protected:
 	
@@ -49,8 +49,8 @@ protected:
 	hresult::internal_type query_interface(
 		const uuid::internal_type &Uuid, void **PP)
 	{
-		const_iterator Iterator = this->find(uuid(Uuid));
-		if(Iterator==this->end()) 
+		map_type::const_iterator Iterator = this->Map.find(uuid(Uuid));
+		if(Iterator==this->Map.end()) 
 		{
 			*PP = 0;
 			return hresult::e_nointerface;
@@ -63,10 +63,13 @@ protected:
 
 private:
 
+	typedef std::map<uuid, iunknown::internal_type> map_type;
+	map_type Map;
+
 	void add(const uuid &Uuid, iunknown::internal_type P)
 	{
-		if(this->find(Uuid)!=this->end()) return;
-		(*this)[Uuid] = P;
+		if(this->Map.find(Uuid)!=this->Map.end()) return;
+		this->Map[Uuid] = P;
 	}
 };
 

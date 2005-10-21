@@ -44,6 +44,7 @@ struct object_policy: private policy::standard_policy<Interface *>
 
 	using standard_policy::construct;
 	using standard_policy::equal;
+	using standard_policy::less;
 	using standard_policy::swap;
 	using standard_policy::reference_of;
 
@@ -54,8 +55,8 @@ struct object_policy: private policy::standard_policy<Interface *>
 	typedef object<interface_type> object_type;
 	typedef Interface *type;
 
-	static void add_ref(type X) { if(X) X->AddRef(); }
-	static void release(type X) { if(X) X->Release(); }
+	static void add_ref(type X) { if(X) static_cast<IUnknown *>(X)->AddRef(); }
+	static void release(type X) { if(X) static_cast<IUnknown *>(X)->Release(); }
 
 	static void construct_copy(type &This, const type &Source)
 	{
