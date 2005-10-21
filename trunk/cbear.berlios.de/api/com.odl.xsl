@@ -172,6 +172,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<attribute id="{local-name()}"/>
 </xsl:template>
 
+<!--
 <xsl:template match="api:type.ref" mode="api:com.odl.method.count">
 	<xsl:variable name="id" select="@id"/>
 	<xsl:apply-templates 
@@ -232,13 +233,17 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="api:property[api:parameter]" mode="api:com.odl.method.id">
 	<xsl:text>0</xsl:text>
 </xsl:template>
+-->
 
 <xsl:template name="api:method.header">
+<!--
 	<xsl:variable name="id">
 		<xsl:apply-templates select="." mode="api:com.odl.method.id"/>
 	</xsl:variable>
 	<attribute id="id" value="{$id}"/>
+-->
 	<xsl:apply-templates select="@brief" mode="api:body"/>
+	<xsl:apply-templates select="api:pragma" mode="api:body.pragma"/>
 	<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 	<type.ref id="HRESULT"/>
 </xsl:template>
