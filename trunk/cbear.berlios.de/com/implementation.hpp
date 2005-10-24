@@ -26,6 +26,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // std::map
 #include <map>                                    
 
+// boost::mutex
+#include <boost/thread/mutex.hpp>
+// boost::condition
+#include <boost/thread/condition.hpp>
+
 #include <cbear.berlios.de/atomic/main.hpp>
 #include <cbear.berlios.de/com/hresult.hpp>
 #include <cbear.berlios.de/com/object.hpp>
@@ -36,6 +41,8 @@ namespace cbear_berlios_de
 namespace com
 {
 
+class group;
+
 namespace detail
 {
 
@@ -43,6 +50,8 @@ class implementation_info
 {
 protected:
 	
+	implementation_info(): Group(0) {}
+
 	template<class Interface>
 	void add_interface(Interface *P) { this->add(uuid::of<Interface>(), P); }
 
@@ -60,6 +69,8 @@ protected:
 			Iterator->second);
 		return hresult::s_ok;
 	}
+
+	group *Group;
 
 private:
 
@@ -107,14 +118,84 @@ class implementation<Base, detail::implementation_info>:
 namespace detail
 {
 
-class implementation_counter: private atomic::wrap<ulong_t>
+class implementation_counter;
+
+template<class T>
+class implementation_instance;
+
+}
+
+class group
+{
+public:
+	group(): Value(0) {}
+	~group()
+	{ 
+		boost::mutex::scoped_lock Lock(this->ConditionMutex);
+		if(this->Value) this->Condition.wait(Lock);
+	}
+
+	template<class T>
+	struct new_result 
+	{ 
+		typedef object<detail::implementation_instance<T> > type; 
+	};
+
+	template<class T>
+	typename new_result<T>::type new_()
+	{
+		return new_result<T>::type(new detail::implementation_instance<T>(*this));
+	};
+
+	template<class T, class P>
+	typename new_result<T>::type new_(const P &X)
+	{
+		return new_result<T>::type(new detail::implementation_instance<T>(*this, X));
+	}
+
+private:
+	boost::mutex ConditionMutex;
+	boost::condition Condition;
+	int Value;
+
+	void increment() 
+	{ 
+		boost::mutex::scoped_lock Lock(this->ConditionMutex);
+		++this->Value;
+	}
+	void decrement()
+	{
+		boost::mutex::scoped_lock Lock(this->ConditionMutex);
+		if(!--this->Value) 
+		{ 
+			this->Condition.notify_one(); 
+		}
+	}
+
+	friend class detail::implementation_counter;	
+};
+
+namespace detail
+{
+
+class implementation_counter: 
+	private atomic::wrap<ulong_t>,
+	private implementation_info
 {
 protected:
 
 	typedef atomic::wrap<ulong_t>::internal_type internal_type;
 
-	implementation_counter() {}
-	virtual ~implementation_counter() {}
+	implementation_counter(group &Group)
+	{
+		this->Group = &Group;
+		this->Group->increment();
+	}
+
+	virtual ~implementation_counter() 
+	{
+		this->Group->decrement();
+	}
 
 	internal_type add_ref() { return this->increment(); }
 
@@ -135,11 +216,6 @@ class implementation_instance:
 	public T
 {
 public:
-	implementation_instance() {}
-
-  template<class P>
-  implementation_instance(const P &X): T(X) {}
-
 	// IUnknown
 
   ulong_t __stdcall AddRef() { return implementation_counter::add_ref(); }
@@ -149,23 +225,22 @@ public:
   { 
      return implementation_info::query_interface(U, PP); 
   }
+
+private:
+
+	friend class group;
+
+	implementation_instance(group &Group): implementation_counter(Group)
+	{
+	}
+
+  template<class P>
+  implementation_instance(group &Group, const P &X): 
+		implementation_counter(Group), T(X) 
+	{
+	}
 };
 
-}
-
-template<class T>
-struct new_result { typedef object<detail::implementation_instance<T> > type; };
-
-template<class T>
-typename new_result<T>::type new_()
-{
-	return new_result<T>::type(new detail::implementation_instance<T>());
-};
-
-template<class T, class P>
-typename new_result<T>::type new_(const P &X)
-{
-	return new_result<T>::type(new detail::implementation_instance<T>(X));
 }
 
 }
