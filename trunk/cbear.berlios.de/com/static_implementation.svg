@@ -12,9 +12,9 @@
    height="1488.1890px"
    id="svg2"
    sodipodi:version="0.32"
-   inkscape:version="0.42"
-   sodipodi:docbase="C:\cbear\cbear.berlios.de\com"
-   sodipodi:docname="static_implementation.hpp.svg">
+   inkscape:version="0.42.2"
+   sodipodi:docbase="C:\cbear.berlios.de\com"
+   sodipodi:docname="static_implementation.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -26,11 +26,11 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
      inkscape:cx="504.66471"
-     inkscape:cy="986.57453"
+     inkscape:cy="444.07754"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     inkscape:window-width="1170"
-     inkscape:window-height="1003"
+     inkscape:window-width="1290"
+     inkscape:window-height="1029"
      inkscape:window-x="-4"
      inkscape:window-y="-4" />
   <metadata
@@ -748,10 +748,10 @@
          sodipodi:role="line"
          x="153.54320"
          y="1224.6356"
-         id="tspan1495">ASSERT(q.FF() == 9);</tspan><tspan
+         id="tspan1495">ASSERT(object&lt;C&gt;(q).FF() == 9);</tspan><tspan
          sodipodi:role="line"
          x="153.54320"
          y="1239.6356"
-         id="tspan1473">ASSERT(new_&lt;Implementation&gt;(4).FF() == 12);</tspan></text>
+         id="tspan1473">ASSERT(new_&lt;Implementation&gt;(4)-&gt;C_FF() == 12);</tspan></text>
   </g>
 </svg>

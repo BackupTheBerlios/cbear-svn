@@ -92,7 +92,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <interface id="IMain">
 	<method id="Create">
-		<type.ref id="IModuleIo"/>
+		<type.ref id="IModuleInfo"/>
 		<parameter>
 			<in/>
 			<type.ref library="Base" id="string"/>
