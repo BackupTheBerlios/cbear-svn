@@ -23,7 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <xsl:stylesheet 
 	version="1.0"
-	xmlns="http://cbear.berlios.de/cpp"
+	xmlns="http://cbear.berlios.de/cs"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	xmlns:odl="http://cbear.berlios.de/com"
@@ -51,9 +51,67 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:message>
 </xsl:template>
 
+<!-- attribute -->
+
+<xsl:template match="odl:attribute" mode="odl:cs.attribute"/>
+
+<xsl:template match="odl:attribute[@id='version']" mode="odl:cs.attribute">
+	<id.ref type="()">
+		<id.ref type=".">
+			<id.ref id="System"/>
+			<id.ref id="Reflection"/>
+			<id.ref id="AssemblyVersion"/>
+		</id.ref>
+		<id.ref value="{concat('&quot;', @value, '&quot;')}"/>
+	</id.ref>
+</xsl:template>
+
+<xsl:template match="odl:attribute[@id='helpstring']" mode="odl:cs.attribute">
+	<id.ref type="()">
+		<id.ref type=".">
+			<id.ref id="System"/>
+			<id.ref id="Reflection"/>
+			<id.ref id="AssemblyDescription"/>
+		</id.ref>
+		<id.ref value="{@value}"/>
+	</id.ref>
+</xsl:template>
+
+<xsl:template match="odl:attribute[@id='uuid']" mode="odl:cs.attribute">
+	<id.ref type="()">
+		<id.ref type=".">
+			<id.ref id="System"/>
+			<id.ref id="Runtime"/>
+			<id.ref id="InteropServices"/>
+			<id.ref id="Guid"/>
+		</id.ref>
+		<id.ref value="{concat('&quot;', @value, '&quot;')}"/>
+	</id.ref>
+</xsl:template>
+
+<xsl:template match="odl:attribute" mode="odl:cs">
+	<attribute>
+		<xsl:apply-templates select="." mode="odl:cs.attribute"/>
+	</attribute>
+</xsl:template>
+
+<xsl:template match="odl:attribute" mode="odl:cs.assembly">
+	<attribute id="assembly">
+		<xsl:apply-templates select="." mode="odl:cs.attribute"/>
+	</attribute>
+</xsl:template>
+
+<!-- interface -->
+
+<xsl:template match="odl:interface" mode="odl:cs">
+	<interface id="{@id}">
+		<xsl:apply-templates select="odl:attribute" mode="odl:cs"/>
+	</interface>
+</xsl:template>
+
 <!-- libray -->
 
-<xsl:template match="odl:library" mode="odl:cpp">
+<xsl:template match="odl:library" mode="odl:cs">
 	<xsl:processing-instruction name="xml-stylesheet">
 		<xsl:text>type="text/xsl" href="</xsl:text>
 		<xsl:value-of select="$odl:cs.xsl"/>
@@ -64,13 +122,27 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		xsi:schemaLocation="{concat(
 			'http://cbear.berlios.de/cs ', $odl:cs.xsd)}"
 		id="{$path}">
+		<attribute id="assembly">
+			<id.ref type="()">
+				<id.ref type=".">
+					<id.ref id="System"/>
+					<id.ref id="Reflection"/>
+					<id.ref id="AssemblyName"/>
+				</id.ref>
+				<id.ref value="{@id}"/>
+			</id.ref>
+		</attribute>
+		<xsl:apply-templates select="odl:attribute" mode="odl:cs.assembly"/>
+		<namespace id="{@id}">
+			<xsl:apply-templates select="odl:interface" mode="odl:cs"/>
+		</namespace>
 	</unit>
 </xsl:template>
 
 <!-- Entry Point -->
 
 <xsl:template match="odl:*">
-	<xsl:apply-templates select="." mode="odl:cpp"/>
+	<xsl:apply-templates select="." mode="odl:cs"/>
 </xsl:template>
 
 </xsl:stylesheet>
