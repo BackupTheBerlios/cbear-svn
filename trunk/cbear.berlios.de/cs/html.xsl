@@ -21,51 +21,61 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
+<!-- XHTML 1.1. -->
 <xsl:stylesheet 
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:exsl="http://exslt.org/common"
-	xmlns:cpp="http://cbear.berlios.de/cpp"
-	extension-element-prefixes="exsl">
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:cs="http://cbear.berlios.de/cs"
+	xmlns:txt="http://cbear.berlios.de/text"
+	exclude-result-prefixes="cs txt xi">
 
-<xsl:import href="html.xsl"/>
+<xsl:import href="../text/main.xsl"/>
 
-<xsl:output method="text" encoding="ascii"/>
+<!-- XHTML 1.1. -->
+<xsl:output 
+	method="xml"
+	doctype-public="-//W3C//DTD XHTML 1.1//EN"
+	doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
 
-<xsl:param name="cpp:cpp.root"/>
+<!-- Styles -->
 
-<xsl:template match="*" mode="cpp:cpp">
-	<xsl:apply-templates select="." mode="cpp:html"/>
+<xsl:variable name="cs:html">
+	border-style: solid;
+	border-width: 1px;
+	margin: 5px 5px 5px 5px;
+</xsl:variable>
+
+<xsl:variable name="cs:html.preprocessor">
+	color: navy;
+</xsl:variable>
+
+<xsl:variable name="cs:html.keyword">
+	color: green;
+</xsl:variable>
+
+<xsl:variable name="cs:html.id">
+	color: blue;
+</xsl:variable>
+
+<xsl:variable name="cs:html.const">
+	color: magenta;
+</xsl:variable>
+
+<!-- * -->
+
+<xsl:template match="*" mode="cs:html">
+	<xsl:message terminate="no">
+		<xsl:value-of select="concat(
+			'Unknown tag &#x22;', name(), '&#x22; was skipped.')"/>
+	</xsl:message>
 </xsl:template>
 
-<xsl:template match="cpp:unit" mode="cpp:cpp">
+<!-- Entry Point -->
 
-	<xsl:variable name="header.content">
-		<xsl:apply-templates select="cpp:header" mode="cpp:cpp"/>
-	</xsl:variable>
-
-	<exsl:document
-		href="{concat($cpp:cpp.root, @id, '.hpp')}"
-		method="text"
-		encoding="ascii">
-		<xsl:value-of select="$header.content"/>
-	</exsl:document>
-
-	<xsl:if test="cpp:code">
-		<xsl:variable name="code.content">
-			<xsl:apply-templates select="cpp:header" mode="cpp:cpp"/>
-		</xsl:variable>
-		<exsl:document
-			href="{concat($cpp:cpp.root, @id, '.cpp')}"
-			method="text"
-			encoding="ascii">
-			<xsl:value-of select="$code.content"/>
-		</exsl:document>
-	</xsl:if>
-</xsl:template>
-
-<xsl:template match="cpp:*">
-	<xsl:apply-templates select="." mode="cpp:cpp"/>
+<xsl:template match="cs:*">
+	<xsl:apply-templates select="." mode="cs:html"/>
 </xsl:template>
 
 </xsl:stylesheet>
