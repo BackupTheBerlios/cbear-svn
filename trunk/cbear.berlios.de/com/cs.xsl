@@ -36,7 +36,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:import href="../text/main.xsl"/>
 
-<xsl:output method="xml"/>
+<xsl:output method="xml" doctype-public="" doctype-system=""/>
 
 <xsl:param name="odl:cs.xsd"/>
 <xsl:param name="odl:cs.xsl"/>
@@ -163,17 +163,23 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <xsl:template match="odl:type.ref[@id='BSTR']" mode="odl:cs">
-	<id.ref id="string"/>
+	<id.ref type=".">
+		<id.ref id="System"/>
+		<id.ref id="String"/>
+	</id.ref>
 </xsl:template>
 
 <xsl:template match="odl:type.ref[@id='VARIANT_BOOL']" mode="odl:cs">
-	<id.ref id="bool"/>
+	<id.ref type=".">
+		<id.ref id="System"/>
+		<id.ref id="Boolean"/>
+	</id.ref>
 </xsl:template>
 
 <xsl:template match="odl:type.ref[@id='INT']" mode="odl:cs">
 	<id.ref type=".">
 		<id.ref id="System"/>
-		<id.ref id="Int"/>
+		<id.ref id="IntPtr"/>
 	</id.ref>
 </xsl:template>
 
@@ -206,7 +212,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <xsl:template match="odl:type.ref[@id='DOUBLE']" mode="odl:cs">
-	<id.ref id="double"/>
+	<id.ref type=".">
+		<id.ref id="System"/>
+		<id.ref id="Double"/>
+	</id.ref>
 </xsl:template>
 
 <xsl:template match="odl:type.ref[@id='SAFEARRAY']" mode="odl:cs">
@@ -242,6 +251,22 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template 
 	match="odl:method[odl:parameter/odl:attribute/@id='retval']" 
 	mode="odl:cs.id.ref">
+	<xsl:variable name="alias">
+		<xsl:apply-templates 
+			select="odl:parameter[odl:attribute/@id='retval']/odl:type.ref" 
+			mode="odl:color"/>
+	</xsl:variable>
+<!--
+	<attribute id="return">
+		<id.ref type="()">
+			<id.ref type=".">
+				<xsl:call-template name="odl:cs.interop-services"/>
+				<id.ref id="ComAliasName"/>
+			</id.ref>
+			<id.ref value="{concat('&quot;', $alias, '&quot;')}"/>
+		</id.ref>
+	</attribute>
+-->
 	<xsl:apply-templates 
 		select="odl:parameter[odl:attribute/@id='retval']/odl:type.ref" 
 		mode="odl:cs"/>
