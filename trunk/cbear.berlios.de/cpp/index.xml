@@ -38,4 +38,74 @@ XML Schema <filename>main.xsd</filename>. Default HTML generator
 <filename>examples/method.cpp.xml</filename>.
 		</para>
 	</section>
+	<section>
+		<title>Dreams</title>
+		<section>
+			<title>Type Of Expression</title>
+<programlisting role="cpp"><![CDATA[typedef __typeof__(X + Y) type;]]></programlisting>
+		</section>
+		<section>
+			<title>Auto</title>
+<programlisting role="cpp"><![CDATA[__auto__ Z = X + Y;]]></programlisting>
+<programlisting role="cpp"><![CDATA[template<class T>
+__auto__ minus(T R) { return R - R; }]]></programlisting>
+		</section>
+		<section>
+			<title>Typedef Template</title>
+			<para>
+Without specialization.
+			</para>
+<programlisting role="cpp"><![CDATA[template<class A>
+typedef first<parents_of<A> > first_parent_of;	
+]]></programlisting>
+		</section>
+		<section>
+			<title>Type List</title>
+<programlisting role="cpp"><![CDATA[list<A, B, C, D>]]></programlisting>
+		</section>
+		<section>
+			<title>Compile Time Type Information</title>
+			<section>
+				<title>Parents</title>
+				<para>
+A type list.
+				</para>
+<programlisting role="cpp"><![CDATA[parents_of<A>]]></programlisting>
+			</section>
+			<section>
+				<title>Members</title>
+				<para>
+A type list.
+				</para>
+<programlisting role="cpp"><![CDATA[members_of<A>]]></programlisting>
+				<para>
+For each member you can apply:
+				</para>
+<programlisting role="cpp"><![CDATA[member::is_function<Member>
+member::is_typedef<Member>
+member::is_template<Member>
+member::is_static<Member>
+member::is_field<Member>
+
+member::name_of<Member>]]></programlisting>
+				<para>
+and others.
+				</para>
+			</section>
+			<section>
+				<title>Child</title>
+<programlisting role="cpp"><![CDATA[template<class Child = __child__>
+class B
+{
+private:
+	Child &child() { return *static_cast<Child *>(this); }
+	const Child &child() const { return *static_cast<const Child *>(this); }
+};
+
+struct BB: B<>
+{
+};]]></programlisting>
+			</section>
+		</section>
+	</section>
 </section>

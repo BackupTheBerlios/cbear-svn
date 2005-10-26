@@ -86,52 +86,187 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:message>
 </xsl:template>
 
+<xsl:template match="*" mode="cs:html.access"/>
+
+<xsl:template match="*[@access]" mode="cs:html.access">
+	<span style="{$cs:html.keyword}"><xsl:value-of select="@access"/></span>
+	<xsl:value-of select="' '"/>
+</xsl:template>
+
 <!-- attribute -->
 
 <xsl:template match="cs:attribute" mode="cs:html"/>
 
 <xsl:template match="cs:attribute" mode="cs:html.attribute">
-	<xsl:call-template name="txt:main.line">
-		<xsl:with-param name="text">
-			<xsl:value-of select="'['"/>
-			<xsl:if test="@id">
-				<span style="{$cs:html.id}"><xsl:value-of select="@id"/></span>
-				<xsl:value-of select="': '"/>
-			</xsl:if>
-			<xsl:apply-templates select="*" mode="cs:html"/>
-			<xsl:value-of select="']'"/>
-		</xsl:with-param>
-	</xsl:call-template>
+	<xsl:variable name="text">
+		<xsl:value-of select="'['"/>
+		<xsl:if test="@id">
+			<span style="{$cs:html.id}"><xsl:value-of select="@id"/></span>
+			<xsl:value-of select="': '"/>
+		</xsl:if>
+		<xsl:apply-templates select="*" mode="cs:html"/>
+		<xsl:value-of select="']'"/>
+	</xsl:variable>
+	<xsl:for-each select="..">
+		<xsl:call-template name="txt:main.line">
+			<xsl:with-param name="text" select="$text"/>
+		</xsl:call-template>
+	</xsl:for-each>
 </xsl:template>
 
 <!-- id.ref -->
 
-<xsl:template match="cs:id.ref[@id]" mode="cs:html">
+<xsl:template match="cs:id.ref[@id]" mode="cs:html.id.ref">
 	<span style="{$cs:html.id}"><xsl:value-of select="@id"/></span>
 </xsl:template>
 
-<xsl:template match="cs:id.ref[@value]" mode="cs:html">
+<xsl:template match="cs:id.ref[@value]" mode="cs:html.id.ref">
 	<span style="{$cs:html.const}"><xsl:value-of select="@value"/></span>
 </xsl:template>
 
 <xsl:template match="cs:id.ref" mode="cs:html.dot">
-	<xsl:apply-templates select="." mode="cs:html"/>
+	<xsl:apply-templates select="." mode="cs:html.id.ref"/>
 	<xsl:value-of select="'.'"/>
 </xsl:template>
 
 <xsl:template match="cs:id.ref[last()]" mode="cs:html.dot">
-	<xsl:apply-templates select="." mode="cs:html"/>
+	<xsl:apply-templates select="." mode="cs:html.id.ref"/>
 </xsl:template>
 
-<xsl:template match="cs:id.ref[@type='.']" mode="cs:html">
+<xsl:template match="cs:id.ref[@type='.']" mode="cs:html.id.ref">
 	<xsl:apply-templates select="*" mode="cs:html.dot"/>
 </xsl:template>
 
-<xsl:template match="cs:id.ref[@type='()']" mode="cs:html">
-	<xsl:apply-templates select="*[1]" mode="cs:html"/>
+<xsl:template match="cs:id.ref[@type='()']" mode="cs:html.id.ref">
+	<xsl:apply-templates select="*[1]" mode="cs:html.id.ref"/>
 	<xsl:value-of select="'('"/>
-	<xsl:apply-templates select="*[position()>1]" mode="cs:html"/>
+	<xsl:apply-templates select="*[position()>1]" mode="cs:html.id.ref"/>
 	<xsl:value-of select="')'"/>
+</xsl:template>
+
+<xsl:template match="cs:id.ref" mode="cs:html.or">
+	<xsl:apply-templates select="." mode="cs:html.id.ref"/>
+	<xsl:value-of select="'|'"/>
+</xsl:template>
+
+<xsl:template match="cs:id.ref[last()]" mode="cs:html.or">
+	<xsl:apply-templates select="." mode="cs:html"/>
+</xsl:template>
+
+<xsl:template match="cs:id.ref[@type='|']" mode="cs:html.id.ref">
+	<xsl:apply-templates select="*" mode="cs:html.or"/>
+</xsl:template>
+
+<xsl:template match="cs:id.ref[@type='[]']" mode="cs:html.id.ref">
+	<xsl:apply-templates select="*" mode="cs:html.or"/>
+	<xsl:value-of select="'[]'"/>
+</xsl:template>
+
+<xsl:template match="cs:id.ref" mode="cs:html">
+	<xsl:apply-templates select="." mode="cs:html.id.ref"/>
+</xsl:template>
+
+<xsl:template match="cs:interface/cs:id.ref" mode="cs:html"/>
+
+<xsl:template match="cs:property/cs:id.ref" mode="cs:html"/>
+
+<xsl:template match="cs:id.ref" mode="cs:html.parent.separator">
+	<xsl:value-of select="','"/>
+</xsl:template>
+
+<xsl:template match="cs:id.ref[1]" mode="cs:html.parent.separator">
+	<xsl:value-of select="':'"/>
+</xsl:template>
+
+<xsl:template match="cs:id.ref" mode="cs:html.parent">
+	<xsl:apply-templates select="." mode="cs:html.parent.separator"/>
+	<xsl:value-of select="' '"/>
+	<xsl:apply-templates select="." mode="cs:html.id.ref"/>
+</xsl:template>
+
+<!-- get -->
+
+<xsl:template match="cs:get" mode="cs:html">
+	<xsl:apply-templates select="cs:attribute" mode="cs:html.attribute"/>
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">
+			<span style="{$cs:html.keyword}">get</span>
+			<xsl:value-of select="';'"/>
+		</xsl:with-param>
+	</xsl:call-template>
+</xsl:template>
+
+<!-- set -->
+
+<xsl:template match="cs:set" mode="cs:html">
+	<xsl:apply-templates select="cs:attribute" mode="cs:html.attribute"/>
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">
+			<span style="{$cs:html.keyword}">set</span>
+			<xsl:value-of select="';'"/>
+		</xsl:with-param>
+	</xsl:call-template>
+</xsl:template>
+
+<!-- parameter -->
+
+<xsl:template match="cs:parameter" mode="cs:html.parameter">
+	<xsl:apply-templates select="*" mode="cs:html"/>
+	<xsl:value-of select="' '"/>
+	<span style="{$cs:html.id}"><xsl:value-of select="@id"/></span>
+</xsl:template>
+
+<xsl:template match="cs:parameter" mode="cs:html.separator">
+	<xsl:value-of select="', '"/>
+	<xsl:apply-templates select="." mode="cs:html.parameter"/>
+</xsl:template>
+
+<xsl:template match="cs:parameter[1]" mode="cs:html.separator">
+	<xsl:apply-templates select="." mode="cs:html.parameter"/>
+</xsl:template>
+
+<xsl:template match="cs:parameter" mode="cs:html">
+	<xsl:apply-templates select="." mode="cs:html.separator"/>
+</xsl:template>
+
+<xsl:template match="cs:property/cs:parameter" mode="cs:html"/>
+
+<!-- property -->
+
+<xsl:template match="cs:property" mode="cs:html">
+	<xsl:apply-templates select="cs:attribute" mode="cs:html.attribute"/>
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">
+			<xsl:apply-templates select="." mode="cs:html.access"/>
+			<xsl:apply-templates select="cs:id.ref" mode="cs:html.id.ref"/>
+			<xsl:value-of select="' '"/>
+			<span style="{$cs:html.id}"><xsl:value-of select="@id"/></span>
+			<xsl:if test="cs:parameter">
+				<xsl:value-of select="'['"/>
+				<xsl:apply-templates select="cs:parameter" mode="cs:html.separator"/>
+				<xsl:value-of select="']'"/>
+			</xsl:if>
+		</xsl:with-param>
+	</xsl:call-template>
+	<xsl:apply-templates select="." mode="cs:html.block"/>
+</xsl:template>
+
+<!-- method -->
+
+<xsl:template match="cs:method" mode="cs:html">
+	<xsl:apply-templates select="cs:attribute" mode="cs:html.attribute"/>
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">
+			<xsl:apply-templates select="." mode="cs:html.access"/>
+			<xsl:apply-templates select="cs:id.ref" mode="cs:html"/>
+			<xsl:value-of select="' '"/>
+			<span style="{$cs:html.id}"><xsl:value-of select="@id"/></span>
+			<xsl:value-of select="'('"/>
+			<xsl:apply-templates select="cs:parameter" mode="cs:html"/>
+			<xsl:value-of select="')'"/>
+			<xsl:value-of select="';'"/>
+		</xsl:with-param>
+	</xsl:call-template>
 </xsl:template>
 
 <!-- interface -->
@@ -140,9 +275,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:apply-templates select="cs:attribute" mode="cs:html.attribute"/>
 	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
+			<xsl:apply-templates select="." mode="cs:html.access"/>
 			<span style="{$cs:html.keyword}">interface</span>
 			<xsl:value-of select="' '"/>
 			<span style="{$cs:html.id}"><xsl:value-of select="@id"/></span>
+			<xsl:apply-templates select="cs:id.ref" mode="cs:html.parent"/>
 		</xsl:with-param>
 	</xsl:call-template>
 	<xsl:apply-templates select="." mode="cs:html.block"/>
