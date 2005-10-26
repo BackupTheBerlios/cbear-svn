@@ -73,6 +73,18 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="odl:attribute[@id='helpstring']" mode="odl:cs.attribute">
 	<id.ref type="()">
 		<id.ref type=".">
+			<id.ref id="System"/>
+			<id.ref id="ComponentModel"/>
+			<id.ref id="Description"/>
+		</id.ref>
+		<id.ref value="{@value}"/>
+	</id.ref>
+</xsl:template>
+
+<xsl:template 
+	match="odl:library/odl:attribute[@id='helpstring']" mode="odl:cs.attribute">
+	<id.ref type="()">
+		<id.ref type=".">
 			<xsl:call-template name="odl:cs.reflection"/>
 			<id.ref id="AssemblyDescription"/>
 		</id.ref>
@@ -159,7 +171,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <xsl:template match="odl:type.ref[@id='INT']" mode="odl:cs">
-	<id.ref id="int"/>
+	<id.ref type=".">
+		<id.ref id="System"/>
+		<id.ref id="Int"/>
+	</id.ref>
 </xsl:template>
 
 <xsl:template match="odl:type.ref[@id='DATE']" mode="odl:cs">
@@ -170,15 +185,24 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <xsl:template match="odl:type.ref[@id='ULONG']" mode="odl:cs">
-	<id.ref id="ulong"/>
+	<id.ref type=".">
+		<id.ref id="System"/>
+		<id.ref id="UInt32"/>
+	</id.ref>
 </xsl:template>
 
 <xsl:template match="odl:type.ref[@id='USHORT']" mode="odl:cs">
-	<id.ref id="ushort"/>
+	<id.ref type=".">
+		<id.ref id="System"/>
+		<id.ref id="UInt16"/>
+	</id.ref>
 </xsl:template>
 
 <xsl:template match="odl:type.ref[@id='BYTE']" mode="odl:cs">
-	<id.ref id="byte"/>
+	<id.ref type=".">
+		<id.ref id="System"/>
+		<id.ref id="Byte"/>
+	</id.ref>
 </xsl:template>
 
 <xsl:template match="odl:type.ref[@id='DOUBLE']" mode="odl:cs">
@@ -248,22 +272,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<set/>
 </xsl:template>
 
-<!--
-<xsl:template match="odl:method[odl:attribute/@id='propget']" mode="odl:cs">
-	<xsl:variable name="id" select="@id"/>
-	<xsl:if test="not(following-sibling::odl:method[@id=$id])">
-		<xsl:variable name="csid">
-			<xsl:apply-templates select="." mode="odl:cs.id"/>
-		</xsl:variable>
-		<property id="{$csid}">
-			<xsl:apply-templates select="*" mode="odl:cs"/>
-			<xsl:apply-templates select="." mode="odl:cs.id.ref"/>
-			<xsl:apply-templates select="../odl:method[@id=$id]" mode="odl:cs.property"/>
-		</property>
-	</xsl:if>
-</xsl:template>
--->
-
 <xsl:template match="odl:method" mode="odl:cs.property">
 	<xsl:variable name="id" select="@id"/>
 	<xsl:if test="not(following-sibling::odl:method[@id=$id])">
@@ -307,6 +315,26 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</interface>
 </xsl:template>
 
+<!-- item -->
+
+<xsl:template match="odl:item" mode="odl:cs">
+	<item id="{@id}" value="{odl:const/@value}"/>
+</xsl:template>
+
+<!-- enum -->
+
+<xsl:template match="odl:enum" mode="odl:cs">
+	<enum id="{@id}" access="public">
+		<xsl:apply-templates select="*" mode="odl:cs"/>
+	</enum>	
+</xsl:template>
+
+<!-- typedef -->
+
+<xsl:template match="odl:typedef" mode="odl:cs">
+	<xsl:apply-templates select="*" mode="odl:cs"/>	
+</xsl:template>
+
 <!-- libray -->
 
 <xsl:template match="odl:library" mode="odl:cs">
@@ -320,17 +348,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		xsi:schemaLocation="{concat(
 			'http://cbear.berlios.de/cs ', $odl:cs.xsd)}"
 		id="{$path}">
-		<attribute id="assembly">
-			<id.ref type="()">
-				<id.ref type=".">
-					<xsl:call-template name="odl:cs.reflection"/>
-					<id.ref id="AssemblyName"/>
-				</id.ref>
-				<id.ref value="{@id}"/>
-			</id.ref>
-		</attribute>
 		<xsl:apply-templates select="odl:attribute" mode="odl:cs.assembly"/>
 		<namespace id="{@id}">
+			<xsl:apply-templates select="odl:typedef" mode="odl:cs"/>
 			<xsl:apply-templates select="odl:interface" mode="odl:cs"/>
 		</namespace>
 	</unit>

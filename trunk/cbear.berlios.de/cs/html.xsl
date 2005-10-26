@@ -269,6 +269,35 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:call-template>
 </xsl:template>
 
+<!-- item -->
+
+<xsl:template match="cs:item" mode="cs:html">
+	<xsl:apply-templates select="cs:attribute" mode="cs:html.attribute"/>
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">
+			<span style="{$cs:html.id}"><xsl:value-of select="@id"/></span>
+			<xsl:value-of select="' = '"/>
+			<span style="{$cs:html.const}"><xsl:value-of select="@value"/></span>
+			<xsl:value-of select="','"/>
+		</xsl:with-param>
+	</xsl:call-template>
+</xsl:template>
+
+<!-- enum -->
+
+<xsl:template match="cs:enum" mode="cs:html">
+	<xsl:apply-templates select="cs:attribute" mode="cs:html.attribute"/>
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">
+			<xsl:apply-templates select="." mode="cs:html.access"/>
+			<span style="{$cs:html.keyword}">enum</span>
+			<xsl:value-of select="' '"/>
+			<span style="{$cs:html.id}"><xsl:value-of select="@id"/></span>
+		</xsl:with-param>
+	</xsl:call-template>
+	<xsl:apply-templates select="." mode="cs:html.block"/>
+</xsl:template>
+
 <!-- interface -->
 
 <xsl:template match="cs:interface" mode="cs:html">
