@@ -168,6 +168,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="cs:interface/cs:id.ref" mode="cs:html"/>
 
+<xsl:template match="cs:class/cs:id.ref" mode="cs:html"/>
+
 <xsl:template match="cs:property/cs:id.ref" mode="cs:html"/>
 
 <xsl:template match="cs:id.ref" mode="cs:html.parent.separator">
@@ -306,6 +308,22 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:with-param name="text">
 			<xsl:apply-templates select="." mode="cs:html.access"/>
 			<span style="{$cs:html.keyword}">interface</span>
+			<xsl:value-of select="' '"/>
+			<span style="{$cs:html.id}"><xsl:value-of select="@id"/></span>
+			<xsl:apply-templates select="cs:id.ref" mode="cs:html.parent"/>
+		</xsl:with-param>
+	</xsl:call-template>
+	<xsl:apply-templates select="." mode="cs:html.block"/>
+</xsl:template>
+
+<!-- class -->
+
+<xsl:template match="cs:class" mode="cs:html">
+	<xsl:apply-templates select="cs:attribute" mode="cs:html.attribute"/>
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">
+			<xsl:apply-templates select="." mode="cs:html.access"/>
+			<span style="{$cs:html.keyword}">class</span>
 			<xsl:value-of select="' '"/>
 			<span style="{$cs:html.id}"><xsl:value-of select="@id"/></span>
 			<xsl:apply-templates select="cs:id.ref" mode="cs:html.parent"/>

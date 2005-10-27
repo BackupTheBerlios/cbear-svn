@@ -127,6 +127,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <xsl:template match="odl:attribute[@id='dual']" mode="odl:cs"/>
+<xsl:template match="odl:attribute[@id='appobject']" mode="odl:cs"/>
 <xsl:template match="odl:attribute[@id='oleautomation']" mode="odl:cs"/>
 <xsl:template match="odl:attribute[@id='propget']" mode="odl:cs"/>
 <xsl:template match="odl:attribute[@id='propput']" mode="odl:cs"/>
@@ -155,6 +156,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<id.ref type=".">
 		<xsl:call-template name="odl:cs.type-lib-type-flags"/>
 		<id.ref id="FOleAutomation"/>
+	</id.ref>
+</xsl:template>
+
+<xsl:template match="odl:attribute[@id='appobject']" mode="odl:cs.type">
+	<id.ref type=".">
+		<xsl:call-template name="odl:cs.type-lib-type-flags"/>
+		<id.ref id="FAppObject"/>
 	</id.ref>
 </xsl:template>
 
@@ -324,7 +332,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					<id.ref id="TypeLibType"/>
 				</id.ref>
 				<id.ref type="|">
-					<id.ref value="0"/>
 					<xsl:apply-templates select="odl:attribute" mode="odl:cs.type"/>
 				</id.ref>
 			</id.ref>
@@ -353,6 +360,39 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:apply-templates select="*" mode="odl:cs"/>	
 </xsl:template>
 
+<!-- coclass -->
+
+<xsl:template match="odl:coclass" mode="odl:cs">
+	<class id="{@id}" access="public">
+		<attribute>
+			<id.ref type="()">
+				<id.ref type=".">
+					<xsl:call-template name="odl:cs.interop-services"/>
+					<id.ref id="ClassInterface"/>
+				</id.ref>
+				<id.ref type=".">
+					<xsl:call-template name="odl:cs.interop-services"/>
+					<id.ref id="ClassInterfaceType"/>
+					<id.ref id="None"/>
+				</id.ref>
+			</id.ref>
+		</attribute>
+		<attribute>
+			<id.ref type="()">
+				<id.ref type=".">
+					<xsl:call-template name="odl:cs.interop-services"/>
+					<id.ref id="TypeLibType"/>
+				</id.ref>
+				<id.ref type="|">
+					<xsl:apply-templates select="odl:attribute" mode="odl:cs.type"/>
+				</id.ref>
+			</id.ref>
+		</attribute>
+		<id.ref id="Implementation"/>
+		<xsl:apply-templates select="*" mode="odl:cs"/>
+	</class>
+</xsl:template>
+
 <!-- libray -->
 
 <xsl:template match="odl:library" mode="odl:cs">
@@ -370,6 +410,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<namespace id="{@id}">
 			<xsl:apply-templates select="odl:typedef" mode="odl:cs"/>
 			<xsl:apply-templates select="odl:interface" mode="odl:cs"/>
+			<xsl:apply-templates select="odl:coclass" mode="odl:cs"/>
 		</namespace>
 	</unit>
 </xsl:template>

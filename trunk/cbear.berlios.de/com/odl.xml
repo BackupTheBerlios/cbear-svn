@@ -29,6 +29,12 @@ XML Schema <filename>odl.xsd</filename> and XSL transformation to HTML
 <filename>html.xsl</filename> and to ODL <filename>odl.xsl</filename>.
 	</para>
 	<para>
+<filename>cs.xsl</filename> - converter to C# code.
+	</para>
+	<para>
+<filename>cpp.xsl</filename> - converter to C++ code.
+	</para>
+	<para>
 See also <ulink 
 url="http://msdn.microsoft.com/library/en-us/automat/htm/chap8_0fug.asp"
 >ODL File Syntax</ulink>.
