@@ -34,9 +34,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="xi odl cs txt">
 
-<xsl:import href="../text/main.xsl"/>
+<!-- <xsl:import href="../text/main.xsl"/> -->
 
-<xsl:output method="xml" doctype-public="" doctype-system=""/>
+<xsl:import href="color.lib.xsl"/>
+
+<xsl:output method="xml"/>
 
 <xsl:param name="odl:cs.xsd"/>
 <xsl:param name="odl:cs.xsl"/>
@@ -251,25 +253,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template 
 	match="odl:method[odl:parameter/odl:attribute/@id='retval']" 
 	mode="odl:cs.id.ref">
-	<xsl:variable name="alias">
-		<xsl:apply-templates 
-			select="odl:parameter[odl:attribute/@id='retval']/odl:type.ref" 
-			mode="odl:color"/>
-	</xsl:variable>
-<!--
-	<attribute id="return">
-		<id.ref type="()">
-			<id.ref type=".">
-				<xsl:call-template name="odl:cs.interop-services"/>
-				<id.ref id="ComAliasName"/>
+	<xsl:for-each select="odl:parameter[odl:attribute/@id='retval']/odl:type.ref">
+		<xsl:variable name="alias">
+			<xsl:apply-templates select="odl:type.ref" mode="odl:color"/>
+		</xsl:variable>
+		<attribute id="return">
+			<id.ref type="()">
+				<id.ref type=".">
+					<xsl:call-template name="odl:cs.interop-services"/>
+					<id.ref id="ComAliasName"/>
+				</id.ref>
+				<id.ref value="{concat('&quot;', $alias, '&quot;')}"/>
 			</id.ref>
-			<id.ref value="{concat('&quot;', $alias, '&quot;')}"/>
-		</id.ref>
-	</attribute>
--->
-	<xsl:apply-templates 
-		select="odl:parameter[odl:attribute/@id='retval']/odl:type.ref" 
-		mode="odl:cs"/>
+		</attribute>	
+		<xsl:apply-templates select="." mode="odl:cs"/>
+	</xsl:for-each>
 </xsl:template>
 
 <xsl:template match="odl:method" mode="odl:cs">
