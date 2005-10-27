@@ -192,6 +192,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</id.ref>
 </xsl:template>
 
+<xsl:template match="odl:type.ref[@id='LONG']" mode="odl:cs">
+	<id.ref type=".">
+		<id.ref id="System"/>
+		<id.ref id="Int32"/>
+	</id.ref>
+</xsl:template>
+
 <xsl:template match="odl:type.ref[@id='ULONG']" mode="odl:cs">
 	<id.ref type=".">
 		<id.ref id="System"/>
@@ -253,21 +260,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template 
 	match="odl:method[odl:parameter/odl:attribute/@id='retval']" 
 	mode="odl:cs.id.ref">
-	<xsl:for-each select="odl:parameter[odl:attribute/@id='retval']/odl:type.ref">
-		<xsl:variable name="alias">
-			<xsl:apply-templates select="odl:type.ref" mode="odl:color"/>
-		</xsl:variable>
-		<attribute id="return">
-			<id.ref type="()">
-				<id.ref type=".">
-					<xsl:call-template name="odl:cs.interop-services"/>
-					<id.ref id="ComAliasName"/>
-				</id.ref>
-				<id.ref value="{concat('&quot;', $alias, '&quot;')}"/>
-			</id.ref>
-		</attribute>	
-		<xsl:apply-templates select="." mode="odl:cs"/>
-	</xsl:for-each>
+	<xsl:apply-templates 
+		select="odl:parameter[odl:attribute/@id='retval']/odl:type.ref" 
+		mode="odl:cs"/>
 </xsl:template>
 
 <xsl:template match="odl:method" mode="odl:cs">
