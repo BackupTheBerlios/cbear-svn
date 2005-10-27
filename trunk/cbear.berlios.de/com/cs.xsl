@@ -245,6 +245,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:apply-templates select="*" mode="odl:cs"/>
 </xsl:template>
 
+<xsl:template match="odl:interface/odl:type.ref[@id='IUnknown']" mode="odl:cs"/>
+
 <xsl:template match="odl:interface/odl:type.ref[@id='IDispatch']" mode="odl:cs"/>
 
 <xsl:template match="odl:method/odl:type.ref" mode="odl:cs"/>
@@ -325,6 +327,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="odl:interface" mode="odl:cs">
 	<interface id="{@id}" access="public">
+		<xsl:if test="odl:type.ref/@id='IUnknown'">
+			<attribute>
+				<id.ref type="()">
+					<id.ref type=".">
+						<xsl:call-template name="odl:cs.interop-services"/>
+						<id.ref id="InterfaceType"/>
+					</id.ref>
+					<id.ref type=".">
+						<xsl:call-template name="odl:cs.interop-services"/>
+						<id.ref id="ComInterfaceType"/>
+						<id.ref id="InterfaceIsIUnknown"/>
+					</id.ref>
+				</id.ref>
+			</attribute>
+		</xsl:if>
 		<attribute>
 			<id.ref type="()">
 				<id.ref type=".">
