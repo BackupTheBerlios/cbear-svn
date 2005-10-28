@@ -513,6 +513,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<include href="cbear.berlios.de/com/int.hpp"/>
 			<include href="cbear.berlios.de/com/byte.hpp"/>
 			<include href="cbear.berlios.de/com/ushort.hpp"/>
+			<include href="cbear.berlios.de/com/long.hpp"/>
 			<include href="cbear.berlios.de/com/ulong.hpp"/>
 			<include href="cbear.berlios.de/com/double.hpp"/>
 			<include href="cbear.berlios.de/com/bstr.hpp"/>
