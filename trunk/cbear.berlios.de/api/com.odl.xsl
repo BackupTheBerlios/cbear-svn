@@ -172,76 +172,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<attribute id="{local-name()}"/>
 </xsl:template>
 
-<!--
-<xsl:template match="api:type.ref" mode="api:com.odl.method.count">
-	<xsl:variable name="id" select="@id"/>
-	<xsl:apply-templates 
-		select="/api:library/api:interface[@id=$id]" 
-		mode="api:com.odl.method.count"/>
-</xsl:template>
-
-<xsl:template match="api:type.ref[@library]" mode="api:com.odl.method.count">
-	<xsl:variable name="id" select="@id"/>
-	<xsl:apply-templates 
-		select="document(@library)/api:library/api:interface[@id=$id]" 
-		mode="api:com.odl.method.count"/>
-</xsl:template>
-
-<xsl:template match="api:interface" mode="api:com.odl.method.count.parents">
-	<xsl:value-of select="'0'"/>
-</xsl:template>
-
-<xsl:template 
-	match="api:interface[api:type.ref]" mode="api:com.odl.method.count.parents">
-	<xsl:apply-templates 
-		select="api:type.ref[1]" mode="api:com.odl.method.count"/>
-</xsl:template>
-
-<xsl:template
-	match="api:interface[api:type.ref/@library]" 
-	mode="api:com.odl.method.count.parents">
-	<xsl:for-each select="api:type.ref">
-		<xsl:variable name="library" select="@library"/>
-		<xsl:variable name="id" select="@id"/>
-		<xsl:apply-templates 
-			select="document(/api:library/api:using[@id=$library]/@href)/api:library/
-				api:interface[@id=$id]"
-			mode="api:com.odl.method.count.parents"/>
-	</xsl:for-each>
-</xsl:template>
-
-<xsl:template 
-	match="api:interface" mode="api:com.odl.method.count">
-	<xsl:variable name="parents">
-		<xsl:apply-templates 
-			select="." mode="api:com.odl.method.count.parents"/>
-	</xsl:variable>
-	<xsl:value-of select="
-		count(api:method) + count(api:property) + number($parents)"/>
-</xsl:template>
-
-<xsl:template match="*" mode="api:com.odl.method.id">
-	<xsl:variable name="parents">
-		<xsl:apply-templates 
-			select=".." mode="api:com.odl.method.count.parents"/>
-	</xsl:variable>
-	<xsl:value-of select="number($parents) +
-		count(preceding-sibling::api:method) + 
-		count(preceding-sibling::api:property) + 1"/>
-</xsl:template>
-
-<xsl:template match="api:property[api:parameter]" mode="api:com.odl.method.id">
-	<xsl:text>0</xsl:text>
-</xsl:template>
--->
-
 <xsl:template name="api:method.header">
-<!--
-	<xsl:variable name="id">
-		<xsl:apply-templates select="." mode="api:com.odl.method.id"/>
-	</xsl:variable>
-	<attribute id="id" value="{$id}"/>
--->
 	<xsl:apply-templates select="@brief" mode="api:body"/>
 	<xsl:apply-templates select="api:pragma" mode="api:body.pragma"/>
 	<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
@@ -459,6 +390,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:apply-templates select="api:using" mode="api:body"/>
 		<xsl:apply-templates select="api:enum" mode="api:body"/>
+		<xsl:apply-templates select="api:struct" mode="api:body"/>
 		<xsl:apply-templates select="api:interface" mode="api:body"/>
 		<xsl:apply-templates select="api:object" mode="api:body"/>
 	</library>	

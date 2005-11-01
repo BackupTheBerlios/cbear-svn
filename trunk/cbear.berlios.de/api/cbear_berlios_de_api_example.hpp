@@ -6,6 +6,7 @@
 #include <cbear.berlios.de/com/int.hpp>
 #include <cbear.berlios.de/com/byte.hpp>
 #include <cbear.berlios.de/com/ushort.hpp>
+#include <cbear.berlios.de/com/long.hpp>
 #include <cbear.berlios.de/com/ulong.hpp>
 #include <cbear.berlios.de/com/double.hpp>
 #include <cbear.berlios.de/com/bstr.hpp>

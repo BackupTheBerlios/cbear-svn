@@ -129,8 +129,8 @@ class group
 {
 public:
 	group(): Value(0) {}
-	~group()
-	{ 
+	~group() 
+	{
 		boost::mutex::scoped_lock Lock(this->ConditionMutex);
 		if(this->Value) this->Condition.wait(Lock);
 	}
@@ -180,7 +180,7 @@ namespace detail
 
 class implementation_counter: 
 	private atomic::wrap<ulong_t>,
-	private implementation_info
+	private virtual implementation_info
 {
 protected:
 

@@ -172,6 +172,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:call-template>
 </xsl:template>
 
+<!-- object -->
+
+<xsl:template match="odl:object" mode="odl:color">
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">
+			<xsl:apply-templates select="odl:type.ref" mode="odl:color"/>
+			<xsl:text> </xsl:text>
+			<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
+			<xsl:text>;</xsl:text>
+		</xsl:with-param>
+	</xsl:call-template>
+</xsl:template>
+
 <!-- typedef -->
 
 <xsl:template match="odl:typedef" mode="txt:main.indent"/>
@@ -179,7 +192,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="odl:typedef" mode="odl:color">
 	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
-			<span class="keyword">typedef</span>
+			<span style="{$odl:color.keyword}">typedef</span>
 		</xsl:with-param>
 	</xsl:call-template>
 	<xsl:apply-templates select="*" mode="odl:color"/>
