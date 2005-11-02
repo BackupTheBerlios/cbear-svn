@@ -79,6 +79,9 @@ struct standard_policy
 		return A<B;
 	}
 
+	static void increment(type &A) { A++; }
+	static void decrement(type &A) { A--; }
+
 	typedef typename boost::remove_pointer<type>::type value_type;
 	typedef typename boost::add_reference<value_type>::type reference;
 	typedef typename boost::add_pointer<value_type>::type pointer;
@@ -110,12 +113,12 @@ public:
 
 	friend bool operator==(const type &A, const type &B)
 	{
-		return internal_policy::equal(A.internal(), B.internal());
+		return internal_policy::equal(A.Internal, B.Internal);
 	}
 
 	friend bool operator<(const type &A, const type &B)
 	{
-		return internal_policy::less(A.internal(), B.internal());
+		return internal_policy::less(A.Internal, B.Internal);
 	}
 
 	typename internal_policy::reference operator*() const
@@ -131,15 +134,27 @@ public:
 	friend ::std::basic_ostream<char> &operator<<(
 		::std::basic_ostream<char> &S, const type &A)
 	{
-		internal_policy::output(S, A.internal());
+		internal_policy::output(S, A.Internal);
 		return S;
 	}
 
 	friend ::std::basic_ostream<wchar_t> &operator<<(
 		::std::basic_ostream<wchar_t> &S, const type &A)
 	{
-		internal_policy::output(S, A.internal());
+		internal_policy::output(S, A.Internal);
 		return S;
+	}
+
+	wrap &operator++()
+	{
+		internal_policy::increment(this->Internal);
+		return *this;
+	}
+
+	wrap &operator--()
+	{
+		internal_policy::decrement(this->Internal);
+		return *this;
 	}
 
 protected:
@@ -179,6 +194,15 @@ protected:
 private:
 
 	internal_type Internal;
+};
+
+template<class T>
+class std_wrap: public wrap<std_wrap<T>, T>
+{
+	typedef wrap<std_wrap<T>, T> wrap_base;
+public:
+	std_wrap() {}
+	explicit std_wrap(const T &X): wrap_base(X) {}
 };
 
 #pragma pack(pop)

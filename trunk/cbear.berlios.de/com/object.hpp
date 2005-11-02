@@ -55,8 +55,8 @@ struct object_policy: private policy::standard_policy<Interface *>
 	typedef object<interface_type> object_type;
 	typedef Interface *type;
 
-	static void add_ref(type X) { if(X) static_cast<IUnknown *>(X)->AddRef(); }
-	static void release(type X) { if(X) static_cast<IUnknown *>(X)->Release(); }
+	static void add_ref(type X) { if(X) X->AddRef(); }
+	static void release(type X) { if(X) X->Release(); }
 
 	static void construct_copy(type &This, const type &Source)
 	{
@@ -170,6 +170,32 @@ object<T> make_object(T *P) { return object<T>(P); }
 
 typedef object< ::IUnknown> iunknown;
 typedef object< ::IDispatch> idispatch;
+
+typedef object< ::ITypeInfo> itypeinfo;
+
+template<class Base>
+class object_content<Base, ::ITypeInfo>: public object_content<Base, ::IUnknown>
+{
+};
+
+typedef object< ::ITypeLib> itypelib;
+
+typedef LCID lcid_t;
+
+template<class Base>
+class object_content<Base, ::ITypeLib>: public object_content<Base, ::IUnknown>
+{
+public:
+	template<class Interface>
+	itypeinfo GetTypeInfoOfGuid() const
+	{
+		itypeinfo Result;
+		exception::throw_unless(this->internal_reference().GetTypeInfoOfGuid(
+			com::internal<in>(uuid::of<Interface>()), 
+			com::internal<out>(Result)));
+		return Result;
+	}
+};
 
 }
 }

@@ -97,6 +97,8 @@ public:
 
 		// General access denied error
 		e_accessdenied = E_ACCESSDENIED,
+
+		disp_e_badindex = DISP_E_BADINDEX,
 	};
 
 	hresult(enumeration E): hresult_wrap(internal_type(E)) {}

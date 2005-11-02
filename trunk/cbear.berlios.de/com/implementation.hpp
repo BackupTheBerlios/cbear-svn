@@ -46,6 +46,8 @@ class group;
 namespace detail
 {
 
+class implementation_counter;
+
 class implementation_info
 {
 protected:
@@ -70,7 +72,7 @@ protected:
 		return hresult::s_ok;
 	}
 
-	group *Group;
+	group &get_group() { return *this->Group; }
 
 private:
 
@@ -82,6 +84,10 @@ private:
 		if(this->Map.find(Uuid)!=this->Map.end()) return;
 		this->Map[Uuid] = P;
 	}
+
+	group *Group;
+
+	friend class detail::implementation_counter;
 };
 
 }
@@ -115,6 +121,79 @@ class implementation<Base, detail::implementation_info>:
 {
 };
 
+typedef LPOLESTR lpolestr_t;
+typedef DISPID dispid_t;
+typedef WORD word_t;
+typedef DISPPARAMS dispparams_t;
+typedef VARIANT variant_t;
+typedef EXCEPINFO excepinfo_t;
+
+template<class Base>
+class implementation<Base, ::IDispatch>:
+	public implementation_base<Base, ::IDispatch, ::IUnknown>
+{
+public:
+
+	implementation()
+	{
+		this->TypeInfo = this->get_group().type_lib().GetTypeInfoOfGuid<Base>();
+	}
+
+	hresult::internal_type __stdcall GetTypeInfoCount(
+		internal_result<out, uint_t>::type _result) 
+	{
+		wrap<out, uint_t>(_result) = 1;
+		return hresult::s_ok;
+	}
+
+	hresult::internal_type __stdcall GetTypeInfo(
+		uint_t iTInfo,
+		lcid_t,
+		internal_result<out, itypeinfo>::type ppTInfo)
+	{
+		if(iTInfo != 0) return hresult::disp_e_badindex;
+		wrap<out, itypeinfo>(ppTInfo) = this->TypeInfo;
+		return hresult::s_ok;
+	}
+
+	hresult::internal_type __stdcall GetIDsOfNames(
+		const uuid::internal_type &, 
+		lpolestr_t *rgszNames, 
+		uint_t cNames, 
+		lcid_t, 
+		dispid_t *rgDispId)
+	{
+		return ::DispGetIDsOfNames(
+			internal<in>(this->TypeInfo), 
+			rgszNames, 
+			cNames, 
+			rgDispId);
+	}
+
+	HRESULT __stdcall Invoke(
+		dispid_t dispidMember,
+		const uuid::internal_type &,
+		lcid_t,
+		word_t wFlags,
+		dispparams_t * pdispparams,
+		variant_t * pvarResult,
+		excepinfo_t * pexcepinfo,
+		uint_t * puArgErr)
+	{
+		return DispInvoke(
+			(Base *)this, 
+			internal<in>(TypeInfo),
+			dispidMember, 
+			wFlags, 
+			pdispparams,
+			pvarResult, 
+			pexcepinfo, 
+			puArgErr);
+	}
+private:
+	itypeinfo TypeInfo;
+};
+
 namespace detail
 {
 
@@ -128,11 +207,12 @@ class implementation_instance;
 class group
 {
 public:
-	group(): Value(0) {}
+	group() {}
+	group(const object< ::ITypeLib> &TypeLib): TypeLib(TypeLib) {}
 	~group() 
 	{
 		boost::mutex::scoped_lock Lock(this->ConditionMutex);
-		if(this->Value) this->Condition.wait(Lock);
+		if(this->Value!=policy::std_wrap<int>()) this->Condition.wait(Lock);
 	}
 
 	template<class T>
@@ -150,13 +230,13 @@ public:
 	template<class T, class P>
 	typename new_result<T>::type new_(const P &X)
 	{
-		return new_result<T>::type(new detail::implementation_instance<T>(*this, X));
+		return new_result<T>::type(new detail::implementation_instance<T>(
+			*this, X));
 	}
 
+	const object< ::ITypeLib> &type_lib() const { return this->TypeLib; }
+
 private:
-	boost::mutex ConditionMutex;
-	boost::condition Condition;
-	int Value;
 
 	void increment() 
 	{ 
@@ -166,13 +246,20 @@ private:
 	void decrement()
 	{
 		boost::mutex::scoped_lock Lock(this->ConditionMutex);
-		if(!--this->Value) 
+		--this->Value;
+		if(this->Value==policy::std_wrap<int>())
 		{ 
 			this->Condition.notify_one(); 
 		}
 	}
 
-	friend class detail::implementation_counter;	
+	boost::mutex ConditionMutex;
+	boost::condition Condition;
+	policy::std_wrap<int> Value;
+
+	friend class detail::implementation_counter;
+
+	object< ::ITypeLib> TypeLib;
 };
 
 namespace detail
@@ -230,9 +317,7 @@ private:
 
 	friend class group;
 
-	implementation_instance(group &Group): implementation_counter(Group)
-	{
-	}
+	implementation_instance(group &Group): implementation_counter(Group) {}
 
   template<class P>
   implementation_instance(group &Group, const P &X): 

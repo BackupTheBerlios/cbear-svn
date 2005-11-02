@@ -57,15 +57,15 @@ public:
 			{
 				throw;				
 			}
-			catch(const com::exception &E)
+			catch(const com::exception &)
 			{
 				return hresult::e_fail;
 			}
-			catch(const base::exception &E)
+			catch(const base::exception &)
 			{
 				return hresult::e_fail;
 			}
-			catch(const ::std::exception &E)
+			catch(const ::std::exception &)
 			{
 				return hresult::e_fail;
 			}

@@ -165,4 +165,10 @@ See <html:a href="http://cbear.berlios.de/api"
 	</pragma>	
 </interface>
 
+<interface id="itypelib">
+	<pragma>
+		<com.idl:alias id="ITypeLib"/>
+	</pragma>
+</interface>
+
 </library>
