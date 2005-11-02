@@ -152,6 +152,77 @@ pre
 	<ul><xsl:apply-templates mode="prj:html.content.table.item"/></ul>
 </xsl:template>
 
+<xsl:template match="prj:section" mode="prj:html.history.search.start">
+	<xsl:param name="name"/>
+	<xsl:apply-templates select="prj:section" mode="prj:html.history.search">
+		<xsl:with-param name="name" select="$name"/>
+		<xsl:with-param name="content">
+			<a><xsl:value-of select="@name"/></a>
+		</xsl:with-param>
+	</xsl:apply-templates>
+</xsl:template>
+
+<xsl:template match="prj:section" mode="prj:html.history.search">
+	<xsl:param name="name"/>
+	<xsl:apply-templates select="." mode="prj:html.history.search.start">
+		<xsl:with-param name="name" select="$name"/>
+	</xsl:apply-templates>	
+</xsl:template>
+
+<xsl:template match="/prj:section" mode="prj:html.history.search">
+	<xsl:param name="name"/>
+	<xsl:param name="content"/>
+	<xsl:choose>
+		<xsl:when test="@name=$name">
+			<xsl:copy-of select="$content"/>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:apply-templates select="." mode="prj:html.history.search.start">
+				<xsl:with-param name="name" select="$name"/>
+			</xsl:apply-templates>	
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+
+<xsl:template match="prj:section[@href]" mode="prj:html.history.search">
+	<xsl:param name="name"/>
+	<xsl:param name="content"/>
+	<xsl:apply-templates 
+		select="document(concat(@href, '.xml'), .)/prj:section"
+		mode="prj:html.history.search">
+		<xsl:with-param name="name" select="$name"/>
+		<xsl:with-param name="content" select="$content"/>
+	</xsl:apply-templates>
+</xsl:template>
+
+<xsl:template match="prj:section" mode="prj:html.history.index">
+	<xsl:param name="name"/>
+	<xsl:choose>
+		<xsl:when test="$name=@name">
+			<xsl:apply-templates 
+				select="document('../index.xml.xml', .)/prj:section" 
+				mode="prj:html.history.index">
+				<xsl:with-param name="name" select="$name"/>
+			</xsl:apply-templates>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:apply-templates select="." mode="prj:html.history.search.start">
+				<xsl:with-param name="name" select="$name"/>
+			</xsl:apply-templates>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+
+<xsl:template match="prj:section" mode="prj:html.history">
+	<ul>
+		<xsl:apply-templates 
+			select="document('index.xml.xml', .)/prj:section" 
+			mode="prj:html.history.index">
+			<xsl:with-param name="name" select="@name"/>
+		</xsl:apply-templates>
+	</ul>
+</xsl:template>
+
 <xsl:template match="prj:section" mode="prj:html">
 	<xsl:variable name="id">
 		<xsl:apply-templates select="." mode="prj:html.id"/>
@@ -177,6 +248,7 @@ pre
 				<xsl:apply-templates select="." mode="prj:html.id"/>
 			</xsl:variable>
 			<div id="{$id}">
+				<xsl:apply-templates select="." mode="prj:html.history"/>
 				<h1><xsl:value-of select="@name"/></h1>
 				<xsl:apply-templates select="." mode="prj:html.content.table"/>
 				<xsl:apply-templates mode="prj:html"/>
