@@ -25,6 +25,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 // boost::mutex
 #include <boost/thread/mutex.hpp>
+// boost::thread
+#include <boost/thread/thread.hpp>
 
 #include <cbear.berlios.de/com/system.hpp>
 
@@ -61,6 +63,9 @@ public:
 	{
 		return function_result<Function>(X);
 	}
+private:
+	thread(const thread &);
+	thread &operator=(const thread &);
 };
 
 }

@@ -25,6 +25,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/base/exception.hpp>
 #include <cbear.berlios.de/com/uuid.hpp>
+#include <cbear.berlios.de/com/bstr.hpp>
+#include <cbear.berlios.de/com/exception.hpp>
 
 namespace cbear_berlios_de
 {
@@ -195,6 +197,86 @@ public:
 			com::internal<out>(Result)));
 		return Result;
 	}
+};
+
+inline itypelib load_type_lib(const bstr_t File)
+{
+	itypelib Result;
+	com::exception::throw_unless(::LoadTypeLib(
+		File.c_str(), com::internal<out>(Result)));
+	return Result;
+}
+
+typedef object< ::IClassFactory> iclassfactory;
+
+class regcls: public com::enum_t<regcls, ::DWORD>
+{
+public:
+	typedef com::enum_t<regcls, ::DWORD> wrap_type;
+	enum enumeration_type 
+	{ 
+		singleuse = REGCLS_SINGLEUSE,
+    multipleuse = REGCLS_MULTIPLEUSE,                        
+    multi_separat = REGCLS_MULTI_SEPARATE,
+    suspended = REGCLS_SUSPENDED,
+    surrogate = REGCLS_SURROGATE,
+	};
+	regcls(enumeration_type X): wrap_type(X) {}
+};
+
+class clsctx: public com::enum_t<clsctx, ::DWORD>
+{
+public:
+	typedef com::enum_t<clsctx, ::DWORD> wrap_type;
+	enum enumeration_type 
+	{ 
+    inproc_server = CLSCTX_INPROC_SERVER, 
+    inproc_handler = CLSCTX_INPROC_HANDLER, 
+    local_server = CLSCTX_LOCAL_SERVER, 
+    inproc_server16 = CLSCTX_INPROC_SERVER16,
+    remote_server = CLSCTX_REMOTE_SERVER,
+    inproc_handler16 = CLSCTX_INPROC_HANDLER16,
+    reserved1 = CLSCTX_RESERVED1,
+    reserved2 = CLSCTX_RESERVED2,
+    reserved3 = CLSCTX_RESERVED3,
+    reserved4 = CLSCTX_RESERVED4,
+    no_code_download = CLSCTX_NO_CODE_DOWNLOAD,
+    reserved5 = CLSCTX_RESERVED5,
+    no_custom_mrshal = CLSCTX_NO_CUSTOM_MARSHAL,
+    enable_code_download = CLSCTX_ENABLE_CODE_DOWNLOAD,
+    no_failure_log = CLSCTX_NO_FAILURE_LOG,
+    disable_aaa = CLSCTX_DISABLE_AAA,
+    enable_aaa = CLSCTX_ENABLE_AAA,
+    from_default_context = CLSCTX_FROM_DEFAULT_CONTEXT,
+		all = CLSCTX_ALL,
+	};
+	clsctx(enumeration_type X): wrap_type(X) {}
+};
+
+typedef ::DWORD dword_t;
+
+class class_object
+{
+public:
+	class_object(
+		const uuid &Uuid, 
+		const iunknown &Unk, 
+		const clsctx &Clsctx, 
+		const regcls &Regcls)
+	{
+		exception::throw_unless(::CoRegisterClassObject(
+			internal<in>(Uuid),
+			internal<in>(Unk),
+			internal<in>(Clsctx),
+			internal<in>(Regcls),
+			internal<out>(this->Register)));
+	}
+	~class_object()
+	{
+		exception::throw_unless(::CoRevokeClassObject(this->Register));
+	}
+private:
+	dword_t Register;
 };
 
 }

@@ -99,6 +99,8 @@ public:
 		e_accessdenied = E_ACCESSDENIED,
 
 		disp_e_badindex = DISP_E_BADINDEX,
+
+		class_e_noaggregation = CLASS_E_NOAGGREGATION,
 	};
 
 	hresult(enumeration E): hresult_wrap(internal_type(E)) {}

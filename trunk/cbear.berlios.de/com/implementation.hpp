@@ -194,6 +194,29 @@ private:
 	itypeinfo TypeInfo;
 };
 
+typedef BOOL bool_t;
+
+template<class Base>
+class implementation<Base, ::IClassFactory>:
+	public implementation_base<Base, ::IClassFactory, ::IUnknown>
+{
+public:
+	hresult::internal_type __stdcall CreateInstance(
+		internal_result<in, iunknown>::type Outer, 
+		const uuid::internal_type &Uuid, 
+		void **ppObject)
+	{
+		// Cannot aggregate.
+		if(Outer) return hresult::class_e_noaggregation;
+		return QueryInterface(Uuid, ppObject);
+	}
+	hresult::internal_type __stdcall LockServer(bool_t fLock)
+	{
+		if(fLock!=FALSE) this->AddRef(); else this->Release();
+		return hresult::s_ok;
+	}
+};
+
 namespace detail
 {
 
@@ -204,7 +227,7 @@ class implementation_instance;
 
 }
 
-class group
+class group: boost::noncopyable
 {
 public:
 	group() {}
@@ -235,6 +258,8 @@ public:
 	}
 
 	const object< ::ITypeLib> &type_lib() const { return this->TypeLib; }
+
+	int value() { return this->Value.internal(); }
 
 private:
 
