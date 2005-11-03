@@ -25,6 +25,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <windows.h>
 
+#include <cbear.berlios.de/base/exception.hpp>
+#include <cbear.berlios.de/policy/main.hpp>
+
 namespace cbear_berlios_de
 {
 namespace windows
@@ -77,6 +80,112 @@ typedef FLOAT float_t;
 
 // Floating-point variable. (64 bits).
 typedef DOUBLE double_t;
+
+// Security descriptor.
+typedef SECURITY_ATTRIBUTES security_attributes;
+
+// Handle to an object.
+class handle: public policy::wrap<handle, ::HANDLE>
+{
+public:
+	typedef policy::wrap<handle, ::HANDLE> wrap_type;
+	typedef wrap_type::internal_type internal_type;
+
+	handle() {}
+	explicit handle(internal_type X): wrap_type(X) {}
+};
+
+// Boolean variable (should be TRUE or FALSE).
+class bool_t: public policy::wrap<bool_t, ::BOOL>
+{
+public:
+	typedef policy::wrap<bool_t, ::BOOL> wrap_type;
+	bool_t() {}
+	bool_t(bool X): wrap_type(X ? TRUE: FALSE) {}
+	explicit bool_t(::BOOL X): wrap_type(X) {}
+	operator bool() const { return this->internal()!=FALSE; }
+};
+
+typedef WCHAR wchar_tt;
+
+template<class Char, class A, class W>
+struct select_traits;
+
+template<class A, class W>
+struct select_traits<char_t, A, W>
+{
+	typedef A type;
+	static type func(A X, W) { return X; }
+};
+
+template<class A, class W>
+struct select_traits<wchar_tt, A, W>
+{
+	typedef W type;
+	static type get(A, W X) { return X; }
+};
+
+template<class Char, class A, class W>
+typename select_traits<Char, A, W>::type select(A a, W w)
+{
+	return select_traits<Char, A, W>::get(a, w);
+}
+
+// Pointer to a null-terminated string
+template<class Char>
+class basic_lpstr: public policy::wrap<basic_lpstr, Char*>
+{
+public:
+	typedef policy::wrap<basic_lpstr, Char*> wrap_type;
+	typedef Char *internal_type;
+	basic_lpstr() {}
+	basic_lpstr(internal_type X): wrap_type(X) {}
+};
+
+// Pointer to a null-terminated string of 8-bit Windows (ANSI) characters.
+typedef basic_lpstr<char_t> lpstr_t;
+
+// Pointer to a constant null-terminated string of 8-bit Windows (ANSI) 
+// characters.
+typedef basic_lpstr<const wchar_tt> lpcstr_t;
+
+// Pointer to a null-terminated string of 16-bit Unicode characters.
+typedef basic_lpstr<wchar_tt> lpwstr_t;
+
+// Pointer to a constant null-terminated string of 16-bit Unicode characters.
+typedef basic_lpstr<const wchar_tt> lpcwstr_t;
+
+// Exception.
+class exception: 
+	public base::exception, public policy::wrap<windows::exception, dword_t>
+{
+public:
+	typedef policy::wrap<windows::exception, dword_t> wrap_type;
+	template<class Type>
+	static Type throw_if_null(Type X)
+	{
+		if(X) return X;
+		throw windows::exception();
+	}
+	void what(std::ostream &O) const
+	{
+		O << "cbear_berlios_de::windows::exception(" << this->internal() << ")";
+	}
+private:
+	exception(): wrap_type(::GetLastError()) {}
+};
+
+// The function creates or opens a named or unnamed mutex object.
+template<class Char>
+handle create_mutex(
+	security_attributes *MutexAttributes, 
+	bool_t InitialOwner, 
+	const basic_lpstr<const Char> &Name)
+{
+	return handle(exception::throw_if_null(
+		select<Char>(CreateMutexA, CreateMutexW)(
+			MutexAttributes, InitialOwner.internal(), Name.internal())));
+}
 
 }
 }

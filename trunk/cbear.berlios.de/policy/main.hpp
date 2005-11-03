@@ -157,7 +157,8 @@ public:
 		return *this;
 	}
 
-protected:
+// Because of VC 7.1.
+// protected:
 
 	wrap() 
 	{ 

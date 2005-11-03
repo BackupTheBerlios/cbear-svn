@@ -75,8 +75,6 @@ public:
 	options(enumeration_type X): wrap_type(X) {}
 };
 
-typedef SECURITY_ATTRIBUTES security_attributes;
-
 class disposition: public policy::wrap<disposition, ::DWORD>
 {
 	typedef policy::wrap<disposition, ::DWORD> wrap_type;
