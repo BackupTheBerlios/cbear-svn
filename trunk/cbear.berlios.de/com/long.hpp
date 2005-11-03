@@ -30,8 +30,7 @@ namespace cbear_berlios_de
 namespace com
 {
 
-typedef ::LONG long_t;
-
+typedef windows::long_t long_t;
 CBEAR_BERLIOS_DE_COM_DECLARE_DEFAULT_TRAITS(long_t, ::VT_I4);
 
 }

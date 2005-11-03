@@ -24,6 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_COM_TRAITS_HPP_INCLUDED
 
 #include <cbear.berlios.de/base/undefined.hpp>
+#include <cbear.berlios.de/windows/main.hpp>
 #include <cbear.berlios.de/policy/main.hpp>
 
 // BOOST_STATIC_ASSERT

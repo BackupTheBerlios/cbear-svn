@@ -23,33 +23,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_REGISTRY_MAIN_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_REGISTRY_MAIN_HPP_INCLUDED
 
+#include <cbear.berlios.de/policy/main.hpp>
+#include <cbear.berlios.de/registry/sam.hpp>
+
 namespace cbear_berlios_de
 {
 namespace registry
 {
-
-class sam: public policy::wrap<sam, ::REGSAM>
-{
-	typedef policy::wrap<sam, ::REGSAM> wrap_type;
-public:
-	enum enumeration_type
-	{
-		all_access = KEY_ALL_ACCESS,
-		create_link = KEY_CREATE_LINK,
-		create_sub_key = KEY_CREATE_SUB_KEY,
-		enumerate_sub_keys = KEY_ENUMERATE_SUB_KEYS,
-		execute = KEY_EXECUTE,
-		notify = KEY_NOTIFY,
-		query_value = KEY_QUERY_VALUE,
-		read = KEY_READ,
-		set_value = KEY_SET_VALUE,
-		wow64_32key = KEY_WOW64_32KEY,
-		wow64_64key = KEY_WOW64_64KEY,
-		write = KEY_WRITE,
-		
-	};
-	sam(enumeration_type X): wrap_type(X) {}
-};
 
 typedef LONG long_t;
 
@@ -58,12 +38,12 @@ class exception: public base::exception
 public:
 	enum enumeration_type 
 	{ 
-		success = ::ERROR_SUCCESS; 
+		success = ERROR_SUCCESS,
 	};
 	exception(long_t Result): Result(Result) {}
 	virtual void what(::std::ostream &O) const
 	{
-		O << "cbear_berlios_de::registry::exception { result = " << this->Result << 
+		O << "cbear_berlios_de::registry::exception { result = " << this->Result <<
 			" }";
 	}
 	long_t result() const { return this->Result; }
@@ -75,28 +55,137 @@ private:
 	long_t Result;
 };
 
+class options: public policy::wrap<options, ::DWORD>
+{
+	typedef policy::wrap<options, ::DWORD> wrap_type;
+public:
+	enum enumeration_type
+	{
+		reserved = REG_OPTION_RESERVED,
+		non_volatile = REG_OPTION_NON_VOLATILE,
+		volatile_all = REG_OPTION_VOLATILE,
+		create_link = REG_OPTION_CREATE_LINK,
+		backup_restore = REG_OPTION_BACKUP_RESTORE,
+		open_link = REG_OPTION_OPEN_LINK,
+
+		legal = REG_LEGAL_OPTION,
+	};
+	options() {}
+	options(enumeration_type X): wrap_type(X) {}
+};
+
+typedef SECURITY_ATTRIBUTES security_attributes;
+
+class disposition: public policy::wrap<disposition, ::DWORD>
+{
+	typedef policy::wrap<disposition, ::DWORD> wrap_type;
+public:
+	enum enumeration_type
+	{
+		created_new_key = REG_CREATED_NEW_KEY,
+		opened_existing_key = REG_OPENED_EXISTING_KEY,
+	};
+	disposition() {}
+	disposition(enumeration_type X): wrap_type(X) {}
+};
+
 class hkey: public policy::wrap<hkey, ::HKEY>
 {
 	typedef policy::wrap<hkey, ::HKEY> wrap_type;
 public:
-	enum enumeration_type
-	{
-		classes_root = HKEY_CLASSES_ROOT,
-		current_config = HKEY_CURRENT_CONFIG,
-		current_user = HKEY_CURRENT_USER,
-		users = HKEY_USERS,
-	};
 
-	hkey(enumeration_type X): wrap_type(X) {}
+	static hkey classes_root() { return hkey(HKEY_CLASSES_ROOT); }
+	static hkey current_user() { return hkey(HKEY_CURRENT_USER); }
+	static hkey local_machine() { return hkey(HKEY_LOCAL_MACHINE); }
+	static hkey users() { return hkey(HKEY_USERS); }
+	static hkey performance_data() { return hkey(HKEY_PERFORMANCE_DATA); }
+	static hkey performance_text() { return hkey(HKEY_PERFORMANCE_TEXT); }
+	static hkey performance_nlstext() { return hkey(HKEY_PERFORMANCE_NLSTEXT); }
+	static hkey current_config() { return hkey(HKEY_CURRENT_CONFIG); }
+	static hkey dyn_data() { return hkey(HKEY_DYN_DATA); }
 
-	hkey create(const wchar_t *X, sam Sam)
+	typedef wrap_type::internal_type internal_type;
+
+	hkey() {}
+	explicit hkey(internal_type X): wrap_type(X) {}
+
+	class create_result;
+
+	inline create_result create(
+		const wchar_t *SubKey, 
+		const wchar_t *Class, 
+		options Options, 
+		sam Sam, 
+		const security_attributes &SecurityAttributes) const;
+
+	hkey connect(const wchar_t *X) const
 	{
 		hkey Result;
-		exception::throw_unless(RegCreateKeyExW(
-			this->internal(), X, 0, Sam.internal(), Result));
+		exception::throw_unless(::RegConnectRegistryW(
+			X, this->internal(), &Result.internal()));
 		return Result;
 	}
+
+	hkey open(const wchar_t *X, sam Sam) const
+	{
+		hkey Result;
+		exception::throw_unless(RegOpenKeyExW(
+			this->internal(), X, 0, Sam.internal(), &Result.internal()));
+		return Result;
+	}
+
+	void delete_(const wchar_t *X) const
+	{
+		exception::throw_unless(::RegDeleteKeyW(this->internal(), X));
+	}
+
+	void flush() const
+	{
+		exception::throw_unless(::RegFlushKey(this->internal()));	
+	}
+
+	void close() const
+	{
+		exception::throw_unless(::RegCloseKey(this->internal()));
+	}
 };
+
+class hkey::create_result
+{
+public:
+	hkey hkey;
+	disposition disposition;
+};
+
+inline hkey::create_result hkey::create(
+	const wchar_t *SubKey, 
+	const wchar_t *Class, 
+	options Options, 
+	sam Sam, 
+	const security_attributes &SecurityAttributes) const
+{
+	create_result Result;
+	exception::throw_unless(::RegCreateKeyExW(
+		//HKEY hKey,
+		this->internal(),
+		// LPCTSTR lpSubKey,
+		SubKey,
+		//DWORD Reserved,
+		0,
+		//LPTSTR lpClass,
+		const_cast<wchar_t *>(Class),
+		//DWORD dwOptions,
+		Options.internal(),
+		//REGSAM samDesired,
+		Sam.internal(),
+		//LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+		const_cast<security_attributes *>(&SecurityAttributes),
+		//PHKEY phkResult,
+		&Result.hkey.internal(),
+		//LPDWORD lpdwDisposition,
+		&Result.disposition.internal()));
+	return Result;
+}
 
 }
 }
