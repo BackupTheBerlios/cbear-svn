@@ -45,6 +45,6 @@ class traits
 	<xi:include href="uuid.xml"/>
 	<xi:include href="hresult.xml"/>
 	<xi:include href="object.xml"/>
-	<xi:include href="dynamic_adapter.xml"/>
+<!--	<xi:include href="dynamic_adapter.xml"/> -->
 	<xi:include href="odl.xml"/>
 </section>

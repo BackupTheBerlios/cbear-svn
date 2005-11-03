@@ -21,11 +21,11 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <cbear.berlios.de/com/object.hpp>
+#include <cbear.berlios.de/windows/com/object.hpp>
 
 #include <boost/test/minimal.hpp>
 
-namespace Com = cbear_berlios_de::com;
+namespace Com = cbear_berlios_de::windows::com;
 
 template<class T>
 class MyBase: public T //Com::iunknown::interface_type

@@ -26,15 +26,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns="http://cbear.berlios.de/cs"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:xi="http://www.w3.org/2001/XInclude"
-	xmlns:odl="http://cbear.berlios.de/com"
+	xmlns:odl="http://cbear.berlios.de/windows/com"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:cs="http://cbear.berlios.de/cs"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:txt="http://cbear.berlios.de/text"
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="xi odl cs txt">
-
-<!-- <xsl:import href="../text/main.xsl"/> -->
 
 <xsl:import href="color.lib.xsl"/>
 

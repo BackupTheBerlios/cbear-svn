@@ -27,7 +27,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://cbear.berlios.de/api main.xsd"
-	xmlns:com.idl="http://cbear.berlios.de/com"
+	xmlns:com.idl="http://cbear.berlios.de/windows/com"
 	id="cbear.berlios.de/api/base"
 	uuid="1C5A19C7-7ADA-456b-B9A2-58C09AF5BAF8">
 

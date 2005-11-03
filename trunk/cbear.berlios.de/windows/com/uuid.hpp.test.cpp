@@ -26,7 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <boost/test/minimal.hpp>
 
 namespace Cbear = cbear_berlios_de;
-namespace Com = Cbear::com;
+namespace Com = Cbear::windows::com;
 
 class IDMy: public ::IUnknown
 {

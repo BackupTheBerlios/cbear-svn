@@ -20,17 +20,19 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_COM_THREAD_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_COM_THREAD_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_THREAD_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_WINDOWS_COM_THREAD_HPP_INCLUDED
 
 // boost::mutex
 #include <boost/thread/mutex.hpp>
 // boost::thread
 #include <boost/thread/thread.hpp>
 
-#include <cbear.berlios.de/com/system.hpp>
+#include <cbear.berlios.de/windows/com/system.hpp>
 
 namespace cbear_berlios_de
+{
+namespace windows
 {
 namespace com
 {
@@ -68,6 +70,7 @@ private:
 	thread &operator=(const thread &);
 };
 
+}
 }
 }
 

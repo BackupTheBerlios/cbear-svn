@@ -24,9 +24,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_COM_EXCEPTION_HPP_INCLUDED
 
 #include <cbear.berlios.de/base/exception.hpp>
-#include <cbear.berlios.de/com/hresult.hpp>
+#include <cbear.berlios.de/windows/com/hresult.hpp>
 
 namespace cbear_berlios_de
+{
+namespace windows
 {
 namespace com
 {
@@ -79,6 +81,7 @@ private:
 	hresult Value;
 };
 
+}
 }
 }
 

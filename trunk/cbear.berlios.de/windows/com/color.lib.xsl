@@ -26,11 +26,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:xi="http://www.w3.org/2001/XInclude"
-	xmlns:odl="http://cbear.berlios.de/com"
+	xmlns:odl="http://cbear.berlios.de/windows/com"
 	xmlns:txt="http://cbear.berlios.de/text"
 	exclude-result-prefixes="odl txt xi">
 
-<xsl:import href="../text/main.xsl"/>
+<xsl:import href="../../text/main.xsl"/>
 
 <!-- Style -->
 

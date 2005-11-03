@@ -20,8 +20,8 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_SOURCEFORGE_NET_COM_UUID_HPP_INCLUDED
-#define CBEAR_SOURCEFORGE_NET_COM_UUID_HPP_INCLUDED
+#ifndef CBEAR_SOURCEFORGE_NET_WINDOWS_COM_UUID_HPP_INCLUDED
+#define CBEAR_SOURCEFORGE_NET_WINDOWS_COM_UUID_HPP_INCLUDED
 
 // ::UUID
 #include <basetyps.h>
@@ -34,9 +34,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/range/lexicographical_compare.hpp>
 #include <cbear.berlios.de/base/integer.hpp>
-#include <cbear.berlios.de/com/traits.hpp>
+#include <cbear.berlios.de/windows/com/traits.hpp>
 
 namespace cbear_berlios_de
+{
+namespace windows
 {
 namespace com
 {
@@ -121,13 +123,14 @@ public:
 
 }
 }
+}
 
-#define CBEAR_BERLIOS_DE_COM_UUID_DECLARE(Interface)\
-	namespace cbear_berlios_de { namespace com {	\
+#define CBEAR_BERLIOS_DE_WINDOWS_COM_UUID_DECLARE(Interface)\
+	namespace cbear_berlios_de { namespace windows { namespace com { \
 	template<> struct uuid::of_type< ::Interface>	\
 	{ static uuid create() { return uuid(::IID_##Interface); } }; \
-	} }
+	} } }
 
-CBEAR_BERLIOS_DE_COM_UUID_DECLARE(IUnknown);
+CBEAR_BERLIOS_DE_WINDOWS_COM_UUID_DECLARE(IUnknown);
 
 #endif

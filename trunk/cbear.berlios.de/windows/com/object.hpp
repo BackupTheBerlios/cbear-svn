@@ -20,15 +20,17 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_COM_OBJECT_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_COM_OBJECT_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_OBJECT_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_WINDOWS_COM_OBJECT_HPP_INCLUDED
 
 #include <cbear.berlios.de/base/exception.hpp>
-#include <cbear.berlios.de/com/uuid.hpp>
-#include <cbear.berlios.de/com/bstr.hpp>
-#include <cbear.berlios.de/com/exception.hpp>
+#include <cbear.berlios.de/windows/com/uuid.hpp>
+#include <cbear.berlios.de/windows/com/bstr.hpp>
+#include <cbear.berlios.de/windows/com/exception.hpp>
 
 namespace cbear_berlios_de
+{
+namespace windows
 {
 namespace com
 {
@@ -279,6 +281,7 @@ private:
 	dword_t Register;
 };
 
+}
 }
 }
 

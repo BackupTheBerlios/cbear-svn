@@ -20,8 +20,8 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_COM_IMPLEMENTATION_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_COM_IMPLEMENTATION_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_IMPLEMENTATION_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_WINDOWS_COM_IMPLEMENTATION_HPP_INCLUDED
 
 // std::map
 #include <map>                                    
@@ -32,11 +32,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <boost/thread/condition.hpp>
 
 #include <cbear.berlios.de/atomic/main.hpp>
-#include <cbear.berlios.de/com/hresult.hpp>
-#include <cbear.berlios.de/com/object.hpp>
-#include <cbear.berlios.de/com/uint.hpp>
+#include <cbear.berlios.de/windows/com/hresult.hpp>
+#include <cbear.berlios.de/windows/com/object.hpp>
+#include <cbear.berlios.de/windows/com/uint.hpp>
 
 namespace cbear_berlios_de
+{
+namespace windows
 {
 namespace com
 {
@@ -353,6 +355,7 @@ private:
 
 }
 
+}
 }
 }
 

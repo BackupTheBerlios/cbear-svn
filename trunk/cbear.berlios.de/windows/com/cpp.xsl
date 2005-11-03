@@ -26,7 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns="http://cbear.berlios.de/cpp"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:xi="http://www.w3.org/2001/XInclude"
-	xmlns:odl="http://cbear.berlios.de/com"
+	xmlns:odl="http://cbear.berlios.de/windows/com"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:cpp="http://cbear.berlios.de/cpp"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -34,7 +34,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="xi odl cpp txt">
 
-<xsl:import href="../text/main.xsl"/>
+<xsl:import href="../../text/main.xsl"/>
 
 <xsl:output method="xml"/>
 
@@ -78,6 +78,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<id.ref type="::">
 			<id.ref/>
 			<id.ref id="cbear_berlios_de"/>
+			<id.ref id="windows"/>
 			<id.ref id="com"/>
 			<id.ref id="enum_t" type="&lt;&gt;">
 				<xsl:copy-of select="$name"/>
@@ -431,6 +432,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<id.ref type="::">
 			<id.ref/>
 			<id.ref id="cbear_berlios_de"/>
+			<id.ref id="windows"/>
 			<id.ref id="com"/>
 			<id.ref id="object" type="&lt;&gt;">				
 				<id.ref type="::">
@@ -508,32 +510,34 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		id="{$path}">
 		<header>
 			<include href="{concat($path, '.h')}"/>
-			<include href="cbear.berlios.de/com/int.hpp"/>
-			<include href="cbear.berlios.de/com/uint.hpp"/>
-			<include href="cbear.berlios.de/com/char.hpp"/>
-			<include href="cbear.berlios.de/com/byte.hpp"/>
-			<include href="cbear.berlios.de/com/short.hpp"/>
-			<include href="cbear.berlios.de/com/ushort.hpp"/>
-			<include href="cbear.berlios.de/com/long.hpp"/>
-			<include href="cbear.berlios.de/com/ulong.hpp"/>
-			<include href="cbear.berlios.de/com/longlong.hpp"/>
-			<include href="cbear.berlios.de/com/ulonglong.hpp"/>
-			<include href="cbear.berlios.de/com/float.hpp"/>
-			<include href="cbear.berlios.de/com/double.hpp"/>
-			<include href="cbear.berlios.de/com/enum.hpp"/>
-			<include href="cbear.berlios.de/com/variant_bool.hpp"/>
-			<include href="cbear.berlios.de/com/bstr.hpp"/>
-			<include href="cbear.berlios.de/com/date.hpp"/>
-			<include href="cbear.berlios.de/com/safearray.hpp"/>
-			<include href="cbear.berlios.de/com/object.hpp"/>
-			<include href="cbear.berlios.de/com/exception.hpp"/>
-			<include href="cbear.berlios.de/com/implementation.hpp"/>
+			<include href="cbear.berlios.de/windows/com/int.hpp"/>
+			<include href="cbear.berlios.de/windows/com/uint.hpp"/>
+			<include href="cbear.berlios.de/windows/com/char.hpp"/>
+			<include href="cbear.berlios.de/windows/com/byte.hpp"/>
+			<include href="cbear.berlios.de/windows/com/short.hpp"/>
+			<include href="cbear.berlios.de/windows/com/ushort.hpp"/>
+			<include href="cbear.berlios.de/windows/com/long.hpp"/>
+			<include href="cbear.berlios.de/windows/com/ulong.hpp"/>
+			<include href="cbear.berlios.de/windows/com/longlong.hpp"/>
+			<include href="cbear.berlios.de/windows/com/ulonglong.hpp"/>
+			<include href="cbear.berlios.de/windows/com/float.hpp"/>
+			<include href="cbear.berlios.de/windows/com/double.hpp"/>
+			<include href="cbear.berlios.de/windows/com/enum.hpp"/>
+			<include href="cbear.berlios.de/windows/com/variant_bool.hpp"/>
+			<include href="cbear.berlios.de/windows/com/bstr.hpp"/>
+			<include href="cbear.berlios.de/windows/com/date.hpp"/>
+			<include href="cbear.berlios.de/windows/com/safearray.hpp"/>
+			<include href="cbear.berlios.de/windows/com/object.hpp"/>
+			<include href="cbear.berlios.de/windows/com/exception.hpp"/>
+			<include href="cbear.berlios.de/windows/com/implementation.hpp"/>
 			<namespace id="{translate(@id, '.\/', '___')}">
 				<xsl:apply-templates select="*" mode="odl:cpp"/>
 			</namespace>
 			<namespace id="cbear_berlios_de">
-				<namespace id="com">
-					<xsl:apply-templates select="odl:interface" mode="odl:cpp.object"/>
+				<namespace id="windows">
+					<namespace id="com">
+						<xsl:apply-templates select="odl:interface" mode="odl:cpp.object"/>
+					</namespace>
 				</namespace>
 			</namespace>
 		</header>

@@ -20,14 +20,16 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_REGISTRY_MAIN_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_REGISTRY_MAIN_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_MAIN_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_MAIN_HPP_INCLUDED
 
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/windows/main.hpp>
-#include <cbear.berlios.de/registry/sam.hpp>
+#include <cbear.berlios.de/windows/registry/sam.hpp>
 
 namespace cbear_berlios_de
+{
+namespace windows
 {
 namespace registry
 {
@@ -186,6 +188,7 @@ inline hkey::create_result hkey::create(
 	return Result;
 }
 
+}
 }
 }
 

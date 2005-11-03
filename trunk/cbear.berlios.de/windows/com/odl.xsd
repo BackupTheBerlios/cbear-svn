@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <schema 
 	xmlns="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://cbear.berlios.de/com"
-	xmlns:odl="http://cbear.berlios.de/com"
+	targetNamespace="http://cbear.berlios.de/windows/com"
+	xmlns:odl="http://cbear.berlios.de/windows/com"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified">
 

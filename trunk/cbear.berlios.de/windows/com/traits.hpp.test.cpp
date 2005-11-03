@@ -20,7 +20,7 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#include <cbear.berlios.de/com/traits.hpp>
+#include <cbear.berlios.de/windows/com/traits.hpp>
 
 #include <boost/test/minimal.hpp>
 
@@ -30,7 +30,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <boost/type_traits.hpp>
 
 namespace Cbear = cbear_berlios_de;
-namespace Com = cbear_berlios_de::com;
+namespace Com = cbear_berlios_de::windows::com;
 
 class My
 {

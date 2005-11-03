@@ -27,8 +27,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	xmlns:api="http://cbear.berlios.de/api"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns="http://cbear.berlios.de/com"
-	xmlns:odl="http://cbear.berlios.de/com"
+	xmlns="http://cbear.berlios.de/windows/com"
+	xmlns:odl="http://cbear.berlios.de/windows/com"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="xi api odl">
@@ -49,7 +49,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="api:*" mode="api:body">
 	<xsl:element 
-		namespace="http://cbear.berlios.de/com"
+		namespace="http://cbear.berlios.de/windows/com"
 		name="{local-name()}">
 		<xsl:apply-templates select="@id" mode="api:body"/>
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
@@ -382,7 +382,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:processing-instruction>
 	<library
 		xsi:schemaLocation="{concat(
-			'http://cbear.berlios.de/com ', $api:com.odl.xsd)}">
+			'http://cbear.berlios.de/windows/com ', $api:com.odl.xsd)}">
 		<xsl:apply-templates select="@id" mode="api:body"/>
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
 		<xsl:apply-templates select="@version" mode="api:body"/>

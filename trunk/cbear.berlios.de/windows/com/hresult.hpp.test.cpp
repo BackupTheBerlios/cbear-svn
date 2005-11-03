@@ -21,7 +21,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <cbear.berlios.de/com/hresult.hpp>
+#include <cbear.berlios.de/windows/com/hresult.hpp>
 
 // BOOST_STATIC_ASSERT
 #include <boost/static_assert.hpp>
@@ -29,7 +29,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <boost/test/minimal.hpp>
 
 namespace Cbear = cbear_berlios_de;
-namespace Com = cbear_berlios_de::com;
+namespace Com = cbear_berlios_de::windows::com;
 
 template<class T>
 void print(T X) 

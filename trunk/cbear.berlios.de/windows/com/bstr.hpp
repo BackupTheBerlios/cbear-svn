@@ -20,14 +20,16 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_COM_BSTR_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_COM_BSTR_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_BSTR_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_WINDOWS_COM_BSTR_HPP_INCLUDED
 
-#include <cbear.berlios.de/com/traits.hpp>
+#include <cbear.berlios.de/windows/com/traits.hpp>
 #include <cbear.berlios.de/range/equal.hpp>
 #include <cbear.berlios.de/range/iterator_range.hpp>
 
 namespace cbear_berlios_de
+{
+namespace windows
 {
 namespace com
 {
@@ -119,6 +121,7 @@ public:
 
 #pragma pack(pop)
 
+}
 }
 }
 
