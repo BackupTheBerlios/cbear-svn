@@ -30,8 +30,7 @@ namespace cbear_berlios_de
 namespace com
 {
 
-typedef ::USHORT ushort_t;
-
+typedef windows::ushort_t ushort_t;
 CBEAR_BERLIOS_DE_COM_DECLARE_DEFAULT_TRAITS(ushort_t, ::VT_UI2);
 
 }

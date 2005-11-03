@@ -30,8 +30,7 @@ namespace cbear_berlios_de
 namespace com
 {
 
-typedef ::ULONG ulong_t;
-
+typedef windows::ulong_t ulong_t;
 CBEAR_BERLIOS_DE_COM_DECLARE_DEFAULT_TRAITS(ulong_t, ::VT_UI4);
 
 }

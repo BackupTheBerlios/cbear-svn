@@ -30,8 +30,7 @@ namespace cbear_berlios_de
 namespace com
 {
 
-typedef ::INT int_t;
-
+typedef windows::int_t int_t;
 CBEAR_BERLIOS_DE_COM_DECLARE_DEFAULT_TRAITS(int_t, ::VT_INT);
 
 }

@@ -508,14 +508,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		id="{$path}">
 		<header>
 			<include href="{concat($path, '.h')}"/>
-			<include href="cbear.berlios.de/com/enum.hpp"/>
-			<include href="cbear.berlios.de/com/variant_bool.hpp"/>
 			<include href="cbear.berlios.de/com/int.hpp"/>
+			<include href="cbear.berlios.de/com/uint.hpp"/>
+			<include href="cbear.berlios.de/com/char.hpp"/>
 			<include href="cbear.berlios.de/com/byte.hpp"/>
+			<include href="cbear.berlios.de/com/short.hpp"/>
 			<include href="cbear.berlios.de/com/ushort.hpp"/>
 			<include href="cbear.berlios.de/com/long.hpp"/>
 			<include href="cbear.berlios.de/com/ulong.hpp"/>
+			<include href="cbear.berlios.de/com/longlong.hpp"/>
+			<include href="cbear.berlios.de/com/ulonglong.hpp"/>
+			<include href="cbear.berlios.de/com/float.hpp"/>
 			<include href="cbear.berlios.de/com/double.hpp"/>
+			<include href="cbear.berlios.de/com/enum.hpp"/>
+			<include href="cbear.berlios.de/com/variant_bool.hpp"/>
 			<include href="cbear.berlios.de/com/bstr.hpp"/>
 			<include href="cbear.berlios.de/com/date.hpp"/>
 			<include href="cbear.berlios.de/com/safearray.hpp"/>
