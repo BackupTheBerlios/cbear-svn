@@ -24,14 +24,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_REGISTRY_MAIN_HPP_INCLUDED
 
 #include <cbear.berlios.de/policy/main.hpp>
+#include <cbear.berlios.de/windows/main.hpp>
 #include <cbear.berlios.de/registry/sam.hpp>
 
 namespace cbear_berlios_de
 {
 namespace registry
 {
-
-typedef LONG long_t;
 
 class exception: public base::exception
 {
@@ -40,14 +39,14 @@ public:
 	{ 
 		success = ERROR_SUCCESS,
 	};
-	exception(long_t Result): Result(Result) {}
+	exception(windows::long_t Result): Result(Result) {}
 	virtual void what(::std::ostream &O) const
 	{
 		O << "cbear_berlios_de::registry::exception { result = " << this->Result <<
 			" }";
 	}
-	long_t result() const { return this->Result; }
-	static void throw_unless(long_t Result)
+	windows::long_t result() const { return this->Result; }
+	static void throw_unless(windows::long_t Result)
 	{
 		if(Result != success) throw exception(Result);
 	}
