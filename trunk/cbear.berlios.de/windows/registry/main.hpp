@@ -24,7 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_MAIN_HPP_INCLUDED
 
 #include <cbear.berlios.de/policy/main.hpp>
-#include <cbear.berlios.de/windows/main.hpp>
+#include <cbear.berlios.de/windows/base.hpp>
 #include <cbear.berlios.de/windows/registry/sam.hpp>
 
 namespace cbear_berlios_de
