@@ -21,26 +21,8 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
-<?xml-stylesheet type="text/xsl" href="docbook/html.xsl"?>
+<?xml-stylesheet type="text/xsl" href="../docbook/html.xsl"?>
 <section xmlns:xi="http://www.w3.org/2001/XInclude">
-	<title>Documentation</title>
-	<section>
-		<title>C++ Libraries</title>
-		<xi:include href="base/index.xml"/>
-		<xi:include href="bit/index.xml"/>
-		<xi:include href="policy/index.xml"/>
-		<xi:include href="range/index.xml"/>
-		<xi:include href="atomic/index.xml"/>
-	</section>
-	<section>
-		<title>XSLT Libraires</title>
-		<xi:include href="text/index.xml"/>
-		<xi:include href="url/index.xml"/>
-		<xi:include href="docbook/index.xml"/>
-		<xi:include href="test/index.xml"/>
-	</section>
-	<xi:include href="xsd/index.xml"/>
-	<xi:include href="windows/index.xml"/>
-	<xi:include href="cpp/index.xml"/>
-	<xi:include href="api/index.xml"/>
+	<title>Windows API</title>
+	<xi:include href="com/index.xml"/>
 </section>
