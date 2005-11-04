@@ -95,9 +95,13 @@ and others.
 			<section>
 				<title>Child</title>
 <programlisting role="cpp"><![CDATA[template<class Child = __child__>
-class B
+class B;
+
+template<>
+class B<__child__>
 {
 private:
+	typedef __child__ Child;
 	Child &child() { return *static_cast<Child *>(this); }
 	const Child &child() const { return *static_cast<const Child *>(this); }
 };
