@@ -31,6 +31,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	xmlns:cbear.html="http://cbear.berlios.de/html"
 	exclude-result-prefixes="prj xi">
 
+<xsl:import href="../url/main.xsl"/>
+
 <!-- XHTML 1.1. -->
 <xsl:output 
 	method="xml"
@@ -154,23 +156,28 @@ pre
 
 <xsl:template match="prj:section" mode="prj:html.history.search.start">
 	<xsl:param name="name"/>
+	<xsl:param name="filename"/>
 	<xsl:apply-templates select="prj:section" mode="prj:html.history.search">
 		<xsl:with-param name="name" select="$name"/>
 		<xsl:with-param name="content">
-			<a><xsl:value-of select="@name"/></a>
+			<a href="{$filename}"><xsl:value-of select="@name"/></a>
 		</xsl:with-param>
+		<xsl:with-param name="filename" select="$filename"/>
 	</xsl:apply-templates>
 </xsl:template>
 
 <xsl:template match="prj:section" mode="prj:html.history.search">
 	<xsl:param name="name"/>
+	<xsl:param name="filename"/>
 	<xsl:apply-templates select="." mode="prj:html.history.search.start">
 		<xsl:with-param name="name" select="$name"/>
+		<xsl:with-param name="filename" select="$filename"/>
 	</xsl:apply-templates>	
 </xsl:template>
 
 <xsl:template match="/prj:section" mode="prj:html.history.search">
 	<xsl:param name="name"/>
+	<xsl:param name="filename"/>
 	<xsl:param name="content"/>
 	<xsl:choose>
 		<xsl:when test="@name=$name">
@@ -179,6 +186,7 @@ pre
 		<xsl:otherwise>
 			<xsl:apply-templates select="." mode="prj:html.history.search.start">
 				<xsl:with-param name="name" select="$name"/>
+				<xsl:with-param name="filename" select="$filename"/>
 			</xsl:apply-templates>	
 		</xsl:otherwise>
 	</xsl:choose>
@@ -186,28 +194,43 @@ pre
 
 <xsl:template match="prj:section[@href]" mode="prj:html.history.search">
 	<xsl:param name="name"/>
+	<xsl:param name="filename"/>
 	<xsl:param name="content"/>
 	<xsl:apply-templates 
 		select="document(concat(@href, '.xml'), .)/prj:section"
 		mode="prj:html.history.search">
 		<xsl:with-param name="name" select="$name"/>
-		<xsl:with-param name="content" select="$content"/>
+		<xsl:with-param name="filename">
+			<xsl:call-template name="url.path">
+				<xsl:with-param name="path" select="$filename"/>
+			</xsl:call-template>
+			<xsl:value-of select="concat(@href, '.xml')"/>
+		</xsl:with-param>
+		<xsl:with-param name="content" select="$content"/>		
 	</xsl:apply-templates>
 </xsl:template>
 
 <xsl:template match="prj:section" mode="prj:html.history.index">
 	<xsl:param name="name"/>
+	<xsl:param name="filename"/>
 	<xsl:choose>
 		<xsl:when test="$name=@name">
 			<xsl:apply-templates 
 				select="document('../index.xml.xml', .)/prj:section" 
 				mode="prj:html.history.index">
 				<xsl:with-param name="name" select="$name"/>
+				<xsl:with-param name="filename">
+					<xsl:call-template name="url.path">
+						<xsl:with-param name="filename"/>
+					</xsl:call-template>
+					<xsl:value-of select="'../index.xml.xml'"/>
+				</xsl:with-param>
 			</xsl:apply-templates>
 		</xsl:when>
 		<xsl:otherwise>
 			<xsl:apply-templates select="." mode="prj:html.history.search.start">
 				<xsl:with-param name="name" select="$name"/>
+				<xsl:with-param name="filename" select="$filename"/>
 			</xsl:apply-templates>
 		</xsl:otherwise>
 	</xsl:choose>
@@ -219,6 +242,7 @@ pre
 			select="document('index.xml.xml', .)/prj:section" 
 			mode="prj:html.history.index">
 			<xsl:with-param name="name" select="@name"/>
+			<xsl:with-param name="filename" select="'index.xml.xml'"/>
 		</xsl:apply-templates>
 	</ul>
 </xsl:template>
