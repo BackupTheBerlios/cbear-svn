@@ -20,8 +20,8 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_WINDOWS_EXCEPTION_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_WINDOWS_EXCEPTION_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_OPTIONS_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_OPTIONS_HPP_INCLUDED
 
 #include <cbear.berlios.de/windows/base.hpp>
 
@@ -29,31 +29,29 @@ namespace cbear_berlios_de
 {
 namespace windows
 {
-
-// Exception.
-class exception: 
-	public base::exception, public policy::wrap<windows::exception, dword_t>
+namespace registry
 {
-public:
-	typedef policy::wrap<windows::exception, dword_t> wrap_type;
 
-	static void throw_unless(dword_t X)
+class options: public policy::wrap<options, ::DWORD>
+{
+	typedef policy::wrap<options, ::DWORD> wrap_type;
+public:
+	enum enumeration_type
 	{
-		if(!X) throw exception(X);
-	}
-	static throw_if_last_error()
-	{
-		internal_type LastError = ::GetLastError();
-		if(LastError) throw exception(LastError);
-	}
-	void what(std::ostream &O) const
-	{
-		O << "cbear_berlios_de::windows::exception(" << this->internal() << ")";
-	}
-private:
-	exception(internal_type X): wrap_type(X) {}
+		reserved = REG_OPTION_RESERVED,
+		non_volatile = REG_OPTION_NON_VOLATILE,
+		volatile_all = REG_OPTION_VOLATILE,
+		create_link = REG_OPTION_CREATE_LINK,
+		backup_restore = REG_OPTION_BACKUP_RESTORE,
+		open_link = REG_OPTION_OPEN_LINK,
+
+		legal = REG_LEGAL_OPTION,
+	};
+	options() {}
+	options(enumeration_type X): wrap_type(X) {}
 };
 
+}
 }
 }
 
