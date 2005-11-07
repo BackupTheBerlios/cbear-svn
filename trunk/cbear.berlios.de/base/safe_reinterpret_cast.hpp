@@ -23,32 +23,50 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_BASE_SAFE_REINTERPRET_CAST_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_BASE_SAFE_REINTERPRET_CAST_HPP_INCLUDED
 
+#include <boost/static_assert.hpp>
+
 namespace cbear_berlios_de
 {
 namespace base
 {
 
-template<class To, class From>
-To safe_reinterpret_cast(From *X)
+namespace detail
 {
-	BOOST_STATIC_ASSERT(boost::is_pointer<To>::value);
-	BOOST_STATIC_ASSERT(sizeof(boost::remove_pointer<To>::type)<=sizeof(From));
-	return reinterpret_cast<To>(X);
+
+template<class To, class From>
+struct safe_reinterpret_cast_traits;
+
+template<class To, class From>
+struct safe_reinterpret_cast_traits<To *, From *>
+{
+	typedef To to_type;
+	typedef From from_type;
+};
+
+template<class To, class From>
+struct safe_reinterpret_cast_traits<To &, From>
+{
+	typedef To to_type;
+	typedef From from_type;
+};
+
 }
 
 template<class To, class From>
 To safe_reinterpret_cast(From &X)
 {
-	BOOST_STATIC_ASSERT(boost::is_reference<To>::value);
-	BOOST_STATIC_ASSERT(sizeof(boost::remove_reference<To>::type)<=sizeof(From));
+	typedef detail::safe_reinterpret_cast_traits<To, From> traits;
+	BOOST_STATIC_ASSERT(
+		sizeof(typename traits::to_type)==sizeof(typename traits::from_type));
 	return reinterpret_cast<To>(X);
 }
 
 template<class To, class From>
 To safe_reinterpret_cast(const From &X)
 {
-	BOOST_STATIC_ASSERT(boost::is_reference<To>::value);
-	BOOST_STATIC_ASSERT(sizeof(boost::remove_reference<To>::type)<=sizeof(From));
+	typedef detail::safe_reinterpret_cast_traits<To, From> traits;
+	BOOST_STATIC_ASSERT(
+		sizeof(typename traits::to_type)==sizeof(typename traits::from_type));
 	return reinterpret_cast<To>(X);
 }
 

@@ -113,7 +113,7 @@ struct class_traits
 		static wrap_result wrap(internal_result &X) 
 		{
 			internal_policy::construct(*X);
-			return type::wrpa_ref(*X);
+			return type::wrap_ref(*X);
 		}
 	};
 };

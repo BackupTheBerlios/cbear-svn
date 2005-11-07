@@ -35,6 +35,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // boost::remove_pointer
 #include <boost/type_traits/remove_pointer.hpp>
 
+#include <cbear.berlios.de/base/safe_reinterpret_cast.hpp>
+
 namespace cbear_berlios_de
 {
 namespace policy

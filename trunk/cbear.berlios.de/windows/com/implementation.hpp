@@ -50,6 +50,7 @@ namespace detail
 
 class implementation_counter;
 
+/*
 class interface_info_base
 {
 public:
@@ -58,6 +59,7 @@ public:
 	interface_info_base *next;
 	interface_info_base *prev;
 };
+*/
 
 class implementation_info
 {
@@ -105,8 +107,7 @@ private:
 
 template<class Base, class Interface, class Parent>
 class implementation_base: 
-	public implementation<Base, Parent>,
-	private detail::interface_info_base
+	public implementation<Base, Parent>
 {
 public:
 	implementation_base() 
