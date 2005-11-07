@@ -92,24 +92,26 @@ member::name_of<Member>]]></programlisting>
 and others.
 				</para>
 			</section>
-			<section>
-				<title>Child</title>
-<programlisting role="cpp"><![CDATA[template<class Child = __child__>
-class B;
-
-template<>
-class B<__child__>
+		</section>
+		<section>
+			<title>Type Friend</title>
+<programlisting role="cpp"><![CDATA[template<class T>
+class A
 {
 private:
-	typedef __child__ Child;
-	Child &child() { return *static_cast<Child *>(this); }
-	const Child &child() const { return *static_cast<const Child *>(this); }
+	A() {}
+	~A() {}
+	A(const A &) {}
+  A &operator=(const A &) { return *this; }
+	firend T;
 };
 
-struct BB: B<>
+class B: A
 {
 };]]></programlisting>
-			</section>
+		</section>
+		<section>
+			<title>Lambda Functions</title>
 		</section>
 	</section>
 </section>

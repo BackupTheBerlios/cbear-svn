@@ -50,6 +50,15 @@ namespace detail
 
 class implementation_counter;
 
+class interface_info_base
+{
+public:
+	virtual const uuid &get_uuid() = 0;
+	virtual void *get_pointer() = 0;
+	interface_info_base *next;
+	interface_info_base *prev;
+};
+
 class implementation_info
 {
 protected:
@@ -95,13 +104,18 @@ private:
 }
 
 template<class Base, class Interface, class Parent>
-class implementation_base: public implementation<Base, Parent>
+class implementation_base: 
+	public implementation<Base, Parent>,
+	private detail::interface_info_base
 {
 public:
 	implementation_base() 
 	{ 
 		detail::implementation_info::add_interface<Interface>(this); 
 	}
+private:
+	const uuid &get_uuid() { return uuid::of<Interface>(); }
+	void *get_pointer() { return static_cast<Interface *>(this); }
 };
 
 template<class Base, class Interface>

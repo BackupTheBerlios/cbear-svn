@@ -62,8 +62,6 @@ struct class_traits
 	typedef typename type::internal_policy internal_policy;
 	typedef typename internal_policy::type internal_type;
 
-	BOOST_STATIC_ASSERT(sizeof(type)==sizeof(internal_type));
-
 	static const vartype_t vt = type::vt;
 
 	template<io_type Io>
@@ -81,7 +79,7 @@ struct class_traits
 		}
 		static wrap_result wrap(internal_result &X)
 		{
-			return reinterpret_cast<wrap_result>(X);
+			return type::wrap_ref(X);
 		}
 	};
 
@@ -97,7 +95,7 @@ struct class_traits
 		}
 		static wrap_result wrap(internal_result &X)
 		{
-			return reinterpret_cast<wrap_result>(*X);
+			return type::wrap_ref(*X);
 		}
 	};
 
@@ -115,7 +113,7 @@ struct class_traits
 		static wrap_result wrap(internal_result &X) 
 		{
 			internal_policy::construct(*X);
-			return reinterpret_cast<wrap_result>(*X);
+			return type::wrpa_ref(*X);
 		}
 	};
 };

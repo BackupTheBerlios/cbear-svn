@@ -99,9 +99,8 @@ public:
 	typedef object_policy<interface_type> internal_policy;
 
 	static const vartype_t vt = 
-		boost::is_base_of< ::IDispatch, Interface>::value ? 
-			::VT_DISPATCH: 
-			::VT_UNKNOWN;
+		boost::is_base_of< ::IDispatch, Interface>::value ?
+			::VT_DISPATCH: ::VT_UNKNOWN;
 
 	template<class Type>
 	typename add_object<Type>::type query_interface() const
@@ -112,12 +111,13 @@ public:
 		if(P)
 		{
 			P->QueryInterface(
-				object_type::uuid().internal(), (void **)com::internal<out>(Result));
+				com::internal<in>(object_type::uuid()), 
+				(void **)com::internal<out>(Result));
 		}
 		return Result;
 	}		
 
-	static com::uuid uuid() { return uuid::of<interface_type>(); }
+	static const com::uuid &uuid() { return uuid::of<interface_type>(); }
 
 	class uninitialized: public base::exception
 	{
@@ -211,10 +211,10 @@ inline itypelib load_type_lib(const bstr_t File)
 
 typedef object< ::IClassFactory> iclassfactory;
 
-class regcls: public com::enum_t<regcls, ::DWORD>
+class regcls: public com::enum_t<regcls, dword_t>
 {
 public:
-	typedef com::enum_t<regcls, ::DWORD> wrap_type;
+	typedef com::enum_t<regcls, dword_t> wrap_type;
 	enum enumeration_type 
 	{ 
 		singleuse = REGCLS_SINGLEUSE,
@@ -226,7 +226,7 @@ public:
 	regcls(enumeration_type X): wrap_type(X) {}
 };
 
-class clsctx: public com::enum_t<clsctx, ::DWORD>
+class clsctx: public com::enum_t<clsctx, dword_t>
 {
 public:
 	typedef com::enum_t<clsctx, ::DWORD> wrap_type;
@@ -254,8 +254,6 @@ public:
 	};
 	clsctx(enumeration_type X): wrap_type(X) {}
 };
-
-typedef ::DWORD dword_t;
 
 class class_object
 {

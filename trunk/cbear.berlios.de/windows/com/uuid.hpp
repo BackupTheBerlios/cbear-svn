@@ -75,7 +75,7 @@ public:
 
 	typedef boost::uint32_t data1_type;
 	typedef boost::uint16_t data2_type;
-	typedef boost::uint16_t data3_type;	
+	typedef boost::uint16_t data3_type;
 	typedef boost::uint8_t data4_value_type;
 	static const int data4_size = 8;
 	typedef data4_value_type data4_type[data4_size];
@@ -83,9 +83,9 @@ public:
 	typedef detail::uuid_wrap::internal_type internal_type;
 
 	uuid(
-		const data1_type &Data1, 
+		const data1_type &Data1,
 		const data2_type &Data2, 
-		const data3_type &Data3, 
+		const data3_type &Data3,
 		const data4_value_type &Data40,
 		const data4_value_type &Data41,
 		const data4_value_type &Data42,
@@ -114,11 +114,14 @@ public:
 	template<class Interface>
 	struct of_type 
 	{
-		static uuid create() { return uuid(__uuidof(Interface)); }
+		static const uuid &create() 
+		{ 
+			return uuid::wrap_ref(__uuidof(Interface));
+		}
 	};
 
 	template<class Interface>
-	static uuid of() { return of_type<Interface>::create(); }
+	static const uuid &of() { return of_type<Interface>::create(); }
 };
 
 }
@@ -128,9 +131,10 @@ public:
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_UUID_DECLARE(Interface)\
 	namespace cbear_berlios_de { namespace windows { namespace com { \
 	template<> struct uuid::of_type< ::Interface>	\
-	{ static uuid create() { return uuid(::IID_##Interface); } }; \
-	} } }
+	{ static const uuid &create() { \
+	return uuid::wrap_ref(::IID_##Interface); } }; } } }
 
 CBEAR_BERLIOS_DE_WINDOWS_COM_UUID_DECLARE(IUnknown);
+CBEAR_BERLIOS_DE_WINDOWS_COM_UUID_DECLARE(IDispatch);
 
 #endif

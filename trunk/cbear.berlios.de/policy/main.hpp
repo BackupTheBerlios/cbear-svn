@@ -157,6 +157,16 @@ public:
 		return *this;
 	}
 
+	static type &wrap_ref(internal_type &X)
+	{
+		return base::safe_reinterpret_cast<type &>(X);
+	}
+
+	static const type &wrap_ref(const internal_type &X)
+	{
+		return base::safe_reinterpret_cast<const type &>(X);
+	}
+
 // Because of VC 7.1.
 // protected:
 
