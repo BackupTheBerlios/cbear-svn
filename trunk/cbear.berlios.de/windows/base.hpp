@@ -81,9 +81,6 @@ typedef DOUBLE double_t;
 // 16-bit Unicode character.
 typedef WCHAR wchar_t_;
 
-// Security descriptor.
-typedef SECURITY_ATTRIBUTES security_attributes;
-
 }
 }
 

@@ -25,6 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/windows/base.hpp>
+#include <cbear.berlios.de/windows/security_attributes.hpp>
 #include <cbear.berlios.de/windows/registry/disposition.hpp>
 #include <cbear.berlios.de/windows/registry/sam.hpp>
 #include <cbear.berlios.de/windows/registry/options.hpp>
@@ -60,11 +61,11 @@ public:
 
 	template<class Char>
 	inline create_result create(
-		const basic_lpstr<const Char> &SubKey, 
-		const basic_lpstr<const Char> &Class, 
+		basic_lpstr<const Char> SubKey, 
+		basic_lpstr<const Char> Class, 
 		options Options, 
 		sam Sam, 
-		const security_attributes *SecurityAttributes) const
+		security_attributes SecurityAttributes) const
 	{
 		create_result Result;
 		exception::throw_unless(::RegCreateKeyExW(
@@ -81,7 +82,7 @@ public:
 			//REGSAM samDesired,
 			Sam.internal(),
 			//LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-			const_cast<security_attributes *>(SecurityAttributes),
+			SecurityAttributes.internal(),
 			//PHKEY phkResult,
 			&Result.hkey.internal(),
 			//LPDWORD lpdwDisposition,

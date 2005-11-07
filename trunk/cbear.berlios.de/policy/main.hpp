@@ -167,8 +167,7 @@ public:
 		return base::safe_reinterpret_cast<const type &>(X);
 	}
 
-// Because of VC 7.1.
-// protected:
+protected:
 
 	wrap() 
 	{ 

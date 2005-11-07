@@ -28,6 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/exception.hpp>
 #include <cbear.berlios.de/windows/select.hpp>
 #include <cbear.berlios.de/windows/handle.hpp>
+#include <cbear.berlios.de/windows/security_attributes.hpp>
 
 namespace cbear_berlios_de
 {
@@ -37,12 +38,12 @@ namespace windows
 // The function creates or opens a named or unnamed mutex object.
 template<class Char>
 handle create_mutex(
-	security_attributes *MutexAttributes, 
+	security_attributes MutexAttributes, 
 	bool_t InitialOwner,
 	const basic_lpstr<const Char> &Name)
 {
 	handle Result = handle(select<Char>(CreateMutexA, CreateMutexW)(
-		MutexAttributes, InitialOwner.internal(), Name.internal()));
+		MutexAttributes.internal(), InitialOwner.internal(), Name.internal()));
 	exception::throw_if_last_error();
 	return Result;
 }

@@ -20,48 +20,15 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_WINDOWS_EXCEPTION_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_WINDOWS_EXCEPTION_HPP_INCLUDED
-
-#include <cbear.berlios.de/windows/base.hpp>
+#ifndef CBEAR_BERLIOS_DE_BASE_UNDEFINED_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_BASE_UNDEFINED_HPP_INCLUDED
 
 namespace cbear_berlios_de
 {
-namespace windows
+namespace base
 {
 
-#pragma warning(push)
-// 'type' : the copy constructor is inaccessible
-#pragma warning(disable: 4671)
-// throwing 'identifier' the following types will not be considered at the 
-// catch site
-#pragma warning(disable: 4673)
-
-// Exception.
-class exception: 
-	public base::exception, public policy::wrap<windows::exception, dword_t>
-{
-public:
-	typedef policy::wrap<windows::exception, dword_t> wrap_type;
-
-	static void throw_unless(internal_type X)
-	{
-		if(!X) throw windows::exception(X);
-	}
-	static throw_if_last_error()
-	{
-		internal_type LastError = ::GetLastError();
-		if(LastError) throw exception(LastError);
-	}
-	void what(std::ostream &O) const
-	{
-		O << "cbear_berlios_de::windows::exception(" << this->internal() << ")";
-	}
-private:
-	exception(internal_type X): wrap_type(X) {}
-};
-
-#pragma warning(pop)
+class undefined;
 
 }
 }
