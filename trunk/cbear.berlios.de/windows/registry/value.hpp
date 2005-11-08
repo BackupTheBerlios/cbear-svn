@@ -33,9 +33,22 @@ namespace windows
 namespace registry
 {
 
-class value
+namespace detail
+{
+
+class value_none 
 {
 public:
+	static const dword_t type_id = REG_NONE;
+};
+
+}
+
+class value: public boost::variant<detail::value_none>
+{
+public:
+
+	typedef detail::value_none none;
 
 	class type: public policy::wrap<type, dword_t>
 	{
