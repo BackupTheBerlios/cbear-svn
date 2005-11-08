@@ -23,6 +23,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_HKEY_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_HKEY_HPP_INCLUDED
 
+#include <boost/variant.hpp>
+
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/windows/base.hpp>
 #include <cbear.berlios.de/windows/security_attributes.hpp>
@@ -60,7 +62,7 @@ public:
 	class create_result;
 
 	template<class Char>
-	inline create_result create(
+	create_result create(
 		basic_lpstr<const Char> SubKey, 
 		basic_lpstr<const Char> Class, 
 		options Options, 
@@ -101,12 +103,16 @@ public:
 	}
 
 	template<class Char>
-	hkey open(const basic_lpstr<const Char> &X, sam Sam) const
+	hkey open(const basic_lpstr<const Char> &SubKey, sam Sam) const
 	{
 		hkey Result;
 		exception::throw_unless(
 			select<Char>(::RegOpenKeyExA, ::RegOpenKeyExW)(
-				this->internal(), X.internal(), 0, Sam.internal(), &Result.internal()));
+				this->internal(), 
+				SubKey.internal(), 
+				0, 
+				Sam.internal(), 
+				&Result.internal()));
 		return Result;
 	}
 

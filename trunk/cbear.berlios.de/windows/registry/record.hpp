@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<!--
+/*
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.berlios.de)
@@ -20,31 +19,47 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
--->
-<?xml-stylesheet type="text/xsl" href="../../docbook/html.xsl"?>
-<section xmlns:xi="http://www.w3.org/2001/XInclude">
-	<title>Component Object Model, COM</title>
-	<para>
-Namespace <emphasis>cbear_berlios_de::windows::com</emphasis>.
-	</para>
-	<para>
-Draft <filename>draft.svg</filename>.
-	</para>
-	<section>
-		<title>Type Traits</title>
-		<para>
-Header <filename>traits.hpp</filename>.
-		</para>
-<programlisting role="cpp"><![CDATA[template<class Type>
-class traits
+*/
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_RECORD_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_RECORD_HPP_INCLUDED
+
+#include <boost/variant.hpp>
+
+#include <cbear.berlios.de/windows/registry/hkey.hpp>
+
+namespace cbear_berlios_de
 {
-	typedef ... internal_policy;
-};]]></programlisting>
-	</section>
-	<xi:include href="system.xml"/>
-	<xi:include href="uuid.xml"/>
-	<xi:include href="hresult.xml"/>
-	<xi:include href="object.xml"/>
-	<xi:include href="implementation.xml"/>
-	<xi:include href="odl.xml"/>
-</section>
+namespace windows
+{
+namespace registry
+{
+
+template<class Char>
+class record;
+
+template<class Char>
+class record_base
+{
+public:
+	typedef record<Char> record_type;
+	std::vector<record_type> records;
+};
+
+template<class Char>
+class record: public record_base<Char>
+{
+public:
+	typedef std::basic_string<Char> string_type;
+	string_type subkey;
+
+	class none {};
+	boost::variant<none, string_type, int> value;
+
+	std::vector<record> records;
+};
+
+}
+}
+}
+
+#endif
