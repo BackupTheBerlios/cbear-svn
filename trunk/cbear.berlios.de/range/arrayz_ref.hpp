@@ -20,8 +20,8 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_RANGE_ZERO_TERMINATED_ARRAY_REF_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_RANGE_ZERO_TERMINATED_ARRAY_REF_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_RANGE_ARRAYZ_REF_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_RANGE_ARRAYZ_REF_HPP_INCLUDED
 
 #include <cbear.berlios.de/range/array_ref.hpp>
 
@@ -31,25 +31,23 @@ namespace range
 {
 
 template<class ItemType, ::std::size_t Size>
-struct zero_terminated_array_ref
+struct arrayz_ref
 {
 	typedef array_ref<ItemType, Size, true> type;
 };
 
 template<class ValueType, ::std::size_t Size>
-typename zero_terminated_array_ref<const ValueType, Size>::type 
-make_zero_terminated_array_ref(
+typename arrayz_ref<const ValueType, Size>::type make_arrayz_ref(
 	const ValueType (&X)[Size])
 {
-	return zero_terminated_array_ref<const ValueType, Size>::type(X);
+	return arrayz_ref<const ValueType, Size>::type(X);
 }
 
 template<class ValueType, ::std::size_t Size>
-typename zero_terminated_array_ref<ValueType, Size>::type 
-make_zero_terminated_array_ref(
+typename arrayz_ref<ValueType, Size>::type make_arrayz_ref(
 	ValueType (&R)[Size])
 {
-	return zero_terminated_array_ref<ValueType, Size>::type(X);
+	return arrayz_ref<ValueType, Size>::type(X);
 }
 
 }
