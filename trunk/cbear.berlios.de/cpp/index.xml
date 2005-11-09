@@ -61,7 +61,58 @@ typedef first<parents_of<A> > first_parent_of;
 		</section>
 		<section>
 			<title>Type List</title>
-<programlisting role="cpp"><![CDATA[list<A, B, C, D>]]></programlisting>
+<programlisting role="cpp"><![CDATA[template<class L>
+class M;
+
+template<>
+class M<std::empty_type_list> {};
+
+template<class Begin>
+class M<std::type_list<Begin> > 
+{
+	typedef Begin first;
+};
+
+template<class Begin, class Next>
+class M<std::type_list<Begin, Next> >: detail::M<Begin, Next>
+{
+};
+
+BOOST_STATIC_ASSERT((
+	boost::is_same<
+		std::type_list<A, std::undefined>, 
+		std::type_list<A>::value));
+
+BOOST_STATIC_ASSERT((
+	boost::is_same<
+		std::type_list<std::undefined, std::undefined>,
+		std::empty_list>::value));
+
+
+typedef M<{A, B, C, D}> MyM;
+
+template<class L>
+class Mi;
+
+template<class Begin, class Next>
+class Mi<std::type_list<Begin, Next> >: detail::Mi<Begin, Next>
+{
+};
+
+typedef Mi<{0, 1, 2, 3}> MyMi;
+
+template<class L>
+class Mc;
+
+template<class Begin, class Next>
+class Mc<std::type_list<Begin, Next> >: detail::Mc<Begin, Next>
+{
+};
+
+typedef Mc<"Hello world!"> MyMc;
+
+BOOST_STATIC_ASSERT((boost::is_same<
+	{0, 1, 2, 3}, std::type_list<std::constant<int, 0>, {1, 2, 3}> >::value);]]></programlisting>
 		</section>
 		<section>
 			<title>Compile Time Type Information</title>
@@ -109,9 +160,23 @@ private:
 class B: A
 {
 };]]></programlisting>
-		</section>
+		</section>		
 		<section>
 			<title>Lambda Functions</title>
+			<para/>
+		</section>
+		<section>
+			<title>Library</title>
+<programlisting role="cpp"><![CDATA[template<...>
+class basic_string
+{
+public:
+	...
+	template<std::size_t Size>
+	basic_string(const value_type (&X)[Size]);
+	...
+};
+]]></programlisting>
 		</section>
 	</section>
 </section>

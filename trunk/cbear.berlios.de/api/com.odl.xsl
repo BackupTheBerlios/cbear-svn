@@ -343,6 +343,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
 		<attribute id="appobject"/>
+		<xsl:apply-templates select="api:pragma" mode="api:body.pragma"/>
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:variable name="type.ref">
 			<xsl:apply-templates select="api:type.ref" mode="api:body.type.ref"/>

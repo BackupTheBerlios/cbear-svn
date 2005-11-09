@@ -31,6 +31,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/registry/disposition.hpp>
 #include <cbear.berlios.de/windows/registry/sam.hpp>
 #include <cbear.berlios.de/windows/registry/options.hpp>
+#include <cbear.berlios.de/windows/registry/value.hpp>
 
 namespace cbear_berlios_de
 {
@@ -59,15 +60,34 @@ public:
 	hkey() {}
 	explicit hkey(internal_type X): wrap_type(X) {}
 
+	template<class Char>
+	class create_options
+	{
+	public:
+		basic_lpstr<const Char> class_;
+		options options;
+		sam sam;
+		security_attributes security_attributes;
+		create_options() {}
+		create_options(
+			basic_lpstr<const Char> class_,
+			options options,
+			sam sam,
+			security_attributes security_attributes):
+			class_(class_), 
+			options(options), 
+			sam(sam), 
+			security_attributes(security_attributes)
+		{
+		}
+	};
+
 	class create_result;
 
 	template<class Char>
 	create_result create(
 		basic_lpstr<const Char> SubKey, 
-		basic_lpstr<const Char> Class, 
-		options Options, 
-		sam Sam, 
-		security_attributes SecurityAttributes) const
+		const create_options<Char> &Options) const
 	{
 		create_result Result;
 		exception::throw_unless(::RegCreateKeyExW(
@@ -78,13 +98,13 @@ public:
 			//DWORD Reserved,
 			0,
 			//LPTSTR lpClass,
-			const_cast<Char *>(Class.internal()),
+			const_cast<Char *>(Options.class_.internal()),
 			//DWORD dwOptions,
-			Options.internal(),
+			Options.options.internal(),
 			//REGSAM samDesired,
-			Sam.internal(),
+			Options.sam.internal(),
 			//LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-			SecurityAttributes.internal(),
+			Options.security_attributes.internal(),
 			//PHKEY phkResult,
 			&Result.hkey.internal(),
 			//LPDWORD lpdwDisposition,
@@ -132,6 +152,42 @@ public:
 	{
 		exception::throw_unless(::RegCloseKey(this->internal()));
 	}
+
+	template<class Char, class DataType>
+	void set_value(
+		const basic_lpstr<const Char> &ValueName, const DataType &Data) const
+	{
+		typedef data<Char> data_type;
+		typedef typename data_type::properties_type properties_type;
+		properties_type Properties = data_type::properties(Data);
+		exception::throw_unless(select<Char>(::RegSaveKeyExA, ::RegSaveKeyW)(
+			this->internal(), 
+			ValueName.internal(),
+			Properties.id(),
+			Properties.data(),
+			Properties.size()));
+	}
+
+	template<class Char>
+	void set_value(const value<Char> &Value) const
+	{ 
+		this->set_value(Value.name, Value.data); 
+	}
+
+	template<class Char>
+	void set_value(const data<Char> &Data) const 
+	{ 
+		this->set_value(basic_lpstr<const Char>(), Data); 
+	}
+
+	template<class Char>
+	void delete_value(const basic_lpstr<const Char> &ValueName)
+	{
+		exception::throw_unless(select<Char>(::RegDeleteKeyA, ::RegDeleteKeyW)(
+			this->internal(), ValueName.internal()));
+	}
+
+	void delete_value() { this->delete_value(lpcstr_t()); }
 };
 
 class hkey::create_result

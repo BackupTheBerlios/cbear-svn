@@ -23,8 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_VALUE_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_VALUE_HPP_INCLUDED
 
-#include <cbear.berlios.de/policy/main.hpp>
-#include <cbear.berlios.de/windows/base.hpp>
+#include <cbear.berlios.de/windows/registry/data.hpp>
 
 namespace cbear_berlios_de
 {
@@ -33,58 +32,22 @@ namespace windows
 namespace registry
 {
 
-namespace detail
-{
-
-class value_none 
+template<class Char>
+class value
 {
 public:
-	static const dword_t type_id = REG_NONE;
-};
+	typedef Char char_type;
+	typedef std::basic_string<char_type> string_type;
 
-}
+	string_type name;
+	data<char_type> data;
 
-class value: public boost::variant<detail::value_none>
-{
-public:
+	value() {}
 
-	typedef detail::value_none none;
-
-	class type: public policy::wrap<type, dword_t>
+	template<class DataType >
+	value(const string_type &name, const DataType &data): name(name), data(data) 
 	{
-		typedef policy::wrap<type, dword_t> wrap_type;
-	public:
-		enum enumeration_type
-		{
-			// Binary data in any form. 
-			binary = REG_BINARY,
-			// A 32-bit number. 
-			dword = REG_DWORD,
-			// A 32-bit number in little-endian format. 
-			dword_little_endian = REG_DWORD_LITTLE_ENDIAN,
-			// A 32-bit number in big-endian format. 
-			dword_big_endian = REG_DWORD_BIG_ENDIAN,
-			// Null-terminated string that contains unexpanded references to 
-			// environment variables (for example, "%PATH%"). To expand the 
-			// environment variable references, use the ExpandEnvironmentStrings
-			// function.
-			expand_sz = REG_EXPAND_SZ,
-			// Reserved for system use. 
-			link = REG_LINK,
-			// Array of null-terminated strings, terminated by two null characters. 
-			multi_sz = REG_MULTI_SZ,
-			// No defined value type.
-			none = REG_NONE,
-			// A 64-bit number. 
-			qword = REG_QWORD,
-			// A 64-bit number in little-endian format. 
-			qword_little_endian = REG_QWORD_LITTLE_ENDIAN,
-			// Null-terminated string. It will be a Unicode or ANSI string, depending on
-			// whether you use the Unicode or ANSI functions. 
-			sz = REG_SZ,
-		};
-		type(enumeration_type X): wrap_type(X) {}
-	};
+	}
 };
 
 }

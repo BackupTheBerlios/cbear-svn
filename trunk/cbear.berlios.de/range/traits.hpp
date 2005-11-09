@@ -98,8 +98,7 @@ struct array_traits
 	typedef std::ptrdiff_t difference_type;
 	typedef std::size_t size_type;
 	typedef std::reverse_iterator<iterator> reverse_iterator;
-	static const size_type const_size = 
-		base::is_character<value_type>::value? RealSize-1: RealSize;
+	static const size_type const_size = RealSize;
 
 	static iterator begin(container &X) { return X; }
 	static iterator end(container &X) { return X + const_size; }
