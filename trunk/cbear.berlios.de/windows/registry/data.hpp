@@ -23,7 +23,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_DATA_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_DATA_HPP_INCLUDED
 
+#pragma warning(push)
+#pragma warning(disable: 4512)
 #include <boost/variant.hpp>
+#pragma warning(pop)
+
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/windows/base.hpp>
 
@@ -48,6 +52,42 @@ public:
 		type;
 };
 
+class data_id_type: public policy::wrap<data_id_type, dword_t>
+{
+	typedef policy::wrap<data_id_type, dword_t> wrap_type;
+public:
+	enum enumeration_type
+	{
+		// Binary data in any form. 
+		binary = REG_BINARY,
+		// A 32-bit number. 
+		dword = REG_DWORD,
+		// A 32-bit number in little-endian format. 
+		dword_little_endian = REG_DWORD_LITTLE_ENDIAN,
+		// A 32-bit number in big-endian format. 
+		dword_big_endian = REG_DWORD_BIG_ENDIAN,
+		// Null-terminated string that contains unexpanded references to 
+		// environment variables (for example, "%PATH%"). To expand the 
+		// environment variable references, use the ExpandEnvironmentStrings
+		// function.
+		expand_sz = REG_EXPAND_SZ,
+		// Reserved for system use. 
+		link = REG_LINK,
+		// Array of null-terminated strings, terminated by two null characters. 
+		multi_sz = REG_MULTI_SZ,
+		// No defined value type.
+		none = REG_NONE,
+		// A 64-bit number. 
+		qword = REG_QWORD,
+		// A 64-bit number in little-endian format. 
+		qword_little_endian = REG_QWORD_LITTLE_ENDIAN,
+		// Null-terminated string. It will be a Unicode or ANSI string, depending on
+		// whether you use the Unicode or ANSI functions. 
+		sz = REG_SZ,
+	};
+	data_id_type(enumeration_type X): wrap_type(X) {}
+};
+
 }
 
 // Data.
@@ -66,41 +106,7 @@ public:
 	typedef detail::data_none none_type;
 
 	// Id type.
-	class id_type: public policy::wrap<id_type, dword_t>
-	{
-		typedef policy::wrap<id_type, dword_t> wrap_type;
-	public:
-		enum enumeration_type
-		{
-			// Binary data in any form. 
-			binary = REG_BINARY,
-			// A 32-bit number. 
-			dword = REG_DWORD,
-			// A 32-bit number in little-endian format. 
-			dword_little_endian = REG_DWORD_LITTLE_ENDIAN,
-			// A 32-bit number in big-endian format. 
-			dword_big_endian = REG_DWORD_BIG_ENDIAN,
-			// Null-terminated string that contains unexpanded references to 
-			// environment variables (for example, "%PATH%"). To expand the 
-			// environment variable references, use the ExpandEnvironmentStrings
-			// function.
-			expand_sz = REG_EXPAND_SZ,
-			// Reserved for system use. 
-			link = REG_LINK,
-			// Array of null-terminated strings, terminated by two null characters. 
-			multi_sz = REG_MULTI_SZ,
-			// No defined value type.
-			none = REG_NONE,
-			// A 64-bit number. 
-			qword = REG_QWORD,
-			// A 64-bit number in little-endian format. 
-			qword_little_endian = REG_QWORD_LITTLE_ENDIAN,
-			// Null-terminated string. It will be a Unicode or ANSI string, depending on
-			// whether you use the Unicode or ANSI functions. 
-			sz = REG_SZ,
-		};
-		id_type(enumeration_type X): wrap_type(X) {}
-	};
+	typedef detail::data_id_type id_type;
 
 	class properties_type
 	{
@@ -138,7 +144,7 @@ public:
 	class traits<none_type>: public traits_helper<none_type, id_type::none>
 	{
 	public:
-		static properties_type properties(const Type &X)
+		static properties_type properties(const none_type &X)
 		{
 			return properties_type(id, 0, 0);
 		}
@@ -202,6 +208,8 @@ public:
 	};
 
 	data() {}
+
+	data(const data &X): base_type(static_cast<const base_type &>(X)) {}
 
 	template<class T>
 	data(const T &X): base_type(X) {}

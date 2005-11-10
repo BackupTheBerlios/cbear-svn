@@ -107,7 +107,7 @@ public:
 	string_type name;
 
 	typedef typename base_type::value_list_type value_list_type;
-	typedef typename base_type::record_list_type record_list_type;
+	typedef typename base_type::key_list_type key_list_type;
 
 	typedef hkey::create_options<char_type> create_options_type;
 

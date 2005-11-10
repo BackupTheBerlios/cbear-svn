@@ -23,8 +23,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_HKEY_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_HKEY_HPP_INCLUDED
 
-#include <boost/variant.hpp>
-
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/windows/base.hpp>
 #include <cbear.berlios.de/windows/lpstr.hpp>
