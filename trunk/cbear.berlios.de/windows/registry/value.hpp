@@ -38,9 +38,10 @@ class value
 public:
 	typedef Char char_type;
 	typedef std::basic_string<char_type> string_type;
+	typedef data<char_type> data_type;
 
 	string_type name;
-	data<char_type> data;
+	data_type data;
 
 	value() {}
 

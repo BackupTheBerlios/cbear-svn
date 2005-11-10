@@ -23,6 +23,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_KEY_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_KEY_HPP_INCLUDED
 
+#include <vector>
+
 #include <boost/variant.hpp>
 
 #include <cbear.berlios.de/windows/registry/hkey.hpp>

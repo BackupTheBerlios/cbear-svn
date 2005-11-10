@@ -38,7 +38,8 @@ namespace range
 template<class Range1, class Range2>
 bool equal(const Range1 &A, const Range2 &B)
 {
-	return size(A)==size(B) && ::std::equal(begin(A), end(A), begin(B));
+	return size(A)==size(B) && ::std::equal(
+		range::begin(A), range::end(A), range::begin(B));
 }
 
 }

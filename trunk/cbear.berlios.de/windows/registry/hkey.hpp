@@ -27,6 +27,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/windows/base.hpp>
+#include <cbear.berlios.de/windows/lpstr.hpp>
+#include <cbear.berlios.de/windows/exception.hpp>
+#include <cbear.berlios.de/windows/select.hpp>
 #include <cbear.berlios.de/windows/security_attributes.hpp>
 #include <cbear.berlios.de/windows/registry/disposition.hpp>
 #include <cbear.berlios.de/windows/registry/sam.hpp>

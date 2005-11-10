@@ -20,10 +20,10 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_BRANCH_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_BRANCH_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_PATH_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_PATH_HPP_INCLUDED
 
-#include <cbear.berlios.de/windows/registry/record.hpp>
+#include <cbear.berlios.de/windows/registry/key.hpp>
 
 namespace cbear_berlios_de
 {
@@ -33,22 +33,23 @@ namespace registry
 {
 
 template<class Char>
-class branch;
+class path;
 
 template<class Char>
-class branch_base: public record_base<Char>
+class path_base: public key_base<Char>
 {
 public:
-	typedef branch<Char> branch_type;
-	std::vector<branch_type> branches;
+	typedef path<Char> path_type;
+	typedef std::vector<path_type> path_list_type;
+	path_list_type path_list;
 };
 
 template<class Char>
-class branch: public branch_base<Char>
+class path: public path_base<Char>
 {
 public:
 	typedef std::basic_string<Char> string_type;
-	string_type subkey;
+	string_type name;
 };
 
 }

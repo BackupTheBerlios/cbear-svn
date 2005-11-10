@@ -23,7 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_ROOT_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_ROOT_HPP_INCLUDED
 
-#include <cbear.berlios.de/windows/registry/branch.hpp>
+#include <cbear.berlios.de/windows/registry/path.hpp>
 
 namespace cbear_berlios_de
 {
@@ -33,11 +33,14 @@ namespace registry
 {
 
 template<class Char>
-class root: public branch_base<Char>
+class root: public path_base<Char>
 {
 public:
 	hkey key;
 };
+
+template<class Char>
+class root_list { public: typedef std::vector<root<Char> > type; };
 
 }
 }
