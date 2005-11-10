@@ -46,20 +46,34 @@ class hkey: public policy::wrap<hkey, ::HKEY>
 	typedef policy::wrap<hkey, ::HKEY> wrap_type;
 public:
 
-	static hkey classes_root() { return hkey(HKEY_CLASSES_ROOT); }
-	static hkey current_user() { return hkey(HKEY_CURRENT_USER); }
-	static hkey local_machine() { return hkey(HKEY_LOCAL_MACHINE); }
-	static hkey users() { return hkey(HKEY_USERS); }
-	static hkey performance_data() { return hkey(HKEY_PERFORMANCE_DATA); }
-	static hkey performance_text() { return hkey(HKEY_PERFORMANCE_TEXT); }
-	static hkey performance_nlstext() { return hkey(HKEY_PERFORMANCE_NLSTEXT); }
-	static hkey current_config() { return hkey(HKEY_CURRENT_CONFIG); }
-	static hkey dyn_data() { return hkey(HKEY_DYN_DATA); }
+	BOOST_STATIC_ASSERT(sizeof(int)>=sizeof(internal_type));
+
+	enum enumeration_type
+	{
+		classes_root = 
+			reinterpret_cast<std::ptrdiff_t>(HKEY_CLASSES_ROOT),
+		current_user = 
+			reinterpret_cast<std::ptrdiff_t>(HKEY_CURRENT_USER),
+		local_machine = 
+			reinterpret_cast<std::ptrdiff_t>(HKEY_LOCAL_MACHINE),
+		users = 
+			reinterpret_cast<std::ptrdiff_t>(HKEY_USERS),
+		performance_data = 
+			reinterpret_cast<std::ptrdiff_t>(HKEY_PERFORMANCE_DATA),
+		performance_text = 
+			reinterpret_cast<std::ptrdiff_t>(HKEY_PERFORMANCE_TEXT),
+		performance_nlstext = 
+			reinterpret_cast<std::ptrdiff_t>(HKEY_PERFORMANCE_NLSTEXT),
+		current_config = 
+			reinterpret_cast<std::ptrdiff_t>(HKEY_CURRENT_CONFIG),
+		dyn_data = 
+			reinterpret_cast<std::ptrdiff_t>(HKEY_DYN_DATA),
+	};
 
 	typedef wrap_type::internal_type internal_type;
 
 	hkey() {}
-	explicit hkey(internal_type X): wrap_type(X) {}
+	hkey(enumeration_type X): wrap_type(internal_type(X)) {}
 
 	template<class Char>
 	class create_options

@@ -25,6 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #pragma warning(push)
 #pragma warning(disable: 4512)
+#pragma warning(disable: 4100)
 #include <boost/variant.hpp>
 #pragma warning(pop)
 
@@ -206,6 +207,12 @@ public:
 			boost::apply_visitor(properties_visitor(), *this);
 		}
 	};
+
+	data &operator=(const data &X)
+	{
+		base_type::operator=(static_cast<const base_type &>(X));
+		return *this;
+	}
 
 	data() {}
 

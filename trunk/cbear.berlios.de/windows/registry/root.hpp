@@ -36,7 +36,9 @@ template<class Char>
 class root: public path_base<Char>
 {
 public:
-	hkey key;
+	hkey hkey;
+	root() {}
+	root(const hkey &hkey): hkey(hkey) {}
 };
 
 template<class Char>
