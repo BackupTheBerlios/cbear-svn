@@ -370,6 +370,32 @@ private:
 
 }
 
+// This class is deprecated. You should use group::new_ instead when the 
+// garbage collection implementation will be ready.
+template<class T>
+class local_object: private T
+{
+public:
+
+	template<class I>
+	operator object<I>() { return object<I>(static_cast<I *>(this)); }
+
+	local_object() {}
+
+	template<class P>
+	local_object(const P &X): T(X) {}
+
+private:
+	ulong_t __stdcall AddRef() { return 0; }
+	ulong_t __stdcall Release() { return 0; }
+	hresult::internal_type __stdcall QueryInterface(
+		const uuid::internal_type &U, void **PP)
+  { 
+		return detail::implementation_info::query_interface(U, PP);
+  }
+	local_object(const local_object &);
+};
+
 }
 }
 }
