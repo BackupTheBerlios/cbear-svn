@@ -43,6 +43,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:param name="prj:html.style">
 body
 {
+	background-color: #F0F0F0;
+
 	font-family: sans-serif;
 	margin-left: 0px;
 	margin-right: 0px;
@@ -62,6 +64,8 @@ a
 a:hover { text-decoration: underline; }
 div
 {
+	background-color: white;
+
 	border-color: #D0D0D0;
 	border-width: 1px;
 	border-style: solid;
@@ -98,6 +102,12 @@ pre
 	border-color: #D0D0D0;
 
 	padding: 5px 5px 5px 5px;
+}
+.background
+{
+	margin: 0 0 0 0;
+	border: 0;
+	background-color: #F0F0F0;
 }
 </xsl:param>
 
@@ -271,11 +281,13 @@ pre
 			<xsl:variable name="id">
 				<xsl:apply-templates select="." mode="prj:html.id"/>
 			</xsl:variable>
-			<div id="{$id}">
+			<div class="background">
 				<xsl:apply-templates select="." mode="prj:html.history"/>
-				<h1><xsl:value-of select="@name"/></h1>
-				<xsl:apply-templates select="." mode="prj:html.content.table"/>
-				<xsl:apply-templates mode="prj:html"/>
+				<div id="{$id}">
+					<h1><xsl:value-of select="@name"/></h1>
+					<xsl:apply-templates select="." mode="prj:html.content.table"/>
+					<xsl:apply-templates mode="prj:html"/>
+				</div>
 			</div>
 		</body>
 	</html>

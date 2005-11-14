@@ -154,13 +154,22 @@ private:
 	~A() {}
 	A(const A &) {}
   A &operator=(const A &) { return *this; }
-	firend T;
+	__firend__ T;
 };
 
 class B: A
 {
 };]]></programlisting>
 		</section>		
+		<section>
+			<title>Enumeration Base Type</title>
+<programlisting role="cpp"><![CDATA[__enum__<unsigned char> color
+{
+	red,
+	green,
+	blue,
+};]]></programlisting>
+		</section>
 		<section>
 			<title>Lambda Functions</title>
 			<para/>
