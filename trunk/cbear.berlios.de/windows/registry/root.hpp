@@ -36,9 +36,9 @@ template<class Char>
 class root: public path_base<Char>
 {
 public:
-	hkey hkey;
+	registry::hkey hkey;
 	root() {}
-	root(const hkey &hkey): hkey(hkey) {}
+	root(const registry::hkey &hkey): hkey(hkey) {}
 };
 
 template<class Char>

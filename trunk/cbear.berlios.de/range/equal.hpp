@@ -23,8 +23,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_RANGE_EQUAL_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_RANGE_EQUAL_HPP_INCLUDED
 
+#pragma warning(push)
+// 'function': was declared deprecated
+#pragma warning(disable: 4996)
 // std::equal
 #include <algorithm>
+#pragma warning(pop)
 
 #include <cbear.berlios.de/range/begin.hpp>
 #include <cbear.berlios.de/range/end.hpp>

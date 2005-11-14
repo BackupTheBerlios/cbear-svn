@@ -23,7 +23,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_POLICY_MAIN_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_POLICY_MAIN_HPP_INCLUDED
 
+#pragma warning(push)
+// 'function': was declared deprecated
+#pragma warning(disable: 4996)
 #include <iostream>
+#pragma warning(pop)
 
 // boost::equality_comparable, boost::less_than_comparable, 
 // boost::dereferenceable

@@ -60,10 +60,10 @@ public:
 			reinterpret_cast<std::ptrdiff_t>(HKEY_USERS),
 		performance_data = 
 			reinterpret_cast<std::ptrdiff_t>(HKEY_PERFORMANCE_DATA),
-		performance_text = 
-			reinterpret_cast<std::ptrdiff_t>(HKEY_PERFORMANCE_TEXT),
-		performance_nlstext = 
-			reinterpret_cast<std::ptrdiff_t>(HKEY_PERFORMANCE_NLSTEXT),
+		//performance_text = 
+		//	reinterpret_cast<std::ptrdiff_t>(HKEY_PERFORMANCE_TEXT),
+		//performance_nlstext = 
+		//	reinterpret_cast<std::ptrdiff_t>(HKEY_PERFORMANCE_NLSTEXT),
 		current_config = 
 			reinterpret_cast<std::ptrdiff_t>(HKEY_CURRENT_CONFIG),
 		dyn_data = 
@@ -80,15 +80,15 @@ public:
 	{
 	public:
 		basic_lpstr<const Char> class_;
-		options options;
-		sam sam;
-		security_attributes security_attributes;
+		registry::options options;
+		registry::sam sam;
+		windows::security_attributes security_attributes;
 		create_options() {}
 		create_options(
 			basic_lpstr<const Char> class_,
-			options options,
-			sam sam,
-			security_attributes security_attributes):
+			registry::options options,
+			registry::sam sam,
+			windows::security_attributes security_attributes):
 			class_(class_), 
 			options(options), 
 			sam(sam), 

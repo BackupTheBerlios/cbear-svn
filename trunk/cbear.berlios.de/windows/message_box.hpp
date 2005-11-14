@@ -49,7 +49,6 @@ public:
 		help = IDHELP,
 		tryagain = IDTRYAGAIN,
 		continue_ = IDCONTINUE,
-		timeout = IDTIMEOUT,
 	};
 	dialog_box_id() {}
 	dialog_box_id(enumeration_type X): wrap_type(X) {}
@@ -193,10 +192,12 @@ public:
 		//   If this flag is set, the hWnd parameter must be NULL. This is so the 
 		// message box can appear on a desktop other than the desktop corresponding 
 		// to the hWnd.
+		// _WIN32_WINNT
 		service_notification = MB_SERVICE_NOTIFICATION,
 
 		// Windows NT/2000/XP: This value corresponds to the value defined for 
 		// 'service_notification' for Windows NT version 3.51. 
+		// _WIN32_WINNT
 		service_notification_nt3x = MB_SERVICE_NOTIFICATION_NT3X,
 	};
 	message_box_style() {}

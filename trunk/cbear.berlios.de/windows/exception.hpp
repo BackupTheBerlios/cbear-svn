@@ -49,7 +49,7 @@ public:
 	{
 		if(!X) throw windows::exception(X);
 	}
-	static throw_if_last_error()
+	static void throw_if_last_error()
 	{
 		internal_type LastError = ::GetLastError();
 		if(LastError) throw exception(LastError);

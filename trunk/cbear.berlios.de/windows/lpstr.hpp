@@ -33,7 +33,7 @@ namespace windows
 
 // Pointer to a null-terminated string
 template<class Char>
-class basic_lpstr: public policy::wrap<basic_lpstr, Char*>
+class basic_lpstr: public policy::wrap<basic_lpstr<Char>, Char*>
 {
 public:
 	typedef policy::wrap<basic_lpstr, Char*> wrap_type;
