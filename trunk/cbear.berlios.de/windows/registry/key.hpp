@@ -91,6 +91,15 @@ public:
 			E.begin()->delete_(HKey);
 		}
 	}
+protected:
+
+	key_base() {}
+
+	template<class ValueList, class KeyList>
+	key_base(const ValueList &value_list, const KeyList &key_list):
+		value_list(value_list), key_list(key_list)
+	{
+	}
 };
 
 template<class Char>
@@ -110,6 +119,9 @@ public:
 	typedef typename base_type::key_list_type key_list_type;
 
 	typedef hkey::create_options<char_type> create_options_type;
+
+	key() {}
+	explicit key(const string_type name): name(name) {}
 
 	void create(hkey HKey, const create_options_type &Options) const
 	{

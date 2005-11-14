@@ -26,6 +26,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/base/exception.hpp>
 #include <cbear.berlios.de/windows/com/uuid.hpp>
 #include <cbear.berlios.de/windows/com/bstr.hpp>
+#include <cbear.berlios.de/windows/com/enum.hpp>
+#include <cbear.berlios.de/windows/com/ulong.hpp>
 #include <cbear.berlios.de/windows/com/exception.hpp>
 
 namespace cbear_berlios_de

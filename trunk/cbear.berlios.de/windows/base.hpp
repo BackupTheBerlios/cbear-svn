@@ -23,7 +23,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_BASE_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_BASE_HPP_INCLUDED
 
+#pragma warning(push)
+#pragma warning(disable: 4311)
+#pragma warning(disable: 4312)
 #include <windows.h>
+#pragma warning(pop)
 
 namespace cbear_berlios_de
 {

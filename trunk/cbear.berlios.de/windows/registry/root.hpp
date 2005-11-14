@@ -36,9 +36,26 @@ template<class Char>
 class root: public path_base<Char>
 {
 public:
+	typedef path_base<Char> base_type;
+	typedef typename base_type::value_list_type value_list_type;
+	typedef typename base_type::key_list_type key_list_type;
+
 	registry::hkey hkey;
+
 	root() {}
-	root(const registry::hkey &hkey): hkey(hkey) {}
+
+	explicit root(const registry::hkey &hkey): hkey(hkey) {}
+
+	template<class ValueList, class KeyList, class PathList>
+	root(
+		const registry::hkey &hkey,
+		const ValueList &value_list, 
+		const KeyList &key_list,
+		const PathList &path_list):
+		base_type(value_list, key_list, path_list),
+		hkey(hkey)
+	{
+	}
 };
 
 template<class Char>

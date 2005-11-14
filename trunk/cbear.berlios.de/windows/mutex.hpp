@@ -28,6 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/exception.hpp>
 #include <cbear.berlios.de/windows/select.hpp>
 #include <cbear.berlios.de/windows/handle.hpp>
+#include <cbear.berlios.de/windows/lpstr.hpp>
 #include <cbear.berlios.de/windows/security_attributes.hpp>
 
 namespace cbear_berlios_de

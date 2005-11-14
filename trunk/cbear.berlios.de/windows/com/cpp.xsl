@@ -509,6 +509,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			'http://cbear.berlios.de/cpp ', $odl:cpp.xsd)}"
 		id="{$path}">
 		<header>
+			<include href="cbear.berlios.de/windows/base.hpp"/>
 			<include href="{concat($path, '.h')}"/>
 			<include href="cbear.berlios.de/windows/com/int.hpp"/>
 			<include href="cbear.berlios.de/windows/com/uint.hpp"/>
