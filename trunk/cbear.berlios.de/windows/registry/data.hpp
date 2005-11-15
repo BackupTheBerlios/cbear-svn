@@ -26,6 +26,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #pragma warning(push)
 #pragma warning(disable: 4512)
 #pragma warning(disable: 4100)
+// behavior change: an object of POD type constructed with an initializer of the
+// form () will be default-initialized
+#pragma warning(disable: 4345)
+// unreachable code
+#pragma warning(disable: 4702)
 #include <boost/variant.hpp>
 #pragma warning(pop)
 
@@ -145,7 +150,7 @@ public:
 	class traits<none_type>: public traits_helper<none_type, id_type::none>
 	{
 	public:
-		static properties_type properties(const none_type &X)
+		static properties_type properties(const none_type &)
 		{
 			return properties_type(id, 0, 0);
 		}
@@ -167,10 +172,11 @@ public:
 	public:
 		static properties_type properties(const string_type &X)
 		{ 
+			typedef typename properties_type::size_type size_type;
 			return properties_type(
 				id, 
 				reinterpret_cast<properties_type::pointer_type>(X.c_str()),
-				(X.size() + 1) * sizeof(Char));
+				size_type((X.size() + 1) * sizeof(Char)));
 		}
 	};
 
@@ -204,9 +210,15 @@ public:
 	public:
 		static properties_type properties(const data &X) 
 		{ 		
-			boost::apply_visitor(properties_visitor(), *this);
+			return boost::apply_visitor(properties_visitor(), X);
 		}
 	};
+
+	template<class T>
+	static properties_type properties(const T &X)
+	{
+		return traits<T>::properties(X);
+	}
 
 	data &operator=(const data &X)
 	{

@@ -33,10 +33,11 @@ namespace registry
 {
 
 template<class Char>
-class root: public path_base<Char>
+class root: public path_base<Char, root<Char> >
 {
 public:
-	typedef path_base<Char> base_type;
+	typedef Char char_type;
+	typedef path_base<char_type, root> base_type;
 	typedef typename base_type::value_list_type value_list_type;
 	typedef typename base_type::key_list_type key_list_type;
 
@@ -46,20 +47,41 @@ public:
 
 	explicit root(const registry::hkey &hkey): hkey(hkey) {}
 
-	template<class ValueList, class KeyList, class PathList>
-	root(
-		const registry::hkey &hkey,
-		const ValueList &value_list, 
-		const KeyList &key_list,
-		const PathList &path_list):
-		base_type(value_list, key_list, path_list),
-		hkey(hkey)
+	typedef typename base_type::create_options_type create_options_type;
+
+	void create(const create_options_type &Options)
 	{
+		this->base_type::create(this->hkey, Options);
+	}
+
+	void delete_()
+	{
+		this->base_type::delete_(this->hkey);
 	}
 };
 
 template<class Char>
-class root_list { public: typedef std::vector<root<Char> > type; };
+class root_list: public std::vector<root<Char> >
+{ 
+public: 
+	typedef Char char_type;
+	typedef root<char_type> root_type;
+	root_list &operator()(const root_type &R)
+	{
+		this->push_back(R);
+		return *this;
+	}
+
+	typedef typename root_type::create_options_type create_options_type;
+
+	void create(const create_options_type &Options)
+	{
+		for(range::sub_range<root_list>::type R(*this); !R.empty(); R.begin()++)
+		{
+			R.begin()->create(Options);
+		}
+	}
+};
 
 }
 }

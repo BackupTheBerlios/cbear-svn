@@ -70,11 +70,11 @@ public:
 	{
 	}
 
-	iterator begin() const { return this->internal().first; }
-	iterator end() const { return this->internal().second; }
-	
-	iterator &ref_begin() { return this->internal().first; }
-	iterator &ref_end() { return this->internal().second; }
+	iterator &begin() { return this->internal().first; }
+	iterator &end() { return this->internal().second; }
+
+	const iterator &begin() const { return this->internal().first; }
+	const iterator &end() const { return this->internal().second; }
 
 	template<class Range>
 	explicit iterator_range(Range &R): 

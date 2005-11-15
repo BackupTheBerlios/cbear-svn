@@ -28,13 +28,48 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ::IUnknown
 #include <unknwn.h>
 
+#include <iostream>
+#include <iomanip>
+
 // boost::uint32_t, boost::uint16_t, boost::uint8_t.
 #include <boost/cstdint.hpp>
 
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/range/lexicographical_compare.hpp>
 #include <cbear.berlios.de/base/integer.hpp>
+#include <cbear.berlios.de/windows/select.hpp>
 #include <cbear.berlios.de/windows/com/traits.hpp>
+
+template<class Char>
+std::basic_ostream<Char> &operator<<(
+	std::basic_ostream<Char> &O, const ::UUID &X)
+{
+	// For example: "9051E94D-6A0C-44b8-B163-716CD2117C58"
+	// Format:      "11111111-2222-3333-4444-444444444444"
+	namespace Windows = cbear_berlios_de::windows;
+	namespace Range = cbear_berlios_de::range;
+	typedef Char char_type;
+	typedef Range::iterator_range<const boost::uint8_t *> range_type;
+	static const char_type Zero = Windows::select<char_type>('0', L'0');
+	static const char_type Minus = Windows::select<char_type>('-', L'-');
+	O << std::uppercase << std::hex << std::setfill(Zero) << 
+		std::setw(8) << X.Data1 <<
+		Minus <<
+		std::setw(4) << X.Data2 <<
+		Minus <<
+		std::setw(4) << X.Data3 <<
+		Minus;
+	for(range_type R(X.Data4, X.Data4 + 2); !R.empty(); R.begin()++)
+	{
+		O << std::setw(2) << R[0];
+	}
+	O << Minus;
+	for(range_type R(X.Data4 + 2, X.Data4 + 8); !R.empty(); R.begin()++)
+	{
+		O << std::setw(2) << R[0];
+	}
+	return O;
+}
 
 namespace cbear_berlios_de
 {

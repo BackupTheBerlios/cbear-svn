@@ -23,6 +23,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_HKEY_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_HKEY_HPP_INCLUDED
 
+#include <Winreg.h>
+
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/windows/base.hpp>
 #include <cbear.berlios.de/windows/lpstr.hpp>
@@ -105,7 +107,7 @@ public:
 		const create_options<Char> &Options) const
 	{
 		create_result Result;
-		exception::throw_unless(::RegCreateKeyExW(
+		exception::throw_if(select<Char>(::RegCreateKeyExA, ::RegCreateKeyExW)(
 			//HKEY hKey,
 			this->internal(),
 			// LPCTSTR lpSubKey,
@@ -131,7 +133,7 @@ public:
 	hkey connect(const basic_lpstr<const Char> &X) const
 	{
 		hkey Result;
-		exception::throw_unless(
+		exception::throw_if(
 			select<Char>(::RegConnectRegistryA, ::RegConnectRegistryW)(
 				X.internal(), this->internal(), &Result.internal()));
 		return Result;
@@ -141,7 +143,7 @@ public:
 	hkey open(const basic_lpstr<const Char> &SubKey, sam Sam) const
 	{
 		hkey Result;
-		exception::throw_unless(
+		exception::throw_if(
 			select<Char>(::RegOpenKeyExA, ::RegOpenKeyExW)(
 				this->internal(), 
 				SubKey.internal(), 
@@ -154,18 +156,18 @@ public:
 	template<class Char>
 	void delete_(const basic_lpstr<const Char> &X) const
 	{
-		exception::throw_unless(select<Char>(::RegDeleteKeyA, ::RegDeleteKeyW)(
+		exception::throw_if(select<Char>(::RegDeleteKeyA, ::RegDeleteKeyW)(
 			this->internal(), X.internal()));
 	}
 
 	void flush() const
 	{
-		exception::throw_unless(::RegFlushKey(this->internal()));	
+		exception::throw_if(::RegFlushKey(this->internal()));	
 	}
 
 	void close() const
 	{
-		exception::throw_unless(::RegCloseKey(this->internal()));
+		exception::throw_if(::RegCloseKey(this->internal()));
 	}
 
 	template<class Char, class DataType>
@@ -175,18 +177,19 @@ public:
 		typedef data<Char> data_type;
 		typedef typename data_type::properties_type properties_type;
 		properties_type Properties = data_type::properties(Data);
-		exception::throw_unless(select<Char>(::RegSaveKeyExA, ::RegSaveKeyW)(
+		exception::throw_if(select<Char>(RegSetValueExA, RegSetValueExW)(
 			this->internal(), 
 			ValueName.internal(),
-			Properties.id(),
-			Properties.data(),
-			Properties.size()));
+			0,
+			Properties.id.internal(),
+			Properties.begin,
+			Properties.size));
 	}
 
 	template<class Char>
 	void set_value(const value<Char> &Value) const
 	{ 
-		this->set_value(Value.name, Value.data); 
+		this->set_value<Char>(Value.first, Value.second);
 	}
 
 	template<class Char>
@@ -198,7 +201,7 @@ public:
 	template<class Char>
 	void delete_value(const basic_lpstr<const Char> &ValueName)
 	{
-		exception::throw_unless(select<Char>(::RegDeleteKeyA, ::RegDeleteKeyW)(
+		exception::throw_if(select<Char>(::RegDeleteKeyA, ::RegDeleteKeyW)(
 			this->internal(), ValueName.internal()));
 	}
 

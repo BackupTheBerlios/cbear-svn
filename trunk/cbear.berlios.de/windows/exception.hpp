@@ -45,9 +45,9 @@ class exception:
 public:
 	typedef policy::wrap<windows::exception, dword_t> wrap_type;
 
-	static void throw_unless(internal_type X)
+	static void throw_if(internal_type X)
 	{
-		if(!X) throw windows::exception(X);
+		if(X) throw windows::exception(X);
 	}
 	static void throw_if_last_error()
 	{
