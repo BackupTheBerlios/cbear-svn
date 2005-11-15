@@ -85,6 +85,8 @@ typedef DOUBLE double_t;
 // 16-bit Unicode character.
 typedef WCHAR wchar_t_;
 
+static const std::size_t max_path = MAX_PATH;
+
 }
 }
 
