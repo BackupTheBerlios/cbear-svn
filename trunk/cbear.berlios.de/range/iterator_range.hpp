@@ -58,6 +58,9 @@ class iterator_range:
 public:
 	typedef typename detail::iterator_range_traits<Iterator>::wrap_type wrap_type;
 	typedef typename wrap_type::internal_type internal_type;
+	typedef typename detail::iterator_range_traits<Iterator>::helper_type 
+		helper_type;
+	typedef typename helper_type::size_type size_type;
 	
 	iterator_range() {}
 	explicit iterator_range(const internal_type &X): wrap_type(X) {}
@@ -67,6 +70,11 @@ public:
 	
 	iterator_range(const iterator &Begin, const iterator &End): 
 		wrap_type(internal_type(Begin, End)) 
+	{
+	}
+
+	iterator_range(const iterator &Begin, const size_type &Size):
+		wrap_type(internal_type(Begin, Begin + Size))
 	{
 	}
 
@@ -96,6 +104,13 @@ iterator_range<Iterator> make_iterator_range(
 	return iterator_range<Iterator>::type(B, E);
 }
 
+template<class Iterator, class SizeType>
+iterator_range<Iterator> make_iterator_range(
+	const Iterator &B, const SizeType &Size)
+{
+	return iterator_range<Iterator>::type(B, Size);
+}
+
 template<class Iterator>
 iterator_range<Iterator> make_iterator_range(
 	const std::pair<Iterator, Iterator> &P)
@@ -107,14 +122,14 @@ template<class Range>
 iterator_range<typename iterator<Range>::type> make_iterator_range(
 	Range &R)
 {
-	return iterator_range<typename iterator<Range>::type>(Pair);
+	return iterator_range<typename iterator<Range>::type>(R);
 }
 
 template<class Range>
 iterator_range<typename iterator<const Range>::type> make_iterator_range(
 	const Range &R)
 {
-	return iterator_range<typename iterator<const Range>::type>(Pair);
+	return iterator_range<typename iterator<const Range>::type>(R);
 }
 
 }
