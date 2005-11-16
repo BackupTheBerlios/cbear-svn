@@ -54,9 +54,9 @@ public:
 		this->base_type::create(this->hkey, Options);
 	}
 
-	void delete_()
+	void delete_(const sam &Sam)
 	{
-		this->base_type::delete_(this->hkey);
+		this->base_type::delete_(this->hkey, Sam);
 	}
 };
 
@@ -79,6 +79,14 @@ public:
 		for(range::sub_range<root_list>::type R(*this); !R.empty(); R.begin()++)
 		{
 			R.begin()->create(Options);
+		}
+	}
+
+	void delete_(const sam &Sam)
+	{
+		for(range::sub_range<root_list>::type R(*this); !R.empty(); R.begin()++)
+		{
+			R.begin()->delete_(Sam);
 		}
 	}
 };

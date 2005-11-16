@@ -95,21 +95,21 @@ public:
 		}
 	}
 
-	void delete_(hkey HKey) const
+	void delete_(hkey HKey, const sam &Sam) const
 	{
 		for(
-			range::sub_range<value_list_type>::type A(this->ValueList);
+			range::sub_range<const value_list_type>::type A(this->ValueList);
 			!A.empty();
 			A.begin()++)
 		{
-			HKey.delete_value(A.begin()->name);
+			HKey.delete_value<char_type>(A.begin()->first);
 		}
 		for(
-			range::sub_range<key_list_type>::type E(this->KeyList);
+			range::sub_range<const key_list_type>::type E(this->KeyList);
 			!E.empty();
-			E.begin_ref()++)
+			E.begin()++)
 		{
-			E.begin()->delete_(HKey);
+			E.begin()->delete_(HKey, Sam);
 		}
 	}
 protected:
@@ -148,11 +148,12 @@ public:
 		SubKey.close();
 	}
 
-	void delete_(hkey HKey) const
+	void delete_(hkey HKey, const sam &Sam) const
 	{
-		hkey SubKey = HKey.open(this->name, sam::write);
-		this->base_type::delete_(SubKey);
+		hkey SubKey = HKey.open<char_type>(this->name, Sam);
+		this->base_type::delete_(SubKey, Sam);
 		SubKey.close();
+		HKey.delete_<char_type>(this->name);
 	}
 };
 

@@ -74,15 +74,15 @@ public:
 		}
 	}
 
-	void delete_(const hkey &HKey)
+	void delete_(const hkey &HKey, const sam &Sam)
 	{
-		this->base_type::delete_(HKey);
+		this->base_type::delete_(HKey, Sam);
 		for(
 			range::sub_range<path_list_type>::type R(this->PathList);
 			!R.empty();
-			R.ref_begin()++)
+			R.begin()++)
 		{
-			R.begin()->delete_(HKey);
+			R.begin()->delete_(HKey, Sam);
 		}
 	}
 
@@ -114,7 +114,7 @@ public:
 	void delete_(const hkey &HKey, const sam &Sam)
 	{
 		hkey SubKey = HKey.open<char_type>(name, Sam);
-		this->base_type::delete_();
+		this->base_type::delete_(SubKey, Sam);
 		SubKey.close();
 	}
 };

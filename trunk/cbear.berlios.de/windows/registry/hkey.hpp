@@ -201,7 +201,7 @@ public:
 	template<class Char>
 	void delete_value(const basic_lpstr<const Char> &ValueName)
 	{
-		exception::throw_if(select<Char>(::RegDeleteKeyA, ::RegDeleteKeyW)(
+		exception::throw_if(select<Char>(::RegDeleteValueA, ::RegDeleteValueW)(
 			this->internal(), ValueName.internal()));
 	}
 
