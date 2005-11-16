@@ -50,17 +50,6 @@ namespace detail
 
 class implementation_counter;
 
-/*
-class interface_info_base
-{
-public:
-	virtual const uuid &get_uuid() = 0;
-	virtual void *get_pointer() = 0;
-	interface_info_base *next;
-	interface_info_base *prev;
-};
-*/
-
 class implementation_info
 {
 protected:

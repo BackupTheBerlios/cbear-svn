@@ -46,14 +46,20 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 
 	using standard_policy_type::construct;
 
+	typedef standard_policy_type::value_type value_type;
+	typedef standard_policy_type::reference reference;
+	typedef standard_policy_type::pointer pointer;
+
 	typedef range::iterator_range<type> iterator_range;
+	typedef range::iterator_range<const value_type *> const_iterator_range;
 
 	static iterator_range make_sub_range(type A)
 	{
 		return iterator_range(A, A + ::SysStringLen(A));
 	}
 
-	static void construct_copy(type &This, const iterator_range &Source)
+	template<class Range>
+	static void construct_copy(type &This, const Range &Source)
 	{
 		This = ::SysAllocStringLen(Source.begin(), Source.size());
 	}
@@ -111,10 +117,16 @@ public:
 	typedef wrap_type::internal_policy internal_policy;
 	typedef internal_policy::value_type value_type;
 	typedef internal_policy::iterator_range iterator_range;
+	typedef internal_policy::const_iterator_range const_iterator_range;
+	typedef iterator_range::size_type size_type; 
 	static const vartype_t vt = ::VT_BSTR;
 	bstr_t() {}
 	template< ::std::size_t Size>
-	bstr_t(const wchar_t (&X)[Size]): wrap_type(iterator_range(X), 0) {}
+	bstr_t(const wchar_t (&X)[Size]): wrap_type(const_iterator_range(X), 0) {}
+	bstr_t(const std::basic_string<wchar_t> &X): 
+		wrap_type(const_iterator_range(X.c_str(), (size_type)X.size()), 0)
+	{
+	}
 
 	wchar_t *c_str() const { return this->internal(); }
 };
