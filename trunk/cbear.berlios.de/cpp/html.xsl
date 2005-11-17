@@ -228,6 +228,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<span style="{$cpp:html.keyword}">this</span>
 </xsl:template>
 
+<xsl:template match="cpp:id.ref[@type='value']" mode="cpp:html.id.ref">
+	<span style="{$cpp:html.const}"><xsl:value-of select="@id"/></span>
+</xsl:template>
+
 <xsl:template match="cpp:id.ref" mode="cpp:html">
 	<xsl:apply-templates select="." mode="cpp:html.id.ref"/>	
 </xsl:template>

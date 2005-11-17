@@ -23,12 +23,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_COCLASS_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_COCLASS_HPP_INCLUDED
 
-//#pragma warning(push)
-//#pragma warning(disable: 4512)
-//#include <boost/assign.hpp>
-//#include <boost/assign/std/vector.hpp>
-//#pragma warning(pop)
-
 #include <cbear.berlios.de/base/default.hpp>
 #include <cbear.berlios.de/windows/com/uuid.hpp>
 #include <cbear.berlios.de/windows/registry/root.hpp>
@@ -41,12 +35,34 @@ namespace com
 {
 
 template<class Char>
+class coclass_info
+{
+public:
+	typedef std::basic_string<Char> string_type;
+	uuid lib_id;
+	uuid id;
+	string_type vendor;
+	string_type component;
+	string_type version;
+
+	coclass_info(
+		const uuid &lib_id, 
+		const uuid &id, 
+		const string_type &vendor,
+		const string_type &component,
+		const string_type &version):
+		lib_id(lib_id), 
+		id(id), 
+		vendor(vendor), 
+		component(component), 
+		version(version)
+	{
+	}
+};
+
+template<class Char>
 typename registry::root_list<Char> coclass_registry(
-	const uuid &TypeLib,
-	const uuid &Clsid,
-	const std::basic_string<Char> &Vendor, 
-	const std::basic_string<Char> &Component,
-	const std::basic_string<Char> &Version,
+	const coclass_info<Char> &Info,
 	const std::basic_string<Char> &FilePath)
 {
 	typedef registry::root_list<Char> root_list;
@@ -70,16 +86,11 @@ typename registry::root_list<Char> coclass_registry(
 	static const string ProgIdKey = select<Char>(
 		"ProgId", L"ProgId");
 
-	string ViProgId = Vendor + Dot + Component;
-	string ProgId = ViProgId + Dot + Version;
+	string ViProgId = Info.vendor + Dot + Info.component;
+	string ProgId = ViProgId + Dot + Info.version;
 
-	ostream ClsidStream;
-	ClsidStream << Clsid;
-	string ClsidStr = Open + ClsidStream.str() + Close;
-
-	ostream TypeLibStream;
-	TypeLibStream << TypeLib;
-	string TypeLibStr = Open + TypeLibStream.str() + Close;
+	string ClsidStr = Open + boost::lexical_cast<string>(Info.id) + Close;
+	string TypeLibStr = Open + boost::lexical_cast<string>(Info.lib_id) + Close;
 
 	return root_list()
 		(root(registry::hkey::classes_root)
@@ -89,7 +100,7 @@ typename registry::root_list<Char> coclass_registry(
 					(value(ClsidStr))
 				)
 				(key(CurVerKey)
-					(value(Version))
+					(value(Info.version))
 				)
 			)
 			(key(ProgId)

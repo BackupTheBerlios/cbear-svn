@@ -448,7 +448,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<template>
 		<id id="Base"/>
 		<class>
-			<id.ref id="object_content" type="&lt;&gt;">				
+			<id.ref id="object_content" type="&lt;&gt;">
 				<id.ref id="Base"/>
 				<id.ref type="::">
 					<id.ref/>
@@ -495,6 +495,95 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</template>
 </xsl:template>
 
+<!-- coclass -->
+
+<xsl:template match="odl:coclass" mode="odl:cpp">
+	<xsl:variable name="windows">
+		<id.ref/>
+		<id.ref id="cbear_berlios_de"/>
+		<id.ref id="windows"/>
+	</xsl:variable>
+	<xsl:variable name="com">
+		<xsl:copy-of select="$windows"/>
+		<id.ref id="com"/>
+	</xsl:variable>
+	<xsl:variable name="coclass-info">
+		<id.ref type="::">
+			<xsl:copy-of select="$com"/>
+			<id.ref id="coclass_info" type="&lt;&gt;">
+				<id.ref id="Char"/>
+			</id.ref>
+		</id.ref>
+	</xsl:variable>
+	<xsl:variable name="uuid-wrap-ref">
+		<id.ref type="::">
+			<xsl:copy-of select="$com"/>
+			<id.ref id="uuid"/>
+			<id.ref id="wrap_ref"/>
+		</id.ref>
+	</xsl:variable>
+	<xsl:variable name="select">
+		<id.ref type="::">
+			<xsl:copy-of select="$windows"/>
+			<id.ref id="select" type="&lt;&gt;">
+				<id.ref id="Char"/>
+			</id.ref>
+		</id.ref>
+	</xsl:variable>
+	<template>
+		<id id="Char"/>
+		<method id="{concat(@id, '_info')}">
+			<xsl:copy-of select="$coclass-info"/>
+			<body>
+				<id.ref type="return">
+					<xsl:copy-of select="$coclass-info"/>
+					<id.ref type="()">
+						<id.ref>
+							<xsl:copy-of select="$uuid-wrap-ref"/>
+							<id.ref type="()">
+								<id.ref type="::">
+									<id.ref/>
+									<id.ref id="{concat('LIBID_', ../@id)}"/>
+								</id.ref>
+							</id.ref>
+						</id.ref>
+						<id.ref>
+							<xsl:copy-of select="$uuid-wrap-ref"/>
+							<id.ref type="()">
+								<id.ref type="::">
+									<id.ref/>
+									<id.ref id="{concat('CLSID_', @id)}"/>
+								</id.ref>
+							</id.ref>
+						</id.ref>
+						<id.ref>
+							<xsl:copy-of select="$select"/>
+							<id.ref type="()">
+								<id.ref type="value" id="{concat('&#x22;', ../@id, '&#x22;')}"/>
+								<id.ref type="value" id="{concat('L&#x22;', ../@id, '&#x22;')}"/>
+							</id.ref>
+						</id.ref>
+						<id.ref>
+							<xsl:copy-of select="$select"/>
+							<id.ref type="()">
+								<id.ref type="value" id="{concat('&#x22;', @id, '&#x22;')}"/>				
+								<id.ref type="value" id="{concat('L&#x22;', @id, '&#x22;')}"/>
+							</id.ref>
+						</id.ref>
+						<id.ref>
+							<xsl:copy-of select="$select"/>
+							<id.ref type="()">
+								<id.ref type="value" id="{concat('&#x22;', ../odl:attribute[@id='version']/@value, '&#x22;')}"/>				
+								<id.ref type="value" id="{concat('L&#x22;', ../odl:attribute[@id='version']/@value, '&#x22;')}"/>
+							</id.ref>
+						</id.ref>
+					</id.ref>
+				</id.ref>
+			</body>
+		</method>
+	</template>
+</xsl:template>
+
 <!-- libray -->
 
 <xsl:template match="odl:library" mode="odl:cpp">
@@ -531,6 +620,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<include href="cbear.berlios.de/windows/com/object.hpp"/>
 			<include href="cbear.berlios.de/windows/com/exception.hpp"/>
 			<include href="cbear.berlios.de/windows/com/implementation.hpp"/>
+			<include href="cbear.berlios.de/windows/com/coclass.hpp"/>
 			<namespace id="{translate(@id, '.\/', '___')}">
 				<xsl:apply-templates select="*" mode="odl:cpp"/>
 			</namespace>

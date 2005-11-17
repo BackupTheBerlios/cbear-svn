@@ -23,7 +23,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_KEY_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_KEY_HPP_INCLUDED
 
+#pragma warning(push)
+// 'class' : assignment operator could not be generated
+#pragma warning(disable: 4512)
+// 'identifier' : unreferenced formal parameter
+#pragma warning(disable: 4100)
+// unreachable code
+#pragma warning(disable: 4702)
 #include <boost/variant.hpp>
+#pragma warning(pop)
 
 #include <cbear.berlios.de/windows/registry/hkey.hpp>
 #include <cbear.berlios.de/windows/registry/list.hpp>
