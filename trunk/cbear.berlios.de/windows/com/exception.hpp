@@ -39,7 +39,7 @@ public:
 	exception(hresult Value): Value(Value) {}
 	void what(::std::ostream &OStream) const
 	{
-		OStream << "cbear_berlios_de::com::exception { result() = " << 
+		OStream << "cbear_berlios_de::com::exception { result() = 0x" << std::hex <<
 			this->result() << "; };";
 	}
 	hresult result() const throw() { return this->Value; }

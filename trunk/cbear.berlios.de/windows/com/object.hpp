@@ -24,6 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_OBJECT_HPP_INCLUDED
 
 #include <cbear.berlios.de/base/exception.hpp>
+#include <cbear.berlios.de/windows/syskind.hpp>
 #include <cbear.berlios.de/windows/com/uuid.hpp>
 #include <cbear.berlios.de/windows/com/bstr.hpp>
 #include <cbear.berlios.de/windows/com/enum.hpp>
@@ -179,14 +180,68 @@ typedef object< ::IDispatch> idispatch;
 
 typedef object< ::ITypeInfo> itypeinfo;
 
-template<class Base>
-class object_content<Base, ::ITypeInfo>: public object_content<Base, ::IUnknown>
-{
-};
-
-typedef object< ::ITypeLib> itypelib;
-
 typedef LCID lcid_t;
+
+class tlibattr_t: public policy::wrap<tlibattr_t, ::TLIBATTR>
+{
+public:
+	typedef policy::wrap<tlibattr_t, ::TLIBATTR> wrap_type;
+	explicit tlibattr_t(const internal_type &X): wrap_type(X) {}
+	// globally unique library ID.
+	uuid &guid() 
+	{ 
+		return uuid::wrap_ref(this->internal().guid); 
+	}
+	const uuid &guid() const 
+	{ 
+		return uuid::wrap_ref(this->internal().guid); 
+	}
+	// Locale of the TypeLibrary.
+	lcid_t &lcid() 
+	{ 
+		return this->internal().lcid; 
+	}
+	const lcid_t lcid() const 
+	{ 
+		return this->internal().lcid; 
+	}
+	// Target hardware platform.
+	syskind_t &syskind() 
+	{ 
+		return syskind_t::wrap_ref(this->internal().syskind); 
+	}
+	const syskind_t &syskind() const 
+	{ 
+		return syskind_t::wrap_ref(this->internal().syskind); 
+	}
+	// Major version number.
+	ushort_t &wMajorVerNum() 
+	{ 
+		return this->internal().wMajorVerNum; 
+	}
+	const ushort_t &wMajorVerNum() const 
+	{ 
+		return this->internal().wMajorVerNum; 
+	}
+	// Minor version number.
+	ushort_t &wMinorVerNum() 
+	{ 
+		return this->internal().wMinorVerNum; 
+	}
+	const ushort_t &wMinorVerNum() const 
+	{ 
+		return this->internal().wMinorVerNum; 
+	}
+  // Library flags.
+	ushort_t &wLibFlags() 
+	{ 
+		return this->internal().wLibFlags; 
+	}
+	const ushort_t &wLibFlags() const 
+	{ 
+		return this->internal().wLibFlags; 
+	}
+};
 
 template<class Base>
 class object_content<Base, ::ITypeLib>: public object_content<Base, ::IUnknown>
@@ -201,14 +256,48 @@ public:
 			com::internal<out>(Result)));
 		return Result;
 	}
+	tlibattr_t GetLibAttr() const 
+	{ 
+		tlibattr_t::internal_type *Temp;
+		exception::throw_unless(this->internal_reference().GetLibAttr(&Temp));
+		tlibattr_t Result(*Temp);
+		this->internal_reference().ReleaseTLibAttr(Temp);
+		return Result;
+	}
 };
 
-inline itypelib load_type_lib(const bstr_t File)
+typedef object< ::ITypeLib> itypelib;
+
+inline itypelib load_type_lib(const lpcwstr_t File)
 {
 	itypelib Result;
 	com::exception::throw_unless(::LoadTypeLib(
-		File.c_str(), com::internal<out>(Result)));
+		File.internal(), com::internal<out>(Result)));
 	return Result;
+}
+
+inline void register_type_lib(
+	const itypelib &TypeLib, const lpcwstr_t &FullPath, const lpcwstr_t &HelpDir)
+{
+	com::exception::throw_unless(::RegisterTypeLib( 
+		com::internal<in>(TypeLib), 
+		const_cast<wchar_t *>(FullPath.internal()), 
+		const_cast<wchar_t *>(HelpDir.internal())));
+}
+
+inline void un_register_type_lib(
+	const uuid &LibId, 
+	ushort_t VerMajor, 
+	ushort_t VerMinor, 
+	const lcid_t &Lcid, 
+	const syskind_t &Syskind)
+{
+	com::exception::throw_unless(::UnRegisterTypeLib( 
+		com::internal<in>(LibId),             
+		VerMajor,  
+		VerMinor,  
+		com::internal<in>(Lcid),                 
+		Syskind.internal()));
 }
 
 typedef object< ::IClassFactory> iclassfactory;
