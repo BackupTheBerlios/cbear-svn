@@ -35,6 +35,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:import href="../url/main.xsl"/>
 
+<xsl:param name="prj:converter.xsl" select="'project/html.xsl'"/>
+
 <xsl:template match="comment()" mode="prj:converter">
 	<xsl:comment><xsl:value-of select="."/></xsl:comment>
 </xsl:template>
@@ -129,7 +131,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:call-template name="url.backpath">
 				<xsl:with-param name="path" select="$filename"/>
 			</xsl:call-template>
-			<xsl:text>project/html.xsl"</xsl:text>
+			<xsl:value-of select="concat($prj:converter.xsl, '&#x22;')"/>
 		</xsl:processing-instruction>
 		<xsl:for-each select="/">
 			<xsl:apply-templates mode="prj:converter.section">

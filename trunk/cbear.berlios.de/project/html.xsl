@@ -43,9 +43,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:param name="prj:html.style">
 body
 {
-	background-color: #F0F0F0;
+  background-color: #CCCCCC;
 
 	font-family: sans-serif;
+	font-size: 10pt;
 	margin-left: 0px;
 	margin-right: 0px;
 	margin-top: 0px;
@@ -56,6 +57,15 @@ body
 	padding-top: 0px;
 	padding-bottom: 0px;
 }
+h1 { font-size: 18pt; }
+h2 { font-size: 17pt; }
+h3 { font-size: 16pt; }
+h4 { font-size: 15pt; }
+h5 { font-size: 14pt; }
+h6 { font-size: 13pt; }
+h7 { font-size: 12pt; }
+h8 { font-size: 11pt; }
+h9 { font-size: 10pt; }
 a 
 { 
 	color: blue; 
@@ -80,19 +90,19 @@ div
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
-h1, h2 
+h1, h2, h3, h4, h5, h6, h7, h8, h9
 { 
 	color: navy; 
 
-	margin-left: 5px;
-	margin-right: 5px;
-	margin-top: 5px;
-	margin-bottom: 5px;
+	margin-left: 2px;
+	margin-right: 2px;
+	margin-top: 2px;
+	margin-bottom: 2px;
 
-	padding-left: 5px;
-	padding-right: 5px;
-	padding-top: 5px;
-	padding-bottom: 5px;
+	padding-left: 2px;
+	padding-right: 2px;
+	padding-top: 2px;
+	padding-bottom: 2px;
 }
 ul { list-style: disc; }
 pre 
@@ -107,7 +117,7 @@ pre
 {
 	margin: 0 0 0 0;
 	border: 0;
-	background-color: #F0F0F0;
+	background-color: #CCCCCC;
 }
 </xsl:param>
 
@@ -271,6 +281,10 @@ pre
 	<div><h2><xsl:apply-templates select="." mode="prj:html.link"/></h2></div>
 </xsl:template>
 
+<xsl:template match="*" mode="prj:html.top"/>
+
+<xsl:template match="*" mode="prj:html.bottom"/>
+
 <xsl:template match="/prj:section" mode="prj:html">
 	<html>
 		<head>
@@ -282,12 +296,14 @@ pre
 				<xsl:apply-templates select="." mode="prj:html.id"/>
 			</xsl:variable>
 			<div class="background">
+				<xsl:apply-templates select="." mode="prj:html.top"/>
 				<xsl:apply-templates select="." mode="prj:html.history"/>
 				<div id="{$id}">
 					<h1><xsl:value-of select="@name"/></h1>
 					<xsl:apply-templates select="." mode="prj:html.content.table"/>
 					<xsl:apply-templates mode="prj:html"/>
 				</div>
+				<xsl:apply-templates select="." mode="prj:html.bottom"/>
 			</div>
 		</body>
 	</html>

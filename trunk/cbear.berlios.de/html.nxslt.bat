@@ -20,4 +20,4 @@
 @rem FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 @rem DEALINGS IN THE SOFTWARE.
 c:\nxslt-1.6.3\bin\nxslt index.xml docbook/list.cbear.xsl -xi -mo url=cbear.berlios.de
-c:\nxslt-1.6.3\bin\nxslt index.xml.xml project/list.xsl -xi -mo
+c:\nxslt-1.6.3\bin\nxslt index.xml.xml project/cbear.xsl -xi -mo

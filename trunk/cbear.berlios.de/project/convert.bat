@@ -20,3 +20,4 @@
 @rem FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 @rem DEALINGS IN THE SOFTWARE.
 c:\python24\scripts\4xslt --ignore --noxinclude ../index.xml converter.xsl
+rem c:\python24\scripts\4xslt --ignore --noxinclude --define=prj:converter.xsl=project/cbear.xsl ../index.xml converter.xsl
