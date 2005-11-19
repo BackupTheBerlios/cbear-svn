@@ -56,7 +56,7 @@
     <rect
        style="fill:#cccccc;fill-opacity:1.0000000;stroke:none;stroke-width:3.0000000;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-opacity:0.00000000"
        id="rect10102"
-       width="1600.0000"
+       width="1421.4286"
        height="380.00000"
        x="40.000000"
        y="92.362183"
@@ -155,14 +155,14 @@
        transform="matrix(1.410194,0.000000,0.000000,1.000000,-49.96018,6.428585)" />
     <text
        xml:space="preserve"
-       style="font-size:300.00000px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125.00000%;writing-mode:lr-tb;text-anchor:start;fill:#00007f;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Arial"
-       x="468.79102"
-       y="401.77039"
+       style="font-size:250.00000px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125.00000%;writing-mode:lr-tb;text-anchor:start;fill:#00007f;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Arial"
+       x="470.15918"
+       y="381.77039"
        id="text1315"
        sodipodi:linespacing="125.00000%"><tspan
          sodipodi:role="line"
          id="tspan1317"
-         x="468.79102"
-         y="401.77039">C BEAR</tspan></text>
+         x="470.15918"
+         y="381.77039">C BEAR</tspan></text>
   </g>
 </svg>
