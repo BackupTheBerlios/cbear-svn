@@ -28,7 +28,7 @@
      inkscape:pageopacity="1.0000000"
      inkscape:pageshadow="2"
      inkscape:zoom="0.70000000"
-     inkscape:cx="375.00000"
+     inkscape:cx="774.71429"
      inkscape:cy="520.00000"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -56,13 +56,13 @@
     <rect
        style="fill:#cccccc;fill-opacity:1.0000000;stroke:none;stroke-width:3.0000000;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-opacity:0.00000000"
        id="rect10102"
-       width="380.00000"
+       width="1538.5714"
        height="380.00000"
        x="40.000000"
        y="92.362183"
        inkscape:export-filename="C:\cbear.berlios.de\mainlogo.png"
-       inkscape:export-xdpi="15.157895"
-       inkscape:export-ydpi="15.157895" />
+       inkscape:export-xdpi="30.315790"
+       inkscape:export-ydpi="30.315790" />
     <path
        sodipodi:type="arc"
        style="fill:#ff0000;fill-opacity:0.00000000;stroke-width:2.0000000;stroke-miterlimit:4.0000000;stroke-dasharray:none"
@@ -153,5 +153,16 @@
        inkscape:randomized="0.00000000"
        d="M 198.57143,310.93360 L 191.14835,298.07645 L 183.72528,285.21931 L 198.57143,285.21931 L 213.41758,285.21931 L 205.99450,298.07646 L 198.57143,310.93360 z "
        transform="matrix(1.410194,0.000000,0.000000,1.000000,-49.96018,6.428585)" />
+    <text
+       xml:space="preserve"
+       style="font-size:300.00000px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125.00000%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Arial"
+       x="405.79102"
+       y="397.77039"
+       id="text1315"
+       sodipodi:linespacing="125.00000%"><tspan
+         sodipodi:role="line"
+         id="tspan1317"
+         x="405.79102"
+         y="397.77039">C BEAR</tspan></text>
   </g>
 </svg>

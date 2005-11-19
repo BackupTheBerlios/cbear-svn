@@ -34,14 +34,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="prj:section" mode="prj:html.top">
 	<div class="background">
-		<img border="0" src="http://svn.berlios.de/viewcvs/*checkout*/cbear/trunk/cbear.berlios.de/mainlogo.png"/>
-	</div>
-</xsl:template>
-
-<xsl:template match="prj:section" mode="prj:html.bottom">
-	<div class="background">
-		<table style="margin: 0 auto 0 auto;">
+		<table>
 			<tr>
+				<td>
+					<img 
+						border="0" 
+						src="http://svn.berlios.de/viewcvs/*checkout*/cbear/trunk/cbear.berlios.de/mainlogo.png"/>
+				</td>
 				<td>
 <!-- SiteSearch Google -->
 <form method="get" action="http://www.google.com/custom" target="_top">
@@ -85,6 +84,11 @@ border="0" alt="Google"></img></a>
 				</td>
 			</tr>
 		</table>
+	</div>
+</xsl:template>
+
+<xsl:template match="prj:section" mode="prj:html.bottom">
+	<div class="background">
 		<table style="margin: 0 auto 0 auto;">
 			<tr>
 				<td>
