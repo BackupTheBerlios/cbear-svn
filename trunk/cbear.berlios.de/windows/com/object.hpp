@@ -28,7 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/com/bstr.hpp>
 #include <cbear.berlios.de/windows/com/enum.hpp>
 #include <cbear.berlios.de/windows/com/ulong.hpp>
-#include <cbear.berlios.de/windows/com/exception.hpp>
+//#include <cbear.berlios.de/windows/com/exception.hpp>
 
 namespace cbear_berlios_de
 {
@@ -36,6 +36,8 @@ namespace windows
 {
 namespace com
 {
+
+class exception;
 
 template<class Base, class Interface = Base>
 class implementation;
@@ -183,209 +185,7 @@ object<T> make_object(T *P) { return object<T>(P); }
 
 typedef object< ::IUnknown> iunknown;
 typedef object< ::IDispatch> idispatch;
-
-typedef object< ::ITypeInfo> itypeinfo;
-
-typedef LCID lcid_t;
-
-class tlibattr_t: public policy::wrap<tlibattr_t, ::TLIBATTR>
-{
-public:
-	typedef policy::wrap<tlibattr_t, ::TLIBATTR> wrap_type;
-	explicit tlibattr_t(const internal_type &X): wrap_type(X) {}
-	// globally unique library ID.
-	uuid &guid() 
-	{ 
-		return uuid::wrap_ref(this->internal().guid); 
-	}
-	const uuid &guid() const 
-	{ 
-		return uuid::wrap_ref(this->internal().guid); 
-	}
-	// Locale of the TypeLibrary.
-	lcid_t &lcid() 
-	{ 
-		return this->internal().lcid; 
-	}
-	const lcid_t lcid() const 
-	{ 
-		return this->internal().lcid; 
-	}
-	// Target hardware platform.
-	syskind_t &syskind() 
-	{ 
-		return syskind_t::wrap_ref(this->internal().syskind); 
-	}
-	const syskind_t &syskind() const 
-	{ 
-		return syskind_t::wrap_ref(this->internal().syskind); 
-	}
-	// Major version number.
-	ushort_t &wMajorVerNum() 
-	{ 
-		return this->internal().wMajorVerNum; 
-	}
-	const ushort_t &wMajorVerNum() const 
-	{ 
-		return this->internal().wMajorVerNum; 
-	}
-	// Minor version number.
-	ushort_t &wMinorVerNum() 
-	{ 
-		return this->internal().wMinorVerNum; 
-	}
-	const ushort_t &wMinorVerNum() const 
-	{ 
-		return this->internal().wMinorVerNum; 
-	}
-  // Library flags.
-	ushort_t &wLibFlags() 
-	{ 
-		return this->internal().wLibFlags; 
-	}
-	const ushort_t &wLibFlags() const 
-	{ 
-		return this->internal().wLibFlags; 
-	}
-};
-
-template<class Base>
-class object_content<Base, ::ITypeLib>: public object_content<Base, ::IUnknown>
-{
-public:
-	template<class Interface>
-	itypeinfo GetTypeInfoOfGuid() const
-	{
-		itypeinfo Result;
-		exception::throw_unless(this->internal_reference().GetTypeInfoOfGuid(
-			com::internal<in>(uuid::of<Interface>()), 
-			com::internal<out>(Result)));
-		return Result;
-	}
-	tlibattr_t GetLibAttr() const 
-	{ 
-		tlibattr_t::internal_type *Temp;
-		exception::throw_unless(this->internal_reference().GetLibAttr(&Temp));
-		tlibattr_t Result(*Temp);
-		this->internal_reference().ReleaseTLibAttr(Temp);
-		return Result;
-	}
-};
-
-typedef object< ::ITypeLib> itypelib;
-
-inline itypelib load_type_lib(const lpcwstr_t File)
-{
-	itypelib Result;
-	com::exception::throw_unless(::LoadTypeLib(
-		File.internal(), com::internal<out>(Result)));
-	return Result;
-}
-
-inline void register_type_lib(
-	const itypelib &TypeLib, const lpcwstr_t &FullPath, const lpcwstr_t &HelpDir)
-{
-	com::exception::throw_unless(::RegisterTypeLib( 
-		com::internal<in>(TypeLib), 
-		const_cast<wchar_t *>(FullPath.internal()), 
-		const_cast<wchar_t *>(HelpDir.internal())));
-}
-
-inline void un_register_type_lib(
-	const uuid &LibId, 
-	ushort_t VerMajor, 
-	ushort_t VerMinor, 
-	const lcid_t &Lcid, 
-	const syskind_t &Syskind)
-{
-	com::exception::throw_unless(::UnRegisterTypeLib( 
-		com::internal<in>(LibId),             
-		VerMajor,  
-		VerMinor,  
-		com::internal<in>(Lcid),                 
-		Syskind.internal()));
-}
-
-inline void un_register_type_lib(const tlibattr_t &LibAttr)
-{
-	un_register_type_lib(
-		LibAttr.guid(), 
-		LibAttr.wMajorVerNum(), 
-		LibAttr.wMinorVerNum(),
-		LibAttr.lcid(),
-		LibAttr.syskind());
-}
-
 typedef object< ::IClassFactory> iclassfactory;
-
-class regcls: public com::enum_t<regcls, dword_t>
-{
-public:
-	typedef com::enum_t<regcls, dword_t> wrap_type;
-	enum enumeration_type 
-	{ 
-		singleuse = REGCLS_SINGLEUSE,
-    multipleuse = REGCLS_MULTIPLEUSE,                        
-    multi_separat = REGCLS_MULTI_SEPARATE,
-    suspended = REGCLS_SUSPENDED,
-    surrogate = REGCLS_SURROGATE,
-	};
-	regcls(enumeration_type X): wrap_type(X) {}
-};
-
-class clsctx: public com::enum_t<clsctx, dword_t>
-{
-public:
-	typedef com::enum_t<clsctx, ::DWORD> wrap_type;
-	enum enumeration_type 
-	{ 
-		inproc_server = CLSCTX_INPROC_SERVER, 
-		inproc_handler = CLSCTX_INPROC_HANDLER, 
-		local_server = CLSCTX_LOCAL_SERVER, 
-		inproc_server16 = CLSCTX_INPROC_SERVER16,
-		remote_server = CLSCTX_REMOTE_SERVER,
-		inproc_handler16 = CLSCTX_INPROC_HANDLER16,
-		//reserved1 = CLSCTX_RESERVED1,
-		//reserved2 = CLSCTX_RESERVED2,
-		//reserved3 = CLSCTX_RESERVED3,
-		//reserved4 = CLSCTX_RESERVED4,
-		no_code_download = CLSCTX_NO_CODE_DOWNLOAD,
-		//reserved5 = CLSCTX_RESERVED5,
-		no_custom_mrshal = CLSCTX_NO_CUSTOM_MARSHAL,
-		enable_code_download = CLSCTX_ENABLE_CODE_DOWNLOAD,
-		no_failure_log = CLSCTX_NO_FAILURE_LOG,
-		//disable_aaa = CLSCTX_DISABLE_AAA,
-		//enable_aaa = CLSCTX_ENABLE_AAA,
-		//from_default_context = CLSCTX_FROM_DEFAULT_CONTEXT,
-
-		all = CLSCTX_ALL,
-	};
-	clsctx(enumeration_type X): wrap_type(X) {}
-};
-
-class class_object
-{
-public:
-	class_object(
-		const uuid &Uuid, 
-		const iunknown &Unk, 
-		const clsctx &Clsctx, 
-		const regcls &Regcls)
-	{
-		exception::throw_unless(::CoRegisterClassObject(
-			internal<in>(Uuid),
-			internal<in>(Unk),
-			internal<in>(Clsctx),
-			internal<in>(Regcls),
-			internal<out>(this->Register)));
-	}
-	~class_object()
-	{
-		exception::throw_unless(::CoRevokeClassObject(this->Register));
-	}
-private:
-	dword_t Register;
-};
 
 }
 }

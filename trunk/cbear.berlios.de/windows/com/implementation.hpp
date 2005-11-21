@@ -35,6 +35,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/com/hresult.hpp>
 #include <cbear.berlios.de/windows/com/object.hpp>
 #include <cbear.berlios.de/windows/com/uint.hpp>
+#include <cbear.berlios.de/windows/com/lcid.hpp>
+#include <cbear.berlios.de/windows/com/itypelib.hpp>
 
 namespace cbear_berlios_de
 {
@@ -237,7 +239,7 @@ class group: boost::noncopyable
 {
 public:
 	group() {}
-	group(const object< ::ITypeLib> &TypeLib): TypeLib(TypeLib) {}
+	group(const itypelib &TypeLib): TypeLib(TypeLib) {}
 	~group() 
 	{
 		boost::mutex::scoped_lock Lock(this->ConditionMutex);
@@ -263,7 +265,7 @@ public:
 			*this, X));
 	}
 
-	const object< ::ITypeLib> &type_lib() const { return this->TypeLib; }
+	const itypelib &type_lib() const { return this->TypeLib; }
 
 	int value() { return this->Value.internal(); }
 
@@ -290,8 +292,21 @@ private:
 
 	friend class detail::implementation_counter;
 
-	object< ::ITypeLib> TypeLib;
+	itypelib TypeLib;
 };
+
+template<class Base>
+class implementation<Base, ::ISupportErrorInfo>:
+	public implementation_base<Base, ::ISupportErrorInfo, ::IUnknown>
+{
+public:
+	hresult::internal_type __stdcall InterfaceSupportsErrorInfo(const IID &)
+	{
+		return S_OK;
+	}
+};
+
+typedef object< ::ISupportErrorInfo> isupporterrorinfo;
 
 namespace detail
 {
@@ -331,7 +346,8 @@ private:
 template<class T>
 class implementation_instance: 
 	private implementation_counter,
-	public T
+	public T,
+	public isupporterrorinfo::implementation_type
 {
 public:
 	// IUnknown
@@ -358,32 +374,6 @@ private:
 };
 
 }
-
-// This class is deprecated. You should use group::new_ instead when the 
-// garbage collection implementation will be ready.
-template<class T>
-class local_object: private T
-{
-public:
-
-	template<class I>
-	operator object<I>() { return object<I>(static_cast<I *>(this)); }
-
-	local_object() {}
-
-	template<class P>
-	local_object(const P &X): T(X) {}
-
-private:
-	ulong_t __stdcall AddRef() { return 0; }
-	ulong_t __stdcall Release() { return 0; }
-	hresult::internal_type __stdcall QueryInterface(
-		const uuid::internal_type &U, void **PP)
-  { 
-		return detail::implementation_info::query_interface(U, PP);
-  }
-	local_object(const local_object &);
-};
 
 }
 }

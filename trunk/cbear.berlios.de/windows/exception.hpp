@@ -43,14 +43,13 @@ class exception:
 {
 public:
 	typedef policy::wrap<windows::exception, dword_t> wrap_type;
-
 	static void throw_if(internal_type X)
 	{
 		if(X) throw windows::exception(X);
 	}
 	static void throw_if_last_error()
 	{
-		internal_type LastError = ::GetLastError();
+		internal_type LastError = ::GetLastError(); 
 		if(LastError) throw exception(LastError);
 	}
 	const char *what() const throw()
@@ -58,11 +57,33 @@ public:
 		return this->Message.c_str();
 	}
 private:
+	class buffer_policy: private policy::standard_policy<char *>
+	{
+	public:
+		typedef policy::standard_policy<char *> std_policy_type;
+		typedef std_policy_type::reference reference;
+		typedef std_policy_type::pointer pointer;
+		using std_policy_type::construct;
+		using std_policy_type::output;
+		static void destroy(char * &X)
+		{
+			if(X) ::LocalFree(X);
+		}
+	};
 	exception(internal_type X): wrap_type(X) 
 	{
+		policy::std_wrap<char *, buffer_policy> Buffer;
+		::FormatMessageA(
+			FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
+			0,
+			X,
+			0,
+			(char *)&Buffer.internal(),
+			0,
+			NULL);
 		std::ostringstream O;
-		O << "cbear_berlios_de::windows::exception(" << std::hex << 
-			this->internal() << ")";
+		O << "cbear_berlios_de::windows::exception(0x" << std::hex << 
+			this->internal() << "): " << std::endl << Buffer;
 		this->Message = O.str();
 	}
 	std::string Message;

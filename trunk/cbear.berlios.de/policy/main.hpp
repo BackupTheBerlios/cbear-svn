@@ -212,10 +212,10 @@ private:
 	internal_type Internal;
 };
 
-template<class T>
-class std_wrap: public wrap<std_wrap<T>, T>
+template<class T, class Policy = standard_policy<T> >
+class std_wrap: public wrap<std_wrap<T, Policy>, T, Policy>
 {
-	typedef wrap<std_wrap<T>, T> wrap_base;
+	typedef wrap<std_wrap<T, Policy>, T, Policy> wrap_base;
 public:
 	std_wrap() {}
 	explicit std_wrap(const T &X): wrap_base(X) {}

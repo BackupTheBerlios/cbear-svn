@@ -20,16 +20,11 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_SYSTEM_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_WINDOWS_COM_SYSTEM_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_CLSCTX_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_WINDOWS_COM_CLSCTX_HPP_INCLUDED
 
-// COINIT
-#include <objbase.h>
-
-#include <cbear.berlios.de/windows/com/exception.hpp>
 #include <cbear.berlios.de/windows/com/object.hpp>
-#include <cbear.berlios.de/windows/com/enum.hpp>
-#include <cbear.berlios.de/windows/com/clsctx.hpp>
+#include <cbear.berlios.de/windows/com/exception.hpp>
 
 namespace cbear_berlios_de
 {
@@ -38,35 +33,35 @@ namespace windows
 namespace com
 {
 
-class system
+class clsctx: public com::enum_t<clsctx, dword_t>
 {
 public:
+	typedef com::enum_t<clsctx, ::DWORD> wrap_type;
+	enum enumeration_type 
+	{ 
+		inproc_server = CLSCTX_INPROC_SERVER, 
+		inproc_handler = CLSCTX_INPROC_HANDLER, 
+		local_server = CLSCTX_LOCAL_SERVER, 
+		inproc_server16 = CLSCTX_INPROC_SERVER16,
+		remote_server = CLSCTX_REMOTE_SERVER,
+		inproc_handler16 = CLSCTX_INPROC_HANDLER16,
+		//reserved1 = CLSCTX_RESERVED1,
+		//reserved2 = CLSCTX_RESERVED2,
+		//reserved3 = CLSCTX_RESERVED3,
+		//reserved4 = CLSCTX_RESERVED4,
+		no_code_download = CLSCTX_NO_CODE_DOWNLOAD,
+		//reserved5 = CLSCTX_RESERVED5,
+		no_custom_mrshal = CLSCTX_NO_CUSTOM_MARSHAL,
+		enable_code_download = CLSCTX_ENABLE_CODE_DOWNLOAD,
+		no_failure_log = CLSCTX_NO_FAILURE_LOG,
+		//disable_aaa = CLSCTX_DISABLE_AAA,
+		//enable_aaa = CLSCTX_ENABLE_AAA,
+		//from_default_context = CLSCTX_FROM_DEFAULT_CONTEXT,
 
-	enum coinit_type
-	{
-		multithreaded = COINIT_MULTITHREADED,
-		apartmentthreaded = COINIT_APARTMENTTHREADED,
-		disable_ole1dde = COINIT_DISABLE_OLE1DDE,
-		speed_over_memory = COINIT_SPEED_OVER_MEMORY,
+		all = CLSCTX_ALL,
 	};
-
-	system(coinit_type C) { exception::throw_unless(::CoInitializeEx(0, C)); }
-	~system() { ::CoUninitialize(); }
+	clsctx(enumeration_type X): wrap_type(X) {}
 };
-
-template<class T>
-object<T> create_instance(
-	const uuid &Uuid, const object<IUnknown> &UnkOuter, clsctx ClsContext)
-{
-	object<T> Result;
-	exception::throw_unless(::CoCreateInstance(
-		internal<in>(Uuid), 
-		internal<in>(UnkOuter), 
-		internal<in>(ClsContext), 
-		internal<in>(uuid::of<T>()), 
-		(void**)internal<out>(Result)));
-	return Result;
-}
 
 }
 }

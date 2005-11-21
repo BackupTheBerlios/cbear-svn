@@ -38,17 +38,10 @@ public:
 	exception(hresult Value): Value(Value) 
 	{
 		std::ostringstream Stream;
-		Stream << "cbear_berlios_de::com::exception { result() = 0x" << std::hex <<
-			this->result() << "; };";
+		Stream << "cbear_berlios_de::com::exception(0x" << std::hex <<
+			this->result() << ")";
 		this->Message = Stream.str();
 	}
-	/*
-	void what(::std::ostream &OStream) const
-	{
-		OStream << "cbear_berlios_de::com::exception { result() = 0x" << std::hex <<
-			this->result() << "; };";
-	}
-	*/
 	const char *what() const throw()
 	{
 		return this->Message.c_str();
@@ -70,13 +63,18 @@ public:
 			{
 				throw;				
 			}
-			catch(const com::exception &)
+			catch(const com::exception &E)
 			{
-				return hresult::e_fail;
+				//hresult Result;
+				//Result.internal() = ::CreateErrorInfo();
+				return E.result();
 			}
 			catch(const ::std::exception &)
 			{
-				return hresult::e_fail;
+				return hresult(
+					true, 
+					hresult::facility_type::itf, 
+					hresult::code_type::min);
 			}
 		}
 		catch(...)

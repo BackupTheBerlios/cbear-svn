@@ -214,9 +214,14 @@ public:
 
 		typedef code_wrap::internal_type internal_type;
 
-		static const internal_type min = 0x0200;
+		enum enumeration
+		{
+			min = 0x0200,
+			max = 0xFFFF,
+		};
 
 		code_type() {}
+		code_type(enumeration X): code_wrap(internal_type(X)) {}
 		explicit code_type(internal_type X): code_wrap(X) {}
 	};
 
