@@ -23,7 +23,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_COM_EXCEPTION_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_COM_EXCEPTION_HPP_INCLUDED
 
-#include <cbear.berlios.de/base/exception.hpp>
 #include <cbear.berlios.de/windows/com/hresult.hpp>
 
 namespace cbear_berlios_de
@@ -33,14 +32,26 @@ namespace windows
 namespace com
 {
 
-class exception: public base::exception
+class exception: public std::exception
 {
 public:
-	exception(hresult Value): Value(Value) {}
+	exception(hresult Value): Value(Value) 
+	{
+		std::ostringstream Stream;
+		Stream << "cbear_berlios_de::com::exception { result() = 0x" << std::hex <<
+			this->result() << "; };";
+		this->Message = Stream.str();
+	}
+	/*
 	void what(::std::ostream &OStream) const
 	{
 		OStream << "cbear_berlios_de::com::exception { result() = 0x" << std::hex <<
 			this->result() << "; };";
+	}
+	*/
+	const char *what() const throw()
+	{
+		return this->Message.c_str();
 	}
 	hresult result() const throw() { return this->Value; }
 	static void throw_unless(hresult Value)
@@ -63,10 +74,6 @@ public:
 			{
 				return hresult::e_fail;
 			}
-			catch(const base::exception &)
-			{
-				return hresult::e_fail;
-			}
 			catch(const ::std::exception &)
 			{
 				return hresult::e_fail;
@@ -79,6 +86,7 @@ public:
 	}
 private:
 	hresult Value;
+	std::string Message;
 };
 
 }

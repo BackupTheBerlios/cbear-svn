@@ -23,7 +23,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_OBJECT_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_OBJECT_HPP_INCLUDED
 
-#include <cbear.berlios.de/base/exception.hpp>
 #include <cbear.berlios.de/windows/syskind.hpp>
 #include <cbear.berlios.de/windows/com/uuid.hpp>
 #include <cbear.berlios.de/windows/com/bstr.hpp>
@@ -122,14 +121,21 @@ public:
 
 	static const com::uuid &uuid() { return uuid::of<interface_type>(); }
 
-	class uninitialized: public base::exception
+	class uninitialized: public std::exception
 	{
 	public:
-		void what(::std::ostream &O) const 
+		const char *what() const throw()
 		{ 
-			O << "cbear_berlios_de::com::object<" << typeid(Interface).name() << 
-				"> uninitialized.";
+			return this->Message.c_str();
 		}
+		uninitialized()
+		{
+			std::ostringstream O;
+			O << "cbear_berlios_de::com::object<" << typeid(Interface).name() << 
+				"> is uninitialized.";
+		}
+	private:
+		std::string Message;
 	};
 
 protected:
@@ -298,6 +304,16 @@ inline void un_register_type_lib(
 		VerMinor,  
 		com::internal<in>(Lcid),                 
 		Syskind.internal()));
+}
+
+inline void un_register_type_lib(const tlibattr_t &LibAttr)
+{
+	un_register_type_lib(
+		LibAttr.guid(), 
+		LibAttr.wMajorVerNum(), 
+		LibAttr.wMinorVerNum(),
+		LibAttr.lcid(),
+		LibAttr.syskind());
 }
 
 typedef object< ::IClassFactory> iclassfactory;

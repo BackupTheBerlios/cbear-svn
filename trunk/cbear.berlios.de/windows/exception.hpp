@@ -23,7 +23,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_EXCEPTION_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_EXCEPTION_HPP_INCLUDED
 
-#include <cbear.berlios.de/base/exception.hpp>
 #include <cbear.berlios.de/windows/base.hpp>
 
 namespace cbear_berlios_de
@@ -40,7 +39,7 @@ namespace windows
 
 // Exception.
 class exception: 
-	public base::exception, public policy::wrap<windows::exception, dword_t>
+	public std::exception, public policy::wrap<windows::exception, dword_t>
 {
 public:
 	typedef policy::wrap<windows::exception, dword_t> wrap_type;
@@ -54,13 +53,19 @@ public:
 		internal_type LastError = ::GetLastError();
 		if(LastError) throw exception(LastError);
 	}
-	void what(std::ostream &O) const
+	const char *what() const throw()
 	{
-		O << "cbear_berlios_de::windows::exception(" << std::hex << 
-			this->internal() << ")";
+		return this->Message.c_str();
 	}
 private:
-	exception(internal_type X): wrap_type(X) {}
+	exception(internal_type X): wrap_type(X) 
+	{
+		std::ostringstream O;
+		O << "cbear_berlios_de::windows::exception(" << std::hex << 
+			this->internal() << ")";
+		this->Message = O.str();
+	}
+	std::string Message;
 };
 
 #pragma warning(pop)
