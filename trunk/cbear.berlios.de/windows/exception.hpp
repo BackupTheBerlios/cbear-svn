@@ -82,7 +82,8 @@ private:
 			0,
 			NULL);
 		std::ostringstream O;
-		O << "cbear_berlios_de::windows::exception(0x" << std::hex << 
+		O << 
+			"cbear_berlios_de::windows::exception(0x" << std::hex << std::uppercase <<
 			this->internal() << "): " << std::endl << Buffer;
 		this->Message = O.str();
 	}

@@ -23,7 +23,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_COM_EXCEPTION_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_COM_EXCEPTION_HPP_INCLUDED
 
+#include <sstream>
+
+#include <cbear.berlios.de/locale/cast.hpp>
 #include <cbear.berlios.de/windows/com/hresult.hpp>
+#include <cbear.berlios.de/windows/com/bstr.hpp>
+#include <cbear.berlios.de/windows/com/uuid.hpp>
+#include <cbear.berlios.de/windows/com/object.hpp>
 
 namespace cbear_berlios_de
 {
@@ -32,14 +38,100 @@ namespace windows
 namespace com
 {
 
+template<class Base>
+class object_content<Base, ::IErrorInfo>: 
+	public object_content<Base, ::IUnknown>
+{
+public:
+	bstr_t GetDescription() const
+	{
+		bstr_t Result;
+		this->internal_reference().GetDescription(com::internal<out>(Result));
+		return Result;
+	}
+	com::uuid GetGUID() const
+	{
+		com::uuid Result;
+		this->internal_reference().GetGUID(com::internal<out>(Result));
+		return Result;
+	}
+	dword_t GetHelpContext() const
+	{
+		dword_t Result;
+		this->internal_reference().GetHelpContext(com::internal<out>(Result));
+		return Result;
+	}
+	bstr_t GetHelpFile() const
+	{
+		bstr_t Result;
+		this->internal_reference().GetHelpFile(com::internal<out>(Result));
+		return Result;
+	}
+	bstr_t GetSource() const
+	{
+		bstr_t Result;
+		this->internal_reference().GetSource(com::internal<out>(Result));
+		return Result;
+	}
+};
+
+typedef object< ::IErrorInfo> ierrorinfo;
+
+template<class Base>
+class object_content<Base, ::ICreateErrorInfo>:
+	public object_content<Base, ::IUnknown>
+{
+public:
+	void SetDescription(lpcwstr_t X) const
+	{
+		this->internal_reference().SetDescription(X.internal());
+	}
+	void SetGUID(const com::uuid &X) const
+	{
+		this->internal_reference().SetGUID(X.internal());
+	}
+	void SetHelpContext(dword_t X) const
+	{
+		this->internal_reference().SetGUID(X);
+	}
+	void SetHelpFile(lpcwstr_t X) const
+	{
+		this->internal_reference().SetHelpFile(X.internal());
+	}
+	void SetSource(lpcwstr_t X) const
+	{
+		this->internal_reference().SetSource(X.internal());
+	}
+};
+
+typedef object< ::ICreateErrorInfo> icreateerrorinfo;
+
 class exception: public std::exception
 {
 public:
 	exception(hresult Value): Value(Value) 
 	{
+		::GetErrorInfo(0, com::internal<out>(this->ErrorInfo));
 		std::ostringstream Stream;
-		Stream << "cbear_berlios_de::com::exception(0x" << std::hex <<
-			this->result() << ")";
+		Stream << 
+			"cbear_berlios_de::com::exception(0x" << std::hex << std::uppercase << 
+			this->result() << "):" << std::endl;
+		if(this->ErrorInfo!=ierrorinfo())
+		{
+			Stream <<
+				"Description: " << 
+				locale::cast<std::string>(this->ErrorInfo.GetDescription()) << 
+				std::endl;
+			Stream << "GUID: " << this->ErrorInfo.GetGUID() << std::endl;
+			Stream << 
+				"Help Context: " << this->ErrorInfo.GetHelpContext() << std::endl;
+			Stream <<
+				"Help File: " << 
+				locale::cast<std::string>(this->ErrorInfo.GetHelpFile()) << std::endl;
+			Stream <<
+				"Source: " << 
+				locale::cast<std::string>(this->ErrorInfo.GetSource()) << std::endl;
+		}
 		this->Message = Stream.str();
 	}
 	const char *what() const throw()
@@ -65,12 +157,14 @@ public:
 			}
 			catch(const com::exception &E)
 			{
-				//hresult Result;
-				//Result.internal() = ::CreateErrorInfo();
+				set_error_info(E.ErrorInfo);
 				return E.result();
 			}
-			catch(const ::std::exception &)
+			catch(const ::std::exception &E)
 			{
+				icreateerrorinfo CreateErrorInfo;
+				::CreateErrorInfo(com::internal<out>(CreateErrorInfo));
+				set_error_info(CreateErrorInfo.query_interface<ierrorinfo>());
 				return hresult(
 					true, 
 					hresult::facility_type::itf, 
@@ -85,6 +179,11 @@ public:
 private:
 	hresult Value;
 	std::string Message;
+	ierrorinfo ErrorInfo;
+	static void set_error_info(const ierrorinfo &X)
+	{
+		::SetErrorInfo(0, com::internal<in>(X));
+	}
 };
 
 }

@@ -50,18 +50,25 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 	typedef standard_policy_type::reference reference;
 	typedef standard_policy_type::pointer pointer;
 
-	typedef range::iterator_range<type> iterator_range;
-	typedef range::iterator_range<const value_type *> const_iterator_range;
+	typedef type iterator;
+	typedef range::iterator_range<iterator> iterator_range;
+	typedef const value_type *const_iterator;
+	typedef range::iterator_range<const_iterator> const_iterator_range;
+
+	static std::size_t size(type A)
+	{
+		return ::SysStringLen(A);
+	}
 
 	static iterator_range make_sub_range(type A)
 	{
-		return iterator_range(A, A + ::SysStringLen(A));
+		return iterator_range(A, A + size(A));
 	}
 
 	template<class Range>
 	static void construct_copy(type &This, const Range &Source)
 	{
-		This = ::SysAllocStringLen(Source.begin(), Source.size());
+		This = ::SysAllocStringLen(Source.begin(), uint_t(Source.size()));
 	}
 
 	static void construct_copy(type &This, const type &Source)
@@ -106,29 +113,54 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 
 typedef policy::wrap<bstr_t, ::BSTR, bstr_policy> bstr_wrap;
 
+typedef range::helper<
+	bstr_t, 
+	bstr_policy::iterator, 
+	bstr_policy::const_iterator, 
+	bstr_wrap> bstr_helper;
+
 }
 
 #pragma pack(push, 1)
 
-class bstr_t: public detail::bstr_wrap
+class bstr_t: public detail::bstr_helper
 {
 public:
+	typedef detail::bstr_helper helper_type;
 	typedef detail::bstr_wrap wrap_type;
 	typedef wrap_type::internal_policy internal_policy;
+
 	typedef internal_policy::value_type value_type;
+	typedef internal_policy::iterator iterator;
 	typedef internal_policy::iterator_range iterator_range;
+	typedef internal_policy::const_iterator const_iterator;
 	typedef internal_policy::const_iterator_range const_iterator_range;
 	typedef iterator_range::size_type size_type; 
+
 	static const vartype_t vt = ::VT_BSTR;
+
 	bstr_t() {}
+
 	template< ::std::size_t Size>
-	bstr_t(const wchar_t (&X)[Size]): wrap_type(const_iterator_range(X), 0) {}
+	bstr_t(const wchar_t (&X)[Size]): helper_type(const_iterator_range(X), 0) {}
+
 	bstr_t(const std::basic_string<wchar_t> &X): 
-		wrap_type(const_iterator_range(X.c_str(), (size_type)X.size()), 0)
+		helper_type(const_iterator_range(X.c_str(), (size_type)X.size()), 0)
 	{
 	}
 
 	wchar_t *c_str() const { return this->internal(); }
+
+	size_type size() const 
+	{ 
+		return (size_type)internal_policy::size(this->internal()); 
+	}
+
+	iterator begin() { return this->internal(); }
+	iterator end() { return this->internal() + size(); }
+
+	const_iterator begin() const { return this->internal(); }
+	const_iterator end() const { return this->internal() + size(); }
 };
 
 #pragma pack(pop)

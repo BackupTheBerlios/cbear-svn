@@ -29,6 +29,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // boost::prior, boost::next
 #include <boost/utility.hpp>
 
+#include <cbear.berlios.de/base/empty.hpp>
 #include <cbear.berlios.de/base/integer.hpp>
 
 namespace cbear_berlios_de
@@ -36,8 +37,9 @@ namespace cbear_berlios_de
 namespace range
 {
 
-template<class Container, class Iterator, class ConstIterator>
-class helper
+template<
+	class Container, class Iterator, class ConstIterator, class Base = base::empty>
+class helper: public Base
 {
 public:
 	typedef Container container;
@@ -60,6 +62,14 @@ public:
 		reverse_iterator;
 	typedef typename ::std::reverse_iterator<const_iterator> 
 		const_reverse_iterator;
+
+	helper() {}
+
+	template<class T>
+	helper(const T &X): Base(X) {}
+
+	template<class T1, class T2>
+	helper(const T1 &X1, const T2 &X2): Base(X1, X2) {}
 	
 	bool empty() const { return This().begin()==This().end(); }
 	size_type size() const 

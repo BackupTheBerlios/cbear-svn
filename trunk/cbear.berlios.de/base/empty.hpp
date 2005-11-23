@@ -20,31 +20,15 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_RANGE_EQUAL_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_RANGE_EQUAL_HPP_INCLUDED
-
-#pragma warning(push)
-// 'function': was declared deprecated
-#pragma warning(disable: 4996)
-// std::equal
-#include <algorithm>
-#pragma warning(pop)
-
-#include <cbear.berlios.de/range/begin.hpp>
-#include <cbear.berlios.de/range/end.hpp>
-#include <cbear.berlios.de/range/size.hpp>
+#ifndef CBEAR_BERLIOS_DE_BASE_EMPTY_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_BASE_EMPTY_HPP_INCLUDED
 
 namespace cbear_berlios_de
 {
-namespace range
+namespace base
 {
 
-template<class Range1, class Range2>
-bool equal(const Range1 &A, const Range2 &B)
-{
-	return range::size(A)==range::size(B) && ::std::equal(
-		range::begin(A), range::end(A), range::begin(B));
-}
+class empty {};
 
 }
 }

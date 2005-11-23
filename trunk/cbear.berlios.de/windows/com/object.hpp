@@ -135,6 +135,7 @@ public:
 			std::ostringstream O;
 			O << "cbear_berlios_de::com::object<" << typeid(Interface).name() << 
 				"> is uninitialized.";
+			this->Message = O.str();
 		}
 	private:
 		std::string Message;
@@ -177,7 +178,7 @@ public:
 		internal_policy::construct_copy(this->internal(), X);
 	}
 
-	operator bool() const { return this->internal(); }
+	operator bool() const { return this->internal() != 0; }
 };
 
 template<class T>

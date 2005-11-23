@@ -300,11 +300,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:value-of select="@id"/>
 </xsl:template>
 
+<!--
 <xsl:template 
 	match="odl:method[odl:attribute/@id='propput']" 
 	mode="odl:cpp.method.id.short">
 	<xsl:value-of select="concat('put_', @id)"/>
 </xsl:template>
+-->
 
 <xsl:template match="odl:method" mode="odl:cpp">
 	<xsl:variable name="id.short">

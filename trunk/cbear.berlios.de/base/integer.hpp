@@ -100,6 +100,30 @@ struct make_unsigned: uint_t<sizeof(Type)*CHAR_BIT>
 	BOOST_STATIC_ASSERT(is_integer<Type>::value);
 };
 
+template<>
+struct make_unsigned<std::ptrdiff_t>
+{
+	typedef std::size_t type;
+};
+
+template<>
+struct make_unsigned<std::size_t>
+{
+	typedef std::size_t type;
+};
+
+template<>
+struct make_signed<std::ptrdiff_t>
+{
+	typedef std::ptrdiff_t type;
+};
+
+template<>
+struct make_signed<std::size_t>
+{
+	typedef std::ptrdiff_t type;
+};
+
 namespace detail
 {
 

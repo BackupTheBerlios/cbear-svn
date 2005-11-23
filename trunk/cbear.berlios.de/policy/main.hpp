@@ -127,12 +127,16 @@ public:
 		return internal_policy::less(A.Internal, B.Internal);
 	}
 
-	typename internal_policy::reference operator*() const
+	typedef typename internal_policy::reference reference;
+
+	reference operator*() const
 	{
 		return internal_policy::reference_of(this->Internal);
 	}
 
-	typename internal_policy::pointer operator->() const
+	typedef typename internal_policy::pointer pointer;
+
+	pointer operator->() const
 	{
 		return &internal_policy::reference_of(this->Internal);
 	}

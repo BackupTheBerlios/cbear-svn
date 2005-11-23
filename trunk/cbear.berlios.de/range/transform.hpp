@@ -45,7 +45,7 @@ template<class InputRange, class OutputIterator, class UnaryOperation>
 OutputIterator
 transform(InputRange &R, OutputIterator result, UnaryOperation op)
 {
-	return std::transform(begin(R), end(R), result, op);
+	return std::transform(range::begin(R), range::end(R), result, op);
 }
 
 }

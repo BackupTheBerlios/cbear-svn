@@ -76,7 +76,7 @@ protected:
 		return hresult::s_ok;
 	}
 
-	group &get_group() { return *this->Group; }
+	com::group &group() { return *this->Group; }
 
 private:
 
@@ -89,7 +89,7 @@ private:
 		this->Map[Uuid] = P;
 	}
 
-	group *Group;
+	com::group *Group;
 
 	friend class detail::implementation_counter;
 };
@@ -144,7 +144,7 @@ public:
 
 	implementation()
 	{
-		this->TypeInfo = this->get_group().type_lib().GetTypeInfoOfGuid<Base>();
+		this->TypeInfo = this->group().type_lib().GetTypeInfoOfGuid<Base>();
 	}
 
 	hresult::internal_type __stdcall GetTypeInfoCount(
@@ -265,9 +265,39 @@ public:
 			*this, X));
 	}
 
+	template<class T, class P1, class P2>
+	typename new_result<T>::type new_(const P1 &X1, const P2 &X2)
+	{
+		return new_result<T>::type(new detail::implementation_instance<T>(
+			*this, X1, X2));
+	}
+
+	template<class T, class P1, class P2, class P3>
+	typename new_result<T>::type new_(const P1 &X1, const P2 &X2, const P3 &X3)
+	{
+		return new_result<T>::type(new detail::implementation_instance<T>(
+			*this, X1, X2, X3));
+	}
+
+	template<class T, class P1, class P2, class P3, class P4>
+	typename new_result<T>::type new_(
+		const P1 &X1, const P2 &X2, const P3 &X3, const P4 &X4)
+	{
+		return new_result<T>::type(new detail::implementation_instance<T>(
+			*this, X1, X2, X3, X4));
+	}
+
+	template<class T, class P1, class P2, class P3, class P4, class P5>
+	typename new_result<T>::type new_(
+		const P1 &X1, const P2 &X2, const P3 &X3, const P4 &X4, const P5 &X5)
+	{
+		return new_result<T>::type(new detail::implementation_instance<T>(
+			*this, X1, X2, X3, X4, X5));
+	}
+
 	const itypelib &type_lib() const { return this->TypeLib; }
 
-	int value() { return this->Value.internal(); }
+	int size() const { return this->Value.internal(); }
 
 private:
 
@@ -319,7 +349,7 @@ protected:
 
 	typedef atomic::wrap<ulong_t>::internal_type internal_type;
 
-	implementation_counter(group &Group)
+	implementation_counter(com::group &Group)
 	{
 		this->Group = &Group;
 		this->Group->increment();
@@ -364,11 +394,43 @@ private:
 
 	friend class group;
 
-	implementation_instance(group &Group): implementation_counter(Group) {}
+	implementation_instance(com::group &Group): implementation_counter(Group) {}
 
   template<class P>
-  implementation_instance(group &Group, const P &X): 
+	implementation_instance(com::group &Group, const P &X): 
 		implementation_counter(Group), T(X) 
+	{
+	}
+
+  template<class P1, class P2>
+	implementation_instance(com::group &Group, const P1 &X1, const P2 &X2): 
+		implementation_counter(Group), T(X1, X2)
+	{
+	}
+
+  template<class P1, class P2, class P3>
+	implementation_instance(
+		com::group &Group, const P1 &X1, const P2 &X2, const P3 &X3):
+		implementation_counter(Group), T(X1, X2, X3)
+	{
+	}
+
+  template<class P1, class P2, class P3, class P4>
+	implementation_instance(
+		com::group &Group, const P1 &X1, const P2 &X2, const P3 &X3, const P4 &X4):
+		implementation_counter(Group), T(X1, X2, X3, X4)
+	{
+	}
+
+  template<class P1, class P2, class P3, class P4, class P5>
+	implementation_instance(
+		com::group &Group, 
+		const P1 &X1, 
+		const P2 &X2, 
+		const P3 &X3, 
+		const P4 &X4, 
+		const P5 &X5):
+		implementation_counter(Group), T(X1, X2, X3, X4, X5)
 	{
 	}
 };
