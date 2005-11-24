@@ -46,9 +46,12 @@ public:
 	std::basic_string<Char> file_name() const
 	{
 		Char Buffer[max_path];
-		dword_t Length = select<Char>(::GetModuleFileNameA, ::GetModuleFileNameW)(
-			this->internal(), Buffer, max_path);
-		exception::throw_if_last_error();
+		dword_t Length;
+		{
+			exception::scope_last_error ScopeLastError;
+			Length = select<Char>(::GetModuleFileNameA, ::GetModuleFileNameW)(
+				this->internal(), Buffer, max_path);
+		}
 		return std::basic_string<Char>(Buffer, Length);
 	}
 };

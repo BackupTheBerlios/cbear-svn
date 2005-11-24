@@ -43,19 +43,28 @@ class exception:
 {
 public:
 	typedef policy::wrap<windows::exception, dword_t> wrap_type;
+
 	static void throw_if(internal_type X)
 	{
 		if(X) throw windows::exception(X);
 	}
-	static void throw_if_last_error()
+
+	class scope_last_error: boost::noncopyable
 	{
-		internal_type LastError = ::GetLastError(); 
-		if(LastError) throw exception(LastError);
-	}
+	public:
+		scope_last_error() { ::SetLastError(0); }
+		~scope_last_error() 
+		{
+			internal_type LastError = ::GetLastError(); 
+			if(LastError) throw exception(LastError);
+		}
+	};
+
 	const char *what() const throw()
 	{
 		return this->Message.c_str();
 	}
+
 private:
 	class buffer_policy: private policy::standard_policy<char *>
 	{

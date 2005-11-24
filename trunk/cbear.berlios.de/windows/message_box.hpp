@@ -205,15 +205,13 @@ dialog_box_id message_box(
 	const basic_lpstr<const Char> &Caption,
 	const message_box_style &Type)
 {
-	dialog_box_id Result = dialog_box_id(
-		select<Char>(MessageBoxExA, MessageBoxExW)(
-			Wnd.internal(),
-			Text.internal(),
-			Caption.internal(),
-			Type.internal(),
-			0));
-	exception::throw_if_last_error();
-	return Result;
+	exception::scope_last_error ScopeLastError;
+	return dialog_box_id(select<Char>(MessageBoxExA, MessageBoxExW)(
+		Wnd.internal(),
+		Text.internal(),
+		Caption.internal(),
+		Type.internal(),
+		0));
 }
 
 template<class Char>

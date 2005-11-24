@@ -50,11 +50,9 @@ public:
 	template<class Char>
 	bool_t get(const hwnd &Wnd, uint_t FilterMin, uint_t FilterMax)
 	{
-		::SetLastError(0);
-		bool_t Result = bool_t(select<Char>(::GetMessageA, ::GetMessageW)(
+		exception::scope_last_error ScopeLastError;
+		return bool_t(select<Char>(::GetMessageA, ::GetMessageW)(
 			&this->internal(), Wnd.internal(), FilterMin, FilterMax));
-		exception::throw_if_last_error();
-		return Result;
 	}
 
 	template<class Char>

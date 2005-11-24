@@ -43,10 +43,9 @@ handle create_mutex(
 	bool_t InitialOwner,
 	const basic_lpstr<const Char> &Name)
 {
-	handle Result = handle(select<Char>(CreateMutexA, CreateMutexW)(
+	exception::scope_last_error ScopeLastError;
+	return handle(select<Char>(CreateMutexA, CreateMutexW)(
 		MutexAttributes.internal(), InitialOwner.internal(), Name.internal()));
-	exception::throw_if_last_error();
-	return Result;
 }
 
 }
