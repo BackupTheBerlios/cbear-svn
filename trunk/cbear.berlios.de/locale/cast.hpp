@@ -25,6 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <locale>
 
+#include <cbear.berlios.de/range/value_type.hpp>
 #include <cbear.berlios.de/range/transform.hpp>
 
 namespace cbear_berlios_de
@@ -70,7 +71,7 @@ struct cast<std::basic_string<Char>, From>
 	/// Main function.
 	static result_type run(const From &Source)
 	{
-		typedef typename From::value_type source_char_type;
+		typedef typename range::value_type<From>::type source_char_type;
 		result_type Result;
 		range::transform(
 			Source, 

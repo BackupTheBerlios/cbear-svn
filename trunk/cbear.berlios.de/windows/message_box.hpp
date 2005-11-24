@@ -25,6 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/windows/base.hpp>
 #include <cbear.berlios.de/windows/lpstr.hpp>
+#include <cbear.berlios.de/windows/hwnd.hpp>
 #include <cbear.berlios.de/policy/main.hpp>
 
 namespace cbear_berlios_de
@@ -53,14 +54,6 @@ public:
 	dialog_box_id() {}
 	dialog_box_id(enumeration_type X): wrap_type(X) {}
 	explicit dialog_box_id(internal_type X): wrap_type(X) {}
-};
-
-class hwnd: public policy::wrap<hwnd, ::HWND>
-{
-public:
-	typedef policy::wrap<hwnd, ::HWND> wrap_type;
-	hwnd() {}
-	explicit hwnd(internal_type X): wrap_type(X) {}
 };
 
 class message_box_style: public policy::wrap<message_box_style, uint_t>

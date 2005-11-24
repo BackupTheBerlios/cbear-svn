@@ -94,7 +94,7 @@ public:
 	typedef value_type *iterator;
 	typedef value_type *const_iterator;
 
-	static bool empty(const type &X) { return X != 0; }
+	static bool empty(const type &X) { return X == 0; }
 
 	static iterator begin(const type &X)
 	{

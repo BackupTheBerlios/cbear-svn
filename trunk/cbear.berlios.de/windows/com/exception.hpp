@@ -84,7 +84,8 @@ class object_content<Base, ::ICreateErrorInfo>:
 public:
 	void SetDescription(lpcwstr_t X) const
 	{
-		this->internal_reference().SetDescription(X.internal());
+		this->internal_reference().SetDescription(
+			const_cast<lpwstr_t::internal_type>(X.internal()));
 	}
 	void SetGUID(const com::uuid &X) const
 	{
@@ -165,6 +166,8 @@ public:
 				icreateerrorinfo CreateErrorInfo;
 				::CreateErrorInfo(com::internal<out>(CreateErrorInfo));
 				set_error_info(CreateErrorInfo.query_interface<ierrorinfo>());
+				CreateErrorInfo.SetDescription(locale::cast<std::wstring>(std::string(
+					E.what())));
 				return hresult(
 					true, 
 					hresult::facility_type::itf, 
