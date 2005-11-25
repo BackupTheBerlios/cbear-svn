@@ -240,7 +240,9 @@ class group: boost::noncopyable
 public:
 	group() {}
 	group(const itypelib &TypeLib): TypeLib(TypeLib) {}
-	~group() 
+	~group() { this->wait(); }
+
+	void wait()
 	{
 		boost::mutex::scoped_lock Lock(this->ConditionMutex);
 		if(this->Value!=policy::std_wrap<int>()) this->Condition.wait(Lock);

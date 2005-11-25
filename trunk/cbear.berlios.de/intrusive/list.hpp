@@ -28,91 +28,187 @@ namespace cbear_berlios_de
 namespace intrusive
 {
 
-template<class Key, class T>
-class list
+class basic_node: boost::noncopyable
 {
 public:
 
-	typedef Key key_type;
-	typedef T value_type;
+	basic_node() { this->construct(); }
+	~basic_node() { this->destroy(); }
 
-	class node_type;
+	typedef basic_node *pointer;
+	typedef basic_node &reference;
 
-	template<class VT>
-	class basic_iterator_policy: private policy::std_policy<VT *>
+	class iterator
 	{
 	public:
-		typedef policy::std_policy<VT *> std_policy;
-		using std_policy::construct;
-		using std_policy::construct_copy;
-		using std_policy::destruct;
-		using std_policy::assign;
-	};
 
-	template<class VT>
-	class basic_iterator: 
-		public policy::wrap<basic_iterator<VT>, VT *, basic_iterator_policy<VT> >
-	{
-	};
+		explicit iterator(reference N): P(&N) {}
 
-	typedef basic_iterator<T> iterator;
-	typedef basic_iterator<const T> const_iterator;
+		reference operator*() const { return *this->P; }
+		pointer operator->() const { return this->P; }
 
-	typedef value_type &reference;
-	typedef const value_type &const_reference;
-
-	typedef value_type *pointer;
-	typedef const value_type *const_pointer;
-
-	typedef std::size_t size_type;	
-	typedef std::ptrdiff_t difference_type;
-
-	class node_type: boost::noncopyable
-	{
-	protected:
-		node_type(const key_type &Key): Key(Key) {}
-		~node_type() {}
-	private:		
-		key_type Key;
-		policy::std_wrap<list *> List;
-		iterator Next, Prev;
-
-		void disconnect(list &List, iterator P)
+		iterator &operator++()
 		{
-			if(List.begin()==P)
-			{
-			}
-			else if(List.end()==P)
-			{
-			}
-			else
-			{
-			}
+			*this = this->Next;
+			return *this;
+		}
+		iterator operator++(int)
+		{
+			iterator R(*this);
+			*this = this->Next;
+			return R;
 		}
 
-		void connect(list &List, iterator P, reference X)
+		iterator &operator--()
 		{
-			if(List.begin()==P)
-			{
-			}
-			else if(List.end()==P)
-			{
-			}
-			else
-			{
-			}
+			*this = this->Prev;
+			return *this;
 		}
+		iterator operator--(int)
+		{
+			iterator R(*this);
+			*this = this->Prev;
+			return R;
+		}
+
+		bool operator==(const iterator &B) const
+		{
+			return this->P == B.P;
+		}
+		bool operator!=(const iterator &B) const
+		{
+			return this->P != B.P;
+		}
+
+		void insert(reference R)
+		{
+			R.destroy();
+
+			R.Prev = this->Prev;
+			R.Next = *this;
+
+			R.Prev->Next = R.Next->Prev = *this;
+		}
+
+		void erase()
+		{
+			this->destroy(); 
+			this->construct();
+		}
+
+	private:
+		pointer P;
 	};
 
-	bool empty() const;
-	std::size_t size() const;
+private:
 
-	T& operator[](const key_type &K);
+	iterator Prev;
+	iterator Next;
+  
+	void construct() { this->Prev = this->Next = iterator(*this); }
 
-	void insert(iterator P, reference X)
+	void destroy()
 	{
+		this->Prev->Next = this->Next;
+		this->Next->Prev = this->Prev;
 	}
 };
+
+template<class ValueType>
+class node: private basic_node
+{
+public:
+
+	BOOST_STATIC_ASSERT((is_base_of<node, ValueType>::value));
+
+	typedef ValueType *pointer;
+	typedef ValueType &reference;
+
+	class iterator: private basic_node::iterator
+	{
+	public:
+		explicit iterator(reference N): basic_node::iterator(N) {}
+
+		reference operator*() const 
+		{ 
+			return static_cast<reference>(this->base_node::iterator::operator*());
+		}
+		pointer operator->() const 
+		{ 
+			return &static_cast<reference>(this->base_node::iterator::operator*()); 
+		}
+
+		iterator &operator++()
+		{
+			this->base_node::iterator::operator++();
+			return *this;
+		}
+		iterator operator++(int)
+		{
+			iterator R(*this);
+			this->base_node::iterator::operator++();
+			return R;
+		}
+
+		iterator &operator--()
+		{
+			this->base_node::iterator::operator--();
+			return *this;
+		}
+		iterator operator--(int)
+		{
+			iterator R(*this);
+			this->base_node::iterator::operator--();
+			return R;
+		}
+
+		bool operator==(const iterator &B) const
+		{
+			return this->base_node::iterator::operator==(B);
+		}
+		bool operator!=(const iterator &B) const
+		{
+			return this->base_node::iterator::operator!=(B);
+		}
+
+		void insert(reference R)
+		{
+			this->base_node::iterator::insert(R);
+		}
+
+		using basic_node::iterator::erase;
+	};
+
+protected:
+
+	node() {}
+};
+
+template<class ValueType>
+class list: private node<ValueType>
+{
+public:
+
+	typedef node<ValueType> node_type;
+
+	typedef typename node_type::iterator iterator;
+	typedef typename node_type::pointer pointer;
+	typedef typename node_type::reference reference;
+
+	iterator begin() { return boost::next(this->end()); }
+
+	iterator end()
+	{
+		return iterator(*static_cast<pointer>(static_cast<node_type *>(this)));
+	}
+
+	void push_front(reference R) { this->begin().insert(R); }
+	void push_back(reference R) { this->end().insert(R); }
+
+	void pop_front() { this->begin().erase(); }
+	void pop_back() { boost::prev(this->end()).erase(); }
+};
+
 
 }
 }
