@@ -23,12 +23,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_INTRUSIVE_LIST_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_INTRUSIVE_LIST_HPP_INCLUDED
 
+#include <cbear.berlios.de/base/noncopyable.hpp>
+#include <boost/type_traits/is_base_of.hpp>
+
 namespace cbear_berlios_de
 {
 namespace intrusive
 {
 
-class basic_node: boost::noncopyable
+class basic_node: base::noncopyable<>
 {
 public:
 
@@ -42,6 +45,8 @@ public:
 	{
 	public:
 
+		iterator(): P(0) {}
+
 		explicit iterator(reference N): P(&N) {}
 
 		reference operator*() const { return *this->P; }
@@ -49,25 +54,25 @@ public:
 
 		iterator &operator++()
 		{
-			*this = this->Next;
+			this->P = this->P->Next;
 			return *this;
 		}
 		iterator operator++(int)
 		{
 			iterator R(*this);
-			*this = this->Next;
+			this->P = this->P->Next;
 			return R;
 		}
 
 		iterator &operator--()
 		{
-			*this = this->Prev;
+			this->P = this->P->Prev;
 			return *this;
 		}
 		iterator operator--(int)
 		{
 			iterator R(*this);
-			*this = this->Prev;
+			this->P = this->P->Prev;
 			return R;
 		}
 
@@ -84,16 +89,16 @@ public:
 		{
 			R.destroy();
 
-			R.Prev = this->Prev;
-			R.Next = *this;
+			R.Prev = this->P->Prev;
+			R.Next = this->P;
 
-			R.Prev->Next = R.Next->Prev = *this;
+			R.Prev->Next = R.Next->Prev = &R;
 		}
 
 		void erase()
 		{
-			this->destroy(); 
-			this->construct();
+			this->P->destroy(); 
+			this->P->construct();
 		}
 
 	private:
@@ -102,10 +107,10 @@ public:
 
 private:
 
-	iterator Prev;
-	iterator Next;
+	pointer Prev;
+	pointer Next;
   
-	void construct() { this->Prev = this->Next = iterator(*this); }
+	void construct() { this->Prev = this->Next = this; }
 
 	void destroy()
 	{
@@ -119,35 +124,30 @@ class node: private basic_node
 {
 public:
 
-	BOOST_STATIC_ASSERT((is_base_of<node, ValueType>::value));
-
 	typedef ValueType *pointer;
 	typedef ValueType &reference;
+	typedef std::ptrdiff_t difference_type;
 
-	class iterator: private basic_node::iterator
+	class iterator: 
+		private basic_node::iterator,
+		public boost::bidirectional_iterator_helper<
+			iterator, node, difference_type, pointer, reference>
 	{
 	public:
+
+		iterator() {}
+
 		explicit iterator(reference N): basic_node::iterator(N) {}
 
 		reference operator*() const 
 		{ 
-			return static_cast<reference>(this->base_node::iterator::operator*());
-		}
-		pointer operator->() const 
-		{ 
-			return &static_cast<reference>(this->base_node::iterator::operator*()); 
+			return static_cast<reference>(this->basic_node::iterator::operator*());
 		}
 
 		iterator &operator++()
 		{
-			this->base_node::iterator::operator++();
+			this->basic_node::iterator::operator++();
 			return *this;
-		}
-		iterator operator++(int)
-		{
-			iterator R(*this);
-			this->base_node::iterator::operator++();
-			return R;
 		}
 
 		iterator &operator--()
@@ -155,26 +155,13 @@ public:
 			this->base_node::iterator::operator--();
 			return *this;
 		}
-		iterator operator--(int)
-		{
-			iterator R(*this);
-			this->base_node::iterator::operator--();
-			return R;
-		}
 
 		bool operator==(const iterator &B) const
 		{
-			return this->base_node::iterator::operator==(B);
-		}
-		bool operator!=(const iterator &B) const
-		{
-			return this->base_node::iterator::operator!=(B);
+			return this->basic_node::iterator::operator==(B);
 		}
 
-		void insert(reference R)
-		{
-			this->base_node::iterator::insert(R);
-		}
+		void insert(reference R) { this->basic_node::iterator::insert(R); }
 
 		using basic_node::iterator::erase;
 	};
@@ -185,7 +172,12 @@ protected:
 };
 
 template<class ValueType>
-class list: private node<ValueType>
+class list: 
+	private node<ValueType>, 
+	public range::helper<
+		list<ValueType>, 
+		typename node<ValueType>::iterator, 
+		typename node<ValueType>::iterator>
 {
 public:
 

@@ -33,6 +33,8 @@ namespace base
 template<class T = undefined>
 class noncopyable
 {
+protected:
+	noncopyable() {}
 private:
 	noncopyable(const noncopyable &);
 	noncopyable &operator=(const noncopyable &);

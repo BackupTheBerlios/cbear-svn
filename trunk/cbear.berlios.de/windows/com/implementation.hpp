@@ -37,6 +37,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/com/uint.hpp>
 #include <cbear.berlios.de/windows/com/lcid.hpp>
 #include <cbear.berlios.de/windows/com/itypelib.hpp>
+#include <cbear.berlios.de/intrusive/list.hpp>
 
 namespace cbear_berlios_de
 {
@@ -52,44 +53,61 @@ namespace detail
 
 class implementation_counter;
 
-class implementation_info
+class basic_interface_info: public intrusive::node<basic_interface_info>
+{
+public:
+	virtual const com::uuid &get_uuid() = 0;
+	virtual iunknown::internal_type get_pointer() = 0;
+};
+
+template<class Interface>
+class interface_info: public basic_interface_info
+{
+public:
+	virtual const com::uuid &get_uuid() { return uuid::of<Interface>(); }
+};
+
+class implementation_info: public intrusive::node<implementation_info>
 {
 protected:
-	
+
 	implementation_info(): Group(0) {}
 
 	template<class Interface>
-	void add_interface(Interface *P) { this->add(uuid::of<Interface>(), P); }
+	void add_interface(interface_info<Interface> *P) 
+	{ 
+		this->List.push_back(*P);
+	}
+
+	typedef intrusive::list<basic_interface_info> list_type;
 
 	hresult::internal_type query_interface(
 		const uuid::internal_type &Uuid, void **PP)
 	{
-		map_type::const_iterator Iterator = this->Map.find(uuid(Uuid));
-		if(Iterator==this->Map.end()) 
+		for(
+			range::sub_range<list_type>::type R(this->List); 
+			!R.empty(); 
+			++R.begin())
 		{
-			*PP = 0;
-			return hresult::e_nointerface;
+			if(R.front().get_uuid().internal()==Uuid)
+			{
+				iunknown::internal_policy::construct_copy(
+					*reinterpret_cast<iunknown::internal_type *>(PP), 
+					R.front().get_pointer());
+				return hresult::s_ok;
+			}
 		}
-		iunknown::internal_policy::construct_copy(
-			*reinterpret_cast<iunknown::internal_type *>(PP), 
-			Iterator->second);
-		return hresult::s_ok;
+		*PP = 0;
+		return hresult::e_nointerface;
 	}
 
-	com::group &group() { return *this->Group; }
+	com::group &group() const { return *this->Group; }
 
 private:
 
-	typedef std::map<uuid, iunknown::internal_type> map_type;
-	map_type Map;
-
-	void add(const uuid &Uuid, iunknown::internal_type P)
-	{
-		if(this->Map.find(Uuid)!=this->Map.end()) return;
-		this->Map[Uuid] = P;
-	}
-
 	com::group *Group;
+
+	list_type List;
 
 	friend class detail::implementation_counter;
 };
@@ -98,7 +116,8 @@ private:
 
 template<class Base, class Interface, class Parent>
 class implementation_base: 
-	public implementation<Base, Parent>
+	public implementation<Base, Parent>,
+	private detail::interface_info<Interface>
 {
 public:
 	implementation_base() 
@@ -106,8 +125,10 @@ public:
 		detail::implementation_info::add_interface<Interface>(this); 
 	}
 private:
-	const uuid &get_uuid() { return uuid::of<Interface>(); }
-	void *get_pointer() { return static_cast<Interface *>(this); }
+	iunknown::internal_type get_pointer() 
+	{ 
+		return static_cast<Interface *>(this); 
+	}
 };
 
 template<class Base, class Interface>
@@ -245,7 +266,7 @@ public:
 	void wait()
 	{
 		boost::mutex::scoped_lock Lock(this->ConditionMutex);
-		if(this->Value!=policy::std_wrap<int>()) this->Condition.wait(Lock);
+		if(this->Value.read()!=0) this->Condition.wait(Lock);
 	}
 
 	template<class T>
@@ -299,20 +320,19 @@ public:
 
 	const itypelib &type_lib() const { return this->TypeLib; }
 
-	int size() const { return this->Value.internal(); }
+	int size() { return this->Value.read(); }
 
 private:
 
 	void increment() 
 	{ 
 		boost::mutex::scoped_lock Lock(this->ConditionMutex);
-		++this->Value;
+		this->Value.increment();
 	}
 	void decrement()
 	{
 		boost::mutex::scoped_lock Lock(this->ConditionMutex);
-		--this->Value;
-		if(this->Value==policy::std_wrap<int>())
+		if(this->Value.decrement()==0)
 		{ 
 			this->Condition.notify_one(); 
 		}
@@ -320,7 +340,9 @@ private:
 
 	boost::mutex ConditionMutex;
 	boost::condition Condition;
-	policy::std_wrap<int> Value;
+	atomic::wrap<int> Value;
+
+	intrusive::list<detail::implementation_info> List;
 
 	friend class detail::implementation_counter;
 

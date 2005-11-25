@@ -29,6 +29,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <windows.h>
 #pragma warning(pop)
 
+#include <cstddef>
+
 namespace cbear_berlios_de
 {
 namespace windows
