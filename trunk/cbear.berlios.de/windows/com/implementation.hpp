@@ -73,7 +73,7 @@ private:
 	interface_info operator=(const interface_info &);
 };
 
-class implementation_info: public intrusive::node<implementation_info>
+class implementation_info
 {
 protected:
 
@@ -342,12 +342,12 @@ public:
 
 private:
 
-	void increment(detail::implementation_info &) 
+	void increment() 
 	{ 
 		boost::mutex::scoped_lock Lock(this->ConditionMutex);
 		this->Value.increment();
 	}
-	void decrement(detail::implementation_info &)
+	void decrement()
 	{
 		boost::mutex::scoped_lock Lock(this->ConditionMutex);
 		if(this->Value.decrement()==0)
@@ -359,8 +359,6 @@ private:
 	boost::mutex ConditionMutex;
 	boost::condition Condition;
 	atomic::wrap<int> Value;
-
-	intrusive::list<detail::implementation_info> List;
 
 	friend class detail::implementation_counter;
 
@@ -399,12 +397,12 @@ protected:
 	implementation_counter(com::group &Group)
 	{
 		this->Group = &Group;
-		this->Group->increment(*this);
+		this->Group->increment();
 	}
 
 	virtual ~implementation_counter() 
 	{
-		this->Group->decrement(*this);
+		this->Group->decrement();
 	}
 
 	internal_type add_ref() { return this->increment(); }
