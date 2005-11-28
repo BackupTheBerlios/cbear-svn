@@ -66,6 +66,7 @@ class interface_info: public basic_interface_info
 {
 public:
 	virtual const com::uuid &get_uuid() { return uuid::of<Interface>(); }
+	interface_info() {}
 private:
 	// Against VC warnings.
 	interface_info(const interface_info &);
@@ -146,6 +147,8 @@ template<class Base>
 class implementation<Base, IUnknown>: 
 	public implementation_base<Base, IUnknown, detail::implementation_info>
 {
+public:
+	implementation() {}
 private:
 	// Against VC warnings.
 	implementation(const implementation &);
@@ -157,6 +160,8 @@ class implementation<Base, detail::implementation_info>:
 	protected virtual detail::implementation_info,
 	public Base
 {
+public:
+	implementation() {}
 private:
 	// Against VC warnings.
 	implementation(const implementation &);
@@ -337,12 +342,12 @@ public:
 
 private:
 
-	void increment() 
+	void increment(detail::implementation_info &) 
 	{ 
 		boost::mutex::scoped_lock Lock(this->ConditionMutex);
 		this->Value.increment();
 	}
-	void decrement()
+	void decrement(detail::implementation_info &)
 	{
 		boost::mutex::scoped_lock Lock(this->ConditionMutex);
 		if(this->Value.decrement()==0)
@@ -369,8 +374,9 @@ class implementation<Base, ::ISupportErrorInfo>:
 public:
 	hresult::internal_type __stdcall InterfaceSupportsErrorInfo(const IID &)
 	{
-		return S_OK;
+		return hresult::s_ok;
 	}
+	implementation() {}
 private:
 	// Against VC warnings.
 	implementation(const implementation &);
@@ -393,12 +399,12 @@ protected:
 	implementation_counter(com::group &Group)
 	{
 		this->Group = &Group;
-		this->Group->increment();
+		this->Group->increment(*this);
 	}
 
 	virtual ~implementation_counter() 
 	{
-		this->Group->decrement();
+		this->Group->decrement(*this);
 	}
 
 	internal_type add_ref() { return this->increment(); }
