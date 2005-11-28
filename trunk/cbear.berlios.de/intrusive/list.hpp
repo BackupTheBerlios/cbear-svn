@@ -23,7 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_INTRUSIVE_LIST_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_INTRUSIVE_LIST_HPP_INCLUDED
 
-#include <cbear.berlios.de/base/noncopyable.hpp>
+#include <boost/noncopyable.hpp>
 #include <boost/type_traits/is_base_of.hpp>
 
 namespace cbear_berlios_de
@@ -31,7 +31,7 @@ namespace cbear_berlios_de
 namespace intrusive
 {
 
-class basic_node: base::noncopyable<>
+class basic_node: boost::noncopyable
 {
 public:
 
@@ -122,6 +122,14 @@ private:
 template<class ValueType>
 class node: private basic_node
 {
+private:
+
+	// Because of VC 7.1
+	typedef basic_node::iterator basic_iterator;
+
+	node(const node &);
+	node &operator=(const node &);
+
 public:
 
 	typedef ValueType *pointer;
@@ -129,7 +137,7 @@ public:
 	typedef std::ptrdiff_t difference_type;
 
 	class iterator: 
-		private basic_node::iterator,
+		private basic_iterator,
 		public boost::bidirectional_iterator_helper<
 			iterator, node, difference_type, pointer, reference>
 	{
@@ -163,7 +171,7 @@ public:
 
 		void insert(reference R) { this->basic_node::iterator::insert(R); }
 
-		using basic_node::iterator::erase;
+		using basic_iterator::erase;
 	};
 
 protected:

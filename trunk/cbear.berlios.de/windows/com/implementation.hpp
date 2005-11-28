@@ -37,6 +37,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/com/uint.hpp>
 #include <cbear.berlios.de/windows/com/lcid.hpp>
 #include <cbear.berlios.de/windows/com/itypelib.hpp>
+#include <cbear.berlios.de/range/sub_range.hpp>
 #include <cbear.berlios.de/intrusive/list.hpp>
 
 namespace cbear_berlios_de
@@ -65,6 +66,10 @@ class interface_info: public basic_interface_info
 {
 public:
 	virtual const com::uuid &get_uuid() { return uuid::of<Interface>(); }
+private:
+	// Against VC warnings.
+	interface_info(const interface_info &);
+	interface_info operator=(const interface_info &);
 };
 
 class implementation_info: public intrusive::node<implementation_info>
@@ -141,6 +146,10 @@ template<class Base>
 class implementation<Base, IUnknown>: 
 	public implementation_base<Base, IUnknown, detail::implementation_info>
 {
+private:
+	// Against VC warnings.
+	implementation(const implementation &);
+	implementation &operator=(const implementation &);
 };
 
 template<class Base>
@@ -148,6 +157,10 @@ class implementation<Base, detail::implementation_info>:
 	protected virtual detail::implementation_info,
 	public Base
 {
+private:
+	// Against VC warnings.
+	implementation(const implementation &);
+	implementation &operator=(const implementation &);
 };
 
 typedef LPOLESTR lpolestr_t;
@@ -358,6 +371,10 @@ public:
 	{
 		return S_OK;
 	}
+private:
+	// Against VC warnings.
+	implementation(const implementation &);
+	implementation &operator=(const implementation &);
 };
 
 typedef object< ::ISupportErrorInfo> isupporterrorinfo;
