@@ -148,8 +148,8 @@ pre
 <!-- section -->
 
 <xsl:template match="prj:section" mode="prj:html.link">
-	<a href="{concat(@href, '.xml')}">
-		<xsl:value-of select="document(concat(@href, '.xml'), .)/prj:section/
+	<a href="{@href}">
+		<xsl:value-of select="document(@href, .)/prj:section/
 			@name"/>
 	</a>
 </xsl:template>
@@ -217,14 +217,14 @@ pre
 	<xsl:param name="filename"/>
 	<xsl:param name="content"/>
 	<xsl:apply-templates 
-		select="document(concat(@href, '.xml'), .)/prj:section"
+		select="document(@href, .)/prj:section"
 		mode="prj:html.history.search">
 		<xsl:with-param name="name" select="$name"/>
 		<xsl:with-param name="filename">
 			<xsl:call-template name="url.path">
 				<xsl:with-param name="path" select="$filename"/>
 			</xsl:call-template>
-			<xsl:value-of select="concat(@href, '.xml')"/>
+			<xsl:value-of select="@href"/>
 		</xsl:with-param>
 		<xsl:with-param name="content" select="$content"/>		
 	</xsl:apply-templates>
@@ -236,7 +236,7 @@ pre
 	<xsl:choose>
 		<xsl:when test="$name=@name">
 			<xsl:apply-templates 
-				select="document('../index.xml.xml', .)/prj:section" 
+				select="document('../index.xml', .)/prj:section" 
 				mode="prj:html.history.index">
 				<xsl:with-param name="name" select="$name"/>
 				<xsl:with-param name="filename">
@@ -259,10 +259,10 @@ pre
 <xsl:template match="prj:section" mode="prj:html.history">
 	<ul>
 		<xsl:apply-templates 
-			select="document('index.xml.xml', .)/prj:section" 
+			select="document('index.xml', .)/prj:section" 
 			mode="prj:html.history.index">
 			<xsl:with-param name="name" select="@name"/>
-			<xsl:with-param name="filename" select="'index.xml.xml'"/>
+			<xsl:with-param name="filename" select="'index.xml'"/>
 		</xsl:apply-templates>
 	</ul>
 </xsl:template>
