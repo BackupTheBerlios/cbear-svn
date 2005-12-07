@@ -183,7 +183,21 @@ public:
 
 	implementation()
 	{
-		this->TypeInfo = this->group().type_lib().GetTypeInfoOfGuid<Base>();
+		for(
+			range::sub_range<com::group::typelibs_type>::type R(
+				this->group().typelibs);
+			!R.empty();
+			++R.begin())
+		{
+			try
+			{
+				this->TypeInfo = R.front().GetTypeInfoOfGuid<Base>();
+				return;
+			}
+			catch(com::exception &)
+			{
+			}
+		}
 	}
 
 	hresult::internal_type __stdcall GetTypeInfoCount(
@@ -278,7 +292,6 @@ class group: boost::noncopyable
 {
 public:
 	group() {}
-	group(const itypelib &TypeLib): TypeLib(TypeLib) {}
 	~group() { this->wait(); }
 
 	void wait()
@@ -336,7 +349,8 @@ public:
 			*this, X1, X2, X3, X4, X5));
 	}
 
-	const itypelib &type_lib() const { return this->TypeLib; }
+	typedef std::vector<itypelib> typelibs_type;
+	typelibs_type typelibs;
 
 	int size() { return this->Value.read(); }
 
@@ -429,6 +443,7 @@ public:
 
   ulong_t __stdcall AddRef() { return implementation_counter::add_ref(); }
   ulong_t __stdcall Release() { return implementation_counter::release(); }
+
 	hresult::internal_type __stdcall QueryInterface(
 		const uuid::internal_type &U, void **PP)
   { 
