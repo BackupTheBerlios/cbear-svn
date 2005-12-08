@@ -121,6 +121,14 @@ public:
 		return Result;
 	}		
 
+	template<class Type>
+	typename add_object<Type>::type dynamic_cast_() const
+	{
+		typedef typename add_object<Type>::type object_type;
+		return object_type(dynamic_cast<typename object_type::internal_type>(
+				this->internal()));
+	}
+
 	static const com::uuid &uuid() { return uuid::of<interface_type>(); }
 
 	class uninitialized: public std::exception
