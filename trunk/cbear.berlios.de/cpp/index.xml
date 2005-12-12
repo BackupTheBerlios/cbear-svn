@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../project/html.xsl"?><!--
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.berlios.de)
@@ -20,172 +20,170 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
--->
-<?xml-stylesheet type="text/xsl" href="../docbook/html.xsl"?>
-<section xmlns:xi="http://www.w3.org/2001/XInclude">
-	<title>C++ Unit Structure</title>
-	<para>
-XML Schema <filename>main.xsd</filename>. Default HTML generator 
-<filename>html.xsl</filename>.
-	</para>
-	<section>
-		<title>Examples</title>
-		<para>
-<filename>examples/empty.cpp.xml</filename>, 
-<filename>examples/namespace.cpp.xml</filename>,
-<filename>examples/class.cpp.xml</filename>,
-<filename>examples/template.cpp.xml</filename>,
-<filename>examples/method.cpp.xml</filename>.
-		</para>
+--><section xmlns="http://cbear.berlios.de/project" name="C++ Unit Structure">
+	
+	<p>
+XML Schema <a href="main.xsd"/>. Default HTML generator 
+<a href="html.xsl"/>.
+	</p>
+	<section name="Examples">
+		
+		<p>
+<a href="examples/empty.cpp.xml"/>, 
+<a href="examples/namespace.cpp.xml"/>,
+<a href="examples/class.cpp.xml"/>,
+<a href="examples/template.cpp.xml"/>,
+<a href="examples/method.cpp.xml"/>.
+		</p>
 	</section>
-	<section>
-		<title>Dreams</title>
-		<section>
-			<title>Type Of Expression</title>
-<programlisting role="cpp"><![CDATA[typedef __typeof__(X + Y) type;]]></programlisting>
+	<section name="Dreams">
+		
+		<section name="Type Of Expression">
+			
+<pre>typedef __typeof__(X + Y) type;</pre>
 		</section>
-		<section>
-			<title>Auto</title>
-<programlisting role="cpp"><![CDATA[__auto__ Z = X + Y;]]></programlisting>
-<programlisting role="cpp"><![CDATA[template<class T>
-__auto__ minus(T R) { return R - R; }]]></programlisting>
+		<section name="Auto">
+			
+<pre>__auto__ Z = X + Y;</pre>
+<pre>template&lt;class T&gt;
+__auto__ minus(T R) { return R - R; }</pre>
 		</section>
-		<section>
-			<title>Typedef Template</title>
-			<para>
+		<section name="Typedef Template">
+			
+			<p>
 Without specialization.
-			</para>
-<programlisting role="cpp"><![CDATA[template<class A>
-typedef first<parents_of<A> > first_parent_of;	
-]]></programlisting>
+			</p>
+<pre>template&lt;class A&gt;
+typedef first&lt;parents_of&lt;A&gt; &gt; first_parent_of;	
+</pre>
 		</section>
-		<section>
-			<title>Type List</title>
-<programlisting role="cpp"><![CDATA[template<class L>
+		<section name="Type List">
+			
+<pre>template&lt;class L&gt;
 class M;
 
-template<>
-class M<std::empty_type_list> {};
+template&lt;&gt;
+class M&lt;std::empty_type_list&gt; {};
 
-template<class Begin>
-class M<std::type_list<Begin> > 
+template&lt;class Begin&gt;
+class M&lt;std::type_list&lt;Begin&gt; &gt; 
 {
 	typedef Begin first;
 };
 
-template<class Begin, class Next>
-class M<std::type_list<Begin, Next> >: detail::M<Begin, Next>
+template&lt;class Begin, class Next&gt;
+class M&lt;std::type_list&lt;Begin, Next&gt; &gt;: detail::M&lt;Begin, Next&gt;
 {
 };
 
 BOOST_STATIC_ASSERT((
-	boost::is_same<
-		std::type_list<A, std::undefined>, 
-		std::type_list<A>::value));
+	boost::is_same&lt;
+		std::type_list&lt;A, std::undefined&gt;, 
+		std::type_list&lt;A&gt;::value));
 
 BOOST_STATIC_ASSERT((
-	boost::is_same<
-		std::type_list<std::undefined, std::undefined>,
-		std::empty_list>::value));
+	boost::is_same&lt;
+		std::type_list&lt;std::undefined, std::undefined&gt;,
+		std::empty_list&gt;::value));
 
 
-typedef M<{A, B, C, D}> MyM;
+typedef M&lt;{A, B, C, D}&gt; MyM;
 
-template<class L>
+template&lt;class L&gt;
 class Mi;
 
-template<class Begin, class Next>
-class Mi<std::type_list<Begin, Next> >: detail::Mi<Begin, Next>
+template&lt;class Begin, class Next&gt;
+class Mi&lt;std::type_list&lt;Begin, Next&gt; &gt;: detail::Mi&lt;Begin, Next&gt;
 {
 };
 
-typedef Mi<{0, 1, 2, 3}> MyMi;
+typedef Mi&lt;{0, 1, 2, 3}&gt; MyMi;
 
-template<class L>
+template&lt;class L&gt;
 class Mc;
 
-template<class Begin, class Next>
-class Mc<std::type_list<Begin, Next> >: detail::Mc<Begin, Next>
+template&lt;class Begin, class Next&gt;
+class Mc&lt;std::type_list&lt;Begin, Next&gt; &gt;: detail::Mc&lt;Begin, Next&gt;
 {
 };
 
-typedef Mc<"Hello world!"> MyMc;
+typedef Mc&lt;"Hello world!"&gt; MyMc;
 
-BOOST_STATIC_ASSERT((boost::is_same<
-	{0, 1, 2, 3}, std::type_list<std::constant<int, 0>, {1, 2, 3}> >::value);]]></programlisting>
+BOOST_STATIC_ASSERT((boost::is_same&lt;
+	{0, 1, 2, 3}, std::type_list&lt;std::constant&lt;int, 0&gt;, {1, 2, 3}&gt; &gt;::value);</pre>
 		</section>
-		<section>
-			<title>Compile Time Type Information</title>
-			<section>
-				<title>Parents</title>
-				<para>
+		<section name="Compile Time Type Information">
+			
+			<section name="Parents">
+				
+				<p>
 A type list.
-				</para>
-<programlisting role="cpp"><![CDATA[parents_of<A>]]></programlisting>
+				</p>
+<pre>parents_of&lt;A&gt;</pre>
 			</section>
-			<section>
-				<title>Members</title>
-				<para>
+			<section name="Members">
+				
+				<p>
 A type list.
-				</para>
-<programlisting role="cpp"><![CDATA[members_of<A>]]></programlisting>
-				<para>
+				</p>
+<pre>members_of&lt;A&gt;</pre>
+				<p>
 For each member you can apply:
-				</para>
-<programlisting role="cpp"><![CDATA[member::is_function<Member>
-member::is_typedef<Member>
-member::is_template<Member>
-member::is_static<Member>
-member::is_field<Member>
+				</p>
+<pre>member::is_function&lt;Member&gt;
+member::is_typedef&lt;Member&gt;
+member::is_template&lt;Member&gt;
+member::is_static&lt;Member&gt;
+member::is_field&lt;Member&gt;
 
-member::name_of<Member>]]></programlisting>
-				<para>
+member::name_of&lt;Member&gt;</pre>
+				<p>
 and others.
-				</para>
+				</p>
 			</section>
 		</section>
-		<section>
-			<title>Type Friend</title>
-<programlisting role="cpp"><![CDATA[template<class T>
+		<section name="Type Friend">
+			
+<pre>template&lt;class T&gt;
 class A
 {
 private:
 	A() {}
 	~A() {}
-	A(const A &) {}
-  A &operator=(const A &) { return *this; }
+	A(const A &amp;) {}
+  A &amp;operator=(const A &amp;) { return *this; }
 	__firend__ T;
 };
 
 class B: A
 {
-};]]></programlisting>
+};</pre>
 		</section>		
-		<section>
-			<title>Enumeration Base Type</title>
-<programlisting role="cpp"><![CDATA[__enum__<unsigned char> color
+		<section name="Enumeration Base Type">
+			
+<pre>__enum__&lt;unsigned char&gt; color
 {
 	red,
 	green,
 	blue,
-};]]></programlisting>
+};</pre>
 		</section>
-		<section>
-			<title>Lambda Functions</title>
-			<para/>
+		<section name="Lambda Functions">
+			
+			<p/>
 		</section>
-		<section>
-			<title>Library</title>
-<programlisting role="cpp"><![CDATA[template<...>
+		<section name="Library">
+			
+<pre>template&lt;...&gt;
 class basic_string
 {
 public:
 	...
-	template<std::size_t Size>
-	basic_string(const value_type (&X)[Size]);
+	template&lt;std::size_t Size&gt;
+	basic_string(const value_type (&amp;X)[Size]);
 	...
 };
-]]></programlisting>
+</pre>
 		</section>
 	</section>
 </section>

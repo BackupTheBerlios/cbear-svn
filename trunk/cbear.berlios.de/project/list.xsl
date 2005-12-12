@@ -36,19 +36,34 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:import href="../html/main.xsl"/>
 <xsl:import href="html.xsl"/>
 
+<xsl:template match="prj:section" mode="prj:html.link.href">
+	<xsl:param name="filename" select="@href"/>
+	<xsl:value-of select="concat(
+		substring($filename, 1, string-length($filename) - 4), '.html')"/>
+</xsl:template>
+
 <xsl:template match="prj:section[@href]" mode="prj:html">
 	<xsl:apply-imports/>
 	<xsl:apply-templates 
-		select="document(concat(@href, '.xml'), .)/prj:section" mode="prj:list">
+		select="document(@href, .)/prj:section" mode="prj:list">
 		<xsl:with-param name="filename" select="@href"/>
 	</xsl:apply-templates>
 </xsl:template>
 
 <xsl:template match="/prj:section" mode="prj:list">
 	<xsl:param name="filename"/>
-	<xsl:message terminate="no"><xsl:value-of select="$filename"/></xsl:message>
+	<xsl:variable name="name">
+		<xsl:apply-templates select="." mode="prj:html.link.href">
+			<xsl:with-param name="filename" select="$filename"/>
+		</xsl:apply-templates>
+	</xsl:variable>
+	<xsl:message terminate="no">
+		<xsl:value-of select="$filename"/>
+		<xsl:text>|</xsl:text>
+		<xsl:value-of select="$name"/>
+	</xsl:message>
 	<exsl:document 
-		href="{concat($filename, '.html')}"
+		href="{$name}"
 		encoding="utf-8"
 		method="xml"
 		doctype-public="{$cbear.html:main.xhtml11.doctype-public}"

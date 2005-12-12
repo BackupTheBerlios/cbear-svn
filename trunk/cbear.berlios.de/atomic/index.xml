@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../project/html.xsl"?><!--
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.berlios.de)
@@ -20,74 +20,72 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
--->
-<?xml-stylesheet type="text/xsl" href="../docbook/html.xsl"?>
-<section>
-	<title>Interlocked Variable Access</title>
-	<para>
-Namespace <emphasis>cbear_berlios_de::atomic</emphasis>. 
-	</para>
-	<para>
-Header <filename>main.hpp</filename>.
-	</para>
-	<section>
-		<title>Functions</title>
-		<para>
+--><section xmlns="http://cbear.berlios.de/project" name="Interlocked Variable Access">
+	
+	<p>
+Namespace <em>cbear_berlios_de::atomic</em>. 
+	</p>
+	<p>
+Header <a href="main.hpp"/>.
+	</p>
+	<section name="Functions">
+		
+		<p>
 The functions prevent more than one thread from using the same variable 
 simultaneously.
-		</para>
-		<section>
-			<title>exchange</title>
-			<para>
+		</p>
+		<section name="exchange">
+			
+			<p>
 Performs an atomic exchange a pair of the values.
-			</para>
-<programlisting role="cpp"><![CDATA[template<class T, class E>
-T exchange(volatile T &This, E Exchange);]]></programlisting>
+			</p>
+<pre>template&lt;class T, class E&gt;
+T exchange(volatile T &amp;This, E Exchange);</pre>
 		</section>
-		<section>
-			<title>compare_exchange</title>
-			<para>
+		<section name="compare_exchange">
+			
+			<p>
 Performs an atomic comparison of the values and exchanges them.
-			</para>
-<programlisting role="cpp"><![CDATA[template<class T, class E, class C>
-T compare_exchange(volatile T &This, E Exchange, C Comperand);]]></programlisting>
+			</p>
+<pre>template&lt;class T, class E, class C&gt;
+T compare_exchange(volatile T &amp;This, E Exchange, C Comperand);</pre>
 		</section>
-		<section>
-			<title>exchange_add</title>
-			<para>
+		<section name="exchange_add">
+			
+			<p>
 Performs an atomic addition of an increment value to an added value.
-			</para>
-<programlisting role="cpp"><![CDATA[template<class T, class V>
-T exchange_add(volatile T &This, V Value);]]></programlisting>
+			</p>
+<pre>template&lt;class T, class V&gt;
+T exchange_add(volatile T &amp;This, V Value);</pre>
 		</section>
-		<section>
-			<title>decrement</title>
-			<para>
+		<section name="decrement">
+			
+			<p>
 Decrease by one the value and checks the resulting value.
-			</para>
-<programlisting role="cpp"><![CDATA[template<class T>
-T decrement(volatile T &This);]]></programlisting>
+			</p>
+<pre>template&lt;class T&gt;
+T decrement(volatile T &amp;This);</pre>
 		</section>
-		<section>
-			<title>increment</title>
-			<para>
+		<section name="increment">
+			
+			<p>
 Increase by one the value and checks the resulting value.
-			</para>
-<programlisting role="cpp"><![CDATA[template<class T>
-T increment(volatile T &This);]]></programlisting>
+			</p>
+<pre>template&lt;class T&gt;
+T increment(volatile T &amp;This);</pre>
 		</section>
-		<section>
-			<title>read</title>
-			<para>
+		<section name="read">
+			
+			<p>
 Reads the value.
-			</para>
-<programlisting role="cpp"><![CDATA[template<class T>
-T read(volatile T &);]]></programlisting>
+			</p>
+<pre>template&lt;class T&gt;
+T read(volatile T &amp;);</pre>
 		</section>
 	</section>
-	<section>
-		<title>Wrap</title>
-<programlisting role="cpp"><![CDATA[template<class T>
+	<section name="Wrap">
+		
+<pre>template&lt;class T&gt;
 class wrap
 {
 public:
@@ -97,11 +95,11 @@ public:
 	T decrement();
 	T increment();
 	T read();
-};]]></programlisting>
+};</pre>
 	</section>
-	<section>
-		<title>Static Wrap</title>
-<programlisting role="cpp"><![CDATA[template<class Id, class T>
+	<section name="Static Wrap">
+		
+<pre>template&lt;class Id, class T&gt;
 class static_wrap
 {
 public:
@@ -111,19 +109,19 @@ public:
 	static T decrement();
 	static T increment();
 	static T read();
-};]]></programlisting>
-		<para>
+};</pre>
+		<p>
 Instead of
-		</para>
-<programlisting role="cpp"><![CDATA[static wrap<int> A;
+		</p>
+<pre>static wrap&lt;int&gt; A;
 ...
-	A.exchange(N);]]></programlisting>
-		<para>
+	A.exchange(N);</pre>
+		<p>
 Use
-		</para>
-<programlisting role="cpp"><![CDATA[class AId;
-typedef static_wrap<AId, int> A;
+		</p>
+<pre>class AId;
+typedef static_wrap&lt;AId, int&gt; A;
 ...
-	A::exchange(N);]]></programlisting>
+	A::exchange(N);</pre>
 	</section>
 </section>

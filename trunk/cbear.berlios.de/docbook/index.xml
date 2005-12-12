@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../project/html.xsl"?><!--
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.berlios.de)
@@ -20,101 +20,88 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
--->
-<?xml-stylesheet type="text/xsl" href="html.xsl"?>
-<section xmlns:xi="http://www.w3.org/2001/XInclude">
-	<title>DocBook</title>
-	<para>
+--><section xmlns="http://cbear.berlios.de/project" name="DocBook">
+	
+	<p>
 List of files:
-	</para>
-	<section>
-		<title>Default XSLT</title>
-		<para>
-<filename>html.xsl</filename>.
-		</para>
-		<section>
-			<title>Supported Tags</title>
-			<section>
-				<title>Sections</title>
-				<para>
-Tags are <ulink url="http://docbook.org/tdg/en/html/section.html"
->section</ulink>, <ulink url="http://docbook.org/tdg/en/html/title.html"
->title</ulink>. Examples: <filename>examples/section.xml</filename>, 
-<filename>examples/section_empty.xml</filename>.
-				</para>
+	</p>
+	<section name="Default XSLT">
+		
+		<p>
+<a href="html.xsl"/>.
+		</p>
+		<section name="Supported Tags">
+			
+			<section name="Sections">
+				
+				<p>
+Tags are <a href="http://docbook.org/tdg/en/html/section.html">section</a>, <a href="http://docbook.org/tdg/en/html/title.html">title</a>. Examples: <a href="examples/section.xml"/>, 
+<a href="examples/section_empty.xml"/>.
+				</p>
 			</section>
-			<section>
-				<title>Block Quotes</title>
-				<para>
-Tags are <ulink url="http://docbook.org/tdg/en/html/blockquote.html"
->blockquote</ulink>, <ulink url="http://docbook.org/tdg/en/html/title.html"
->title</ulink>, <ulink 
-url="http://docbook.org/tdg/en/html/attribution.html">attribution</ulink>,
-<ulink url="http://docbook.org/tdg/en/html/literallayout.html"
->literallayout</ulink>. Examples <filename>examples/blockquote.xml</filename>.
-				</para>
+			<section name="Block Quotes">
+				
+				<p>
+Tags are <a href="http://docbook.org/tdg/en/html/blockquote.html">blockquote</a>, <a href="http://docbook.org/tdg/en/html/title.html">title</a>, <a href="http://docbook.org/tdg/en/html/attribution.html">attribution</a>,
+<a href="http://docbook.org/tdg/en/html/literallayout.html">literallayout</a>. Examples <a href="examples/blockquote.xml"/>.
+				</p>
 			</section>
-			<section>
-				<title>Lists</title>
-				<para>
-Tags are <ulink url="http://docbook.org/tdg/en/html/itemizedlist.html"
->itemizedlist</ulink>, <ulink 
-url="http://docbook.org/tdg/en/html/orderedlist.html">orderedlist</ulink>, 
-<ulink url="http://docbook.org/tdg/en/html/listitem.html">listitem</ulink>.
-Examples <filename>examples/lists.xml</filename>
-				</para>
+			<section name="Lists">
+				
+				<p>
+Tags are <a href="http://docbook.org/tdg/en/html/itemizedlist.html">itemizedlist</a>, <a href="http://docbook.org/tdg/en/html/orderedlist.html">orderedlist</a>, 
+<a href="http://docbook.org/tdg/en/html/listitem.html">listitem</a>.
+Examples <a href="examples/lists.xml"/>
+				</p>
 			</section>
-			<section>
-				<title>Program Listing</title>
-				<para>
-Tags are <ulink url="http://docbook.org/tdg/en/html/itemizedlist.html"
->programlisting</ulink>.
-				</para>
+			<section name="Program Listing">
+				
+				<p>
+Tags are <a href="http://docbook.org/tdg/en/html/itemizedlist.html">programlisting</a>.
+				</p>
 			</section>
-			<section>
-				<title>Text</title>
-Tags are <ulink url="http://docbook.org/tdg/en/html/para.html">para</ulink>, 
-<ulink url="http://docbook.org/tdg/en/html/ulink.html">ulink(@url)</ulink>,
-<ulink url="http://docbook.org/tdg/en/html/filename.html">filename</ulink>,
-<ulink url="http://docbook.org/tdg/en/html/emphasis.html">emphasis</ulink>.
-Examples: <filename>examples/text.xml</filename>
+			<section name="Text">
+				
+Tags are <a href="http://docbook.org/tdg/en/html/para.html">para</a>, 
+<a href="http://docbook.org/tdg/en/html/ulink.html">ulink(@url)</a>,
+<a href="http://docbook.org/tdg/en/html/filename.html">filename</a>,
+<a href="http://docbook.org/tdg/en/html/emphasis.html">emphasis</a>.
+Examples: <a href="examples/text.xml"/>
 			</section>
 		</section>
-		<section>
-			<title>Error Handling</title>
-			<para>
-Examples: <filename>examples/error.xml</filename>.
-			</para>
+		<section name="Error Handling">
+			
+			<p>
+Examples: <a href="examples/error.xml"/>.
+			</p>
 		</section>
 	</section>
-	<section>
-		<title>Default Sea Bear XSLT</title>
-		<para>	
-The <filename>cbear.xsl</filename> transformation was created only for the
-<emphasis>Sea Bear</emphasis> project. 
-		</para>
+	<section name="Default Sea Bear XSLT">
+		
+		<p>	
+The <a href="cbear.xsl"/> transformation was created only for the
+<em>Sea Bear</em> project. 
+		</p>
 	</section>
-	<section>
-		<title>Batch Transformation</title>
-		<para>
-<filename>list.xsl</filename>.
-		</para>
+	<section name="Batch Transformation">
+		
+		<p>
+<a href="list.xsl"/>.
+		</p>
 	</section>
-	<section>
-		<title>References And Tutorials</title>
-		<orderedlist>
-			<listitem>
-				<para>
-<ulink url="http://opensource.bureau-cornavin.com/crash-course/"
->Writing Documentation Using Docbook: A Crash Course</ulink>.
-				</para>
-			</listitem>
-			<listitem>
-				<para>
-<ulink url="http://docbook.org/tdg/en/html/docbook.html"
->DocBook: The Definitive Guide</ulink>.
-				</para>
-			</listitem>
-		</orderedlist>
+	<section name="References And Tutorials">
+		
+		<ol>
+			<li>
+				<p>
+<a href="http://opensource.bureau-cornavin.com/crash-course/">Writing Documentation Using Docbook: A Crash Course</a>.
+				</p>
+			</li>
+			<li>
+				<p>
+<a href="http://docbook.org/tdg/en/html/docbook.html">DocBook: The Definitive Guide</a>.
+				</p>
+			</li>
+		</ol>
 	</section>
 </section>

@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="project/html.xsl"?><!--
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.berlios.de)
@@ -20,8 +20,6 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
--->
-<?xml-stylesheet type="text/xsl" href="docbook/html.xsl"?>
-<section xmlns:xi="http://www.w3.org/2001/XInclude">
-	<title>Tasks</title>
+--><section xmlns="http://cbear.berlios.de/project" name="Tasks">
+	
 </section>

@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../project/html.xsl"?><!--
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.berlios.de)
@@ -20,30 +20,28 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
--->
-<?xml-stylesheet type="text/xsl" href="../docbook/html.xsl"?>
-<section>
-	<title>Singleton</title>
-	<para>
-Namespace <emphasis>cbear_berlios_de::base</emphasis>.
-	</para>
-	<para>
-<filename>singleton.hpp</filename>.
-	</para>
-	<section>
-		<title>Requirements</title>
-		<itemizedlist>
-			<listitem>
-				<para>
-Thread safe => use <emphasis>thread::static_mutex</emphasis> or 
-<emphasis>atomic::static_wrap</emphasis>.
-				</para>
-			</listitem>
-			<listitem>
-				<para>
+--><section xmlns="http://cbear.berlios.de/project" name="Singleton">
+	
+	<p>
+Namespace <em>cbear_berlios_de::base</em>.
+	</p>
+	<p>
+<a href="singleton.hpp"/>.
+	</p>
+	<section name="Requirements">
+		
+		<ul>
+			<li>
+				<p>
+Thread safe =&gt; use <em>thread::static_mutex</em> or 
+<em>atomic::static_wrap</em>.
+				</p>
+			</li>
+			<li>
+				<p>
 Even two different static variables in a function body is not thread safe.
-				</para>
-			</listitem>
-		</itemizedlist>
+				</p>
+			</li>
+		</ul>
 	</section>
 </section>

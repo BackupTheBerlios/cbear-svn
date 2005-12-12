@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../../project/html.xsl"?><!--
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.berlios.de)
@@ -20,23 +20,19 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
--->
-<?xml-stylesheet type="text/xsl" href="../../docbook/html.xsl"?>
-<section xmlns:xi="http://www.w3.org/2001/XInclude">
-	<title>Object Description Language, ODL</title>
-	<para>
-XML Schema <filename>odl.xsd</filename> and XSL transformation to HTML 
-<filename>html.xsl</filename> and to ODL <filename>odl.xsl</filename>.
-	</para>
-	<para>
-<filename>cs.xsl</filename> - converter to C# code.
-	</para>
-	<para>
-<filename>cpp.xsl</filename> - converter to C++ code.
-	</para>
-	<para>
-See also <ulink 
-url="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/automat/html/df7aa86f-1453-4409-939e-788d469d611e.asp"
->ODL File Syntax</ulink>.
-	</para>
+--><section xmlns="http://cbear.berlios.de/project" name="Object Description Language, ODL">
+	
+	<p>
+XML Schema <a href="odl.xsd"/> and XSL transformation to HTML 
+<a href="html.xsl"/> and to ODL <a href="odl.xsl"/>.
+	</p>
+	<p>
+<a href="cs.xsl"/> - converter to C# code.
+	</p>
+	<p>
+<a href="cpp.xsl"/> - converter to C++ code.
+	</p>
+	<p>
+See also <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/automat/html/df7aa86f-1453-4409-939e-788d469d611e.asp">ODL File Syntax</a>.
+	</p>
 </section>

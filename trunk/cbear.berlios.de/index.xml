@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="project/html.xsl"?><!--
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.berlios.de)
@@ -20,57 +20,52 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
--->
-<?xml-stylesheet type="text/xsl" href="docbook/html.xsl"?>
-<section xmlns:xi="http://www.w3.org/2001/XInclude">
-	<title>Home</title>
-	<para>
-The <emphasis>C Bear</emphasis> framework is a set of libraries and common 
+--><section xmlns="http://cbear.berlios.de/project" name="Home">
+	
+	<p>
+The <em>C Bear</em> framework is a set of libraries and common 
 utilities for different programming languages and platforms.
-	</para>
-	<section>
-		<title>License</title>
-		<para>
-<filename>license.txt</filename>.
-		</para>
+	</p>
+	<section name="License">
+		
+		<p>
+<a href="license.txt"/>.
+		</p>
 	</section>
-	<section>
-		<title>Download</title>
-		<section>
-			<title>Releases</title>
-			<itemizedlist>
-				<listitem>
-					<para>
-<ulink url="http://sourceforge.net/projects/cbear"
->Download from SourceForge</ulink>.
-				</para>
-				</listitem>
-				<listitem>
-					<para>
-<ulink url="http://developer.berlios.de/projects/cbear"
->Download from BerliOS</ulink>.
-					</para>
-				</listitem>
-			</itemizedlist>
+	<section name="Download">
+		
+		<section name="Releases">
+			
+			<ul>
+				<li>
+					<p>
+<a href="http://sourceforge.net/projects/cbear">Download from SourceForge</a>.
+				</p>
+				</li>
+				<li>
+					<p>
+<a href="http://developer.berlios.de/projects/cbear">Download from BerliOS</a>.
+					</p>
+				</li>
+			</ul>
 		</section>
-		<section>
-			<title>Night Build</title>
-			<para>
-<ulink url="ftp://ftp@ftp.berlios.de:/pub/cbear"
->Download from public FTP</ulink>.
-			</para>
+		<section name="Night Build">
+			
+			<p>
+<a href="ftp://ftp@ftp.berlios.de:/pub/cbear">Download from public FTP</a>.
+			</p>
 		</section>
 	</section>
-	<section>
-		<title>Authors</title>
-		<itemizedlist>
-			<listitem>
-				<para>
-<ulink url="http://comrades.id.au/sergey">Sergey Shandar</ulink>.
-				</para>
-			</listitem>
-		</itemizedlist>
+	<section name="Authors">
+		
+		<ul>
+			<li>
+				<p>
+<a href="http://comrades.id.au/sergey">Sergey Shandar</a>.
+				</p>
+			</li>
+		</ul>
 	</section>
-	<xi:include href="documentation.xml"/>
-	<xi:include href="tasks.xml"/>
+	<section href="documentation.xml"/>
+	<section href="tasks.xml"/>
 </section>

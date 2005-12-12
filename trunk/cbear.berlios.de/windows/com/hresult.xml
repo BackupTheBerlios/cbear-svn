@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../../project/html.xsl"?><!--
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.berlios.de)
@@ -20,22 +20,20 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
--->
-<?xml-stylesheet type="text/xsl" href="../../docbook/html.xsl"?>
-<section xmlns:xi="http://www.w3.org/2001/XInclude">
-	<title>Result Handle, HRESULT</title>
-	<para>
-Header <filename>hresult.hpp</filename>.
-	</para>
-<programlisting role="cpp"><![CDATA[class hresult
+--><section xmlns="http://cbear.berlios.de/project" name="Result Handle, HRESULT">
+	
+	<p>
+Header <a href="hresult.hpp"/>.
+	</p>
+<pre>class hresult
 {
 public:
 
 	hresult();
 
 
-	bool operator==(const hresult &) const;
-	bool operator!=(const hresult &) const;
+	bool operator==(const hresult &amp;) const;
+	bool operator!=(const hresult &amp;) const;
 
 
 	enum enumeration
@@ -91,8 +89,8 @@ public:
 		facility_type();
 
 
-		bool operator==(const facility_type &) const;
-		bool operator!=(const facility_type &) const;
+		bool operator==(const facility_type &amp;) const;
+		bool operator!=(const facility_type &amp;) const;
 
 
 		enum enumeration
@@ -148,8 +146,8 @@ public:
 		code_type() {}
 
 
-		bool operator==(const code_type &) const;
-		bool operator!=(const code_type &) const;
+		bool operator==(const code_type &amp;) const;
+		bool operator!=(const code_type &amp;) const;
 
 
 		typedef ... internal_type;
@@ -168,16 +166,14 @@ public:
 
 	typedef ... internal_type;
 
-	internal_type &internal();
-	const internal_type &internal() const;
+	internal_type &amp;internal();
+	const internal_type &amp;internal() const;
 
 	explicit hresult(internal_type);
 
-};]]></programlisting>
-	<para>
+};</pre>
+	<p>
 See also
-<ulink url=
-"http://msdn.microsoft.com/library/default.asp?url=/library/en-us/com/html/97e68708-eb62-4481-af03-cf8b80304103.asp"
->MSDN, Structure of COM Error Codes</ulink>.
-	</para>
+<a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/com/html/97e68708-eb62-4481-af03-cf8b80304103.asp">MSDN, Structure of COM Error Codes</a>.
+	</p>
 </section>

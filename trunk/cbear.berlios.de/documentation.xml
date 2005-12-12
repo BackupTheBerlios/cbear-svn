@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="project/html.xsl"?><!--
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.berlios.de)
@@ -20,27 +20,25 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
--->
-<?xml-stylesheet type="text/xsl" href="docbook/html.xsl"?>
-<section xmlns:xi="http://www.w3.org/2001/XInclude">
-	<title>Documentation</title>
-	<section>
-		<title>C++ Libraries</title>
-		<xi:include href="base/index.xml"/>
-		<xi:include href="bit/index.xml"/>
-		<xi:include href="policy/index.xml"/>
-		<xi:include href="range/index.xml"/>
-		<xi:include href="atomic/index.xml"/>
+--><section xmlns="http://cbear.berlios.de/project" name="Documentation">
+	
+	<section name="C++ Libraries">
+		
+		<section href="base/index.xml"/>
+		<section href="bit/index.xml"/>
+		<section href="policy/index.xml"/>
+		<section href="range/index.xml"/>
+		<section href="atomic/index.xml"/>
 	</section>
-	<section>
-		<title>XSLT Libraires</title>
-		<xi:include href="text/index.xml"/>
-		<xi:include href="url/index.xml"/>
-		<xi:include href="docbook/index.xml"/>
-		<xi:include href="test/index.xml"/>
+	<section name="XSLT Libraires">
+		
+		<section href="text/index.xml"/>
+		<section href="url/index.xml"/>
+		<section href="docbook/index.xml"/>
+		<section href="test/index.xml"/>
 	</section>
-	<xi:include href="xsd/index.xml"/>
-	<xi:include href="windows/index.xml"/>
-	<xi:include href="cpp/index.xml"/>
-	<xi:include href="api/index.xml"/>
+	<section href="xsd/index.xml"/>
+	<section href="windows/index.xml"/>
+	<section href="cpp/index.xml"/>
+	<section href="api/index.xml"/>
 </section>

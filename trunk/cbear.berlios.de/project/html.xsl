@@ -147,8 +147,16 @@ pre
 
 <!-- section -->
 
+<xsl:template match="prj:section" mode="prj:html.link.href">
+	<xsl:param name="filename" select="@href"/>
+	<xsl:value-of select="$filename"/>
+</xsl:template>
+
 <xsl:template match="prj:section" mode="prj:html.link">
-	<a href="{@href}">
+	<a>
+		<xsl:attribute name="href">
+			<xsl:apply-templates select="." mode="prj:html.link.href"/>
+		</xsl:attribute>
 		<xsl:value-of select="document(@href, .)/prj:section/
 			@name"/>
 	</a>
@@ -180,7 +188,14 @@ pre
 	<xsl:apply-templates select="prj:section" mode="prj:html.history.search">
 		<xsl:with-param name="name" select="$name"/>
 		<xsl:with-param name="content">
-			<a href="{$filename}"><xsl:value-of select="@name"/></a>
+			<a>
+				<xsl:attribute name="href">
+					<xsl:apply-templates select="." mode="prj:html.link.href">
+						<xsl:with-param name="filename" select="$filename"/>
+					</xsl:apply-templates>
+				</xsl:attribute>
+				<xsl:value-of select="@name"/>
+			</a>
 		</xsl:with-param>
 		<xsl:with-param name="filename" select="$filename"/>
 	</xsl:apply-templates>
@@ -243,7 +258,7 @@ pre
 					<xsl:call-template name="url.path">
 						<xsl:with-param name="filename"/>
 					</xsl:call-template>
-					<xsl:value-of select="'../index.xml.xml'"/>
+					<xsl:value-of select="'../index.xml'"/>
 				</xsl:with-param>
 			</xsl:apply-templates>
 		</xsl:when>

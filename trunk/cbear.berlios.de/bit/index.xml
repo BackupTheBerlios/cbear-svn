@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../project/html.xsl"?><!--
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.berlios.de)
@@ -20,59 +20,57 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
--->
-<?xml-stylesheet type="text/xsl" href="../docbook/html.xsl"?>
-<section>
-	<title>Integer Bit Mask Operations</title>
-	<para>
-Namespace <emphasis>cbear_berlios_de::bit</emphasis>.
-	</para>
-	<para>
-Header <filename>range.hpp</filename>.
-	</para>
-	<section>
-		<title>Range Of Bits</title>
-<programlisting role="cpp"><![CDATA[template<
-	class Type, std::size_t First, std::size_t Last, class ValueType = Type>
+--><section xmlns="http://cbear.berlios.de/project" name="Integer Bit Mask Operations">
+	
+	<p>
+Namespace <em>cbear_berlios_de::bit</em>.
+	</p>
+	<p>
+Header <a href="range.hpp"/>.
+	</p>
+	<section name="Range Of Bits">
+		
+<pre>template&lt;
+	class Type, std::size_t First, std::size_t Last, class ValueType = Type&gt;
 struct range
 {
 	static ValueType get(Type);
-	static void set(Type &, ValueType);
+	static void set(Type &amp;, ValueType);
 
 	// Noncopyable.
 	class reference
 	{
 	public:
-		reference(Type &);
+		reference(Type &amp;);
 		operator ValueType() const;
-		const reference &operator=(ValueType) const;
+		const reference &amp;operator=(ValueType) const;
 	};
-};]]></programlisting>
-		<para>
+};</pre>
+		<p>
 For example:
-		</para>
-<programlisting role="cpp"><![CDATA[namespace Bit = cbear_berlios_de::bit;
+		</p>
+<pre>namespace Bit = cbear_berlios_de::bit;
 int A = 0;
-Bit::range<int, 3, 7>::reference A_3_7(A);
-A_3_7 = 5; // A = 5 << 3;
-int B = A_3_7;]]></programlisting>
+Bit::range&lt;int, 3, 7&gt;::reference A_3_7(A);
+A_3_7 = 5; // A = 5 &lt;&lt; 3;
+int B = A_3_7;</pre>
 	</section>
-	<section>
-		<title>One Bit</title>
-<programlisting role="cpp"><![CDATA[template<class Type, std::size_t Number>
+	<section name="One Bit">
+		
+<pre>template&lt;class Type, std::size_t Number&gt;
 struct one
 {
 	static bool get(Type);
-	static void set(Type &, bool);
+	static void set(Type &amp;, bool);
 
 	// Noncopyable.
 	class reference
 	{
 	public:
-		reference(Type &);
+		reference(Type &amp;);
 		operator bool() const;
-		const reference &operator=(bool) const;
+		const reference &amp;operator=(bool) const;
 	};
-};]]></programlisting>
+};</pre>
 	</section>
 </section>
