@@ -27,6 +27,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/windows/base.hpp>
 #include <cbear.berlios.de/windows/handle.hpp>
+#include <cbear.berlios.de/windows/exception.hpp>
 
 namespace cbear_berlios_de
 {

@@ -332,6 +332,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:apply-templates select="." mode="cs:html.block"/>
 </xsl:template>
 
+<!-- using -->
+
+<xsl:template match="cs:using" mode="cs:html">
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">
+			<span style="{$cs:html.keyword}">using</span>
+			<xsl:value-of select="' '"/>
+			<span style="{$cs:html.id}"><xsl:value-of select="@id"/></span>
+			<xsl:value-of select="';'"/>
+		</xsl:with-param>
+	</xsl:call-template>
+</xsl:template>
+
 <!-- namespace -->
 
 <xsl:template match="cs:namespace" mode="cs:html">

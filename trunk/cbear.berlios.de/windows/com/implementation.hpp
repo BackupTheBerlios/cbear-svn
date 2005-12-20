@@ -278,6 +278,8 @@ public:
 	}
 };
 
+typedef object< ::IClassFactory> iclassfactory;
+
 namespace detail
 {
 

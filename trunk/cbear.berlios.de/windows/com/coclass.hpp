@@ -23,6 +23,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_COCLASS_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_COCLASS_HPP_INCLUDED
 
+#include <boost/lexical_cast.hpp>
+
 #include <cbear.berlios.de/base/default.hpp>
 #include <cbear.berlios.de/windows/com/uuid.hpp>
 #include <cbear.berlios.de/windows/registry/root.hpp>
@@ -60,10 +62,17 @@ public:
 	}
 };
 
+enum server_type
+{
+	local_server32,
+	in_proc_server32,
+};
+
 template<class Char>
 typename registry::root_list<Char> coclass_registry(
 	const coclass_info<Char> &Info,
-	const std::basic_string<Char> &FilePath)
+	const std::basic_string<Char> &FilePath,
+	server_type ServerType)
 {
 	typedef registry::root_list<Char> root_list;
 	typedef registry::root<Char> root;
@@ -78,8 +87,9 @@ typename registry::root_list<Char> coclass_registry(
 	static const Char Close = select<Char>('}', L'}');
 	static const string ClsidKey = select<Char>("CLSID", L"CLSID");
 	static const string CurVerKey = select<Char>("CurVer", L"CurVer");
-	static const string LocalServer32Key = select<Char>(
-		"LocalServer32", L"LocalServer32");
+	static const string LocalServer32Key = ServerType==local_server32 ? 
+		select<Char>("LocalServer32", L"LocalServer32"):
+		select<Char>("InProcServer32", L"InProcServer32");
 	static const string TypeLibKey = select<Char>("TypeLib", L"TypeLib");
 	static const string ViProgIdKey = select<Char>(
 		"VersionIndependentProgId", L"VersionIndependentProgId");

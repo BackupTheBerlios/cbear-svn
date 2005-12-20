@@ -103,6 +103,7 @@ public:
 		disp_e_badindex = DISP_E_BADINDEX,
 
 		class_e_noaggregation = CLASS_E_NOAGGREGATION,
+		class_e_classnotavailable = CLASS_E_CLASSNOTAVAILABLE,
 	};
 
 	hresult(enumeration E): hresult_wrap(internal_type(E)) {}

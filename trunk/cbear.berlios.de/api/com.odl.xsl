@@ -212,11 +212,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- property -->
 
+<xsl:template match="api:property" mode="api:body.property.item"/>
+
+<xsl:template match="api:property[api:parameter]" mode="api:body.property.item">
+	<xsl:if test="not(api:pragma/odl:attribute[@id='id'])">
+		<attribute id="id" value="0"/>
+	</xsl:if>
+</xsl:template>
+
 <xsl:template match="api:get" mode="api:body">
 	<xsl:for-each select="..">
 		<method>
 			<xsl:apply-templates select="@id" mode="api:body"/>
 			<attribute id="propget"/>
+			<xsl:apply-templates select="." mode="api:body.property.item"/>
 			<xsl:call-template name="api:method.header"/>
 			<xsl:apply-templates select="api:parameter" mode="api:body"/>
 			<xsl:apply-templates select="api:type.ref" mode="api:body.result"/>
@@ -229,6 +238,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<method>
 			<xsl:apply-templates select="@id" mode="api:body"/>
 			<attribute id="propput"/>
+			<xsl:apply-templates select="." mode="api:body.property.item"/>
 			<xsl:call-template name="api:method.header"/>
 			<xsl:apply-templates select="api:parameter" mode="api:body"/>
 			<parameter id="_value">

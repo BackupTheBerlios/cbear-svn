@@ -261,6 +261,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- method -->
 
+<xsl:template match="odl:method" mode="odl:cs"/>
+
 <xsl:template match="odl:method" mode="odl:cs.id.ref">
 	<id.ref id="void"/>
 </xsl:template>
@@ -273,7 +275,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		mode="odl:cs"/>
 </xsl:template>
 
-<xsl:template match="odl:method" mode="odl:cs">
+<xsl:template match="odl:method" mode="odl:cs.method">
 	<method id="{@id}">
 		<xsl:apply-templates select="*" mode="odl:cs"/>
 		<xsl:apply-templates select="." mode="odl:cs.id.ref"/>
@@ -305,23 +307,37 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:apply-templates select="." mode="odl:cs.id"/>
 		</xsl:variable>
 		<property id="{$csid}">
-			<xsl:apply-templates select="odl:attribute" mode="odl:cs"/>
-			<xsl:apply-templates select="odl:parameter[position()!=last()]" mode="odl:cs"/>
-			<xsl:apply-templates select="odl:parameter[last()]/odl:type.ref" mode="odl:cs"/>
-			<xsl:apply-templates select="../odl:method[@id=$id]" mode="odl:cs.property.method"/>
+			<xsl:apply-templates 
+				select="odl:attribute" mode="odl:cs"/>
+			<xsl:apply-templates 
+				select="odl:parameter[position()!=last()]" mode="odl:cs"/>
+			<xsl:apply-templates 
+				select="odl:parameter[last()]/odl:type.ref" mode="odl:cs"/>
+			<xsl:apply-templates 
+				select="../odl:method[@id=$id]" mode="odl:cs.property.method"/>
 		</property>
 	</xsl:if>
 </xsl:template>
 
-<xsl:template match="odl:method[odl:attribute/@id='propput']" mode="odl:cs">
+<xsl:template 
+	match="odl:method[odl:attribute/@id='propput']" mode="odl:cs.method">
 	<xsl:apply-templates select="." mode="odl:cs.property"/>
 </xsl:template>
 
-<xsl:template match="odl:method[odl:attribute/@id='propget']" mode="odl:cs">
+<xsl:template 
+	match="odl:method[odl:attribute/@id='propget']" mode="odl:cs.method">
 	<xsl:apply-templates select="." mode="odl:cs.property"/>
 </xsl:template>
 
 <!-- interface -->
+
+<xsl:template match="odl:interface" mode="odl:cs.interface.methods">
+	<xsl:variable name="id" select="odl:type.ref/@id"/>
+	<xsl:apply-templates 
+		select="/odl:library/odl:interface[@id=$id]" 
+		mode="odl:cs.interface.methods"/>
+	<xsl:apply-templates select="odl:method" mode="odl:cs.method"/>
+</xsl:template>
 
 <xsl:template match="odl:interface" mode="odl:cs">
 	<interface id="{@id}" access="public">
@@ -352,6 +368,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			</id.ref>
 		</attribute>
 		<xsl:apply-templates select="*" mode="odl:cs"/>
+		<xsl:apply-templates select="." mode="odl:cs.interface.methods"/>
 	</interface>
 </xsl:template>
 
@@ -408,6 +425,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</class>
 </xsl:template>
 
+<!-- importlib -->
+
+<xsl:template match="odl:importlib[@href='STDOLE2.tlb']" mode="odl:cs"/>
+
+<xsl:template match="odl:importlib" mode="odl:cs">
+	<using id="{substring(@href, 1, string-length(@href)-4)}"/>
+</xsl:template>
+
 <!-- libray -->
 
 <xsl:template match="odl:library" mode="odl:cs">
@@ -423,6 +448,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		id="{$path}">
 		<xsl:apply-templates select="odl:attribute" mode="odl:cs.assembly"/>
 		<namespace id="{@id}">
+			<xsl:apply-templates select="odl:importlib" mode="odl:cs"/>
 			<xsl:apply-templates select="odl:typedef" mode="odl:cs"/>
 			<xsl:apply-templates select="odl:interface" mode="odl:cs"/>
 			<xsl:apply-templates select="odl:coclass" mode="odl:cs"/>

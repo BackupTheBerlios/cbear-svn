@@ -176,6 +176,7 @@ public:
 		// The message box is created with the WS_EX_TOPMOST window style.
 		top_most = MB_TOPMOST,
 
+#ifdef _WIN32_WINNT
 		// - Windows NT/2000/XP: The caller is a service notifying the user of an 
 		// event. The function displays a message box on the current active desktop, 
 		// even if there is no user logged on to the computer. 
@@ -192,6 +193,7 @@ public:
 		// 'service_notification' for Windows NT version 3.51. 
 		// _WIN32_WINNT
 		service_notification_nt3x = MB_SERVICE_NOTIFICATION_NT3X,
+#endif
 	};
 	message_box_style() {}
 	message_box_style(enumeration_type X): wrap_type(X) {}
