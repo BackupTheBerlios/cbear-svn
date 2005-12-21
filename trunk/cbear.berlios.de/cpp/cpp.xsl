@@ -25,8 +25,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
+	xmlns:cpp="http://cbear.berlios.de/cpp">
+<!--
+<xsl:stylesheet 
+	version="1.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:exsl="http://exslt.org/common"
 	xmlns:cpp="http://cbear.berlios.de/cpp"
 	extension-element-prefixes="exsl">
+-->
 
 <xsl:import href="html.xsl"/>
 

@@ -34,9 +34,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="prj:section" mode="prj:html.top">
 	<div class="background">
-		<img 
-			border="0" 
-			src="http://svn.berlios.de/viewcvs/*checkout*/cbear/trunk/cbear.berlios.de/mainlogo.png"/>
+		<img border="0" src="http://cbear.berlios.de/mainlogo.png"/>
 	</div>
 </xsl:template>
 

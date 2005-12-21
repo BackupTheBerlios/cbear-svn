@@ -25,6 +25,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <boost/noncopyable.hpp>
 #include <boost/type_traits/is_base_of.hpp>
+#include <boost/operators.hpp>
+
+#include <cbear.berlios.de/range/helper.hpp>
 
 namespace cbear_berlios_de
 {
@@ -85,6 +88,7 @@ public:
 			return this->P != B.P;
 		}
 
+		// R, this->P.
 		void insert(reference R)
 		{
 			R.destroy();
@@ -149,7 +153,14 @@ public:
 
 		reference operator*() const 
 		{ 
-			return static_cast<reference>(this->basic_node::iterator::operator*());
+			return static_cast<reference>(
+				this->basic_node::iterator::operator*());
+		}
+
+		pointer operator->() const 
+		{ 
+			return &static_cast<reference>(
+				this->basic_node::iterator::operator*());
 		}
 
 		iterator &operator++()
@@ -174,14 +185,11 @@ public:
 		using basic_iterator::erase;
 	};
 
-protected:
-
 	node() {}
 };
 
 template<class ValueType>
 class list: 
-	private node<ValueType>, 
 	public range::helper<
 		list<ValueType>, 
 		typename node<ValueType>::iterator, 
@@ -195,11 +203,11 @@ public:
 	typedef typename node_type::pointer pointer;
 	typedef typename node_type::reference reference;
 
-	iterator begin() { return boost::next(this->end()); }
+	iterator begin() const { return boost::next(this->end()); }
 
-	iterator end()
+	iterator end() const
 	{
-		return iterator(*static_cast<pointer>(static_cast<node_type *>(this)));
+		return iterator(*static_cast<pointer>(&this->Node));
 	}
 
 	void push_front(reference R) { this->begin().insert(R); }
@@ -207,8 +215,9 @@ public:
 
 	void pop_front() { this->begin().erase(); }
 	void pop_back() { boost::prev(this->end()).erase(); }
+private:
+	mutable node<ValueType> Node;
 };
-
 
 }
 }
