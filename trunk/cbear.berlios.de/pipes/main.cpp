@@ -3,17 +3,7 @@
 #pragma warning(disable: 4510)
 #include <iostream>
 #include <fstream>
-#pragma warning(pop)
-
-#pragma warning(push)
-#pragma warning(disable: 4267)
-#pragma warning(disable: 4996)
-#pragma warning(disable: 4100)
-#pragma warning(disable: 4510)
-#pragma warning(disable: 4610)
-#pragma warning(disable: 4244)
-#include <boost/multi_array.hpp>
-#include <boost/cstdint.hpp>
+#include <vector>
 #pragma warning(pop)
 
 #include <cbear.berlios.de/intrusive/list.hpp>
@@ -117,11 +107,13 @@ public:
 		unknown,
 		unchecked,
 		defined,
+		colored,
 	};
-	state State;
+	int Color;
 	limits Limits;
 	value_type Value;
-	data(): State(unchecked) {}
+	unsigned char State;
+	data(): Color(0), State(unchecked) {}
 };
 
 
@@ -142,21 +134,24 @@ public:
 	limits check() const { return this->Limits.check_all(this->Value); }
 };
 
+typedef intrusive::list<node> list_base;
+
 template<node::state State>
-class list: private intrusive::list<node>
+class list: private list_base
 {
 public:
-	typedef intrusive::list<node> base_type;
-	using base_type::begin;
-	using base_type::end;
+
+	using list_base::begin;
+	using list_base::end;
+	using list_base::size;
+	using list_base::empty;
+	using list_base::front;
+
+	typedef list_base::iterator iterator;
+
 	void push_back(reference N)
 	{
-		this->base_type::push_back(N);
-		N.State = State;
-	}
-	void push_front(reference N)
-	{
-		this->base_type::push_front(N);
+		this->list_base::push_back(N);
 		N.State = State;
 	}
 };
@@ -168,11 +163,10 @@ public:
 	nodes Nodes;
 	int N;
 
-	//int DefinedSize;
-
 	list<node::unchecked> Unchecked;
 	list<node::unknown> Unknown;
 	list<node::defined> Defined;
+	list<node::colored> Colored;
 
 	class position
 	{
@@ -195,36 +189,14 @@ public:
 
 	int offset(const position &P) { return this->N * P.Y + P.X; }
 
-	/*
-	void set_unchecked(nodes::reference N)
-	{
-		N.State = node::unchecked;
-	}
-	*/
-
 	void set_unchecked(const position &P, value_type High)
 	{
-		nodes::reference N = this->Nodes[this->offset(P)];
-		//this->set_unchecked(N);
+		node &N = this->Nodes[this->offset(P)];
 		this->Unchecked.push_back(N);
 		N.Limits.High = High;
 	}
 
-	/*
-	void set_defined(nodes::reference N)
-	{
-		N.State = node::defined;
-		N.Value = N.Limits.High;
-		++this->DefinedSize;
-	}
-
-	void set_unknown(nodes::reference N)
-	{
-		N.State = node::unknown;
-	}
-	*/
-
-	explicit solution(const std::string &FileName)//: DefinedSize(0)
+	explicit solution(const std::string &FileName): LastColor(0)
 	{
 		std::ifstream File(
 			FileName.c_str(), std::ios::in|std::ios::binary|std::ios::ate);
@@ -271,76 +243,82 @@ public:
 		}
 	}
 
+	position get_position(node &Node)
+	{
+		int Offset = int(&Node - &*this->Nodes.begin());
+		return position(Offset % this->N, Offset / this->N);
+	}
+
 	template<value_type Direction>
-	int add(position P, limits Limits, int Offset)
+	void check_push_back(position P, limits Limits)
 	{
 		P.move<Direction>();
-		int NewOffset = this->offset(P);
-		node &N = this->Nodes[NewOffset];
-		if(N.State == node::defined) return Offset;
+		node &N = this->Nodes[this->offset(P)];
+		if(N.State == node::defined) return;
 		Limits.Low &= Direction;
 		Limits.High |= all ^ Direction;
-		if(Limits.Low==none && Limits.High==all) return Offset;
+		if(Limits.Low==none && Limits.High==all) return;
 		N.Limits.Low |= turn<2>::do_(Limits.Low);
 		N.Limits.High &= turn<2>::do_(Limits.High);
-		if(N.State != node::unknown) return Offset;
-		this->Unchecked.push_front(N);
-		return NewOffset - 1;
+		if(N.State != node::unknown) return;
+		this->Unchecked.push_back(N);
 	}
 
 	void check()
 	{
 		int L = this->N - 1;
 
-		for(int Offset = 0; Offset < int(this->Nodes.size()); ++Offset)
+		while(!this->Unchecked.empty())
 		{
-			node &Node = this->Nodes[Offset];
-			if(Node.State==node::unchecked)
+			node &Node = this->Unchecked.front();
+			limits New = Node.check();
+			if(New!=Node.Limits)
 			{
-				limits New = Node.check();
-				if(New!=Node.Limits)
-				{
-					Node.Limits = New;
-					position P(Offset % this->N, Offset / this->N);
-					if(P.Y < L) this->add<down>(P, New, 0);
-					if(P.X < L) this->add<right>(P, New, 0);
-					if(P.X > 0) Offset = this->add<left>(P, New, Offset);
-					if(P.Y > 0) Offset = this->add<up>(P, New, Offset);
-				}						
-				if(New.is_defined())
-					this->Defined.push_front(Node);
-				else
-					this->Unknown.push_front(Node);
+				Node.Limits = New;
+				position P = this->get_position(Node);
+				if(P.Y < L) this->check_push_back<down>(P, New);
+				if(P.X < L) this->check_push_back<right>(P, New);
+				if(P.X > 0) this->check_push_back<left>(P, New);
+				if(P.Y > 0) this->check_push_back<up>(P, New);
 			}
+			if(New.is_defined())
+				this->Defined.push_back(Node);
+			else
+				this->Unknown.push_back(Node);
 		}
 	}
 
-	/*
-	class guess
+	int LastColor;
+
+	template<value_type Direction>
+	void fill_push_back(position P, value_type Value)
 	{
-	public:
-		int Offset;
-		int I;
-		int M;
-	};
+		if((Value & Direction) == 0) return;
+		P.move<Direction>();
+		node &N = this->Nodes[this->offset(P)];
+		if(N.State!=node::defined) return;
+		this->Unchecked.push_back(N);
+	}
 
 	void fill()
 	{
-		std::vector<guess> Guess;
-		for(int Offset = 0; Offset < this->Nodes.size(); ++Offset)
+		while(!this->Defined.empty())
 		{
-			node &Node = this->Nodes[Offset];
-			switch(Node.State)
+			++this->LastColor;
+			this->Unchecked.push_back(Defined.front());
+			do
 			{
-			case node::defined:
-
-				break;
-			case node::unknown:
-				break;
-			}
+				node &Node = this->Unchecked.front();
+				position P = this->get_position(Node);
+				value_type V = Node.Limits.High;
+				this->fill_push_back<up>(P, V);
+				this->fill_push_back<right>(P, V);
+				this->fill_push_back<down>(P, V);
+				this->fill_push_back<left>(P, V);
+				this->Colored.push_back(Node);
+			} while(!this->Unchecked.empty());
 		}
 	}
-	*/
 };
 
 }
@@ -354,9 +332,17 @@ int main()
 	{
 		std::cout << "loading..." << std::endl;
 		Pipes::solution Solution("problem.dat");
+		std::cout << sizeof(Pipes::node) * Solution.Nodes.size() << std::endl;
 		std::cout << "checking..." << std::endl;
 		Solution.check();
-		std::cout << "finished" << std::endl;
+		std::cout << Solution.Defined.size() << std::endl;
+		std::cout << "filling..." << std::endl;
+		Solution.fill();
+		std::cout << 
+			Solution.Defined.size() << ", " << 
+			Solution.Colored.size() << ", " <<
+			Solution.LastColor << std::endl;
+		std::cout << "finished." << std::endl;
 	}
 	catch(const std::exception &E)
 	{
