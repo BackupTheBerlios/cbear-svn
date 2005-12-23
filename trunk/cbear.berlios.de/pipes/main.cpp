@@ -6,6 +6,8 @@
 #include <vector>
 #pragma warning(pop)
 
+#include <boost/timer.hpp>
+
 #include <cbear.berlios.de/intrusive/list.hpp>
 
 namespace cbear_berlios_de
@@ -67,25 +69,6 @@ public:
 	limits(): Low(none), High(all) {}
 	limits(value_type Low, value_type High): Low(Low), High(High) {}
 
-	template<int Turn>
-	void check(value_type V, limits &New) const
-	{
-		V = turn<Turn>::do_(V);
-		if((V & this->Low) != this->Low || (V & this->High) != V) return;
-		New.Low &= V;
-		New.High |= V;
-	}
-
-	limits check_all(value_type V) const
-	{
-		limits Result(all, none);
-		this->check<0>(V, Result);
-		this->check<1>(V, Result);
-		this->check<2>(V, Result);
-		this->check<3>(V, Result);
-		return Result;
-	}
-
 	bool is_defined() const { return this->Low == this->High; }
 
 	bool operator==(const limits &B) const
@@ -99,23 +82,53 @@ public:
 	}
 };
 
+class check_all_result: public limits
+{
+public:
+	check_all_result(): limits(all, none), VariantListNumber(0) {}
+	int VariantListNumber;
+
+	template<int Turn>
+	void check(const limits &Limits, value_type V)
+	{
+		V = turn<Turn>::do_(V);
+		if((V & Limits.Low) != Limits.Low || (V & Limits.High) != V) return;
+		this->Low &= V;
+		this->High |= V;
+		++this->VariantListNumber;
+	}
+};
+
+check_all_result check_all(const limits &Limits, value_type V)
+{
+	check_all_result Result;
+	Result.check<0>(Limits, V);
+	Result.check<1>(Limits, V);
+	Result.check<2>(Limits, V);
+	Result.check<3>(Limits, V);
+	return Result;
+}
+
 class data
 {
 public:
 	enum state
 	{
-		unknown,
-		unchecked,
-		defined,
-		colored,
+		unknown = 0,
+		unchecked = 1,
+		defined = 2,
+		colored = 4,
+		guess_root = 8,
+		guess_defined = 0x10,
 	};
 	int Color;
 	limits Limits;
+	limits OldLimits;
 	value_type Value;
 	unsigned char State;
-	data(): Color(0), State(unchecked) {}
+	unsigned char Variant;
+	data(): Color(0), State(unchecked), Variant(1) {}
 };
-
 
 class node: public intrusive::node<node>, public data
 {
@@ -131,7 +144,7 @@ public:
 		return *this;
 	}
 
-	limits check() const { return this->Limits.check_all(this->Value); }
+	check_all_result check() const { return check_all(this->Limits, this->Value); }
 };
 
 typedef intrusive::list<node> list_base;
@@ -167,6 +180,8 @@ public:
 	list<node::unknown> Unknown;
 	list<node::defined> Defined;
 	list<node::colored> Colored;
+	list<node::guess_root> GuessRoot;
+	list<node::guess_defined> GuessDefined;
 
 	class position
 	{
@@ -254,32 +269,39 @@ public:
 	{
 		P.move<Direction>();
 		node &N = this->Nodes[this->offset(P)];
-		if(N.State == node::defined) return;
+		switch(N.State)
+		{
+		case node::defined: case node::colored: case node::guess_root: return;
+		}
 		Limits.Low &= Direction;
 		Limits.High |= all ^ Direction;
 		if(Limits.Low==none && Limits.High==all) return;
 		N.Limits.Low |= turn<2>::do_(Limits.Low);
 		N.Limits.High &= turn<2>::do_(Limits.High);
-		if(N.State != node::unknown) return;
+		if(N.State != node::unchecked) return;
 		this->Unchecked.push_back(N);
+	}
+
+	void check_around_push_back(node &Node)
+	{
+		int L = this->N - 1;
+		position P = this->get_position(Node);
+		if(P.Y < L) this->check_push_back<down>(P, Node.Limits);
+		if(P.X < L) this->check_push_back<right>(P, Node.Limits);
+		if(P.X > 0) this->check_push_back<left>(P, Node.Limits);
+		if(P.Y > 0) this->check_push_back<up>(P, Node.Limits);
 	}
 
 	void check()
 	{
-		int L = this->N - 1;
-
 		while(!this->Unchecked.empty())
 		{
 			node &Node = this->Unchecked.front();
-			limits New = Node.check();
+			check_all_result New = Node.check();
 			if(New!=Node.Limits)
 			{
 				Node.Limits = New;
-				position P = this->get_position(Node);
-				if(P.Y < L) this->check_push_back<down>(P, New);
-				if(P.X < L) this->check_push_back<right>(P, New);
-				if(P.X > 0) this->check_push_back<left>(P, New);
-				if(P.Y > 0) this->check_push_back<up>(P, New);
+				this->check_around_push_back(Node);
 			}
 			if(New.is_defined())
 				this->Defined.push_back(Node);
@@ -315,8 +337,69 @@ public:
 				this->fill_push_back<right>(P, V);
 				this->fill_push_back<down>(P, V);
 				this->fill_push_back<left>(P, V);
+				Node.Color = this->LastColor;
 				this->Colored.push_back(Node);
 			} while(!this->Unchecked.empty());
+		}
+	}
+
+	void guess_check()
+	{
+		while(!this->Unchecked.empty())
+		{
+			node &Node = this->Unchecked.front();
+			check_all_result New = Node.check();
+			if(New!=Node.Limits)
+			{
+				Node.Limits = New;
+				this->check_around_push_back(Node);
+			}
+			if(New.is_defined())
+			{
+				this->GuessDefined.push_back(Node);
+			}
+			else
+				this->Unknown.push_back(Node);
+		}
+	}
+
+	bool guess_push_back(node &Node)
+	{
+		value_type X = Node.Limits.Low ^ Node.Limits.High;
+		while(Node.Variant!=all)
+		{
+			if((Node.Variant & X) == Node.Variant)
+			{
+				limits Limits = Node.Limits;
+				Limits.Low |= Node.Variant;
+				check_all_result Result = check_all(Limits, Node.Value);
+				if(Result.VariantListNumber==1)
+				{
+					++this->LastColor;
+					Node.OldLimits = Node.Limits;
+					Node.Limits = Result;
+					Node.Color = this->LastColor;
+					this->GuessRoot.push_back(Node);
+					this->check_around_push_back(Node);
+					return true;
+				}
+			}
+			++Node.Variant;
+		}
+		return false;
+	}
+
+	void guess()
+	{
+		while(this->Unknown.empty())
+		{
+			if(guess_push_back(this->Unknown.front()))
+			{
+				
+			}
+			else // pop_back
+			{
+			}
 		}
 	}
 };
@@ -330,18 +413,18 @@ int main()
 	int Result = 0;
 	try
 	{
+		boost::timer Timer;
 		std::cout << "loading..." << std::endl;
 		Pipes::solution Solution("problem.dat");
-		std::cout << sizeof(Pipes::node) * Solution.Nodes.size() << std::endl;
+		std::cout << sizeof(Pipes::node) * Solution.Nodes.size() << " B." << std::endl;
+		std::cout << Timer.elapsed() << " s." << std::endl;
 		std::cout << "checking..." << std::endl;
 		Solution.check();
-		std::cout << Solution.Defined.size() << std::endl;
+		std::cout << Timer.elapsed() << " s." << std::endl;
 		std::cout << "filling..." << std::endl;
 		Solution.fill();
-		std::cout << 
-			Solution.Defined.size() << ", " << 
-			Solution.Colored.size() << ", " <<
-			Solution.LastColor << std::endl;
+		std::cout << Timer.elapsed() << " s." << std::endl;
+		std::cout << Solution.LastColor << std::endl;
 		std::cout << "finished." << std::endl;
 	}
 	catch(const std::exception &E)
