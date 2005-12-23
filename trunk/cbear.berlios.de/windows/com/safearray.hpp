@@ -130,6 +130,8 @@ public:
 	typedef typename helper_type::iterator iterator;
 	typedef typename helper_type::const_iterator const_iterator;
 
+	typedef typename helper_type::const_reference const_reference;
+
 	static const vartype_t value_type_vt = traits<ValueType>::vt;
 	static const vartype_t vt = VT_ARRAY | value_type_vt;
 
@@ -146,7 +148,7 @@ public:
 	size_type size() const 
 	{
 		if(this->empty()) return 0;
-		return this->internal().rgsabound[1].cElements;
+		return this->internal()->rgsabound[0].cElements;
 	}
 	const_iterator begin() const 
 	{
@@ -155,6 +157,25 @@ public:
 	const_iterator end() const
 	{
 		return this->begin() + this->size();
+	}
+
+	const_reference operator[](std::size_t I) const
+	{
+		if(this->size() <= I) throw std::exception("Wrong index");
+		return this->begin()[I];
+	}
+
+	void swap(safearray_t &B)
+	{
+		internal_type X = this->internal();
+		this->internal() = B.internal();
+		B.internal() = X;
+	}
+
+	void reset(std::size_t Size)
+	{
+		safearray_t New(Size);
+		this->swap(New);
 	}
 };
 
