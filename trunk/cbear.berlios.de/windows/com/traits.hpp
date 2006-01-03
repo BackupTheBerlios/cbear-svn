@@ -64,6 +64,8 @@ struct class_traits
 
 	static const vartype_t vt = type::vt;
 
+	static void *extra() { return type::extra(); }
+
 	template<io_type Io>
 	struct io_traits;
 
@@ -127,6 +129,8 @@ struct default_traits
 	typedef type internal_type;
 
 	static const vartype_t vt = Vt;
+
+	static void *extra() { return 0; }
 
 	template<io_type Io>
 	struct io_traits;

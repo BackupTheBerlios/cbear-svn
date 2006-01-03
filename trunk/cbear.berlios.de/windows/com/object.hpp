@@ -106,6 +106,12 @@ public:
 		boost::is_base_of< ::IDispatch, Interface>::value ?
 			::VT_DISPATCH: ::VT_UNKNOWN;
 
+	static void *extra() 
+	{ 
+		return const_cast<uuid::internal_type*>(
+			&uuid::of<interface_type>().internal());
+	}
+
 	template<class Type>
 	typename add_object<Type>::type query_interface() const
 	{

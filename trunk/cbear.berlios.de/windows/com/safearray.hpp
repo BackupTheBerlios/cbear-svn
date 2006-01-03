@@ -28,6 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/range/empty.hpp>
 #include <cbear.berlios.de/windows/com/traits.hpp>
 #include <cbear.berlios.de/windows/com/double.hpp>
+#include <cbear.berlios.de/windows/com/exception.hpp>
 
 namespace cbear_berlios_de
 {
@@ -75,7 +76,8 @@ public:
 			construct(X);
 			return;
 		}
-		X = ::SafeArrayCreateVectorEx(traits<ValueType>::vt, 0, ulong_t(Size), 0);
+		X = ::SafeArrayCreateVectorEx(
+			traits<ValueType>::vt, 0, ulong_t(Size), traits<ValueType>::extra());
 	}
 
 	template<class T>
@@ -134,6 +136,21 @@ public:
 
 	static const vartype_t value_type_vt = traits<ValueType>::vt;
 	static const vartype_t vt = VT_ARRAY | value_type_vt;
+
+	class scoped_lock: boost::noncopyable
+	{
+	public:
+		scoped_lock(const safearray_t &A): A(A) 
+		{ 
+			exception::throw_unless(::SafeArrayLock(this->A.internal())); 
+		}
+		~scoped_lock()
+		{
+			exception::throw_unless(::SafeArrayUnlock(this->A.internal()));
+		}
+	private:
+		const safearray_t &A;
+	};
 
 	safearray_t() {}
 	explicit safearray_t(size_type Size): helper_type(std::size_t(Size), 0)
