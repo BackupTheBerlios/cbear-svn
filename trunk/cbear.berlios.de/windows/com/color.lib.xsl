@@ -178,7 +178,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
 			<xsl:apply-templates select="odl:type.ref" mode="odl:color"/>
-			<xsl:text> </xsl:text>
+			<xsl:value-of select="' '"/>
 			<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 			<xsl:text>;</xsl:text>
 		</xsl:with-param>

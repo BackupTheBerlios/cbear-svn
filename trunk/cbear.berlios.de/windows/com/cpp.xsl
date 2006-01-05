@@ -72,7 +72,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<id.ref id="{@id}"/>
 	</xsl:variable>
 	<xsl:variable name="internal">
-		<id.ref type="::"><id.ref/><id.ref id="{@id}"/></id.ref>
+		<id.ref type="::"><id.ref/><xsl:copy-of select="$name"/></id.ref>
 	</xsl:variable>
 	<xsl:variable name="base">
 		<id.ref type="::">
@@ -87,7 +87,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		</id.ref>
 	</xsl:variable>
 	<class>
-		<id.ref id="{@id}"/>
+		<xsl:copy-of select="$name"/>
 		<access access="public">
 			<xsl:copy-of select="$base"/>
 			<enum id="type">
@@ -126,6 +126,51 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				</ctor>
 				<body>
 				</body>
+			</method>
+		</access>
+	</class>
+</xsl:template>
+
+<!-- struct -->
+
+<xsl:template match="odl:struct" mode="odl:cpp">
+	<xsl:variable name="name">
+		<id.ref id="{@id}"/>
+	</xsl:variable>
+	<xsl:variable name="internal">
+		<id.ref type="::">
+			<id.ref/>
+			<xsl:copy-of select="$name"/>
+		</id.ref>
+	</xsl:variable>
+	<xsl:variable name="base">
+		<id.ref type="::">
+			<id.ref/>
+			<id.ref id="cbear_berlios_de"/>
+			<id.ref id="windows"/>
+			<id.ref id="com"/>
+			<id.ref id="struct_t" type="&lt;&gt;">
+				<xsl:copy-of select="$name"/>
+				<xsl:copy-of select="$internal"/>
+			</id.ref>
+		</id.ref>
+	</xsl:variable>	
+	<class>
+		<xsl:copy-of select="$name"/>
+		<access access="public">
+			<xsl:copy-of select="$base"/>
+			<method id="lib_uuid">
+				<static/>
+				<id.ref type="&amp;">
+					<id.ref type="const">
+						<id.ref type="::">
+							<id.ref id="cbear_berlios_de"/>
+							<id.ref id="windows"/>
+							<id.ref id="com"/>
+							<id.ref id="uuid"/>
+						</id.ref>
+					</id.ref>
+				</id.ref>
 			</method>
 		</access>
 	</class>
@@ -299,14 +344,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="odl:method" mode="odl:cpp.method.id.short">
 	<xsl:value-of select="@id"/>
 </xsl:template>
-
-<!--
-<xsl:template 
-	match="odl:method[odl:attribute/@id='propput']" 
-	mode="odl:cpp.method.id.short">
-	<xsl:value-of select="concat('put_', @id)"/>
-</xsl:template>
--->
 
 <xsl:template match="odl:method" mode="odl:cpp">
 	<xsl:variable name="id.short">
@@ -586,6 +623,52 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</template>
 </xsl:template>
 
+<!-- uuid -->
+
+<xsl:template match="odl:typedef/odl:struct" mode="odl:cpp.uuid">
+	<template>
+		<class>
+			<id.ref type="::">
+				<id.ref id="uuid"/>
+				<id.ref type="&lt;&gt;" id="of_type">
+					<id.ref type="::">
+						<id.ref/>
+						<id.ref id="{@id}"/>
+					</id.ref>
+				</id.ref>
+			</id.ref>
+			<access access="public">
+				<method id="create">
+					<static/>
+					<id.ref type="&amp;">
+						<id.ref type="const">
+							<id.ref id="uuid"/>
+						</id.ref>
+					</id.ref>
+					<body>
+						<id.ref type="return">
+							<id.ref>
+								<id.ref type="::">
+									<id.ref id="uuid"/>
+									<id.ref id="wrap_ref"/>
+								</id.ref>
+								<id.ref type="()">
+									<id.ref id="{concat('__uuidof(struct ', @id, ')')}"/>
+								</id.ref>
+							</id.ref>
+						</id.ref>
+					</body>
+				</method>
+			</access>
+		</class>
+	</template>
+<!--
+	template<> struct uuid::of_type< ::Interface>	\
+	{ static const uuid &create() { \
+	return uuid::wrap_ref(::IID_##Interface); } }; } } }
+-->
+</xsl:template>
+
 <!-- libray -->
 
 <xsl:template match="odl:library" mode="odl:cpp">
@@ -615,6 +698,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<include href="cbear.berlios.de/windows/com/float.hpp"/>
 			<include href="cbear.berlios.de/windows/com/double.hpp"/>
 			<include href="cbear.berlios.de/windows/com/enum.hpp"/>
+			<include href="cbear.berlios.de/windows/com/struct.hpp"/>			
 			<include href="cbear.berlios.de/windows/com/variant_bool.hpp"/>
 			<include href="cbear.berlios.de/windows/com/bstr.hpp"/>
 			<include href="cbear.berlios.de/windows/com/date.hpp"/>
@@ -629,6 +713,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<namespace id="cbear_berlios_de">
 				<namespace id="windows">
 					<namespace id="com">
+						<xsl:apply-templates select="odl:typedef/odl:struct" mode="odl:cpp.uuid"/>
 						<xsl:apply-templates select="odl:interface" mode="odl:cpp.object"/>
 					</namespace>
 				</namespace>
