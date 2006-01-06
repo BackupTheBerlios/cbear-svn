@@ -200,6 +200,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		select="cpp:id.ref[position()=2]" mode="cpp:html.id.ref"/>
 </xsl:template>
 
+<xsl:template match="cpp:id.ref[@type='static']" mode="cpp:html.id.ref">
+	<span style="{$cpp:html.keyword}">static</span>
+	<xsl:value-of select="' '"/>
+	<xsl:apply-templates select="." mode="cpp:html.id.ref.type"/>
+</xsl:template>
+
 <xsl:template match="cpp:id.ref[@type='const']" mode="cpp:html.id.ref">
 	<span style="{$cpp:html.keyword}">const</span>
 	<xsl:value-of select="' '"/>
@@ -213,9 +219,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <xsl:template match="cpp:id.ref[@type='declare']" mode="cpp:html.id.ref">
-	<xsl:apply-templates select="cpp:id.ref" mode="cpp:html.id.ref"/>
+	<xsl:apply-templates select="cpp:id.ref[1]" mode="cpp:html.id.ref"/>
 	<xsl:value-of select="' '"/>
 	<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
+	<xsl:if test="cpp:id.ref[2]">
+		<xsl:text> = </xsl:text>
+		<xsl:apply-templates select="cpp:id.ref[2]" mode="cpp:html.id.ref"/>
+	</xsl:if>
 </xsl:template>
 
 <xsl:template match="cpp:id.ref[@type='return']" mode="cpp:html.id.ref">
@@ -230,6 +240,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="cpp:id.ref[@type='value']" mode="cpp:html.id.ref">
 	<span style="{$cpp:html.const}"><xsl:value-of select="@id"/></span>
+</xsl:template>
+
+<xsl:template match="cpp:id.ref[@type='{}']" mode="cpp:html.id.ref">
+	<xsl:text> { </xsl:text>
+	<xsl:for-each select="cpp:id.ref">
+		<xsl:apply-templates select="." mode="cpp:html.id.ref"/>
+		<xsl:text>, </xsl:text>
+	</xsl:for-each>
+	<xsl:text> } </xsl:text>
 </xsl:template>
 
 <xsl:template match="cpp:id.ref" mode="cpp:html">

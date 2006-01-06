@@ -226,6 +226,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:text>*</xsl:text>
 </xsl:template>
 
+<xsl:template match="odl:type.ref[@id='struct']" mode="odl:color.type.ref">
+	<span style="{$odl:color.keyword}">struct</span>
+	<xsl:value-of select="' '"/>
+	<xsl:apply-templates select="odl:type.ref" mode="odl:color.type.ref"/>
+</xsl:template>
+
 <xsl:template match="odl:type.ref" mode="odl:color">
 	<xsl:apply-templates select="." mode="odl:color.type.ref"/>
 </xsl:template>

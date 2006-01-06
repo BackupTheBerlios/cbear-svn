@@ -35,6 +35,7 @@ namespace com
 class date_t: public policy::wrap<date_t, ::DATE> 
 {
 public:
+	typedef void *extra_result;
 	static const vartype_t vt = ::VT_DATE;
 };
 

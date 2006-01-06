@@ -36,6 +36,7 @@ template<class Type, class ValueType>
 class enum_t: public policy::wrap<Type, ValueType>
 {
 public:
+	typedef void *extra_result;
 	static const vartype_t vt = ::VT_INT;
 protected:
 	enum_t() {}

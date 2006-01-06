@@ -126,6 +126,7 @@ typedef range::helper<
 class bstr_t: public detail::bstr_helper
 {
 public:
+
 	typedef detail::bstr_helper helper_type;
 	typedef detail::bstr_wrap wrap_type;
 	typedef wrap_type::internal_policy internal_policy;
@@ -161,6 +162,8 @@ public:
 
 	const_iterator begin() const { return this->internal(); }
 	const_iterator end() const { return this->internal() + size(); }
+
+	typedef void *extra_result;
 };
 
 #pragma pack(pop)

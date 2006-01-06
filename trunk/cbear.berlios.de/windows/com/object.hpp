@@ -106,6 +106,8 @@ public:
 		boost::is_base_of< ::IDispatch, Interface>::value ?
 			::VT_DISPATCH: ::VT_UNKNOWN;
 
+	typedef void *extra_result;
+
 	static void *extra() 
 	{ 
 		return const_cast<uuid::internal_type*>(

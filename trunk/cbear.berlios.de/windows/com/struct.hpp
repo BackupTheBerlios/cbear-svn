@@ -45,13 +45,13 @@ public:
 	static irecordinfo record_info()
 	{
 		irecordinfo Result;
-		::GetRecordInfoFromGuids(
+		exception::throw_unless(::GetRecordInfoFromGuids(
 			Type::lib_uuid().internal(), 
 			1, 
 			0, 
 			0, 
 			uuid::of<ValueType>().internal(),
-			com::internal<out>(Result));
+			com::internal<out>(Result)));
 		return Result;
 	}
 

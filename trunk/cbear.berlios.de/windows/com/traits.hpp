@@ -64,7 +64,7 @@ struct class_traits
 
 	static const vartype_t vt = type::vt;
 
-	static void *extra() { return type::extra(); }
+	static typename type::extra_result extra() { return type::extra(); }
 
 	template<io_type Io>
 	struct io_traits;

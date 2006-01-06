@@ -157,6 +157,8 @@ public:
 
 	template<class Interface>
 	static const uuid &of() { return of_type<Interface>::create(); }
+
+	typedef void extra_result;
 };
 
 }

@@ -16,6 +16,7 @@
 							<element ref="odl:interface"/>
 							<element ref="odl:typedef"/>
 							<element ref="odl:coclass"/>
+							<element ref="odl:struct"/>
 						</choice>
 					</sequence>
 				</extension>
@@ -73,6 +74,7 @@
 				<choice>
 					<element ref="odl:struct"/>
 					<element ref="odl:enum"/>
+					<element ref="odl:type.ref"/>
 				</choice>
 			</sequence>
 			<attribute name="id" type="odl:id"/>

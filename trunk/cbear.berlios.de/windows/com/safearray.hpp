@@ -26,6 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <vector>
 
 #include <cbear.berlios.de/range/empty.hpp>
+#include <cbear.berlios.de/base/undefined.hpp>
 #include <cbear.berlios.de/windows/com/traits.hpp>
 #include <cbear.berlios.de/windows/com/double.hpp>
 #include <cbear.berlios.de/windows/com/exception.hpp>
@@ -124,6 +125,8 @@ template<class ValueType>
 class safearray_t: public detail::safearray_policy<ValueType>::helper_type
 {
 public:
+
+	typedef base::undefined extra_result;
 
 	typedef detail::safearray_policy<ValueType> internal_policy;
 	typedef typename internal_policy::helper_type helper_type;

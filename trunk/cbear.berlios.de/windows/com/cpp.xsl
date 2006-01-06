@@ -171,6 +171,22 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 						</id.ref>
 					</id.ref>
 				</id.ref>
+				<body>
+					<id.ref type="return">
+						<id.ref type="::">
+							<id.ref id="cbear_berlios_de"/>
+							<id.ref id="windows"/>
+							<id.ref id="com"/>
+							<id.ref id="uuid"/>
+							<id.ref id="wrap_ref" type="()">
+								<id.ref id="::">
+									<id.ref/>
+									<id.ref id="{concat('LIBID_', /odl:library/@id)}"/>
+								</id.ref>
+							</id.ref>
+						</id.ref>
+					</id.ref>
+				</body>
 			</method>
 		</access>
 	</class>
@@ -646,14 +662,39 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 						</id.ref>
 					</id.ref>
 					<body>
-						<id.ref type="return">
-							<id.ref>
-								<id.ref type="::">
-									<id.ref id="uuid"/>
-									<id.ref id="wrap_ref"/>
+						<id.ref type="declare" id="Result">
+							<id.ref type="static">
+								<id.ref type="const">
+									<id.ref type="::">
+										<id.ref id="uuid"/>
+										<id.ref id="internal_type"/>
+									</id.ref>
 								</id.ref>
-								<id.ref type="()">
-									<id.ref id="{concat('__uuidof(struct ', @id, ')')}"/>
+							</id.ref>
+							<id.ref type="{'{}'}">				
+								<xsl:variable 
+									name="uuid" select="odl:attribute[@id='uuid']/@value"/>
+								<id.ref id="{concat('0x', substring($uuid, 1, 8))}"/>
+								<id.ref id="{concat('0x', substring($uuid, 10, 4))}"/>
+								<id.ref id="{concat('0x', substring($uuid, 15, 4))}"/>
+								<id.ref type="{'{}'}">
+									<id.ref id="{concat('0x', substring($uuid, 20, 2))}"/>
+									<id.ref id="{concat('0x', substring($uuid, 22, 2))}"/>
+
+									<id.ref id="{concat('0x', substring($uuid, 25, 2))}"/>
+									<id.ref id="{concat('0x', substring($uuid, 27, 2))}"/>
+									<id.ref id="{concat('0x', substring($uuid, 29, 2))}"/>
+									<id.ref id="{concat('0x', substring($uuid, 31, 2))}"/>
+									<id.ref id="{concat('0x', substring($uuid, 33, 2))}"/>
+									<id.ref id="{concat('0x', substring($uuid, 35, 2))}"/>
+								</id.ref>
+							</id.ref>
+						</id.ref>
+						<id.ref type="return">
+							<id.ref type="::">
+								<id.ref id="uuid"/>
+								<id.ref id="wrap_ref" type="()">
+									<id.ref id="Result"/>
 								</id.ref>
 							</id.ref>
 						</id.ref>
@@ -662,11 +703,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			</access>
 		</class>
 	</template>
-<!--
-	template<> struct uuid::of_type< ::Interface>	\
-	{ static const uuid &create() { \
-	return uuid::wrap_ref(::IID_##Interface); } }; } } }
--->
 </xsl:template>
 
 <!-- libray -->

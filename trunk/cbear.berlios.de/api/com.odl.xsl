@@ -68,9 +68,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- @id -->
 
+<xsl:template match="@id" mode="api:com.odl.id">
+	<xsl:value-of select="translate(., './', '__')"/>
+</xsl:template>
+
 <xsl:template match="@id" mode="api:body">	
 	<xsl:attribute name="id">
-		<xsl:value-of select="translate(., './', '__')"/>
+		<xsl:apply-templates select="." mode="api:com.odl.id"/>
 	</xsl:attribute>
 </xsl:template>
 
@@ -131,6 +135,18 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		</type.ref>
 	</type.ref>
 </xsl:template>
+
+<!--
+<xsl:template match="api:struct" mode="api:body.type.ref">
+	<type.ref id="*">
+		<type.ref id="struct">
+			<type.ref>
+				<xsl:apply-templates select="@id" mode="api:body"/>
+			</type.ref>
+		</type.ref>
+	</type.ref>
+</xsl:template>
+-->
 
 <xsl:template match="/api:library" mode="api:body.type.ref">
 	<xsl:param name="id"/>
@@ -344,6 +360,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:apply-templates select="." mode="api:body.typedef"/>
 	</typedef>
 </xsl:template>
+
+<!--
+<xsl:template match="api:struct" mode="api:body">
+	<xsl:apply-templates select="." mode="api:body.typedef"/>
+</xsl:template>
+-->
 
 <!-- object -->
 
