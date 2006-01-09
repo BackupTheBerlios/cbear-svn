@@ -98,8 +98,6 @@ struct standard_policy
 	static void output(Stream &S, const type &This) { S << This; }
 };
 
-#pragma pack(push, 1)
-
 template<
 	class Type, 
 	class InternalType, 
@@ -224,8 +222,6 @@ public:
 	std_wrap() {}
 	explicit std_wrap(const T &X): wrap_base(X) {}
 };
-
-#pragma pack(pop)
 
 }
 }

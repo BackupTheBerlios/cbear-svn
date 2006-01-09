@@ -73,7 +73,7 @@ public:
 
 	static extra_result extra() 
 	{ 
-		BOOST_ASSERT(sizeof(Type)==sizeof(ValueType));
+		BOOST_STATIC_ASSERT(sizeof(Type)==sizeof(ValueType));
 		return record_info(); 
 	}
 
@@ -85,7 +85,7 @@ public:
 protected:
 	~struct_t() 
 	{
-		BOOST_ASSERT(sizeof(Type)==sizeof(ValueType));
+		BOOST_STATIC_ASSERT(sizeof(Type)==sizeof(ValueType));
 	}
 };
 
