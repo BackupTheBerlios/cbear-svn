@@ -133,6 +133,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- struct -->
 
+<xsl:template match="odl:object" mode="odl:cpp">
+	<object id="{@id}">
+		<xsl:apply-templates select="odl:type.ref" mode="odl:cpp"/>
+	</object>
+</xsl:template>
+
 <xsl:template match="odl:struct" mode="odl:cpp">
 	<xsl:variable name="name">
 		<id.ref id="{@id}"/>
@@ -188,6 +194,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					</id.ref>
 				</body>
 			</method>
+			<xsl:apply-templates select="odl:object" mode="odl:cpp"/>
 		</access>
 	</class>
 </xsl:template>
@@ -201,13 +208,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- type.ref -->
 
 <xsl:template match="odl:type.ref" mode="odl:cpp">
-	<id.ref id="{concat(
+	<id.ref type="::">
+		<id.ref/>
+		<id.ref id="cbear_berlios_de"/>
+		<id.ref id="windows"/>
+		<id.ref id="com"/>		
+		<id.ref id="{concat(
 		translate(@id, $txt:main.uppercase, $txt:main.lowercase), '_t')}">
-		<xsl:if test="odl:type.ref">
-			<xsl:attribute name="type">&lt;&gt;</xsl:attribute>
-			<xsl:apply-templates select="odl:type.ref" mode="odl:cpp"/>
-		</xsl:if>
-	</id.ref>
+			<xsl:if test="odl:type.ref">
+				<xsl:attribute name="type">&lt;&gt;</xsl:attribute>
+				<xsl:apply-templates select="odl:type.ref" mode="odl:cpp"/>
+			</xsl:if>
+		</id.ref>
+	</id.ref>		
 </xsl:template>
 
 <xsl:template 

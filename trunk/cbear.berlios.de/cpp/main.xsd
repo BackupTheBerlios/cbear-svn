@@ -119,6 +119,7 @@
 				<element ref="cpp:template"/>
 				<element ref="cpp:typedef"/>
 				<element ref="cpp:enum"/>
+				<element ref="cpp:object"/>
 			</choice>		
 			<attribute name="access" type="cpp:access"/>
 		</complexType>	
@@ -132,6 +133,16 @@
 			<enumeration value="protected"/>
 		</restriction>
 	</simpleType>
+
+	<!-- An object. -->
+	<element name="object">
+		<complexType>
+			<sequence>
+				<element ref="cpp:id.ref" minOccurs="1" maxOccurs="2"/>
+			</sequence>
+			<attribute name="id" type="cpp:id"/>
+		</complexType>
+	</element>
 
 	<!-- A method 
 

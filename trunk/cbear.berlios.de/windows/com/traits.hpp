@@ -43,6 +43,8 @@ namespace windows
 namespace com
 {
 
+using namespace windows;
+
 template<class Type>
 struct traits;
 

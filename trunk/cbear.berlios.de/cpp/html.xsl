@@ -489,6 +489,23 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:apply-templates select="cpp:body" mode="cpp:html"/>
 </xsl:template>
 
+<!-- object -->
+
+<xsl:template match="cpp:object" mode="cpp:html">
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">
+			<xsl:apply-templates select="cpp:id.ref[1]" mode="cpp:html.id.ref"/>
+			<xsl:value-of select="' '"/>
+			<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
+			<xsl:if test="cpp:id.ref[2]">
+				<xsl:text> = </xsl:text>
+				<xsl:apply-templates select="cpp:id.ref[2]" mode="cpp:html.id.ref"/>
+			</xsl:if>
+			<xsl:text>;</xsl:text>
+		</xsl:with-param>
+	</xsl:call-template>
+</xsl:template>
+
 <!-- access -->
 
 <xsl:template match="cpp:access" mode="txt:main.indent"/>

@@ -36,9 +36,15 @@ namespace com
 typedef object< ::IRecordInfo> irecordinfo;
 
 template<class Type, class ValueType>
-class struct_t: public policy::wrap<Type, ValueType>
+class struct_t //: public policy::wrap<Type, ValueType>
 {
 public:
+
+	class internal_policy
+	{
+	public:
+		typedef ValueType type;
+	};
 
 	static const vartype_t vt = ::VT_RECORD;
 
@@ -65,11 +71,22 @@ public:
 		irecordinfo R;
 	};
 
-	static extra_result extra() { return record_info(); }
+	static extra_result extra() 
+	{ 
+		BOOST_ASSERT(sizeof(Type)==sizeof(ValueType));
+		return record_info(); 
+	}
+
+	ValueType &internal()
+	{
+		return *base::safe_reinterpret_cast<ValueType *>(static_cast<Type *>(this));
+	}
 
 protected:
-	struct_t() {}
-	struct_t(ValueType X): policy::wrap<Type, ValueType>(X) {}
+	~struct_t() 
+	{
+		BOOST_ASSERT(sizeof(Type)==sizeof(ValueType));
+	}
 };
 
 }
