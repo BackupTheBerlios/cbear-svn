@@ -432,11 +432,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template 
 	match="odl:method[odl:parameter/odl:attribute/@id='retval']" 
 	mode="odl:cpp.implementation.assign">
-	<id.ref type="=">
+	<id.ref type="declare" id="_wrap_result">
 		<xsl:apply-templates 
-			select="odl:parameter[odl:attribute/@id='retval']" 
-			mode="odl:cpp.implementation.call.parameter"/>
+			select="odl:parameter[odl:attribute/@id='retval']/odl:type.ref" 
+			mode="odl:cpp"/>
 		<xsl:apply-templates select="." mode="odl:cpp.implementation.call"/>
+	</id.ref>
+	<id.ref type="::">
+		<id.ref id="base"/>
+		<id.ref type="()" id="swap">
+			<xsl:apply-templates 
+				select="odl:parameter[odl:attribute/@id='retval']" 
+				mode="odl:cpp.implementation.call.parameter"/>
+			<id.ref id="_wrap_result"/>
+		</id.ref>
 	</id.ref>
 </xsl:template>
 
@@ -756,6 +765,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<include href="cbear.berlios.de/windows/com/exception.hpp"/>
 			<include href="cbear.berlios.de/windows/com/implementation.hpp"/>
 			<include href="cbear.berlios.de/windows/com/coclass.hpp"/>
+			<include href="cbear.berlios.de/base/swap.hpp"/>
 			<namespace id="{translate(@id, '.\/', '___')}">
 				<xsl:apply-templates select="*" mode="odl:cpp"/>
 			</namespace>

@@ -45,7 +45,7 @@ namespace detail
 {
 
 template<class ValueType>
-class safearray_policy //: private policy::standard_policy< ::SAFEARRAY *>
+class safearray_policy: private policy::standard_policy< ::SAFEARRAY *>
 {
 public:
 	typedef safearray_t<ValueType> safearray_t;
@@ -54,7 +54,7 @@ public:
 	typedef typename standard_policy::pointer pointer;
 	typedef typename standard_policy::reference reference;
 
-	//using standard_policy::construct;
+	using standard_policy::swap;
 
 	static void construct(type &X) { X = type(); }
 
@@ -183,13 +183,6 @@ public:
 	{
 		if(this->size() <= I) throw std::exception("Wrong index");
 		return this->begin()[I];
-	}
-
-	void swap(safearray_t &B)
-	{
-		internal_type X = this->internal();
-		this->internal() = B.internal();
-		B.internal() = X;
 	}
 
 	void reset(std::size_t Size)

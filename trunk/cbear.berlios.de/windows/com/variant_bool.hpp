@@ -47,6 +47,7 @@ public:
 	using standard_policy::construct_copy;
 	using standard_policy::destroy;
 	using standard_policy::assign;
+	using standard_policy::swap;
 
 	typedef base::undefined pointer;
 	typedef base::undefined reference;

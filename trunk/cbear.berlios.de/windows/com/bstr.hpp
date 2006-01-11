@@ -45,6 +45,7 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 	typedef policy::standard_policy<type> standard_policy_type;
 
 	using standard_policy_type::construct;
+	using standard_policy_type::swap;
 
 	typedef standard_policy_type::value_type value_type;
 	typedef standard_policy_type::reference reference;
