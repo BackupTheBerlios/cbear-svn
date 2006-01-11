@@ -24,8 +24,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_BSTR_HPP_INCLUDED
 
 #include <cbear.berlios.de/range/equal.hpp>
-#include <cbear.berlios.de/windows/com/traits.hpp>
 #include <cbear.berlios.de/range/iterator_range.hpp>
+#include <cbear.berlios.de/base/swap.hpp>
+#include <cbear.berlios.de/windows/com/traits.hpp>
 
 namespace cbear_berlios_de
 {
@@ -94,20 +95,10 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 	{
 		return range::equal(make_sub_range(A), make_sub_range(B));
 	}
-	/*
-	static bool less(const type &A, const type &B)
-	{
-		return A<B;
-	}
-	*/
 
 	typedef standard_policy_type::value_type value_type;
 	typedef standard_policy_type::reference reference;
 	typedef standard_policy_type::pointer pointer;
-
-	/*
-	static reference reference_of(const type &This) { return *This; }
-	*/
 
 	using standard_policy_type::output;
 };
@@ -132,6 +123,8 @@ public:
 	typedef detail::bstr_wrap wrap_type;
 	typedef wrap_type::internal_policy internal_policy;
 
+	typedef base::move_t<bstr_t> move_type;
+
 	typedef internal_policy::value_type value_type;
 	typedef internal_policy::iterator iterator;
 	typedef internal_policy::iterator_range iterator_range;
@@ -149,6 +142,17 @@ public:
 	bstr_t(const std::basic_string<wchar_t> &X): 
 		helper_type(const_iterator_range(X.c_str(), (size_type)X.size()), 0)
 	{
+	}
+
+	bstr_t(const move_type &C)
+	{
+		C.swap(*this);
+	}
+
+	bstr_t &operator=(const move_type &C)
+	{
+		C.swap(*this);
+		return *this;
 	}
 
 	wchar_t *c_str() const { return this->internal(); }

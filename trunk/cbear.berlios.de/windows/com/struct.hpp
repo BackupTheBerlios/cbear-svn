@@ -36,7 +36,7 @@ namespace com
 typedef object< ::IRecordInfo> irecordinfo;
 
 template<class Type, class ValueType>
-class struct_t //: public policy::wrap<Type, ValueType>
+class struct_t
 {
 public:
 
@@ -45,6 +45,8 @@ public:
 	public:
 		typedef ValueType type;
 	};
+
+	typedef Type move_type;
 
 	static const vartype_t vt = ::VT_RECORD;
 

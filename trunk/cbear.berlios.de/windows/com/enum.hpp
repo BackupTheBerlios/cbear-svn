@@ -37,6 +37,7 @@ class enum_t: public policy::wrap<Type, ValueType>
 {
 public:
 	typedef void *extra_result;
+	typedef Type move_type;
 	static const vartype_t vt = ::VT_INT;
 protected:
 	enum_t() {}

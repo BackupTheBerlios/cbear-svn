@@ -72,6 +72,7 @@ public:
 	typedef void *extra_result;
 	static const vartype_t vt = ::VT_BOOL;
 	typedef detail::variant_bool_wrap::internal_policy internal_policy;
+	typedef variant_bool_t move_type;
 	variant_bool_t() {}
 	explicit variant_bool_t(bool X): detail::variant_bool_wrap(X) {}
 	operator bool() const { return internal_policy::cast(this->internal()); }

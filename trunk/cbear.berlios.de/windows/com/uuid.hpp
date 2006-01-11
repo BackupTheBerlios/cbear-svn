@@ -106,6 +106,8 @@ public:
 
 	static const vartype_t vt = ::VT_EMPTY;
 
+	typedef uuid move_type;
+
 	uuid() {}
 
 	typedef boost::uint32_t data1_type;

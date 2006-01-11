@@ -263,7 +263,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	match="odl:parameter[odl:attribute/@id='retval']" 
 	mode="odl:cpp.method.result">
 	<id.ref id="_result" type="declare">
-		<xsl:apply-templates select="odl:type.ref" mode="odl:cpp"/>
+		<id.ref type="::">
+			<id.ref type="&lt;&gt;" id="traits">
+				<xsl:apply-templates select="odl:type.ref" mode="odl:cpp"/>
+			</id.ref>
+			<id.ref id="move_type"/>
+		</id.ref>
 	</id.ref>
 </xsl:template>
 
@@ -352,8 +357,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template 
 	match="odl:method[odl:parameter/odl:attribute/@id='retval']" 
 	mode="odl:cpp.method.id.ref">
-	<xsl:apply-templates select="
-		odl:parameter[odl:attribute/@id='retval']/odl:type.ref" mode="odl:cpp"/>
+	<id.ref type="::">
+		<id.ref id="traits" type="&lt;&gt;">
+			<xsl:apply-templates 
+				select="odl:parameter[odl:attribute/@id='retval']/odl:type.ref"
+				mode="odl:cpp"/>
+		</id.ref>
+		<id.ref id="move_type"/>
+	</id.ref>
 </xsl:template>
 
 <xsl:template match="odl:method" mode="odl:cpp.method.id">
@@ -432,20 +443,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template 
 	match="odl:method[odl:parameter/odl:attribute/@id='retval']" 
 	mode="odl:cpp.implementation.assign">
-	<id.ref type="declare" id="_wrap_result">
+	<id.ref type="=">
 		<xsl:apply-templates 
-			select="odl:parameter[odl:attribute/@id='retval']/odl:type.ref" 
-			mode="odl:cpp"/>
+			select="odl:parameter[odl:attribute/@id='retval']" 
+			mode="odl:cpp.implementation.call.parameter"/>
 		<xsl:apply-templates select="." mode="odl:cpp.implementation.call"/>
-	</id.ref>
-	<id.ref type="::">
-		<id.ref id="base"/>
-		<id.ref type="()" id="swap">
-			<xsl:apply-templates 
-				select="odl:parameter[odl:attribute/@id='retval']" 
-				mode="odl:cpp.implementation.call.parameter"/>
-			<id.ref id="_wrap_result"/>
-		</id.ref>
 	</id.ref>
 </xsl:template>
 

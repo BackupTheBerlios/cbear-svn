@@ -24,6 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_TRAITS_HPP_INCLUDED
 
 #include <cbear.berlios.de/base/undefined.hpp>
+#include <cbear.berlios.de/base/swap.hpp>
 #include <cbear.berlios.de/windows/message_box.hpp>
 #include <cbear.berlios.de/policy/main.hpp>
 
@@ -63,6 +64,8 @@ struct class_traits
 	typedef Type type;
 	typedef typename type::internal_policy internal_policy;
 	typedef typename internal_policy::type internal_type;
+
+	typedef typename type::move_type move_type;
 
 	static const vartype_t vt = type::vt;
 
@@ -111,7 +114,8 @@ struct class_traits
 
 		static internal_result internal(wrap_result X) 
 		{
-			X = type();
+			type Temp;
+			Temp.swap(X);
 			return &X.internal(); 
 		}
 		static wrap_result wrap(internal_result &X) 
@@ -129,6 +133,8 @@ struct default_traits
 	typedef policy::standard_policy<type> internal_policy;
 
 	typedef type internal_type;
+
+	typedef type move_type;
 
 	static const vartype_t vt = Vt;
 
@@ -214,6 +220,23 @@ template<io_type Io, class Type>
 typename internal_result<Io, Type>::type internal(Type &X)
 {
 	return io_traits<Io, Type>::internal(X);
+}
+
+template<io_type Io, class Type>
+struct internal_result<Io, base::move_t<Type> >: internal_result<Io, Type>
+{ 
+};
+
+template<io_type Io, class Type>
+typename internal_result<Io, Type>::type internal(const base::move_t<Type> &X)
+{
+	return io_traits<Io, Type>::internal(X.get());
+}
+
+template<io_type Io, class Type>
+typename internal_result<Io, Type>::type internal(base::move_t<Type> &X)
+{
+	return io_traits<Io, Type>::internal(X.get());
 }
 
 template<class Type>

@@ -180,6 +180,7 @@ public:
 	typedef Interface interface_type;
 	typedef interface_type *internal_type;
 	typedef object_policy<interface_type> internal_policy;
+	typedef base::move_t<object> move_type;
 
 	object() {}
 
@@ -187,6 +188,11 @@ public:
 	object(const object<Interface1> &P)
 	{
 		internal_policy::construct_copy(this->internal(), P.internal());
+	}
+
+	object(const move_type &C)
+	{
+		C.swap(*this);
 	}
 
 	explicit object(internal_type X)

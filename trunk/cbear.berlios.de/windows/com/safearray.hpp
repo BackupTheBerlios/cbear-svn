@@ -131,6 +131,8 @@ public:
 	typedef detail::safearray_policy<ValueType> internal_policy;
 	typedef typename internal_policy::helper_type helper_type;
 
+	typedef base::move_t<safearray_t> move_type;
+
 	typedef typename helper_type::size_type size_type;
 	typedef typename helper_type::iterator iterator;
 	typedef typename helper_type::const_iterator const_iterator;
@@ -162,6 +164,14 @@ public:
 
 	explicit safearray_t(const std::vector<ValueType> &C): helper_type(C, 0)
 	{
+	}
+
+	safearray_t(const move_type &C) { C.swap(*this); }
+
+	safearray_t &operator=(const move_type &C)
+	{
+		C.swap(*this);
+		return *this;
 	}
 
 	bool empty() const { return internal_policy::empty(this->internal()); }
