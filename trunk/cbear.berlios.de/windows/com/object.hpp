@@ -190,8 +190,10 @@ public:
 		internal_policy::construct_copy(this->internal(), P.internal());
 	}
 
-	object(const move_type &C) { C.swap(*this); }
-	object &operator=(const move_type &C) { C.swap(*this); }
+	/*
+	object(const base::move_t<object> &C) { C.swap(*this); }
+	object &operator=(const base::move_t<object> &C) { C.swap(*this); }
+	*/
 
 	explicit object(internal_type X)
 	{
