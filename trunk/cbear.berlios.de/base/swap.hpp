@@ -55,6 +55,7 @@ public:
 	friend void swap(T &A, const move_t &B) { base::swap(A, B.A); }
 
 	T &get() const { return this->A; }
+	T &operator*() const { return this->A; }
 	T *operator->() const { return &this->A; }
 
 private:
@@ -65,7 +66,7 @@ template<class T>
 move_t<T> move(T &B) { return move_t<T>(B); }
 
 template<class T>
-move_t<T> move_copy(const T &B) { T BB(B); return move_t<T>(BB); }
+move_t<T> move_copy(const T &B) { T Copy(B); return move_t<T>(Copy); }
 
 }
 }
