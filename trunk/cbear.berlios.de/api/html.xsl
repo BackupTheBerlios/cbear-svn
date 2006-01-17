@@ -36,130 +36,49 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	doctype-public="-//W3C//DTD XHTML 1.1//EN"
 	doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
 
-<xsl:template name="api:name">
-	<span class="node">
-		<xsl:value-of select="concat(local-name(), ' ')"/>
-	</span>
+<xsl:template match="*" mode="api:html"/>
+
+<xsl:template match="api:comment" mode="api:html">
+	<div class="comment"><xsl:copy-of select="*|text()"/></div>
 </xsl:template>
 
-<xsl:template match="@*" mode="api:body"/>
-
-<xsl:template match="@id" mode="api:body">
-	<span class="id"><xsl:value-of select="concat(., ' ')"/></span>
+<xsl:template match="api:enum" mode="api:html">
+	<div>
+		<hr/>		
+		<h2>The <span class="id"><xsl:value-of select="@id"/></span> Enumeration</h2>
+		<xsl:apply-templates select="*" mode="api:html"/>
+	</div>
 </xsl:template>
 
-<xsl:template match="@value" mode="api:body">
-	<span class="constant"><xsl:value-of select="concat(., ' ')"/></span>
+<xsl:template match="api:struct" mode="api:html">
+	<div>
+		<hr/>		
+		<h2>The <span class="id"><xsl:value-of select="@id"/></span> Structure</h2>
+		<xsl:apply-templates select="*" mode="api:html"/>
+	</div>
 </xsl:template>
 
-<xsl:template match="@uuid" mode="api:body">
-	<span class="constant"><xsl:value-of select="concat('{', ., '} ')"/></span>
+<xsl:template match="api:interface" mode="api:html">
+	<div>
+		<hr/>		
+		<h2>The <span class="id"><xsl:value-of select="@id"/></span> Interface</h2>
+		<xsl:apply-templates select="*" mode="api:html"/>
+	</div>
 </xsl:template>
 
-<xsl:template match="api:public" mode="api:body">
-	<li class="comment-public">
-		<xsl:copy-of select="."/>
-	</li>
-</xsl:template>
-
-<xsl:template match="api:private" mode="api:body">
-	<li class="comment-private">
-		<xsl:copy-of select="."/>
-	</li>
-</xsl:template>
-
-<xsl:template match="api:comment" mode="api:body">
-	<xsl:apply-templates select="*" mode="api:body"/>
-</xsl:template>
-
-<xsl:template match="text()" mode="api:body">
-	<xsl:if test="normalize-space()!=''">
-		<li class="text">
-			<xsl:value-of select="."/>
-		</li>
-	</xsl:if>
-</xsl:template>
-
-<xsl:template match="api:using" mode="api:body">
-	<li>
-		<div class="header">
-			<xsl:call-template name="api:name"/>
-			<xsl:apply-templates select="@id" mode="api:body"/>
-			<xsl:text> = </xsl:text>
-			<a href="{@href}">
-				<xsl:value-of select="document(@href)/api:library/@id"/>
-			</a>
-		</div>
-	</li>
-</xsl:template>
-
-<xsl:template match="api:type.ref" mode="api:body">
-	<li>
-		<div class="header">
-			<xsl:call-template name="api:name"/>
-			<xsl:choose>
-				<xsl:when test="@library">
-					<xsl:variable name="library" select="@library"/>
-					<a href="{concat(
-						/api:library/api:using[@id=$library]/@href, '#', @id)}">
-						<xsl:value-of select="concat(@library, ':', @id)"/>
-					</a>
-				</xsl:when>
-				<xsl:otherwise>
-					<a href="{concat('#', @id)}"><xsl:value-of select="@id"/></a>
-				</xsl:otherwise>
-			</xsl:choose>
-		</div>
-		<xsl:if test="*|text()">
-			<ul>
-				<xsl:apply-templates select="*|text()" mode="api:body"/>
-			</ul>
-		</xsl:if>
-	</li>
-</xsl:template>
-
-<xsl:template name="api:id">
-	<xsl:param name="dot" select="false()"/>
-	<xsl:if test=". != /">		
-		<xsl:for-each select="..">
-			<xsl:call-template name="api:id">
-				<xsl:with-param name="dot" select="true()"/>
-			</xsl:call-template>
-		</xsl:for-each>
-		<xsl:value-of select="@id"/>
-		<xsl:if test="boolean($dot)">
-			<xsl:text>.</xsl:text>
-		</xsl:if>
-	</xsl:if>
-</xsl:template>
-
-<xsl:template match="*" mode="api:body">
-	<xsl:variable name="id">
-		<xsl:if test="not(ancestor-or-self::*[not(@id)])">
-			<xsl:call-template name="api:id"/>
-		</xsl:if>
-	</xsl:variable>
-	<li id="{$id}">
-		<xsl:if test="$id != ''">
-			<xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
-		</xsl:if>
-		<div class="header">
-			<xsl:call-template name="api:name"/>
-			<xsl:apply-templates select="@*" mode="api:body"/>
-		</div>
-		<xsl:if test="*|text()">
-			<ul>
-				<xsl:apply-templates select="*|text()" mode="api:body"/>
-			</ul>
-		</xsl:if>
-	</li>
-</xsl:template>
-
-<xsl:template match="/api:library">
+<xsl:template match="api:library" mode="api:html">
 	<html>
 		<head>
 			<style type="text/css">
 body { font-family: monospace; }
+
+/* 	'hr'
+	For more information about styling 'hr' see http://www.saila.com/usage/tips/defn.shtml?hr 
+*/
+
+/* For Internet Explorer */
+hr { width: 100%; height: 1px; color: black; border: none; }
+
 ul 
 { 
 	list-style-type: disc; 
@@ -175,16 +94,18 @@ ul
 .constant { color: green; }
 .node { color: black; }
 .id { color: blue; }
-.comment-public { color: red; font-style: italic; }
-.comment-private { color: magenta; font-style: italic; }
+.comment { font-style: italic; }
 			</style>
 		</head>
 		<body>
-			<ul>
-				<xsl:apply-templates select="." mode="api:body"/>
-			</ul>
+			<h1>The <span class="id"><xsl:value-of select="@id"/></span> Library</h1>
+			<xsl:apply-templates select="*" mode="api:html"/>
 		</body>
-	</html>
+	</html>	
+</xsl:template>
+
+<xsl:template match="api:library">
+	<xsl:apply-templates select="." mode="api:html"/>
 </xsl:template>
 
 </xsl:stylesheet>
