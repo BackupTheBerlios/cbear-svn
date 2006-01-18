@@ -45,4 +45,8 @@ class traits
 	<section href="object.xml"/>
 	<section href="implementation.xml"/>
 	<section href="odl.xml"/>
+	<section name="Tasks">
+		<section name="Scoped Library Initialization"/>
+		<section name="Garbage Collection"/>
+	</section>
 </section>
