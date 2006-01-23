@@ -44,6 +44,10 @@ public:
 	{
 	public:
 		typedef ValueType type;
+		static void construct(type &X)
+		{
+			new(&X) struct_t();
+		}
 	};
 
 	typedef Type move_type;
@@ -82,6 +86,11 @@ public:
 	ValueType &internal()
 	{
 		return *base::safe_reinterpret_cast<ValueType *>(static_cast<Type *>(this));
+	}
+
+	static Type &wrap_ref(ValueType &X)
+	{
+		return *base::safe_reinterpret_cast<Type *>(static_cast<ValueType *>(&X));
 	}
 
 protected:

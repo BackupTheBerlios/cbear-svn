@@ -195,6 +195,32 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				</body>
 			</method>
 			<xsl:apply-templates select="odl:object" mode="odl:cpp"/>
+			<method id="swap">
+				<id.ref id="void"/>
+				<parameter id="X">
+					<id.ref type="&amp;">
+						<xsl:copy-of select="$name"/>
+					</id.ref>
+				</parameter>
+				<body>
+					<xsl:for-each select="odl:object">
+						<id.ref type="::">
+							<id.ref id="cbear_berlios_de"/>
+							<id.ref id="base"/>
+							<id.ref type="()" id="swap">
+								<id.ref type=".">
+									<id.ref id="X"/>
+									<id.ref id="{@id}"/>
+								</id.ref>
+								<id.ref type="-&gt;">
+									<id.ref id="this"/>
+									<id.ref id="{@id}"/>
+								</id.ref>
+							</id.ref>
+						</id.ref>
+					</xsl:for-each>
+				</body>
+			</method>
 		</access>
 	</class>
 </xsl:template>
