@@ -65,16 +65,7 @@ public:
 		{
 			exception::throw_unless(::GetRecordInfoFromTypeInfo(
 				Type::library_info::typelib().gettypeinfoofguid<ValueType>().internal(),
-				com::internal<out>(record_info)));			
-			/*
-			exception::throw_unless(::GetRecordInfoFromGuids(
-				Type::lib_uuid().internal(), 
-				1, 
-				0, 
-				0, 
-				uuid::of<ValueType>().internal(),
 				com::internal<out>(record_info)));
-				*/
 		}
 	};
 

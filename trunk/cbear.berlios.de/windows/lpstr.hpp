@@ -60,6 +60,11 @@ typedef basic_lpstr<const wchar_t_> lpcwstr_t;
 template<class Char>
 basic_lpstr<Char> make_lpstr(Char *P) { return basic_lpstr<Char>(P); }
 
+typedef OLECHAR olechar_t;
+
+typedef basic_lpstr<olechar_t> lpolestr_t;
+typedef basic_lpstr<const olechar_t> lpcolestr_t;
+
 }
 }
 

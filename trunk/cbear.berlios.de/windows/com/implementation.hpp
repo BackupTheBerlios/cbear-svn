@@ -24,7 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_IMPLEMENTATION_HPP_INCLUDED
 
 // std::map
-#include <map>                                    
+// #include <map>                                    
 
 // boost::mutex
 #include <boost/thread/mutex.hpp>
@@ -32,6 +32,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <boost/thread/condition.hpp>
 
 #include <cbear.berlios.de/atomic/main.hpp>
+#include <cbear.berlios.de/windows/bool.hpp>
 #include <cbear.berlios.de/windows/com/hresult.hpp>
 #include <cbear.berlios.de/windows/com/object.hpp>
 #include <cbear.berlios.de/windows/com/uint.hpp>
@@ -168,13 +169,16 @@ private:
 	implementation &operator=(const implementation &);
 };
 
+/*
 typedef LPOLESTR lpolestr_t;
 typedef DISPID dispid_t;
 typedef WORD word_t;
 typedef DISPPARAMS dispparams_t;
 typedef VARIANT variant_t;
 typedef EXCEPINFO excepinfo_t;
+*/
 
+/*
 template<class Base>
 class implementation<Base, ::IDispatch>:
 	public implementation_base<Base, ::IDispatch, ::IUnknown>
@@ -256,6 +260,7 @@ private:
 };
 
 typedef BOOL bool_t;
+*/
 
 template<class Base>
 class implementation<Base, ::IClassFactory>:
@@ -271,9 +276,9 @@ public:
 		if(Outer) return hresult::class_e_noaggregation;
 		return QueryInterface(Uuid, ppObject);
 	}
-	hresult::internal_type __stdcall LockServer(bool_t fLock)
+	hresult::internal_type __stdcall LockServer(bool_t::internal_type fLock)
 	{
-		if(fLock!=FALSE) this->AddRef(); else this->Release();
+		if(fLock) this->AddRef(); else this->Release();
 		return hresult::s_ok;
 	}
 };

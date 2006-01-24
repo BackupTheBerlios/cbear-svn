@@ -168,6 +168,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<typedef id="library_info">
 				<id.ref id="info"/>
 			</typedef>
+			<!--
 			<method id="lib_uuid">
 				<static/>
 				<id.ref type="&amp;">
@@ -197,6 +198,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					</id.ref>
 				</body>
 			</method>
+			-->
 			<xsl:apply-templates select="odl:object" mode="odl:cpp"/>
 			<method id="swap">
 				<id.ref id="void"/>
@@ -797,6 +799,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<include href="cbear.berlios.de/windows/com/exception.hpp"/>
 			<include href="cbear.berlios.de/windows/com/implementation.hpp"/>
 			<include href="cbear.berlios.de/windows/com/coclass.hpp"/>
+			<include href="cbear.berlios.de/windows/com/idispatch.hpp"/>
 			<include href="cbear.berlios.de/base/swap.hpp"/>
 			<namespace id="{translate(@id, '.\/', '___')}">
 				<class>
