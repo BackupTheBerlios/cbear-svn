@@ -74,11 +74,32 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</div>
 </xsl:template>
 
+<!-- * -->
+	
 <xsl:template match="api:*" mode="api:html.link.external">
 	<a href="{concat(/api:library/@id,'.html#', @id)}">
 		<xsl:value-of select="@id"/>
 	</a>
 </xsl:template>
+
+<xsl:template match="api:*" mode="api:html.table">
+	<xsl:attribute name="id">
+		<xsl:apply-templates select="." mode="api:html.id"/>
+	</xsl:attribute>
+	<li>
+		<a href="{concat('#', @id)}">
+			<xsl:apply-templates select="." mode="api:html.name"/>
+		</a>
+	</li>
+</xsl:template>
+	
+<xsl:template match="api:*" mode="api:html.link.id">
+	<a href="{concat('#', @id)}">
+		<xsl:value-of select="@id"/>
+	</a>
+</xsl:template>	
+
+<!-- pragma -->
 
 <xsl:template match="api:pragma" mode="api:html"/>	
 	
@@ -88,12 +109,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="api:comment" mode="api:html">
 	<div class="comment"><xsl:copy-of select="*|text()"/></div>
-</xsl:template>
-
-<xsl:template match="api:*" mode="api:html.link.id">
-	<a href="{concat('#', @id)}">
-		<xsl:value-of select="@id"/>
-	</a>
 </xsl:template>
 
 <!-- type.ref -->
@@ -156,19 +171,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:apply-templates select="." mode="api:html.parent"/>
 </xsl:template>
 	
-<xsl:template match="api:object/api:type.ref" mode="api:html">
+<xsl:template match="api:library/api:object/api:type.ref" mode="api:html">
 	<xsl:apply-templates select="." mode="api:html.parent"/>
-</xsl:template>
-
-<xsl:template match="api:*" mode="api:html.table">
-	<xsl:attribute name="id">
-		<xsl:apply-templates select="." mode="api:html.id"/>
-	</xsl:attribute>	
-	<li>
-		<a href="{concat('#', @id)}">
-			<xsl:apply-templates select="." mode="api:html.name"/>
-		</a>
-	</li>		
 </xsl:template>
 
 <!-- get, set -->
@@ -269,6 +273,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="api:interface" mode="api:html.type">
 	<xsl:value-of select="'Interface'"/>
 </xsl:template>
+
+<!-- object -->
+	
+<xsl:template match="api:struct/api:object" mode="api:html.name">
+	<xsl:apply-templates select="api:type.ref" mode="api:html.link"/>
+	<xsl:value-of select="' '"/>
+	<span class="id">
+		<xsl:value-of select="@id"/>
+	</span>
+</xsl:template>	
 	
 <xsl:template match="api:object" mode="api:html.type">
 	<xsl:value-of select="'Object'"/>
