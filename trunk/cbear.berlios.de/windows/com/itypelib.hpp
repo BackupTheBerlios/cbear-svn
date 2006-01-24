@@ -25,6 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <boost/filesystem/path.hpp>
 
+#include <cbear.berlios.de/windows/hmodule.hpp>
 #include <cbear.berlios.de/windows/com/object.hpp>
 #include <cbear.berlios.de/windows/com/exception.hpp>
 #include <cbear.berlios.de/windows/com/lcid.hpp>
@@ -174,8 +175,7 @@ protected:
 	scoped_typelib(const std::wstring &Name) 
 	{ 
 		boost::filesystem::path ThisFileName(
-			windows::hmodule().file_name<Windows::char_t>(),
-			::boost::filesystem::native);
+			hmodule().file_name<char_t>(), ::boost::filesystem::native);
 		boost::filesystem::path Path = ThisFileName.branch_path();
 		boost::filesystem::path TlbFileName = 
 			Path / locale::cast<std::string>(Name + L".tlb");
