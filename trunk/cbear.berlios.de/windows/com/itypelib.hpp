@@ -23,6 +23,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_ITYPELIB_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_ITYPELIB_HPP_INCLUDED
 
+#include <boost/filesystem/path.hpp>
+
 #include <cbear.berlios.de/windows/com/object.hpp>
 #include <cbear.berlios.de/windows/com/exception.hpp>
 #include <cbear.berlios.de/windows/com/lcid.hpp>
@@ -101,7 +103,7 @@ class object_content<Base, ::ITypeLib>: public object_content<Base, ::IUnknown>
 {
 public:
 	template<class Interface>
-	itypeinfo GetTypeInfoOfGuid() const
+	itypeinfo gettypeinfoofguid() const
 	{
 		itypeinfo Result;
 		exception::throw_unless(this->internal_reference().GetTypeInfoOfGuid(
@@ -109,7 +111,7 @@ public:
 			com::internal<out>(Result)));
 		return Result;
 	}
-	tlibattr_t GetLibAttr() const 
+	tlibattr_t getlibattr() const 
 	{ 
 		tlibattr_t::internal_type *Temp;
 		exception::throw_unless(this->internal_reference().GetLibAttr(&Temp));
@@ -121,7 +123,7 @@ public:
 
 typedef object< ::ITypeLib> itypelib;
 
-inline itypelib load_type_lib(const lpcwstr_t File)
+inline itypelib loadtypelib(const lpcwstr_t File)
 {
 	itypelib Result;
 	com::exception::throw_unless(::LoadTypeLib(
@@ -162,6 +164,30 @@ inline void un_register_type_lib(const tlibattr_t &LibAttr)
 		LibAttr.lcid(),
 		LibAttr.syskind());
 }
+
+template<class T>
+class scoped_typelib
+{
+public:
+	static const itypelib &typelib() { return TypeLib; }
+protected:
+	scoped_typelib(const std::wstring &Name) 
+	{ 
+		boost::filesystem::path ThisFileName(
+			windows::hmodule().file_name<Windows::char_t>(),
+			::boost::filesystem::native);
+		boost::filesystem::path Path = ThisFileName.branch_path();
+		boost::filesystem::path TlbFileName = 
+			Path / locale::cast<std::string>(Name + L".tlb");
+		TypeLib = loadtypelib(
+			locale::cast<std::wstring>(TlbFileName.native_file_string()));
+	}
+private:
+	static itypelib TypeLib;
+};
+
+template<class T>
+itypelib scoped_typelib<T>::TypeLib;
 
 }
 }

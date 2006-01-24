@@ -165,6 +165,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:copy-of select="$name"/>
 		<access access="public">
 			<xsl:copy-of select="$base"/>
+			<typedef id="library_info">
+				<id.ref id="info"/>
+			</typedef>
 			<method id="lib_uuid">
 				<static/>
 				<id.ref type="&amp;">
@@ -205,6 +208,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<body>
 					<xsl:for-each select="odl:object">
 						<id.ref type="::">
+							<id.ref/>
 							<id.ref id="cbear_berlios_de"/>
 							<id.ref id="base"/>
 							<id.ref type="()" id="swap">
@@ -795,7 +799,48 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<include href="cbear.berlios.de/windows/com/coclass.hpp"/>
 			<include href="cbear.berlios.de/base/swap.hpp"/>
 			<namespace id="{translate(@id, '.\/', '___')}">
+				<class>
+					<id.ref id="info"/>
+				</class>
 				<xsl:apply-templates select="*" mode="odl:cpp"/>
+				<class>
+					<id.ref id="info"/>
+					<access access="public">
+						<xsl:variable name="parent">
+							<id.ref type="::">
+								<id.ref/>
+								<id.ref id="cbear_berlios_de"/>
+								<id.ref id="windows"/>
+								<id.ref id="com"/>
+								<id.ref type="&lt;&gt;" id="scoped_typelib">
+									<id.ref id="info"/>
+								</id.ref>
+							</id.ref>
+						</xsl:variable>
+						<xsl:copy-of select="$parent"/>
+						<xsl:for-each select="odl:typedef/odl:struct">
+							<id.ref type="::">
+								<id.ref id="{@id}"/>
+								<id.ref id="scoped_info"/>
+							</id.ref>
+						</xsl:for-each>
+						<method>
+							<id.ref id="info"/>
+							<ctor>
+								<id.ref>
+									<xsl:copy-of select="$parent"/>
+									<id.ref type="()">
+										<id.ref 
+											type="value" 
+											id="{concat(
+												'L&#x22;', @id, '&#x22;')}"/>
+									</id.ref>
+								</id.ref>
+							</ctor>
+							<body/>
+						</method>
+					</access>
+				</class>
 			</namespace>
 			<namespace id="cbear_berlios_de">
 				<namespace id="windows">

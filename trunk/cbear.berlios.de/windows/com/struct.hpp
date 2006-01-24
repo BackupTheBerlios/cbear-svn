@@ -54,33 +54,34 @@ public:
 
 	static const vartype_t vt = ::VT_RECORD;
 
-	static irecordinfo record_info()
-	{
-		irecordinfo Result;
-		exception::throw_unless(::GetRecordInfoFromGuids(
-			Type::lib_uuid().internal(), 
-			1, 
-			0, 
-			0, 
-			uuid::of<ValueType>().internal(),
-			com::internal<out>(Result)));
-		return Result;
-	}
+	typedef void *extra_result;
 
-	class extra_result: boost::noncopyable
+	static irecordinfo record_info;
+
+	class scoped_info
 	{
 	public:
-		operator void*() const { return this->R.internal(); }
-	private:
-		extra_result(const irecordinfo &R): R(R) {}
-		friend class struct_t;
-		irecordinfo R;
+		scoped_info()
+		{
+			exception::throw_unless(::GetRecordInfoFromTypeInfo(
+				Type::library_info::typelib().gettypeinfoofguid<ValueType>().internal(),
+				com::internal<out>(record_info)));			
+			/*
+			exception::throw_unless(::GetRecordInfoFromGuids(
+				Type::lib_uuid().internal(), 
+				1, 
+				0, 
+				0, 
+				uuid::of<ValueType>().internal(),
+				com::internal<out>(record_info)));
+				*/
+		}
 	};
 
 	static extra_result extra() 
 	{ 
 		BOOST_STATIC_ASSERT(sizeof(Type)==sizeof(ValueType));
-		return record_info(); 
+		return record_info.internal();
 	}
 
 	ValueType &internal()
@@ -99,6 +100,9 @@ protected:
 		BOOST_STATIC_ASSERT(sizeof(Type)==sizeof(ValueType));
 	}
 };
+
+template<class Type, class ValueType>
+irecordinfo struct_t<Type, ValueType>::record_info;
 
 }
 }

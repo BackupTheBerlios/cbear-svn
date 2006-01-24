@@ -191,7 +191,7 @@ public:
 		{
 			try
 			{
-				this->TypeInfo = R.front().GetTypeInfoOfGuid<Base>();
+				this->TypeInfo = R.front().gettypeinfoofguid<Base>();
 				return;
 			}
 			catch(com::exception &)

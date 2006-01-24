@@ -251,6 +251,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:text> } </xsl:text>
 </xsl:template>
 
+<xsl:template match="cpp:id.ref[@type='~']" mode="cpp:html.id.ref">
+	<xsl:text>~</xsl:text>
+	<xsl:apply-templates select="." mode="cpp:html.id.ref.type"/>
+</xsl:template>
+
 <xsl:template match="cpp:id.ref" mode="cpp:html">
 	<xsl:apply-templates select="." mode="cpp:html.id.ref"/>	
 </xsl:template>
@@ -536,24 +541,27 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<span style="{$cpp:html.keyword}">class</span>
 			<xsl:value-of select="' '"/>
 			<xsl:apply-templates select="cpp:id.ref" mode="cpp:html.id.ref"/>
+			<xsl:if test="not(cpp:access)">;</xsl:if>
 			<xsl:if test="cpp:access/cpp:id.ref">:</xsl:if>
 		</xsl:with-param>
 	</xsl:call-template>
-	<xsl:for-each select="cpp:access/cpp:id.ref">
-		<xsl:call-template name="txt:main.line">
-			<xsl:with-param name="text">
-				<span style="{$cpp:html.keyword}">
-					<xsl:value-of select="../@access"/>
-				</span>
-				<xsl:value-of select="' '"/>
-				<xsl:apply-templates select="." mode="cpp:html.id.ref"/>
-				<xsl:if test="position()!=last()">,</xsl:if>
-			</xsl:with-param>
+	<xsl:if test="cpp:access">
+		<xsl:for-each select="cpp:access/cpp:id.ref">
+			<xsl:call-template name="txt:main.line">
+				<xsl:with-param name="text">
+					<span style="{$cpp:html.keyword}">
+						<xsl:value-of select="../@access"/>
+					</span>
+					<xsl:value-of select="' '"/>
+					<xsl:apply-templates select="." mode="cpp:html.id.ref"/>
+					<xsl:if test="position()!=last()">,</xsl:if>
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:for-each>
+		<xsl:call-template name="cpp:html.block">
+			<xsl:with-param name="end" select="'};'"/>
 		</xsl:call-template>
-	</xsl:for-each>
-	<xsl:call-template name="cpp:html.block">
-		<xsl:with-param name="end" select="'};'"/>
-	</xsl:call-template>
+	</xsl:if>
 </xsl:template>
 
 <!-- id -->
