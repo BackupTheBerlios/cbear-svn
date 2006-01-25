@@ -23,16 +23,14 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <section 
-	xmlns="http://cbear.berlios.de/project" name="Component Object Model, COM">
-	
+	xmlns="http://cbear.berlios.de/project" name="Component Object Model, COM">	
 	<p>
 Namespace <em>cbear_berlios_de::windows::com</em>.
 	</p>
 	<p>
 Draft <a href="draft.svg"/>.
 	</p>
-	<section name="Type Traits">
-		
+	<section name="Type Traits">		
 		<p>
 Header <a href="traits.hpp"/>.
 		</p>
@@ -41,6 +39,8 @@ class traits
 {
 	typedef ... internal_policy;
 };</pre>
+		<section name="Target">
+		</section>
 	</section>
 	<section href="system.xml"/>
 	<section href="uuid.xml"/>

@@ -168,37 +168,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<typedef id="library_info">
 				<id.ref id="info"/>
 			</typedef>
-			<!--
-			<method id="lib_uuid">
-				<static/>
-				<id.ref type="&amp;">
-					<id.ref type="const">
-						<id.ref type="::">
-							<id.ref id="cbear_berlios_de"/>
-							<id.ref id="windows"/>
-							<id.ref id="com"/>
-							<id.ref id="uuid"/>
-						</id.ref>
-					</id.ref>
-				</id.ref>
-				<body>
-					<id.ref type="return">
-						<id.ref type="::">
-							<id.ref id="cbear_berlios_de"/>
-							<id.ref id="windows"/>
-							<id.ref id="com"/>
-							<id.ref id="uuid"/>
-							<id.ref id="wrap_ref" type="()">
-								<id.ref id="::">
-									<id.ref/>
-									<id.ref id="{concat('LIBID_', /odl:library/@id)}"/>
-								</id.ref>
-							</id.ref>
-						</id.ref>
-					</id.ref>
-				</body>
-			</method>
-			-->
 			<xsl:apply-templates select="odl:object" mode="odl:cpp"/>
 			<method id="swap">
 				<id.ref id="void"/>
@@ -604,6 +573,25 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			</access>
 		</class>
 	</template>
+	<template>
+		<class>
+			<id.ref id="library_info" type="&lt;&gt;">
+				<id.ref type="::">
+					<id.ref/>
+					<id.ref id="{@id}"/>
+				</id.ref>
+			</id.ref>
+			<access access="public">
+				<typedef id="type">
+					<id.ref type="::">
+						<id.ref/>
+						<id.ref id="{/odl:library/@id}"/>
+						<id.ref id="info"/>
+					</id.ref>
+				</typedef>
+			</access>
+		</class>
+	</template>
 </xsl:template>
 
 <!-- coclass -->
@@ -825,6 +813,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 							<id.ref type="::">
 								<id.ref id="{@id}"/>
 								<id.ref id="scoped_info"/>
+							</id.ref>
+						</xsl:for-each>
+						<xsl:for-each select="odl:interface">
+							<id.ref type="::">
+								<id.ref/>
+								<id.ref id="cbear_berlios_de"/>
+								<id.ref id="windows"/>
+								<id.ref id="com"/>
+								<id.ref type="&lt;&gt;" id="scoped_type_info">
+									<id.ref type="::">
+										<id.ref/>
+										<id.ref id="{@id}"/>
+									</id.ref>
+								</id.ref>
 							</id.ref>
 						</xsl:for-each>
 						<method>

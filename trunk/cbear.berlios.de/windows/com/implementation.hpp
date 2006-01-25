@@ -23,9 +23,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_IMPLEMENTATION_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_IMPLEMENTATION_HPP_INCLUDED
 
-// std::map
-// #include <map>                                    
-
 // boost::mutex
 #include <boost/thread/mutex.hpp>
 // boost::condition
@@ -169,99 +166,6 @@ private:
 	implementation &operator=(const implementation &);
 };
 
-/*
-typedef LPOLESTR lpolestr_t;
-typedef DISPID dispid_t;
-typedef WORD word_t;
-typedef DISPPARAMS dispparams_t;
-typedef VARIANT variant_t;
-typedef EXCEPINFO excepinfo_t;
-*/
-
-/*
-template<class Base>
-class implementation<Base, ::IDispatch>:
-	public implementation_base<Base, ::IDispatch, ::IUnknown>
-{
-public:
-
-	implementation()
-	{
-		for(
-			range::sub_range<com::group::typelibs_type>::type R(
-				this->group().typelibs);
-			!R.empty();
-			++R.begin())
-		{
-			try
-			{
-				this->TypeInfo = R.front().gettypeinfoofguid<Base>();
-				return;
-			}
-			catch(com::exception &)
-			{
-			}
-		}
-	}
-
-	hresult::internal_type __stdcall GetTypeInfoCount(
-		internal_result<out, uint_t>::type _result) 
-	{
-		wrap<out, uint_t>(_result) = 1;
-		return hresult::s_ok;
-	}
-
-	hresult::internal_type __stdcall GetTypeInfo(
-		uint_t iTInfo,
-		lcid_t,
-		internal_result<out, itypeinfo>::type ppTInfo)
-	{
-		if(iTInfo != 0) return hresult::disp_e_badindex;
-		wrap<out, itypeinfo>(ppTInfo) = this->TypeInfo;
-		return hresult::s_ok;
-	}
-
-	hresult::internal_type __stdcall GetIDsOfNames(
-		const uuid::internal_type &, 
-		lpolestr_t *rgszNames, 
-		uint_t cNames, 
-		lcid_t, 
-		dispid_t *rgDispId)
-	{
-		return ::DispGetIDsOfNames(
-			internal<in>(this->TypeInfo), 
-			rgszNames, 
-			cNames, 
-			rgDispId);
-	}
-
-	HRESULT __stdcall Invoke(
-		dispid_t dispidMember,
-		const uuid::internal_type &,
-		lcid_t,
-		word_t wFlags,
-		dispparams_t * pdispparams,
-		variant_t * pvarResult,
-		excepinfo_t * pexcepinfo,
-		uint_t * puArgErr)
-	{
-		return DispInvoke(
-			(Base *)this, 
-			internal<in>(TypeInfo),
-			dispidMember, 
-			wFlags, 
-			pdispparams,
-			pvarResult, 
-			pexcepinfo, 
-			puArgErr);
-	}
-private:
-	itypeinfo TypeInfo;
-};
-
-typedef BOOL bool_t;
-*/
-
 template<class Base>
 class implementation<Base, ::IClassFactory>:
 	public implementation_base<Base, ::IClassFactory, ::IUnknown>
@@ -356,8 +260,8 @@ public:
 			*this, X1, X2, X3, X4, X5));
 	}
 
-	typedef std::vector<itypelib> typelibs_type;
-	typelibs_type typelibs;
+	//typedef std::vector<itypelib> typelibs_type;
+	//typelibs_type typelibs;
 
 	int size() { return this->Value.read(); }
 
@@ -383,7 +287,7 @@ private:
 
 	friend class detail::implementation_counter;
 
-	itypelib TypeLib;
+	//itypelib TypeLib;
 };
 
 template<class Base>

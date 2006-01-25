@@ -45,6 +45,7 @@ public:
 
 	implementation()
 	{
+		/*
 		for(
 			range::sub_range<com::group::typelibs_type>::type R(
 				this->group().typelibs);
@@ -60,6 +61,7 @@ public:
 			{
 			}
 		}
+		*/
 	}
 
 	hresult::internal_type __stdcall GetTypeInfoCount(
@@ -75,7 +77,7 @@ public:
 		internal_result<out, itypeinfo>::type ppTInfo)
 	{
 		if(iTInfo != 0) return hresult::disp_e_badindex;
-		wrap<out, itypeinfo>(ppTInfo) = this->TypeInfo;
+		wrap<out, itypeinfo>(ppTInfo) = scoped_type_info<Base>::typeinfo();
 		return hresult::s_ok;
 	}
 
@@ -87,7 +89,7 @@ public:
 		dispid_t *rgDispId)
 	{
 		return ::DispGetIDsOfNames(
-			internal<in>(this->TypeInfo), 
+			internal<in>(scoped_type_info<Base>::typeinfo()), 
 			rgszNames, 
 			cNames, 
 			rgDispId);
@@ -105,7 +107,7 @@ public:
 	{
 		return DispInvoke(
 			(Base *)this, 
-			internal<in>(TypeInfo),
+			internal<in>(scoped_type_info<Base>::typeinfo()),
 			dispidMember, 
 			wFlags, 
 			pdispparams,
@@ -114,7 +116,7 @@ public:
 			puArgErr);
 	}
 private:
-	itypeinfo TypeInfo;
+	//itypeinfo TypeInfo;
 };
 
 }

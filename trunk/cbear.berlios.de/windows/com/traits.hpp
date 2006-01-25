@@ -195,9 +195,11 @@ struct enum_traits: default_traits<Type, ::VT_INT> {};
 
 template<class Type>
 struct traits: 
-	boost::mpl::if_<boost::is_class<Type>, class_traits<Type>, 
-	typename boost::mpl::if_<boost::is_enum<Type>, enum_traits<Type>,
-	undefined_traits>::type>::type
+	boost::mpl::if_<
+		boost::is_class<Type>, 
+		class_traits<Type>, 
+		typename boost::mpl::if_<
+			boost::is_enum<Type>, enum_traits<Type>, undefined_traits>::type>::type
 {
 };
 

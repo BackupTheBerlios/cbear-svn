@@ -35,6 +35,25 @@ namespace com
 
 typedef object< ::ITypeInfo> itypeinfo;
 
+template<class T>
+class library_info;
+
+template<class T>
+class scoped_type_info
+{
+public:
+	scoped_type_info()
+	{
+		Value = library_info<T>::type::typelib().gettypeinfoofguid<T>();
+	}
+	static const itypeinfo &typeinfo() { return Value; }
+private:
+	static itypeinfo Value;
+};
+
+template<class T>
+itypeinfo scoped_type_info<T>::Value;
+
 }
 }
 }
