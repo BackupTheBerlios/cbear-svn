@@ -831,6 +831,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 						</xsl:for-each>
 						<method>
 							<id.ref id="info"/>
+							<parameter id="Hmodule">
+								<id.ref type="::">
+									<id.ref/>
+									<id.ref id="cbear_berlios_de"/>
+									<id.ref id="windows"/>
+									<id.ref id="hmodule"/>
+								</id.ref>
+							</parameter>
 							<ctor>
 								<id.ref>
 									<xsl:copy-of select="$parent"/>
@@ -839,6 +847,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 											type="value" 
 											id="{concat(
 												'L&#x22;', @id, '&#x22;')}"/>
+										<id.ref id="Hmodule"/>										
 									</id.ref>
 								</id.ref>
 							</ctor>

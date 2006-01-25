@@ -172,10 +172,10 @@ class scoped_typelib
 public:
 	static const itypelib &typelib() { return TypeLib; }
 protected:
-	scoped_typelib(const std::wstring &Name) 
+	scoped_typelib(const std::wstring &Name, const hmodule Module = hmodule())
 	{ 
 		boost::filesystem::path ThisFileName(
-			hmodule().file_name<char_t>(), ::boost::filesystem::native);
+			Module.file_name<char_t>(), ::boost::filesystem::native);
 		boost::filesystem::path Path = ThisFileName.branch_path();
 		boost::filesystem::path TlbFileName = 
 			Path / locale::cast<std::string>(Name + L".tlb");
