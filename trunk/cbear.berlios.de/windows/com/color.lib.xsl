@@ -180,6 +180,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:apply-templates select="odl:type.ref" mode="odl:color"/>
 			<xsl:value-of select="' '"/>
 			<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
+			<xsl:for-each select="odl:type.ref[@id='array']">
+				<xsl:text>[</xsl:text>
+				<span style="{$odl:color.id}">
+					<xsl:value-of select="odl:const/@value"/>
+				</span>
+				<xsl:text>]</xsl:text>
+			</xsl:for-each>
 			<xsl:text>;</xsl:text>
 		</xsl:with-param>
 	</xsl:call-template>
@@ -224,6 +231,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="odl:type.ref[@id='*']" mode="odl:color.type.ref">
 	<xsl:apply-templates select="odl:type.ref" mode="odl:color.type.ref"/>
 	<xsl:text>*</xsl:text>
+</xsl:template>
+
+<xsl:template match="odl:type.ref[@id='array']" mode="odl:color.type.ref">
+	<xsl:apply-templates select="odl:type.ref" mode="odl:color.type.ref"/>
 </xsl:template>
 
 <xsl:template match="odl:type.ref[@id='struct']" mode="odl:color.type.ref">

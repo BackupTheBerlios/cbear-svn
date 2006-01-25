@@ -206,6 +206,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:apply-templates select="*" mode="odl:cpp"/>
 </xsl:template>
 
+<!-- const -->
+
+<xsl:template match="odl:const" mode="odl:cpp">
+	<id.ref type="value" id="{@value}"/>
+</xsl:template>
+
 <!-- type.ref -->
 
 <xsl:template match="odl:type.ref" mode="odl:cpp">
@@ -216,9 +222,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<id.ref id="com"/>		
 		<id.ref id="{concat(
 		translate(@id, $txt:main.uppercase, $txt:main.lowercase), '_t')}">
-			<xsl:if test="odl:type.ref">
+			<xsl:if test="*">
 				<xsl:attribute name="type">&lt;&gt;</xsl:attribute>
-				<xsl:apply-templates select="odl:type.ref" mode="odl:cpp"/>
+				<xsl:apply-templates select="odl:type.ref|odl:const" mode="odl:cpp"/>
 			</xsl:if>
 		</id.ref>
 	</id.ref>		
@@ -778,6 +784,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<include href="cbear.berlios.de/windows/com/float.hpp"/>
 			<include href="cbear.berlios.de/windows/com/double.hpp"/>
 			<include href="cbear.berlios.de/windows/com/enum.hpp"/>
+			<include href="cbear.berlios.de/windows/com/array.hpp"/>
 			<include href="cbear.berlios.de/windows/com/struct.hpp"/>			
 			<include href="cbear.berlios.de/windows/com/variant_bool.hpp"/>
 			<include href="cbear.berlios.de/windows/com/bstr.hpp"/>

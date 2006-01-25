@@ -136,18 +136,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</type.ref>
 </xsl:template>
 
-<!--
-<xsl:template match="api:struct" mode="api:body.type.ref">
-	<type.ref id="*">
-		<type.ref id="struct">
-			<type.ref>
-				<xsl:apply-templates select="@id" mode="api:body"/>
-			</type.ref>
-		</type.ref>
-	</type.ref>
-</xsl:template>
--->
-
 <xsl:template match="/api:library" mode="api:body.type.ref">
 	<xsl:param name="id"/>
 	<xsl:param name="content"/>

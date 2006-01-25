@@ -136,7 +136,7 @@ See <html:a href="http://cbear.berlios.de/api"
 	<type.parameter id="type"/>
 </type>
 
-<type id="fixed.vector">
+<type id="array">
 	<type.parameter id="type"/>
 	<type.parameter id="size"/>
 </type>
