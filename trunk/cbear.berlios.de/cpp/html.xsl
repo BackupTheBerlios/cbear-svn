@@ -192,6 +192,23 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		select="cpp:id.ref[position()=2]" mode="cpp:html.id.ref"/>
 </xsl:template>
 
+<xsl:template match="cpp:id.ref[@type='==']" mode="cpp:html.id.ref">
+	<xsl:apply-templates 
+		select="cpp:id.ref[position()=1]" mode="cpp:html.id.ref"/>
+	<xsl:text>==</xsl:text>
+	<xsl:apply-templates 
+		select="cpp:id.ref[position()=2]" mode="cpp:html.id.ref"/>
+</xsl:template>
+
+<xsl:template match="cpp:id.ref[@type='&amp;&amp;']" mode="cpp:html.id.ref">
+	<xsl:for-each select="cpp:id.ref">
+		<xsl:apply-templates select="." mode="cpp:html.id.ref"/>
+		<xsl:if test="position()!=last()">
+			<xsl:text>&amp;&amp;</xsl:text>
+		</xsl:if>
+	</xsl:for-each>
+</xsl:template>
+
 <xsl:template match="cpp:id.ref[@type='=']" mode="cpp:html.id.ref">
 	<xsl:apply-templates 
 		select="cpp:id.ref[position()=1]" mode="cpp:html.id.ref"/>

@@ -48,6 +48,7 @@ public:
 	using standard_policy::destroy;
 	using standard_policy::assign;
 	using standard_policy::swap;
+	using standard_policy::equal;
 
 	typedef base::undefined pointer;
 	typedef base::undefined reference;

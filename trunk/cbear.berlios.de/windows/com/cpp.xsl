@@ -196,6 +196,35 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					</xsl:for-each>
 				</body>
 			</method>
+			<method id="operator==">
+				<id.ref id="bool"/>
+				<parameter id="X">
+					<id.ref type="&amp;">
+						<id.ref type="const">
+							<xsl:copy-of select="$name"/>
+						</id.ref>
+					</id.ref>
+				</parameter>
+				<const/>				
+				<body>
+					<id.ref type="return">
+						<id.ref type="&amp;&amp;">
+							<xsl:for-each select="odl:object">
+								<id.ref type="==">
+									<id.ref type="-&gt;">
+										<id.ref id="this"/>
+										<id.ref id="{@id}"/>
+									</id.ref>
+									<id.ref type=".">
+										<id.ref id="X"/>
+										<id.ref id="{@id}"/>
+									</id.ref>									
+								</id.ref>
+							</xsl:for-each>
+						</id.ref>
+					</id.ref>
+				</body>
+			</method>
 		</access>
 	</class>
 </xsl:template>
