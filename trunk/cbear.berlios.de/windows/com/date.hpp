@@ -38,6 +38,14 @@ public:
 	typedef void *extra_result;
 	typedef date_t move_type;
 	static const vartype_t vt = ::VT_DATE;
+
+	date_t() {}
+	explicit date_t(const systemtime_t &SystemTime) 
+	{
+		if(::SystemTimeToVariantTime(
+			const_cast<systemtime_t*>(&SystemTime), &this->internal())!=0)
+			throw std::exception("wrong system time");
+	}
 };
 
 }

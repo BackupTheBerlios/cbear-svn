@@ -91,6 +91,8 @@ typedef LRESULT lresult_t;
 
 static const std::size_t max_path = MAX_PATH;
 
+typedef SYSTEMTIME systemtime_t;
+
 }
 }
 
