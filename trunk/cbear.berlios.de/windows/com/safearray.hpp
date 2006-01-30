@@ -99,6 +99,12 @@ public:
 
 	static bool empty(const type &X) { return X == 0; }
 
+	static std::size_t size(const type &X)
+	{
+		if(empty(X)) return 0;
+		return X->rgsabound[0].cElements;
+	}
+
 	static iterator begin(const type &X)
 	{
 		return empty(X) ? iterator(): iterator(X->pvData);
@@ -117,6 +123,13 @@ public:
 	typedef policy::wrap<safearray_t, ::SAFEARRAY *, safearray_policy> wrap_type;
 	typedef range::helper<safearray_t, iterator, const_iterator, wrap_type> 
 		helper_type;
+
+	static bool equal(const type &A, const type &B)
+	{
+		return range::equal(
+			range::make_iterator_range(begin(A), size(A)), 
+			range::make_iterator_range(begin(B), size(B)));
+	}
 };
 
 }
@@ -177,8 +190,7 @@ public:
 	bool empty() const { return internal_policy::empty(this->internal()); }
 	size_type size() const 
 	{
-		if(this->empty()) return 0;
-		return this->internal()->rgsabound[0].cElements;
+		return internal_policy::size(this->internal());
 	}
 	const_iterator begin() const 
 	{

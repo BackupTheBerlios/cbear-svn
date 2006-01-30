@@ -186,18 +186,18 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="cpp:id.ref[@type='|']" mode="cpp:html.id.ref">
 	<xsl:apply-templates 
-		select="cpp:id.ref[position()=1]" mode="cpp:html.id.ref"/>
+		select="cpp:id.ref[1]" mode="cpp:html.id.ref"/>
 	<xsl:text>|</xsl:text>
 	<xsl:apply-templates 
-		select="cpp:id.ref[position()=2]" mode="cpp:html.id.ref"/>
+		select="cpp:id.ref[2]" mode="cpp:html.id.ref"/>
 </xsl:template>
 
 <xsl:template match="cpp:id.ref[@type='==']" mode="cpp:html.id.ref">
 	<xsl:apply-templates 
-		select="cpp:id.ref[position()=1]" mode="cpp:html.id.ref"/>
+		select="cpp:id.ref[1]" mode="cpp:html.id.ref"/>
 	<xsl:text>==</xsl:text>
 	<xsl:apply-templates 
-		select="cpp:id.ref[position()=2]" mode="cpp:html.id.ref"/>
+		select="cpp:id.ref[2]" mode="cpp:html.id.ref"/>
 </xsl:template>
 
 <xsl:template match="cpp:id.ref[@type='&amp;&amp;']" mode="cpp:html.id.ref">
@@ -211,10 +211,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="cpp:id.ref[@type='=']" mode="cpp:html.id.ref">
 	<xsl:apply-templates 
-		select="cpp:id.ref[position()=1]" mode="cpp:html.id.ref"/>
+		select="cpp:id.ref[1]" mode="cpp:html.id.ref"/>
 	<xsl:text>=</xsl:text>
 	<xsl:apply-templates 
-		select="cpp:id.ref[position()=2]" mode="cpp:html.id.ref"/>
+		select="cpp:id.ref[2]" mode="cpp:html.id.ref"/>
+</xsl:template>
+
+<xsl:template match="cpp:id.ref[@type='*']" mode="cpp:html.id.ref">
+	<xsl:text>*</xsl:text>
+	<xsl:apply-templates 
+		select="cpp:id.ref" mode="cpp:html.id.ref"/>
 </xsl:template>
 
 <xsl:template match="cpp:id.ref[@type='static']" mode="cpp:html.id.ref">

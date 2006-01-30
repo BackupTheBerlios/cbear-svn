@@ -169,6 +169,28 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<id.ref id="info"/>
 			</typedef>
 			<xsl:apply-templates select="odl:object" mode="odl:cpp"/>
+			<method id="{@id}">
+				<body/>
+			</method>
+			<method id="{@id}">
+				<parameter id="X">
+					<id.ref type="&amp;">
+						<id.ref type="const">
+							<id.ref id="move_type"/>
+						</id.ref>
+					</id.ref>
+				</parameter>
+				<body>
+					<id.ref type=".">
+						<id.ref id="X"/>
+						<id.ref type="()" id="swap">
+							<id.ref type="*">
+								<id.ref type="this"/>
+							</id.ref>
+						</id.ref>
+					</id.ref>
+				</body>
+			</method>
 			<method id="swap">
 				<id.ref id="void"/>
 				<parameter id="X">
