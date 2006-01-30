@@ -43,7 +43,7 @@ public:
 	explicit date_t(const systemtime_t &SystemTime) 
 	{
 		if(::SystemTimeToVariantTime(
-			const_cast<systemtime_t*>(&SystemTime), &this->internal())!=0)
+			const_cast<systemtime_t*>(&SystemTime), &this->internal())==0)
 			throw std::exception("wrong system time");
 	}
 };
