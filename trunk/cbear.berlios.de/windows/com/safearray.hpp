@@ -28,6 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/range/empty.hpp>
 #include <cbear.berlios.de/base/undefined.hpp>
 #include <cbear.berlios.de/windows/com/traits.hpp>
+#include <cbear.berlios.de/windows/com/ushort.hpp>
 #include <cbear.berlios.de/windows/com/double.hpp>
 #include <cbear.berlios.de/windows/com/exception.hpp>
 
@@ -210,6 +211,12 @@ public:
 	void reset(std::size_t Size)
 	{
 		safearray_t New(Size);
+		this->swap(New);
+	}
+
+	void clear()
+	{
+		safearray_t New;
 		this->swap(New);
 	}
 };
