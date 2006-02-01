@@ -115,6 +115,13 @@ public:
 	{
 		if(X) exception::throw_unless(::SafeArrayDestroy(X));
 	}
+
+	static void clear(type &X)
+	{
+		destroy(X);
+		construct(X);
+	}
+
 	static void assign(type &X, const type &C)
 	{
 		destroy(X);
@@ -130,6 +137,26 @@ public:
 		return range::equal(
 			range::make_iterator_range(begin(A), size(A)), 
 			range::make_iterator_range(begin(B), size(B)));
+	}
+
+	static void resize(type &X, std::size_t Size)
+	{
+		std::size_t OldSize = size(X);
+		if(OldSize == Size) return;
+		if(OldSize == 0)
+		{
+			construct_copy(X, Size);
+			return;
+		}
+		if(Size == 0)
+		{
+			clear(X);
+			return;
+		}
+		::SAFEARRAYBOUND bounds;
+		bounds.cElements = ulong_t(Size);
+		bounds.lLbound = 0;
+		exception::throw_unless(::SafeArrayRedim(X, &bounds));
 	}
 };
 
@@ -208,16 +235,22 @@ public:
 		return this->begin()[I];
 	}
 
+	void resize(std::size_t Size)
+	{
+		internal_policy::resize(this->internal(), Size);
+	}
+
+	/*
 	void reset(std::size_t Size)
 	{
 		safearray_t New(Size);
 		this->swap(New);
 	}
+	*/
 
 	void clear()
 	{
-		safearray_t New;
-		this->swap(New);
+		internal_policy::clear(this->internal());
 	}
 };
 
