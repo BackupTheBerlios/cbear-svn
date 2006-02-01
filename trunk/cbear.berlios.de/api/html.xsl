@@ -157,6 +157,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:apply-templates select="api:type.ref" mode="api:html.link"/>
 	<xsl:value-of select="'[]'"/>
 </xsl:template>		
+
+<xsl:template match="api:type.ref[@id='array']" mode="api:html.link">
+	<xsl:apply-templates select="api:type.ref" mode="api:html.link"/>
+	<xsl:value-of select="'['"/>
+	<span class="constant"><xsl:value-of select="api:const/@value"/></span>	
+	<xsl:value-of select="']'"/>
+</xsl:template>		
 	
 <xsl:template match="api:type.ref" mode="api:html.parent">
 	<p>
