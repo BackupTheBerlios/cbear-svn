@@ -139,6 +139,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</object>
 </xsl:template>
 
+<xsl:template match="odl:object" mode="odl:cpp.ctor">
+	<ctor><id.ref id="{@id}" type="()"/></ctor>
+</xsl:template>
+
 <xsl:template match="odl:struct" mode="odl:cpp">
 	<xsl:variable name="name">
 		<id.ref id="{@id}"/>
@@ -170,9 +174,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			</typedef>
 			<xsl:apply-templates select="odl:object" mode="odl:cpp"/>
 			<method id="{@id}">
+				<xsl:apply-templates select="odl:object" mode="odl:cpp.ctor"/>
 				<body/>
 			</method>
 			<method id="{@id}">
+				<xsl:apply-templates select="odl:object" mode="odl:cpp.ctor"/>
 				<parameter id="X">
 					<id.ref type="&amp;">
 						<id.ref type="const">
