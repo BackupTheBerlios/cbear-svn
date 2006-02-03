@@ -178,7 +178,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<body/>
 			</method>
 			<method id="{@id}">
-				<xsl:apply-templates select="odl:object" mode="odl:cpp.ctor"/>
 				<parameter id="X">
 					<id.ref type="&amp;">
 						<id.ref type="const">
@@ -186,6 +185,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 						</id.ref>
 					</id.ref>
 				</parameter>
+				<xsl:apply-templates select="odl:object" mode="odl:cpp.ctor"/>
 				<body>
 					<id.ref type=".">
 						<id.ref id="X"/>
@@ -239,6 +239,35 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 						<id.ref type="&amp;&amp;">
 							<xsl:for-each select="odl:object">
 								<id.ref type="==">
+									<id.ref type="-&gt;">
+										<id.ref id="this"/>
+										<id.ref id="{@id}"/>
+									</id.ref>
+									<id.ref type=".">
+										<id.ref id="X"/>
+										<id.ref id="{@id}"/>
+									</id.ref>									
+								</id.ref>
+							</xsl:for-each>
+						</id.ref>
+					</id.ref>
+				</body>
+			</method>
+			<method id="operator!=">
+				<id.ref id="bool"/>
+				<parameter id="X">
+					<id.ref type="&amp;">
+						<id.ref type="const">
+							<xsl:copy-of select="$name"/>
+						</id.ref>
+					</id.ref>
+				</parameter>
+				<const/>				
+				<body>
+					<id.ref type="return">
+						<id.ref type="||">
+							<xsl:for-each select="odl:object">
+								<id.ref type="!=">
 									<id.ref type="-&gt;">
 										<id.ref id="this"/>
 										<id.ref id="{@id}"/>

@@ -306,7 +306,9 @@
 			<enumeration value="value"/>
 			<enumeration value="|"/>
 			<enumeration value="&amp;&amp;"/>
+			<enumeration value="||"/>
 			<enumeration value="=="/>
+			<enumeration value="!="/>
 			<enumeration value="="/>
 			<enumeration value="{}"/>
 			<enumeration value="~"/>
