@@ -88,6 +88,11 @@ struct standard_policy
 	static void increment(type &A) { A++; }
 	static void decrement(type &A) { A--; }
 
+	static void add(type &A, const type &B) { A+=B; }
+	static void sub(type &A, const type &B) { A-=B; }
+	static void mul(type &A, const type &B) { A*=B; }
+	static void div(type &A, const type &B) { A/=B; }
+
 	typedef typename boost::remove_pointer<type>::type value_type;
 	typedef typename boost::add_reference<value_type>::type reference;
 	typedef typename boost::add_pointer<value_type>::type pointer;
@@ -153,16 +158,40 @@ public:
 		return S;
 	}
 
-	wrap &operator++()
+	type &operator++()
 	{
 		internal_policy::increment(this->Internal);
-		return *this;
+		return this->This();
 	}
 
-	wrap &operator--()
+	type &operator--()
 	{
 		internal_policy::decrement(this->Internal);
-		return *this;
+		return this->This();
+	}
+
+	type &operator+=(const type &B)
+	{
+		internal_policy::add(this->Internal, B.Internal);
+		return this->This();
+	}
+
+	type &operator-=(const type &B)
+	{
+		internal_policy::sub(this->Internal, B.Internal);
+		return this->This();
+	}
+
+	type &operator*=(const type &B)
+	{
+		internal_policy::mul(this->Internal, B.Internal);
+		return this->This();
+	}
+
+	type &operator/=(const type &B)
+	{
+		internal_policy::div(this->Internal, B.Internal);
+		return this->This();
 	}
 
 	static type &wrap_ref(internal_type &X)
@@ -210,6 +239,9 @@ protected:
 	}
 
 private:
+
+	type &This() { return *static_cast<type *>(this); }
+	const type &This() const { return *static_cast<const type *>(this); }
 
 	internal_type Internal;
 };
