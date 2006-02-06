@@ -110,6 +110,25 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				</body>
 			</method>
 			<method id="{@id}">
+				<explicit/>
+				<parameter id="X"><id.ref id="int"/></parameter>
+				<ctor>
+					<id.ref>
+						<xsl:copy-of select="$base"/>
+						<id.ref type="()">
+							<id.ref type="::">
+								<id.ref/>
+								<id.ref type="()" id="{@id}">
+									<id.ref id="X"/>
+								</id.ref>
+							</id.ref>
+						</id.ref>
+					</id.ref>
+				</ctor>
+				<body>
+				</body>
+			</method>
+			<method id="{@id}">
 				<parameter id="X"><id.ref id="type"/></parameter>
 				<ctor>
 					<id.ref>
