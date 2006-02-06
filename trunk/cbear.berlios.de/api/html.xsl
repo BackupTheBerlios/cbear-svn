@@ -60,7 +60,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="api:library/api:*/api:*" mode="api:html.id">
 	<xsl:value-of select="concat(../@id, '.', @id)"/>
 </xsl:template>	
-	
+
 <xsl:template match="api:*" mode="api:html">
 	<xsl:variable name="class" select="concat('h', count(ancestor::*) + 1)"/>
 	<div class="{$class}">
@@ -70,6 +70,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:element name="{$class}">
 			<xsl:apply-templates select="." mode="api:html.name"/>
 		</xsl:element>
+		<xsl:apply-templates select="@brief" mode="api:html"/>
 		<xsl:apply-templates select="." mode="api:html.body"/>
 	</div>
 </xsl:template>
@@ -102,6 +103,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- pragma -->
 
 <xsl:template match="api:pragma" mode="api:html"/>	
+
+<!-- @brief -->
+
+<xsl:template match="@brief" mode="api:html">
+	<div class="comment"><xsl:value-of select="."/></div>	
+</xsl:template>
 	
 <!-- comment -->
 
