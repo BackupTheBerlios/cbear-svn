@@ -32,8 +32,15 @@ namespace windows
 namespace com
 {
 
+template<class InternalType>
+class enum_policy: public policy::standard_policy<InternalType>
+{
+public:
+	static void increment(InternalType &X) { X = InternalType(X + 1); }
+};
+
 template<class Type, class ValueType>
-class enum_t: public policy::wrap<Type, ValueType>
+class enum_t: public policy::wrap<Type, ValueType, enum_policy<ValueType> >
 {
 public:
 	typedef void *extra_result;
@@ -41,7 +48,9 @@ public:
 	static const vartype_t vt = ::VT_INT;
 protected:
 	enum_t() {}
-	enum_t(ValueType X): policy::wrap<Type, ValueType>(X) {}
+	enum_t(ValueType X): policy::wrap<Type, ValueType, enum_policy<ValueType> >(X) 
+	{
+	}
 };
 
 }
