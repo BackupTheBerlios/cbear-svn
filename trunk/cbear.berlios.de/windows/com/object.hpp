@@ -189,10 +189,8 @@ public:
 		internal_policy::construct_copy(this->internal(), P.internal());
 	}
 
-	/*
 	object(const base::move_t<object> &C) { C.swap(*this); }
 	object &operator=(const base::move_t<object> &C) { C.swap(*this); }
-	*/
 
 	explicit object(internal_type X)
 	{
@@ -200,6 +198,7 @@ public:
 	}
 
 	operator bool() const { return this->internal() != 0; }
+	bool operator!() const { return this->internal() == 0; }
 };
 
 template<class T>
