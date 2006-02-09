@@ -34,7 +34,7 @@
 		'1 VERSIONINFO', $rc:line,
 		'FILEVERSION ', translate($version, '.', ','), $rc:line,		
 		'PRODUCTVERSION ', translate($version, '.', ','), $rc:line,
-		'FILEFLAGMASK 0x17L', $rc:line,
+		'FILEFLAGSMASK 0x17L', $rc:line,
 		'FILEOS 0x4L', $rc:line,
 		'BEGIN', $rc:line,
 		'BLOCK &#x22;StringFileInfo&#x22;', $rc:line,
