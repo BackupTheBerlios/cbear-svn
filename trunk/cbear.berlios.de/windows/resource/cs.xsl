@@ -41,8 +41,6 @@
 			$line,
 		'[assembly: System.Reflection.AssemblyCopyright(&#x22;&#xA9; ', 
 			substring($date, 1, 4), ' ',  $company, '&#x22;)]', $line,
-		'[assembly: System.Reflection.AssemblyDescription(&#x22;', @name, 
-			'&#x22;)]', $line,
 		'[assembly: System.Reflection.AssemblyFileVersion(&#x22;', $version, 
 			'&#x22;)]', $line,
 		'[assembly: System.Reflection.AssemblyInformationalVersion(&#x22;', 
