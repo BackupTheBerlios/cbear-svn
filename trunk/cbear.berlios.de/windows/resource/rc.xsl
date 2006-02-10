@@ -36,12 +36,29 @@
 			svn:wc-entries/svn:entry[@name='']/@committed-rev"/>
 	</xsl:variable>
 
+	<xsl:variable name="type">
+		<xsl:choose>
+			<xsl:when test="@type='exe'">
+				<xsl:value-of select="'VFT_APP'"/>
+			</xsl:when>
+			<xsl:when test="@type='dll'">
+				<xsl:value-of select="'VFT_DLL'"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:message terminate="yes">Unknown file type</xsl:message>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+
 	<xsl:value-of select="concat(
+		'#include &lt;WinVer.h&gt;', $rc:line,
 		'1 VERSIONINFO', $rc:line,
 		'FILEVERSION ', translate($version, '.', ','), $rc:line,		
 		'PRODUCTVERSION ', translate($version, '.', ','), $rc:line,
-		'FILEFLAGSMASK 0x17L', $rc:line,
-		'FILEOS 0x4L', $rc:line,
+		'FILEFLAGSMASK 0x3FL', $rc:line,
+		'FILEFLAGS 0', $rc:line,
+		'FILEOS VOS_NT_WINDOWS32', $rc:line,
+		'FILETYPE ', $type, $rc:line,
 		'BEGIN', $rc:line,
 		'BLOCK &#x22;StringFileInfo&#x22;', $rc:line,
 		'BEGIN', $rc:line,
