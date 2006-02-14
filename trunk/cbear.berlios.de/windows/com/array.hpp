@@ -25,6 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/windows/com/traits.hpp>
 #include <boost/array.hpp>
+#include <boost/serialization/base_object.hpp>
 
 namespace cbear_berlios_de
 {
@@ -40,6 +41,7 @@ public:
 	typedef boost::array<ValueType, Size> parent;
 	typedef typename parent::reference reference;
 	typedef typename parent::const_reference const_reference;
+	typedef typename parent::iterator iterator;
 
 	reference operator[](std::size_t I) 
 	{ 
@@ -50,6 +52,15 @@ public:
 	{ 
 		if(I>=Size) throw std::exception("Wrong index");
 		return this->parent::operator[](I); 
+	}
+
+	template<class ArchiveT>
+	void serialize(ArchiveT &Archive, const unsigned int Version)
+	{
+		for(iterator It = this->begin(); It!=this->end(); ++It)
+		{
+			Archive & boost::serialization::make_nvp("item", *It);
+		}
 	}
 };
 

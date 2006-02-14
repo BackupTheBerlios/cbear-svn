@@ -180,8 +180,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <xsl:template match="cpp:id.ref[@type='&amp;']" mode="cpp:html.id.ref">
+	<!--
 	<xsl:apply-templates select="." mode="cpp:html.id.ref.type"/>
-	<xsl:text> &amp;</xsl:text>
+	-->
+	<xsl:apply-templates 
+		select="cpp:id.ref[1]" mode="cpp:html.id.ref"/>
+	<xsl:text> &amp; </xsl:text>
+	<xsl:apply-templates 
+		select="cpp:id.ref[2]" mode="cpp:html.id.ref"/>
 </xsl:template>
 
 <xsl:template match="cpp:id.ref[@type='|']" mode="cpp:html.id.ref">

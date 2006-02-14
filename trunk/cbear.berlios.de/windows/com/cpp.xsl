@@ -301,6 +301,42 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					</id.ref>
 				</body>
 			</method>
+			<template>
+				<id id="ArchiveType"/>
+				<method id="serialize">
+					<id.ref id="void"/>
+					<parameter id="Archive">
+						<id.ref type="&amp;">
+							<id.ref id="ArchiveType"/>
+						</id.ref>
+					</parameter>
+					<parameter id="Version">
+						<id.ref type="const">
+							<id.ref id="unsigned int"/>
+						</id.ref>
+					</parameter>
+					<body>
+						<xsl:for-each select="odl:object">
+							<id.ref type="&amp;">
+								<id.ref id="Archive"/>
+								<id.ref type="::">
+									<id.ref/>
+									<id.ref id="boost"/>
+									<id.ref id="serialization"/>
+									<id.ref id="make_nvp" type="()">
+										<id.ref 
+											type="value" id="{concat('&#x22;', @id, '&#x22;')}"/>
+										<id.ref type="-&gt;">
+											<id.ref id="this"/>
+											<id.ref id="{@id}"/>
+										</id.ref>
+									</id.ref>
+								</id.ref>
+							</id.ref>
+						</xsl:for-each>
+					</body>
+				</method>
+			</template>
 		</access>
 	</class>
 </xsl:template>

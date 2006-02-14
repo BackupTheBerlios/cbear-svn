@@ -77,6 +77,11 @@ public:
 	variant_bool_t() {}
 	explicit variant_bool_t(bool X): detail::variant_bool_wrap(X) {}
 	operator bool() const { return internal_policy::cast(this->internal()); }
+	template<class ArchiveT>
+	void serialize(ArchiveT &Archive, const unsigned int Version)
+	{
+		Archive & boost::serialization::make_nvp("bool", this->internal());
+	}
 };
 
 }

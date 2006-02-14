@@ -46,6 +46,11 @@ public:
 	typedef void *extra_result;
 	typedef Type move_type;
 	static const vartype_t vt = ::VT_INT;
+	template<class ArchiveT>
+	void serialize(ArchiveT &Archive, const unsigned int )
+	{
+		Archive & boost::serialization::make_nvp("enum", this->internal());
+	}
 protected:
 	enum_t() {}
 	enum_t(ValueType X): policy::wrap<Type, ValueType, enum_policy<ValueType> >(X) 
