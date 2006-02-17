@@ -198,6 +198,22 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		select="cpp:id.ref[2]" mode="cpp:html.id.ref"/>
 </xsl:template>
 
+<xsl:template match="cpp:id.ref[@type='&lt;&lt;']" mode="cpp:html.id.ref">
+	<xsl:apply-templates 
+		select="cpp:id.ref[1]" mode="cpp:html.id.ref"/>
+	<xsl:text> &lt;&lt; </xsl:text>
+	<xsl:apply-templates 
+		select="cpp:id.ref[2]" mode="cpp:html.id.ref"/>
+</xsl:template>
+
+<xsl:template match="cpp:id.ref[@type='&gt;&gt;']" mode="cpp:html.id.ref">
+	<xsl:apply-templates 
+		select="cpp:id.ref[1]" mode="cpp:html.id.ref"/>
+	<xsl:text> &gt;&gt; </xsl:text>
+	<xsl:apply-templates 
+		select="cpp:id.ref[2]" mode="cpp:html.id.ref"/>
+</xsl:template>
+
 <xsl:template match="cpp:id.ref[@type='==']" mode="cpp:html.id.ref">
 	<xsl:apply-templates 
 		select="cpp:id.ref[1]" mode="cpp:html.id.ref"/>
