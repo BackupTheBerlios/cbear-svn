@@ -38,7 +38,22 @@ namespace detail
 
 /// Casting.
 template<class To, class From>
-struct cast;
+struct cast
+{
+	/// Main function.
+	static To run(const From &Source)
+	{
+		typedef typename range::value_type<From>::type from_char_type;
+		typedef typename range::value_type<To>::type to_char_type;
+		To Result;
+		Result.resize(range::size(Source));
+		range::transform(
+			Source, 
+			Result.begin(),
+			cast<to_char_type, from_char_type>::run);
+		return Result;
+	}
+};
 
 /// Returns std::ctype<Char>.
 template<class Char>
@@ -63,6 +78,7 @@ struct cast<wchar_t, char>
 	static wchar_t run(char C) { return get_ctype<char>().widen(C); }
 };
 
+/*
 /// Converts to std::basic_string<Char>.
 template<class Char, class From>
 struct cast<std::basic_string<Char>, From>
@@ -80,6 +96,7 @@ struct cast<std::basic_string<Char>, From>
 		return Result;
 	}
 };
+*/
 
 }
 

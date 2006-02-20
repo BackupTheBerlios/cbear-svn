@@ -59,6 +59,7 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 
 	static std::size_t size(type A)
 	{
+		// MSDN: if the A is null, zero is returned.
 		return ::SysStringLen(A);
 	}
 
@@ -67,28 +68,60 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 		return iterator_range(A, A + size(A));
 	}
 
+	static void construct_copy(
+		type &This, const_iterator Begin, const std::size_t &Size)
+	{
+		if(Size)
+		{
+			This = ::SysAllocStringLen(Begin, uint_t(Size));
+			if(!This) throw std::bad_alloc("BSTR allocation");
+		}
+		else
+		{
+			This = 0;
+		}
+	}
+
 	template<class Range>
 	static void construct_copy(type &This, const Range &Source)
 	{
-		This = ::SysAllocStringLen(Source.begin(), uint_t(Source.size()));
+		construct_copy(This, range::begin(Source), range::size(Source));
+	}
+
+	static void construct_copy(type &This, const std::size_t &Size)
+	{
+		construct_copy(This, 0, Size);
 	}
 
 	static void construct_copy(type &This, const type &Source)
 	{
-		construct_copy(This, make_sub_range(Source));
+		construct_copy(This, Source, size(Source));
+	}
+
+	static void assign(type &This, const_iterator Begin, const std::size_t &Size)
+	{
+		type New;
+		construct_copy(New, Begin, Size);
+		destroy(This);
+		This = New;
+	}
+
+	static void resize(type &This, std::size_t Size)
+	{
+		if(Size==size(This)) return;
+		assign(This, This, Size);
 	}
 
 	static void destroy(type &This) 
 	{
+		// MSDN: if This is null, the function simply returns.
 		::SysFreeString(This);
 	}
 
 	static void assign(type &This, const type &Source)
-	{ 
-		type New;
-		construct_copy(New, Source);
-		destroy(This);
-		This = New;
+	{
+		if(This==Source) return;
+		assign(This, Source, size(Source));
 	}
 
 	static bool equal(const type &A, const type &B)
@@ -136,6 +169,8 @@ public:
 
 	bstr_t() {}
 
+	explicit bstr_t(::std::size_t Size): helper_type(Size, 0) {}
+
 	template< ::std::size_t Size>
 	bstr_t(const wchar_t (&X)[Size]): helper_type(const_iterator_range(X), 0) {}
 
@@ -160,6 +195,11 @@ public:
 	size_type size() const 
 	{ 
 		return (size_type)internal_policy::size(this->internal()); 
+	}
+
+	void resize(std::size_t Size)
+	{
+		internal_policy::resize(this->internal(), Size);
 	}
 
 	iterator begin() { return this->internal(); }
