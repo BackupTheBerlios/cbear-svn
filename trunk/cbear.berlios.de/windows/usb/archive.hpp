@@ -23,6 +23,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_USB_ARCHIVE_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_USB_ARCHIVE_HPP_INCLUDED
 
+#include <cbear.berlios.de/windows/handle.hpp>
+
 namespace cbear_berlios_de
 {
 namespace windows
@@ -30,16 +32,15 @@ namespace windows
 namespace usb
 {
 
-template<std::size_t InSize, std::size_t OutSize>
-class archive_t;
-
 namespace detail
 {
 
-template<std::size_t InSize, std::size_t OutSize>
+template<class Archive>
 class oarchive_t
 {
 public:
+
+	typedef boost::mpl::true_ is_saving;
 
 	template<class T>
 	oarchive_t &operator &(const T &X)
@@ -55,15 +56,13 @@ public:
 		return *this;
 	}
 
-	typedef archive_t<InSize, OutSize> archive_t;
-
 protected:
 	~oarchive_t() {}
 private:
-	archive_t &archive() { return static_cast<archive_t *>(this); }
+	Archive &archive() { return *static_cast<Archive *>(this); }
 };
 
-template<std::size_t InSize, std::size_t OutSize>
+template<class Archive>
 class iarchive_t
 {
 public:
@@ -82,42 +81,63 @@ public:
 		return *this;
 	}
 
-	typedef archive_t<InSize, OutSize> archive_t;
-
 protected:
-	~oarchive_t() {}
+	~iarchive_t() {}
 private:
-	archive_t &archive() { return static_cast<archive_t *>(this); }
+	Archive &archive() { return *static_cast<Archive *>(this); }
 };
 
 }
 
 template<std::size_t InSize, std::size_t OutSize>
+class static_store_t
+{
+public:
+	static_store_t() { this->reset(); }	
+	void reset() { this->end = buffer.begin(); }
+	byte_range_t iobuffer() { return byte_range_t(this->buffer); }
+	byte_range_t ibuffer()
+	{ 		
+		return byte_range_t(&this->buffer.front(), &this->buffer[InSize]);
+	}
+	byte_range_t obuffer() 
+	{ 		
+		return byte_range_t(&this->buffer.front(), &this->buffer[OutSize]);
+	}
+protected:
+	template<class T>
+	void save_pod(const T &X)
+	{
+		BOOST_ASSERT(this->buffer.end() - this->end >= sizeof(T));
+		reinterpret_cast<T &>(*this->end) = X;
+		this->end += sizeof(T);
+	}
+
+	template<class T>
+	void load_pod(T &X)
+	{
+		BOOST_ASSERT(this->buffer.end() - this->end >= sizeof(T));
+		X = reinterpret_cast<const T &>(*this->end);
+		this->end += sizeof(T);
+	}
+private:
+	static const std::size_t Size = InSize < OutSize ? OutSize: InSize;
+	typedef boost::array<byte_t, Size> array_t;
+	array_t buffer;
+	typename array_t::iterator end;
+};
+
+template<class Store>
 class archive_t: 
 	boost::noncopyable,
-	public detail::iarchiv_t<InSize, OutSize>,
-	public detail::oarchiv_t<InSize, OutSize>
+	public Store,
+	public detail::iarchive_t<archive_t<Store> >,
+	public detail::oarchive_t<archive_t<Store> >
 {
 public:
 
-	archive_t() { this->clear(); }	
-
-	byte_range iobuffer() { return byte_range(this->buffer); }
-
-	byte_range ibuffer()
-	{ 		
-		return byte_range(&this->buffer.front(), &this->buffer[InSize]);
-	}
-
-	byte_range obuffer() 
-	{ 		
-		return byte_range(&this->buffer.front(), &this->buffer[OutSize]);
-	}
-
-	void reset() { this->end = buffer.begin(); }
-
-	typedef detail::oarchive_t<InSize, OutSize> oarchive_t;
-	typedef detail::iarchive_t<InSize, OutSize> iarchive_t;
+	typedef detail::oarchive_t<archive_t> oarchive_t;
+	typedef detail::iarchive_t<archive_t> iarchive_t;
 
 	typedef oarchive_t &oarchive_ref;
 	typedef iarchive_t &iarchive_ref;
@@ -125,24 +145,47 @@ public:
 	oarchive_ref oarchive() { return *this; }
 	iarchive_ref iarchive() { return *this; }
 
+	// version
+
+	static const unsigned int version = 0;
+
 	// struct
 
 	template<class T>
-	void save(const T &X) 
-	{ 
-		boost::serialization::serialize(oarchive_ref(*this), X);
+	void save(
+		const T &X, typename boost::enable_if<boost::is_class<T> >::type *dummy = 0)
+	{
+		boost::serialization::serialize(
+			oarchive_ref(*this), const_cast<T &>(X), version);
 	}
 
 	template<class T>
-	void load(T &X) 
+	void load(
+		T &X, typename boost::enable_if<boost::is_class<T> >::type *dummy = 0)
 	{ 
-		boost::serialization::serialize(iarchive_ref(*this), X);
+		boost::serialization::serialize(
+			iarchive_ref(*this), X, version);
+	}
+
+	// enum
+
+	template<class T>
+	void save(
+		const T &X, typename boost::enable_if<boost::is_enum<T> >::type *dummy = 0)
+	{
+		this->save(static_cast<const int &>(X));
+	}
+
+	template<class T>
+	void load(
+		T &X, typename boost::enable_if<boost::is_enum<T> >::type *dummy = 0)
+	{
+		this->load(static_cast<int &>(X));
 	}
 
 	// byte
-	
-	void save(windows::byte_t X) { this->save_pod(X); }
-	void load(windows::byte_t &X) { this->load_pod(X); }
+	void save(windows::byte_t X) { this->Store::save_pod(X); }
+	void load(windows::byte_t &X) { this->Store::load_pod(X); }
 
 	// ushort
 
@@ -208,39 +251,53 @@ public:
 		this->load(base::low(X));
 	}
 
-	// float
+	// int
 
-	void save(float X) { this->save_pod(X); }
-	void load(float &X) { this->load_pod(X); }
+	void save(int X)
+	{
+		// big-endian
+		this->save(base::high(X));
+		this->save(base::low(X));
+	}	
+
+	void load(int &X)
+	{
+		// big-endian
+		this->load(base::high(X));
+		this->load(base::low(X));
+	}
+
+	// unsigned int
+
+	void save(unsigned int X)
+	{
+		// big-endian
+		this->save(base::high(X));
+		this->save(base::low(X));
+	}	
+
+	void load(unsigned int &X)
+	{
+		// big-endian
+		this->load(base::high(X));
+		this->load(base::low(X));
+	}
+
+	// float
+	void save(float X) { this->Store::save_pod(X); }
+	void load(float &X) { this->Store::load_pod(X); }
 
 	// double
-
-	void save(double X) { this->save_pod(X); }
-	void load(double &X) { this->load_pod(X); }
-
-private:
-	static const std::size_t Size = InSize < OutSize ? OutSize: InSize;
-	typedef boost::array<X, Size> array_t;
-	array_t buffer;
-	array_y::iterator end;
-
-	template<class T>
-	void save_pod(const T &X)
-	{
-		BOOST_ASSERT(this->buffer.end() - this->end >= sizeof(T));
-		reinterpret_cast<T &>(*this->end) = X;
-		this->end += sizeof(T);
-	}
-
-	template<class T>
-	void load_pod(T &X)
-	{
-		BOOST_ASSERT(this->buffer.end() - this->end >= sizeof(T));
-		X = reinterpret_cast<const T &>(*this->end);
-		this->end += sizeof(T);
-	}
+	void save(double X) { this->Store::save_pod(X); }
+	void load(double &X) { this->Store::load_pod(X); }
 };
 
+template<std::size_t InSize, std::size_t OutSize>
+class static_archive_t: public archive_t<static_archive_t<InSize, OutSize> >
+{
+};
+
+/*
 class io_t: handle_t
 {
 public:
@@ -256,6 +313,7 @@ public:
 		archive.reset();
 	}
 };
+*/
 
 }
 }
