@@ -25,6 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/range/equal.hpp>
 #include <cbear.berlios.de/range/iterator_range.hpp>
+#include <cbear.berlios.de/range/lexicographical_compare.hpp>
 #include <cbear.berlios.de/base/swap.hpp>
 #include <cbear.berlios.de/windows/com/traits.hpp>
 
@@ -129,6 +130,22 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 		return range::equal(make_sub_range(A), make_sub_range(B));
 	}
 
+	static void add(type &This, const_iterator Begin, std::size_t Size)
+	{
+		const std::size_t OldSize = size(This);
+		const std::size_t NewSize = OldSize + Size;
+		type New;
+		construct_copy(New, This, NewSize);
+		std::copy(Begin, Begin + Size, New + OldSize);
+		destroy(This);
+		This = New;
+	}
+
+	static void add(type &This, const type &Source)
+	{
+		add(This, Source, size(Source));
+	}
+
 	typedef standard_policy_type::value_type value_type;
 	typedef standard_policy_type::reference reference;
 	typedef standard_policy_type::pointer pointer;
@@ -171,10 +188,15 @@ public:
 
 	explicit bstr_t(::std::size_t Size): helper_type(Size, 0) {}
 
-	template< ::std::size_t Size>
-	bstr_t(const wchar_t (&X)[Size]): helper_type(const_iterator_range(X), 0) {}
+	bstr_t(const wchar_t *X, ::std::size_t Size): 
+		helper_type(const_iterator_range(X, X + Size), 0) 
+	{
+	}
 
-	bstr_t(const std::basic_string<wchar_t> &X): 
+	template< ::std::size_t Size>
+	explicit bstr_t(const wchar_t (&X)[Size]): helper_type(const_iterator_range(X), 0) {}
+
+	explicit bstr_t(const std::basic_string<wchar_t> &X): 
 		helper_type(const_iterator_range(X.c_str(), (size_type)X.size()), 0)
 	{
 	}
@@ -197,16 +219,27 @@ public:
 		return (size_type)internal_policy::size(this->internal()); 
 	}
 
-	void resize(std::size_t Size)
-	{
-		internal_policy::resize(this->internal(), Size);
-	}
-
 	iterator begin() { return this->internal(); }
 	iterator end() { return this->internal() + size(); }
 
 	const_iterator begin() const { return this->internal(); }
 	const_iterator end() const { return this->internal() + size(); }
+
+	void resize(std::size_t Size)
+	{
+		internal_policy::resize(this->internal(), Size);
+	}
+
+	void clear()
+	{
+		internal_policy::destroy(this->internal());
+		internal_policy::construct(this->internal());
+	}
+
+	int compare(const bstr_t &X) const
+	{
+		return range::lexicographical_compare(*this, X);
+	}
 
 	typedef void *extra_result;
 };

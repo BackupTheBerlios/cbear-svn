@@ -37,7 +37,8 @@ namespace range
 template<class Range1, class Range2>
 bool lexicographical_compare(const Range1 &A, const Range2 &B)
 {
-	return ::std::lexicographical_compare(begin(A), end(A), begin(B), end(B));
+	return ::std::lexicographical_compare(
+		range::begin(A), range::end(A), range::begin(B), range::end(B));
 }
 
 }
