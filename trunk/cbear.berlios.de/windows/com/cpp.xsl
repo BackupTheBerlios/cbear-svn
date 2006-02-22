@@ -639,7 +639,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 						<id.ref type="return">
 							<id.ref type=".">
 								<id.ref type="::">
-									<id.ref id="exception"/>
+									<id.ref id="create_exception"/>
 									<id.ref id="catch_" type="()"/>
 								</id.ref>
 								<id.ref id="internal" type="()"/>

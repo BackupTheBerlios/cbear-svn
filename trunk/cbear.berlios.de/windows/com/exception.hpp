@@ -85,7 +85,7 @@ public:
 	void SetDescription(lpcwstr_t X) const
 	{
 		this->internal_reference().SetDescription(
-			const_cast<lpwstr_t::internal_type>(X.internal()));
+			const_cast<lpwstr_t::internal_type>(const_cast<wchar_t *>(X.internal())));
 	}
 	void SetGUID(const com::uuid &X) const
 	{
@@ -93,15 +93,15 @@ public:
 	}
 	void SetHelpContext(dword_t X) const
 	{
-		this->internal_reference().SetGUID(X);
+		this->internal_reference().SetHelpContext(X);
 	}
 	void SetHelpFile(lpcwstr_t X) const
 	{
-		this->internal_reference().SetHelpFile(X.internal());
+		this->internal_reference().SetHelpFile(const_cast<wchar_t *>(X.internal()));
 	}
 	void SetSource(lpcwstr_t X) const
 	{
-		this->internal_reference().SetSource(X.internal());
+		this->internal_reference().SetSource(const_cast<wchar_t *>(X.internal()));
 	}
 };
 
@@ -110,44 +110,120 @@ typedef object< ::ICreateErrorInfo> icreateerrorinfo;
 class exception: public std::exception
 {
 public:
-	exception(hresult Value): Value(Value) 
-	{
-		::GetErrorInfo(0, com::internal<out>(this->ErrorInfo));
-		std::ostringstream Stream;
-		Stream << 
-			"cbear_berlios_de::com::exception(0x" << std::hex << std::uppercase << 
-			this->result() << "):" << std::endl;
-		if(this->ErrorInfo!=ierrorinfo())
-		{
-			Stream <<
-				"Description: " << 
-				locale::cast<std::string>(this->ErrorInfo.GetDescription()) << 
-				std::endl;
-			Stream << "GUID: " << this->ErrorInfo.GetGUID() << std::endl;
-			Stream << 
-				"Help Context: " << this->ErrorInfo.GetHelpContext() << std::endl;
-			Stream <<
-				"Help File: " << 
-				locale::cast<std::string>(this->ErrorInfo.GetHelpFile()) << std::endl;
-			Stream <<
-				"Source: " << 
-				locale::cast<std::string>(this->ErrorInfo.GetSource()) << std::endl;
-		}
-		this->Message = Stream.str();
-	}
+
+	// std::exception::what.
 	const char *what() const throw()
-	{
-		return this->Message.c_str();
+	{ 
+		return "cbear_berlios_de::com::exception";
 	}
-	hresult result() const throw() { return this->Value; }
+
+	// hresult.
+	hresult result() const throw() { return this->Result; }
+
+	// error info.
+	const ierrorinfo &errorinfo() const throw() { return this->ErrorInfo; }
+	
+	// print.
+	template<class OStream>
+	void print(OStream &O) const
+	{
+		O << 
+			L"cbear_berlios_de::com::exception(0x" << 
+			std::hex << std::uppercase << this->Value << 
+			L"):" <<
+			std::endl;
+		if(this->ErrorInfo)
+		{
+			O << L"Description: " << ErrorInfo.GetDescription()) << std::endl;
+			O << L"GUID: " << ErrorInfo.GetGUID() << std::endl;
+			O << L"Help Context: " << ErrorInfo.GetHelpContext() << std::endl;
+			O << L"Help File: " << ErrorInfo.GetHelpFile() << std::endl;
+			O << L"Source: " << ErrorInfo.GetSource() << std::endl;
+		}
+	}
+
+	// It throws an exception initialized by a system COM error info.
 	static void throw_unless(hresult Value)
 	{
-		if(Value.failed()) throw exception(Value);
+		if(!Value.failed()) return;
+		ierrorinfo ErrorInfo;
+		::GetErrorInfo(0, com::internal<out>(ErrorInfo));
+		throw exception(Value, ErrorInfo);
 	}
+
+	// It throws an exception initialized by system COM error info.
 	static void throw_unless(::HRESULT Value)
 	{
 		throw_unless(hresult(Value));
 	}
+
+	static const hresult user() 
+	{ 
+		return hresult(true, hresult::facility_type::itf, hresult::code_type::min); 
+	}
+
+private:
+
+	friend class create_exception;
+
+	hresult Result;
+	ierrorinfo ErrorInfo;
+
+	exception(
+		hresult Result = user(), const ierrorinfo &ErrorInfo = ierrorinfo()): 
+		Result(Result), ErrorInfo(ErrorInfo)
+	{
+	}
+
+	hresult set() const
+	{
+		if(this->ErrorInfo) ::SetErrorInfo(0, com::internal<in>(this->ErrorInfo));
+		return this->Result;
+	}
+};
+
+template<class OStream>
+OStream &operator<<(OStream &O, const com::exception &E) { E.print(O); }
+
+class create_exception: public com::exception
+{
+public:
+
+	create_exception(const hresult &X = user()): com::exception(X)
+	{
+		::CreateErrorInfo(com::internal<out>(this->CreateErrorInfo));
+		this->com::exception::ErrorInfo = CreateErrorInfo.
+			query_interface<ierrorinfo>();
+	}
+
+	const create_exception &Description(lpcwstr_t X) const
+	{
+		this->CreateErrorInfo.SetDescription(X);
+		return *this;
+	}
+
+	const create_exception &Guid(const com::uuid &X) const
+	{
+		this->CreateErrorInfo.SetGUID(X);
+		return *this;
+	}
+
+	const create_exception &HelpContext(dword_t X) const
+	{
+		this->CreateErrorInfo.SetHelpContext(X);
+	}
+
+	const create_exception &HelpFile(lpcwstr_t X) const
+	{
+		this->CreateErrorInfo.SetHelpFile(X);
+	}
+
+	const create_exception &Source(lpcwstr_t X) const
+	{
+		this->CreateErrorInfo.SetSource(X);
+	}
+
+	// It catchs all exceptions and sets system COM error info.
 	static hresult catch_()
 	{
 		try
@@ -156,22 +232,15 @@ public:
 			{
 				throw;				
 			}
-			catch(const com::exception &E)
+			catch(const com::exception &B)
 			{
-				set_error_info(E.ErrorInfo);
-				return E.result();
+				return B.set();
 			}
-			catch(const ::std::exception &E)
+			catch(const ::std::exception &S)
 			{
-				icreateerrorinfo CreateErrorInfo;
-				::CreateErrorInfo(com::internal<out>(CreateErrorInfo));
-				set_error_info(CreateErrorInfo.query_interface<ierrorinfo>());
-				CreateErrorInfo.SetDescription(locale::cast<std::wstring>(std::string(
-					E.what())));
-				return hresult(
-					true, 
-					hresult::facility_type::itf, 
-					hresult::code_type::min);
+				return create_exception().
+					Description(locale::cast<bstr_t>(std::string(S.what()))).
+					set();
 			}
 		}
 		catch(...)
@@ -179,14 +248,9 @@ public:
 			return hresult::e_fail;
 		}
 	}
+
 private:
-	hresult Value;
-	std::string Message;
-	ierrorinfo ErrorInfo;
-	static void set_error_info(const ierrorinfo &X)
-	{
-		::SetErrorInfo(0, com::internal<in>(X));
-	}
+	icreateerrorinfo CreateErrorInfo;
 };
 
 }
