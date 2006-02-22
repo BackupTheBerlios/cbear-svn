@@ -211,16 +211,19 @@ public:
 	const create_exception &HelpContext(dword_t X) const
 	{
 		this->CreateErrorInfo.SetHelpContext(X);
+		return *this;
 	}
 
 	const create_exception &HelpFile(lpcwstr_t X) const
 	{
 		this->CreateErrorInfo.SetHelpFile(X);
+		return *this;
 	}
 
 	const create_exception &Source(lpcwstr_t X) const
 	{
 		this->CreateErrorInfo.SetSource(X);
+		return *this;
 	}
 
 	// It catchs all exceptions and sets system COM error info.
