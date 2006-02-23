@@ -25,11 +25,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <sstream>
 
+#include <boost/preprocessor/wstringize.hpp>
+
 #include <cbear.berlios.de/locale/cast.hpp>
 #include <cbear.berlios.de/windows/com/hresult.hpp>
 #include <cbear.berlios.de/windows/com/bstr.hpp>
 #include <cbear.berlios.de/windows/com/uuid.hpp>
 #include <cbear.berlios.de/windows/com/object.hpp>
+#include <cbear.berlios.de/pp/cat.hpp>
+#include <cbear.berlios.de/pp/widen.hpp>
 
 namespace cbear_berlios_de
 {
@@ -134,7 +138,7 @@ public:
 			std::endl;
 		if(this->ErrorInfo)
 		{
-			O << L"Description: " << ErrorInfo.GetDescription()) << std::endl;
+			O << L"Description: " << ErrorInfo.GetDescription() << std::endl;
 			O << L"GUID: " << ErrorInfo.GetGUID() << std::endl;
 			O << L"Help Context: " << ErrorInfo.GetHelpContext() << std::endl;
 			O << L"Help File: " << ErrorInfo.GetHelpFile() << std::endl;
@@ -259,5 +263,18 @@ private:
 }
 }
 }
+
+/*
+#define CBEAR_BERLIOS_DE_WINDOWS_COM_EXCEPTION_THROW(A)\
+	throw ::cbear_berlios_de::windows::com::create_exception().Description(L"A").Source(L"B")
+*/
+
+#define CBEAR_BERLIOS_DE_WINDOWS_COM_EXCEPTION_THROW(Message) \
+	throw ::cbear_berlios_de::windows::com::create_exception(). \
+		Description(Message). \
+		Source(CBEAR_BERLIOS_DE_PP_CAT6( \
+			L"File: ", CBEAR_BERLIOS_DE_PP_WIDEN(__FILE__), \
+			L", Line: ", BOOST_PP_WSTRINGIZE(__LINE__), \
+			L", Function: ", CBEAR_BERLIOS_DE_PP_WIDEN(__FUNCTION__)))
 
 #endif
