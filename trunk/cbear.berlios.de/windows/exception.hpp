@@ -23,6 +23,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_EXCEPTION_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_EXCEPTION_HPP_INCLUDED
 
+#include <exception>
+#include <sstream>
+
+#include <boost/noncopyable.hpp>
+
+#include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/windows/base.hpp>
 
 namespace cbear_berlios_de

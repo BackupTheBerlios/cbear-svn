@@ -28,6 +28,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/base.hpp>
 #include <cbear.berlios.de/windows/overlapped.hpp>
 #include <cbear.berlios.de/windows/exception.hpp>
+#include <cbear.berlios.de/windows/select.hpp>
+#include <cbear.berlios.de/windows/lpstr.hpp>
 #include <cbear.berlios.de/range/iterator_range.hpp>
 
 namespace cbear_berlios_de
@@ -36,6 +38,12 @@ namespace windows
 {
 
 typedef range::iterator_range<byte *> byte_range_t;
+
+template<class Char>
+class win32_find_data: 
+	public select_traits<Char, WIN32_FIND_DATAA, WIN32_FIND_DATAW>::type
+{
+};
 
 // Handle to an object.
 class handle: public policy::wrap<handle, ::HANDLE>
@@ -69,6 +77,47 @@ public:
 		return BytesReturned;
 	}
 };
+
+template<class Char>
+static handle FindFirstFile(
+	const basic_lpstr<const Char> &fileName, 
+	win32_find_data<Char> &findFileData)
+{
+	handle result;
+	{
+		exception::scope_last_error ScopeLastError;
+		result.internal() = 
+			select<Char>(::FindFirstFileA, ::FindFirstFileW)(
+				fileName.internal(),
+				&findFileData);
+	}
+	return result;
+}
+
+typedef FINDEX_SEARCH_OPS findex_search_ops;
+
+/*
+template<class Char>
+static handle FindFirstFileEx(
+	const basic_lpstr<const Char> &fileName, 
+	win32_find_data<Char> &findFileData,
+	findex_search_ops searchOp)
+{
+	handle result;
+	{
+		exception::scope_last_error ScopeLastError;
+		result.internal() = 
+			select<Char>(::FindFirstFileExA, ::FindFirstFileExW)(
+				fileName.internal(),
+				::FindExInfoStandard,
+				&findFileData,
+				searchOp,
+				0,
+				0);
+	}
+	return result;
+}
+*/
 
 }
 }
