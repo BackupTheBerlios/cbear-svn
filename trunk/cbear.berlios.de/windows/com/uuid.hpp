@@ -34,6 +34,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // boost::uint32_t, boost::uint16_t, boost::uint8_t.
 #include <boost/cstdint.hpp>
 
+#include <cbear.berlios.de/base/integer.hpp>
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/range/lexicographical_compare.hpp>
 #include <cbear.berlios.de/base/integer.hpp>
@@ -52,6 +53,22 @@ std::basic_ostream<Char> &operator<<(
 	typedef Range::iterator_range<const boost::uint8_t *> range_type;
 	static const char_type Zero = Windows::select<char_type>('0', L'0');
 	static const char_type Minus = Windows::select<char_type>('-', L'-');
+	O << ::cbear_berlios_de::base::hex(X.Data1, 8) <<
+		Minus <<
+		::cbear_berlios_de::base::hex(X.Data1, 4) <<
+		Minus <<
+		::cbear_berlios_de::base::hex(X.Data3, 4) <<
+		Minus;
+	for(range_type R(X.Data4, X.Data4 + 2); !R.empty(); R.begin()++)
+	{
+		O << ::cbear_berlios_de::base::hex(R[0], 2);
+	}
+	O << Minus;
+	for(range_type R(X.Data4 + 2, X.Data4 + 8); !R.empty(); R.begin()++)
+	{
+		O << ::cbear_berlios_de::base::hex(R[0], 2);
+	}
+	/*
 	O << std::uppercase << std::hex << std::setfill(Zero) << 
 		std::setw(8) << X.Data1 <<
 		Minus <<
@@ -68,6 +85,7 @@ std::basic_ostream<Char> &operator<<(
 	{
 		O << std::setw(2) << R[0];
 	}
+	*/
 	return O;
 }
 

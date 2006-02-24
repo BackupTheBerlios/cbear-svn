@@ -32,6 +32,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/lpstr.hpp>
 #include <cbear.berlios.de/range/iterator_range.hpp>
 
+#include <setupapi.h>
+#include <cbear.berlios.de/windows/hwnd.hpp>
+#include <cbear.berlios.de/windows/com/uuid.hpp>
+
 namespace cbear_berlios_de
 {
 namespace windows
@@ -94,30 +98,95 @@ static handle FindFirstFile(
 	return result;
 }
 
-typedef FINDEX_SEARCH_OPS findex_search_ops;
-
-/*
-template<class Char>
-static handle FindFirstFileEx(
-	const basic_lpstr<const Char> &fileName, 
-	win32_find_data<Char> &findFileData,
-	findex_search_ops searchOp)
+class sp_devinfo_data: public policy::wrap<sp_devinfo_data, ::SP_DEVINFO_DATA>
 {
-	handle result;
+public:
+	sp_devinfo_data() { this->internal().cbSize = sizeof(internal_type); }
+
+	com::uuid &ClassGuid() 
+	{ 
+		return com::uuid::wrap_ref(this->internal().ClassGuid); 
+	}
+	const com::uuid &ClassGuid() const 
+	{ 
+		return com::uuid::wrap_ref(this->internal().ClassGuid); 
+	}
+
+	dword_t &DevInst() { return this->internal().DevInst; }
+	const dword_t &DevInst() const { return this->internal().DevInst; }
+};
+
+class hdevinfo: public policy::wrap<hdevinfo, ::HDEVINFO>
+{
+public:
+	void SetupDiDestroyDeviceInfoList() const
 	{
 		exception::scope_last_error ScopeLastError;
-		result.internal() = 
-			select<Char>(::FindFirstFileExA, ::FindFirstFileExW)(
-				fileName.internal(),
-				::FindExInfoStandard,
-				&findFileData,
-				searchOp,
-				0,
+		::SetupDiDestroyDeviceInfoList(this->internal());
+	}
+	void SetupDiEnumDeviceInfo(
+		dword_t MemberIndex, sp_devinfo_data &DeviceInfoData) const
+	{
+		exception::scope_last_error ScopeLastError;
+		::SetupDiEnumDeviceInfo(
+			this->internal(), MemberIndex, &DeviceInfoData.internal());
+	}
+};
+
+hdevinfo SetupDiCreateDeviceInfoList(const com::uuid *ClassGuid, hwnd Parent)
+{
+	hdevinfo Result;
+	{
+		exception::scope_last_error ScopeLastError;
+		Result.internal() = 
+			::SetupDiCreateDeviceInfoList(
+				ClassGuid ? &ClassGuid->internal(): 0,
+				Parent.internal());
+	}
+	return Result;
+}
+
+class digcf: public policy::wrap<digcf, dword_t>
+{
+public:
+	typedef policy::wrap<digcf, dword_t> wrap;
+
+	enum enum_t
+	{
+		allclasses = DIGCF_ALLCLASSES,
+		deviceinterface = DIGCF_DEVICEINTERFACE,
+		present = DIGCF_PRESENT,
+		profile = DIGCF_PROFILE,
+	};
+
+	digcf(enum_t E): wrap(E) {}
+	digcf(): wrap(0) {}
+};
+
+template<class Char>
+hdevinfo SetupDiGetClassDevsEx(
+	const com::uuid *ClassGuid,
+	const basic_lpstr<const Char> &Enumerator,
+	const hwnd &Parent,
+	const digcf &Flags,
+	hdevinfo DeviceInfoSet,
+	const basic_lpstr<const Char> &MachineName)
+{
+	hdevinfo Result;
+	{
+		exception::scope_last_error ScopeLastError;
+		Result.internal() = 
+			select<Char>(::SetupDiGetClassDevsExA, ::SetupDiGetClassDevsExW)(
+				ClassGuid ? &ClassGuid->internal(): 0,
+				Enumerator.internal(),
+				Parent.internal(),
+				Flags.internal(),
+				DeviceInfoSet.internal(),
+				MachineName.internal(),
 				0);
 	}
-	return result;
+	return Result;
 }
-*/
 
 }
 }

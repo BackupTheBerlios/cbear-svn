@@ -93,6 +93,8 @@ struct standard_policy
 	static void mul(type &A, const type &B) { A*=B; }
 	static void div(type &A, const type &B) { A/=B; }
 
+	static void or(type &A, const type &B) { A|=B; }
+
 	typedef typename boost::remove_pointer<type>::type value_type;
 	typedef typename boost::add_reference<value_type>::type reference;
 	typedef typename boost::add_pointer<value_type>::type pointer;
@@ -191,6 +193,12 @@ public:
 	type &operator/=(const type &B)
 	{
 		internal_policy::div(this->Internal, B.Internal);
+		return this->This();
+	}
+
+	type &operator|=(const type &B)
+	{
+		internal_policy::or(this->Internal, B.Internal);
 		return this->This();
 	}
 
