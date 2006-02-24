@@ -95,12 +95,12 @@ class static_store_t
 public:
 	static_store_t() { this->reset(); }	
 	void reset() { this->end = buffer.begin(); }
-	byte_range_t iobuffer() { return byte_range_t(this->buffer); }
-	byte_range_t ibuffer()
+	byte_range iobuffer() { return byte_range_t(this->buffer); }
+	byte_range ibuffer()
 	{ 		
 		return byte_range_t(&this->buffer.front(), &this->buffer[InSize]);
 	}
-	byte_range_t obuffer() 
+	byte_range obuffer() 
 	{ 		
 		return byte_range_t(&this->buffer.front(), &this->buffer[OutSize]);
 	}
