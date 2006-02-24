@@ -31,6 +31,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cstddef>
 
+#include <cbear.berlios.de/range/iterator_range.hpp>
+
 namespace cbear_berlios_de
 {
 namespace windows
@@ -92,6 +94,8 @@ typedef LRESULT lresult_t;
 static const std::size_t max_path = MAX_PATH;
 
 typedef SYSTEMTIME systemtime_t;
+
+typedef range::iterator_range<byte *> byte_range;
 
 }
 }

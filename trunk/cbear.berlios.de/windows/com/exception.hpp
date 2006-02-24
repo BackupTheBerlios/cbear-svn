@@ -27,6 +27,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <boost/preprocessor/wstringize.hpp>
 
+#include <cbear.berlios.de/base/exception.hpp>
 #include <cbear.berlios.de/locale/cast.hpp>
 #include <cbear.berlios.de/windows/com/hresult.hpp>
 #include <cbear.berlios.de/windows/com/bstr.hpp>
@@ -111,14 +112,15 @@ public:
 
 typedef object< ::ICreateErrorInfo> icreateerrorinfo;
 
-class exception: public std::exception
+class exception: 
+	public std::exception,
+	public base::wexception
 {
 public:
 
-	// std::exception::what.
-	const char *what() const throw()
+	const char *what() const throw() 
 	{ 
-		return "cbear_berlios_de::com::exception";
+		return "::cbear_berlios_de::windows::com::exception"; 
 	}
 
 	// hresult.
@@ -128,21 +130,21 @@ public:
 	const ierrorinfo &errorinfo() const throw() { return this->ErrorInfo; }
 	
 	// print.
-	template<class OStream>
-	void print(OStream &O) const
+	void print(std::wostream &O) const
 	{
 		O << 
 			L"cbear_berlios_de::com::exception(0x" << 
-			std::hex << std::uppercase << this->Value << 
+			base::hex(this->Result.internal()) << 
 			L"):" <<
 			std::endl;
 		if(this->ErrorInfo)
 		{
-			O << L"Description: " << ErrorInfo.GetDescription() << std::endl;
-			O << L"GUID: " << ErrorInfo.GetGUID() << std::endl;
-			O << L"Help Context: " << ErrorInfo.GetHelpContext() << std::endl;
-			O << L"Help File: " << ErrorInfo.GetHelpFile() << std::endl;
-			O << L"Source: " << ErrorInfo.GetSource() << std::endl;
+			O << 
+				L"Description: " << this->ErrorInfo.GetDescription() << std::endl <<
+				L"GUID: " << this->ErrorInfo.GetGUID() << std::endl <<
+				L"Help Context: " << this->ErrorInfo.GetHelpContext() << std::endl <<
+				L"Help File: " << this->ErrorInfo.GetHelpFile() << std::endl <<
+				L"Source: " << this->ErrorInfo.GetSource() << std::endl;
 		}
 	}
 
@@ -185,9 +187,6 @@ private:
 		return this->Result;
 	}
 };
-
-template<class OStream>
-OStream &operator<<(OStream &O, const com::exception &E) { E.print(O); }
 
 class create_exception: public com::exception
 {
@@ -243,6 +242,12 @@ public:
 			{
 				return B.set();
 			}
+			catch(const base::wexception &W)
+			{			
+				std::wostringstream O;
+				O << W;
+				return create_exception().Description(O.str()).set();
+			}
 			catch(const ::std::exception &S)
 			{
 				return create_exception().
@@ -263,11 +268,6 @@ private:
 }
 }
 }
-
-/*
-#define CBEAR_BERLIOS_DE_WINDOWS_COM_EXCEPTION_THROW(A)\
-	throw ::cbear_berlios_de::windows::com::create_exception().Description(L"A").Source(L"B")
-*/
 
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_EXCEPTION_THROW(Message) \
 	throw ::cbear_berlios_de::windows::com::create_exception(). \

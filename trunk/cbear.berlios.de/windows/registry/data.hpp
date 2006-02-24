@@ -58,6 +58,8 @@ public:
 		type;
 };
 
+}
+
 class data_id_type: public policy::wrap<data_id_type, dword_t>
 {
 	typedef policy::wrap<data_id_type, dword_t> wrap_type;
@@ -91,10 +93,9 @@ public:
 		// whether you use the Unicode or ANSI functions. 
 		sz = REG_SZ,
 	};
+	data_id_type() {}
 	data_id_type(enumeration_type X): wrap_type(X) {}
 };
-
-}
 
 // Data.
 template<class Char>
@@ -112,7 +113,7 @@ public:
 	typedef detail::data_none none_type;
 
 	// Id type.
-	typedef detail::data_id_type id_type;
+	typedef data_id_type id_type;
 
 	class properties_type
 	{

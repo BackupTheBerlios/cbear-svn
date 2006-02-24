@@ -25,6 +25,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/range/equal.hpp>
 #include <cbear.berlios.de/range/iterator_range.hpp>
+#include <cbear.berlios.de/range/fill.hpp>
+#include <cbear.berlios.de/range/copy.hpp>
 #include <cbear.berlios.de/range/lexicographical_compare.hpp>
 #include <cbear.berlios.de/base/swap.hpp>
 #include <cbear.berlios.de/windows/com/traits.hpp>
@@ -96,21 +98,29 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 
 	static void construct_copy(type &This, const type &Source)
 	{
-		construct_copy(This, Source, size(Source));
+		construct_copy(This, make_sub_range(Source));
 	}
 
-	static void assign(type &This, const_iterator Begin, const std::size_t &Size)
+	// This must not be 0!
+	static void reconstruct_copy(
+		type &This, const iterator &SourceBegin, std::size_t SourceSize)
 	{
-		type New;
-		construct_copy(New, Begin, Size);
-		destroy(This);
-		This = New;
+		if(!::SysReAllocStringLen(&This, SourceBegin, uint_t(SourceSize)))
+			throw std::bad_alloc("BSTR reallocation");
 	}
 
 	static void resize(type &This, std::size_t Size)
 	{
-		if(Size==size(This)) return;
-		assign(This, This, Size);
+		const iterator_range ThisRange = make_sub_range(This);
+		const std::ptrdiff_t Dif = Size - ThisRange.size();
+		if(!Dif) return;
+		if(Dif < 0) { reconstruct_copy(This, This, Size); return; }
+		type New;
+		construct_copy(New, Size);
+		const iterator_range DifRange(range::copy(ThisRange, New), Dif);
+		range::fill(DifRange, 0);
+		destroy(This);
+		This = New;
 	}
 
 	static void destroy(type &This) 
@@ -122,7 +132,9 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 	static void assign(type &This, const type &Source)
 	{
 		if(This==Source) return;
-		assign(This, Source, size(Source));
+		std::size_t SourceSize = size(Source);
+		if(!This) { construct_copy(This, Source, SourceSize); }
+		reconstruct_copy(This, Source, SourceSize);
 	}
 
 	static bool equal(const type &A, const type &B)
@@ -130,20 +142,20 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 		return range::equal(make_sub_range(A), make_sub_range(B));
 	}
 
-	static void add(type &This, const_iterator Begin, std::size_t Size)
+	static void add(type &This, const iterator_range &Range)
 	{
-		const std::size_t OldSize = size(This);
-		const std::size_t NewSize = OldSize + Size;
+		if(Range.empty()) return;
+		const iterator_range ThisRange = make_sub_range(This);
 		type New;
-		construct_copy(New, This, NewSize);
-		std::copy(Begin, Begin + Size, New + OldSize);
+		construct_copy(New, ThisRange.size() + Range.size());
+		range::copy(Range, range::copy(ThisRange, New));
 		destroy(This);
 		This = New;
 	}
 
 	static void add(type &This, const type &Source)
 	{
-		add(This, Source, size(Source));
+		add(This, make_sub_range(Source));
 	}
 
 	typedef standard_policy_type::value_type value_type;

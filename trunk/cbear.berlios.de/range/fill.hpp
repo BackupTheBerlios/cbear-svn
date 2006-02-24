@@ -20,32 +20,23 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_BASE_EXCEPTION_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_BASE_EXCEPTION_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_RANGE_FILL_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_RANGE_FILL_HPP_INCLUDED
 
-// std::exception
-#include <exception>
+#include <algorithm>
+
+#include <cbear.berlios.de/range/begin.hpp>
+#include <cbear.berlios.de/range/end.hpp>
 
 namespace cbear_berlios_de
 {
-namespace base
+namespace range
 {
 
-template<class Char>
-class basic_exception
-{
-public:
-	virtual void print(std::basic_ostream<Char> &O) const = 0;
-};
-
-typedef basic_exception<char> exception;
-typedef basic_exception<wchar_t> wexception;
-
-template<class Stream, class Char>
-Stream &operator<<(Stream &S, const basic_exception<Char> &E)
-{
-	E.print(S);
-	return S;
+template<class Container, class T>
+void fill(Container &X, const T &Value) 
+{ 
+	std::fill(range::begin(X), range::end(X), Value);
 }
 
 }

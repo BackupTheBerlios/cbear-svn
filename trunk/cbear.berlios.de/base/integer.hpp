@@ -235,11 +235,10 @@ public:
 		typedef typename OStream::char_type char_type;
 		T PI = this->P;
 		T XI = this->X;
-		while(true)
+		for(;;)
 		{
 			const T S = XI / PI;
-			const char_type C = S + (S < 10 ? '0': 'A' - 10);
-			O << C;
+			O << char_type(S + (S < 10 ? '0': 'A' - 10));
 			if(PI==1) return;
 			XI %= PI;
 			PI /= Base;

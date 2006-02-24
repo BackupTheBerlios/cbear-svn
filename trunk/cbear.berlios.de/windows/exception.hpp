@@ -23,11 +23,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_EXCEPTION_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_EXCEPTION_HPP_INCLUDED
 
-#include <exception>
 #include <sstream>
 
 #include <boost/noncopyable.hpp>
 
+#include <cbear.berlios.de/base/exception.hpp>
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/windows/base.hpp>
 
@@ -44,13 +44,16 @@ namespace windows
 #pragma warning(disable: 4673)
 
 // Exception.
-class exception: 
-	public std::exception, public policy::wrap<windows::exception, dword_t>
+class exception:
+	public std::exception,
+	public base::exception, 
+	public base::wexception
 {
 public:
-	typedef policy::wrap<windows::exception, dword_t> wrap_type;
 
-	static void throw_if(internal_type X)
+	const char *what() const { return "::cbear_berlios_de::windows::exception"; }
+
+	static void throw_if(dword_t X)
 	{
 		if(X) throw windows::exception(X);
 	}
@@ -61,49 +64,79 @@ public:
 		scope_last_error() { ::SetLastError(0); }
 		~scope_last_error() 
 		{
-			internal_type LastError = ::GetLastError(); 
+			dword_t LastError = ::GetLastError(); 
 			if(LastError) throw exception(LastError);
 		}
 	};
 
-	const char *what() const throw()
+	enum enum_t
 	{
-		return this->Message.c_str();
+		no_more_items = ERROR_NO_MORE_ITEMS,
+		insufficient_buffer = ERROR_INSUFFICIENT_BUFFER,
+	};
+
+	void print(std::ostream &Stream) const
+	{
+		this->detail_print(Stream);
 	}
 
+	void print(std::wostream &Stream) const
+	{
+		this->detail_print(Stream);
+	}
+
+	dword_t result() const throw() { return this->Result; }
+
 private:
-	class buffer_policy: private policy::standard_policy<char *>
+
+	template<class Char>
+	class buffer_policy: private policy::standard_policy<Char *>
 	{
 	public:
-		typedef policy::standard_policy<char *> std_policy_type;
-		typedef std_policy_type::reference reference;
-		typedef std_policy_type::pointer pointer;
+		typedef policy::standard_policy<Char *> std_policy_type;
+		typedef typename std_policy_type::reference reference;
+		typedef typename std_policy_type::pointer pointer;
 		using std_policy_type::construct;
 		using std_policy_type::output;
-		static void destroy(char * &X)
+		static void destroy(Char * &X)
 		{
 			if(X) ::LocalFree(X);
 		}
 	};
-	exception(internal_type X): wrap_type(X) 
+
+	template<class Char>
+	void detail_print(std::basic_ostream<Char> &O) const
 	{
-		policy::std_wrap<char *, buffer_policy> Buffer;
-		::FormatMessageA(
+		policy::std_wrap<Char *, buffer_policy<Char> > Buffer;
+		select<Char>(::FormatMessageA, ::FormatMessageW)(
 			FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
 			0,
-			X,
+			this->result(),
 			0,
-			(char *)&Buffer.internal(),
+			(Char *)&Buffer.internal(),
 			0,
-			NULL);
-		std::ostringstream O;
+			0);
 		O << 
-			"cbear_berlios_de::windows::exception(0x" << std::hex << std::uppercase <<
-			this->internal() << "): " << std::endl << Buffer;
-		this->Message = O.str();
+			select<Char>(
+				"cbear_berlios_de::windows::exception(0x", 
+				L"cbear_berlios_de::windows::exception(0x") << 
+			base::hex(this->result()) << 
+			select<Char>("): ", L"): ") << 
+			std::endl << 
+			Buffer.internal();
 	}
-	std::string Message;
+
+	dword_t Result;
+
+	exception(dword_t X): Result(X) {}
 };
+
+template<class Stream>
+Stream &operator<<(Stream &S, const exception &E)
+{
+	E.print(S);
+	return S;
+}
 
 #pragma warning(pop)
 
