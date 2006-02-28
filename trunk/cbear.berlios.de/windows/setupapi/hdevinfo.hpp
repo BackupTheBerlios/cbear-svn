@@ -33,9 +33,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/range/iterator_range.hpp>
 #include <cbear.berlios.de/windows/hwnd.hpp>
 
-#include <cbear.berlios.de/windows/com/uuid.hpp>
-
 #include <cbear.berlios.de/windows/registry/data.hpp>
+
+#include <cbear.berlios.de/windows/optional_ref.hpp>
+
+#include <cbear.berlios.de/windows/com/uuid.hpp>
+#include <cbear.berlios.de/windows/com/bstr.hpp>
+
+#include <vector>
 
 #include <setupapi.h>
 
@@ -106,6 +111,54 @@ public:
 	spdrp(enum_ E): wrap(E) {}
 };
 
+class sp_device_interface_data: 
+	public policy::wrap<sp_device_interface_data, ::SP_DEVICE_INTERFACE_DATA>
+{
+public:
+
+	typedef policy::wrap<sp_device_interface_data, ::SP_DEVICE_INTERFACE_DATA> 
+		wrap;
+
+	typedef wrap::internal_type internal_type;
+
+	sp_device_interface_data() 
+	{ 
+		this->internal().cbSize = sizeof(internal_type); 
+	}
+};
+
+template<class Char>
+class sp_device_interface_detail_data
+{
+public:
+
+	typedef typename select_traits<
+		Char, 
+		::SP_DEVICE_INTERFACE_DETAIL_DATA_A, 
+		::SP_DEVICE_INTERFACE_DETAIL_DATA_W>::type
+		internal_type;
+
+	sp_device_interface_detail_data(std::size_t Size): Buffer(Size)
+	{
+		this->internal().cbSize = sizeof(internal_type);
+	}
+
+	const internal_type &internal() const
+	{ 
+		return *reinterpret_cast<const internal_type *>(&*Buffer.begin());
+	}
+
+	internal_type &internal()
+	{ 
+		return *reinterpret_cast<internal_type *>(&*Buffer.begin());
+	}
+
+	std::size_t size() const { return this->Buffer.size(); }
+
+private:
+	std::vector<char> Buffer;
+};
+
 class hdevinfo: public policy::wrap<hdevinfo, ::HDEVINFO>
 {
 public:
@@ -116,12 +169,21 @@ public:
 		::SetupDiDestroyDeviceInfoList(this->internal());
 	}
 
-	void EnumDeviceInfo(
+	bool EnumDeviceInfo(
 		dword_t MemberIndex, sp_devinfo_data &DeviceInfoData) const
 	{
-		exception::scope_last_error ScopeLastError;
-		::SetupDiEnumDeviceInfo(
-			this->internal(), MemberIndex, &DeviceInfoData.internal());
+		try
+		{
+			exception::scope_last_error ScopeLastError;
+			::SetupDiEnumDeviceInfo(
+				this->internal(), MemberIndex, &DeviceInfoData.internal());
+		}
+		catch(const exception &E)
+		{
+			if(E.result()==exception::no_more_items) return false;
+			throw;
+		}
+		return true;
 	}
 
 	template<class Char>
@@ -141,8 +203,107 @@ public:
 				Property.internal(),
 				&PropertyRegDataType.internal(),
 				Buffer.begin(),
-				Buffer.size(),
+				(dword_t)Buffer.size(),
 				&RequiredSize);
+	}
+
+	registry::data_id_type GetDeviceRegistryProperty(
+		const sp_devinfo_data &DeviceInfoData,
+		spdrp Property,
+		com::bstr_t &Buffer) const
+	{
+		registry::data_id_type PropertyRegDataType;
+		dword_t RequiredSize;
+		try
+		{
+			this->GetDeviceRegistryProperty<wchar_t>(
+				DeviceInfoData,
+				Property,
+				PropertyRegDataType,
+				byte_range(),
+				RequiredSize);
+		}
+		catch(const windows::exception &E)
+		{
+			if(E.result()!=windows::exception::insufficient_buffer) throw;
+			if(
+				PropertyRegDataType!=registry::data_id_type::sz &&
+				PropertyRegDataType!=registry::data_id_type::multi_sz)
+				throw base::wstring_exception(L"the property is not a string");
+		}
+		Buffer.resize(RequiredSize/2 - 1);
+		this->GetDeviceRegistryProperty<wchar_t>(
+			DeviceInfoData,
+			Property,
+			PropertyRegDataType,
+			byte_range(
+				(byte_t *)Buffer.c_str(), 
+				(byte_t *)(Buffer.c_str() + Buffer.size() + 1)),
+			RequiredSize);
+		return PropertyRegDataType;
+	}
+
+	bool EnumDeviceInterfaces(
+		const optional_ref<const sp_devinfo_data> &deviceInfoData,
+		const com::uuid &interfaceClassGuid,
+		dword_t memberIndex,
+		sp_device_interface_data &deviceInterfaceData)
+	{
+		try
+		{
+			exception::scope_last_error ScopeLastError;
+			SetupDiEnumDeviceInterfaces(
+				this->internal(),
+				const_cast<::SP_DEVINFO_DATA *>(deviceInfoData.internal()),
+				&interfaceClassGuid.internal(),
+				memberIndex,
+				&deviceInterfaceData.internal());
+		}
+		catch(const exception &E)
+		{
+			if(E.result()==exception::no_more_items) return false;
+			throw;
+		}
+		return true;
+	}
+
+	template<class Char>
+	sp_device_interface_detail_data<Char> GetDeviceInterfaceDetail(
+		const sp_device_interface_data &deviceInterfaceData,
+		const optional_ref<sp_devinfo_data> &deviceInfoData) const
+	{
+		dword_t requiredSize;
+		try
+		{
+			exception::scope_last_error ScopeLastError;
+			select<Char>(
+				::SetupDiGetDeviceInterfaceDetailA, ::SetupDiGetDeviceInterfaceDetailW)(
+					this->internal(),
+					const_cast< ::SP_DEVICE_INTERFACE_DATA *>(
+						&deviceInterfaceData.internal()),
+					0,
+					0,
+					&requiredSize,
+					deviceInfoData.internal());
+		}
+		catch(const windows::exception &E)
+		{
+			if(E.result()!=windows::exception::insufficient_buffer) throw;
+		}
+		sp_device_interface_detail_data<Char> deviceInterfaceDetailData(requiredSize);
+		{
+			exception::scope_last_error ScopeLastError;
+			select<Char>(
+				::SetupDiGetDeviceInterfaceDetailA, ::SetupDiGetDeviceInterfaceDetailW)(
+				this->internal(),
+				const_cast< ::SP_DEVICE_INTERFACE_DATA *>(
+					&deviceInterfaceData.internal()),
+				&deviceInterfaceDetailData.internal(),
+				(dword_t)deviceInterfaceDetailData.size(),
+				0,
+				deviceInfoData.internal());
+		}
+		return deviceInterfaceDetailData;
 	}
 };
 
@@ -179,7 +340,7 @@ public:
 
 template<class Char>
 hdevinfo GetClassDevsEx(
-	const com::uuid *ClassGuid,
+	const optional_ref<const com::uuid> &ClassGuid,
 	const basic_lpstr<const Char> &Enumerator,
 	const hwnd &Parent,
 	const digcf &Flags,
@@ -191,7 +352,7 @@ hdevinfo GetClassDevsEx(
 		exception::scope_last_error ScopeLastError;
 		Result.internal() = 
 			select<Char>(::SetupDiGetClassDevsExA, ::SetupDiGetClassDevsExW)(
-				ClassGuid ? &ClassGuid->internal(): 0,
+				ClassGuid.internal(),
 				Enumerator.internal(),
 				Parent.internal(),
 				Flags.internal(),

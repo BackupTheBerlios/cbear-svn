@@ -28,6 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/range/fill.hpp>
 #include <cbear.berlios.de/range/copy.hpp>
 #include <cbear.berlios.de/range/lexicographical_compare.hpp>
+#include <cbear.berlios.de/base/const_ref.hpp>
 #include <cbear.berlios.de/base/swap.hpp>
 #include <cbear.berlios.de/windows/com/traits.hpp>
 
@@ -71,7 +72,9 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 		return iterator_range(A, A + size(A));
 	}
 
-	static void construct_copy(
+	//
+
+	static void alloc(
 		type &This, const_iterator Begin, const std::size_t &Size)
 	{
 		if(Size)
@@ -85,40 +88,51 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 		}
 	}
 
+	static void alloc(type &This, const std::size_t &Size) 
+	{ 
+		alloc(This, 0, Size); 
+	}
+
 	template<class Range>
 	static void construct_copy(type &This, const Range &Source)
 	{
-		construct_copy(This, range::begin(Source), range::size(Source));
-	}
-
-	static void construct_copy(type &This, const std::size_t &Size)
-	{
-		construct_copy(This, 0, Size);
+		alloc(This, range::begin(Source), range::size(Source));
 	}
 
 	static void construct_copy(type &This, const type &Source)
 	{
-		construct_copy(This, make_sub_range(Source));
+		alloc(This, Source, size(Source));
 	}
 
-	// This must not be 0!
-	static void reconstruct_copy(
+	//
+
+	// "This" must not be 0!
+	static void realloc(
 		type &This, const iterator &SourceBegin, std::size_t SourceSize)
 	{
 		if(!::SysReAllocStringLen(&This, SourceBegin, uint_t(SourceSize)))
 			throw std::bad_alloc("BSTR reallocation");
 	}
 
-	static void resize(type &This, std::size_t Size)
+	// "This" must not be 0!
+	static void reconstruct_copy(type &This, const type &Source)
+	{
+		realloc(This, Source, size(Source));
+	}
+
+	static void resize(type &This, std::size_t NewSize)
 	{
 		const iterator_range ThisRange = make_sub_range(This);
-		const std::ptrdiff_t Dif = Size - ThisRange.size();
+		const std::ptrdiff_t Dif = NewSize - ThisRange.size();
 		if(!Dif) return;
-		if(Dif < 0) { reconstruct_copy(This, This, Size); return; }
+		if(Dif < 0) { realloc(This, This, NewSize); return; }
+		// constructing a new BSTR.
 		type New;
-		construct_copy(New, Size);
-		const iterator_range DifRange(range::copy(ThisRange, New), Dif);
-		range::fill(DifRange, 0);
+		alloc(New, NewSize);
+		range::fill(
+			base::const_ref(iterator_range(range::copy(ThisRange, New), Dif)), 0);
+		New[NewSize] = 0;
+		//
 		destroy(This);
 		This = New;
 	}
@@ -132,9 +146,8 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 	static void assign(type &This, const type &Source)
 	{
 		if(This==Source) return;
-		std::size_t SourceSize = size(Source);
-		if(!This) { construct_copy(This, Source, SourceSize); }
-		reconstruct_copy(This, Source, SourceSize);
+		if(!This) { construct_copy(This, Source); }
+		reconstruct_copy(This, Source);
 	}
 
 	static bool equal(const type &A, const type &B)
@@ -145,15 +158,20 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 	static void add(type &This, const iterator_range &Range)
 	{
 		if(Range.empty()) return;
+		//
 		const iterator_range ThisRange = make_sub_range(This);
+		const std::size_t NewSize = ThisRange.size() + Range.size();
+		// constructing a new BSTR.
 		type New;
-		construct_copy(New, ThisRange.size() + Range.size());
+		alloc(New, NewSize);
 		range::copy(Range, range::copy(ThisRange, New));
+		New[NewSize] = 0;
+		//
 		destroy(This);
 		This = New;
 	}
 
-	static void add(type &This, const type &Source)
+	static void add(type &This, const type &Source) 
 	{
 		add(This, make_sub_range(Source));
 	}
@@ -198,7 +216,10 @@ public:
 
 	bstr_t() {}
 
-	explicit bstr_t(::std::size_t Size): helper_type(Size, 0) {}
+	explicit bstr_t(::std::size_t Size) 
+	{
+		this->resize(Size);
+	}
 
 	bstr_t(const wchar_t *X, ::std::size_t Size): 
 		helper_type(const_iterator_range(X, X + Size), 0) 
@@ -213,18 +234,13 @@ public:
 	{
 	}
 
-	bstr_t(const move_type &C)
-	{
-		C.swap(*this);
-	}
+	bstr_t(const move_type &C) { C.swap(*this); }
 
-	bstr_t &operator=(const move_type &C)
-	{
-		C.swap(*this);
-		return *this;
-	}
+	bstr_t &operator=(const move_type &C) { C.swap(*this); return *this; }
 
-	wchar_t *c_str() const { return this->internal(); }
+	const wchar_t *c_str() const { return this->internal(); }
+
+	wchar_t *data() { return this->internal(); }
 
 	size_type size() const 
 	{ 

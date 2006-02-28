@@ -20,53 +20,34 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_BASE_EXCEPTION_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_BASE_EXCEPTION_HPP_INCLUDED
-
-// std::exception
-#include <exception>
-
-#include <cbear.berlios.de/base/string.hpp>
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_OPTIONAL_REF_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_WINDOWS_OPTIONAL_REF_HPP_INCLUDED
 
 namespace cbear_berlios_de
 {
-namespace base
+namespace windows
 {
 
-template<class Char>
-class basic_exception
-{
-public:
-	virtual void print(std::basic_ostream<Char> &O) const = 0;
-};
-
-typedef basic_exception<char> exception;
-typedef basic_exception<wchar_t> wexception;
-
-template<class Stream, class Char>
-Stream &operator<<(Stream &S, const basic_exception<Char> &E)
-{
-	E.print(S);
-	return S;
-}
-
-template<class Char>
-class basic_string_exception: public basic_exception<Char>
+template<class T>
+class optional_ref: public policy::wrap<optional_ref<T>, T *>
 {
 public:
-	template<class T>
-	basic_string_exception(const T &X): Msg(X) {}
-	const char *what() const throw() 
-	{ 
-		return "::cbear_berlios_de::base::basic_string_exception"; 
+
+	typedef policy::wrap<optional_ref<T>, T *> wrap;
+
+	optional_ref() {}
+	optional_ref(T &X): wrap(&X) {}
+
+	typedef typename T::internal_type T_internal_type;
+	typedef typename boost::mpl::if_<
+		boost::is_const<T>, const T_internal_type, T_internal_type>::type 
+		internal_type;
+
+	internal_type *internal() const
+	{
+		return this->wrap::internal() ? &this->wrap::internal()->internal(): 0;
 	}
-	virtual void print(std::basic_ostream<Char> &O) const { O << Msg; }
-private:
-	basic_string<Char> Msg;
 };
-
-typedef basic_string_exception<char> string_exception;
-typedef basic_string_exception<wchar_t> wstring_exception;
 
 }
 }

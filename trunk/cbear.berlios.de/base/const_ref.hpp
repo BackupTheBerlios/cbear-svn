@@ -20,53 +20,16 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_BASE_EXCEPTION_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_BASE_EXCEPTION_HPP_INCLUDED
-
-// std::exception
-#include <exception>
-
-#include <cbear.berlios.de/base/string.hpp>
+#ifndef CBEAR_BERLIOS_DE_BASE_CONST_REF_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_BASE_CONST_REF_INCLUDED
 
 namespace cbear_berlios_de
 {
 namespace base
 {
 
-template<class Char>
-class basic_exception
-{
-public:
-	virtual void print(std::basic_ostream<Char> &O) const = 0;
-};
-
-typedef basic_exception<char> exception;
-typedef basic_exception<wchar_t> wexception;
-
-template<class Stream, class Char>
-Stream &operator<<(Stream &S, const basic_exception<Char> &E)
-{
-	E.print(S);
-	return S;
-}
-
-template<class Char>
-class basic_string_exception: public basic_exception<Char>
-{
-public:
-	template<class T>
-	basic_string_exception(const T &X): Msg(X) {}
-	const char *what() const throw() 
-	{ 
-		return "::cbear_berlios_de::base::basic_string_exception"; 
-	}
-	virtual void print(std::basic_ostream<Char> &O) const { O << Msg; }
-private:
-	basic_string<Char> Msg;
-};
-
-typedef basic_string_exception<char> string_exception;
-typedef basic_string_exception<wchar_t> wstring_exception;
+template<class T>
+const T &const_ref(const T &X) { return X; }
 
 }
 }
