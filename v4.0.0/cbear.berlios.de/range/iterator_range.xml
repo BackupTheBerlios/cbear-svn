@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<!--
+The MIT License
+
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of 
+this software and associated documentation files (the "Software"), to deal in 
+the Software without restriction, including without limitation the rights to 
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so, 
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<?xml-stylesheet type="text/xsl" href="../cpp/html.xsl"?>
+<unit 
+	xmlns="http://cbear.berlios.de/cpp" 
+	id="cbear.berlios.de/range/iterator_range"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://cbear.berlios.de/cpp ../cpp/main.xsd">
+<header>
+<namespace id="cbear_berlios_de">
+<namespace id="range">
+	<template>
+		<id id="Iterator"/>
+		<class>
+			<id.ref id="iterator_range"/>
+			<access access="public">
+				<id.ref type="::">
+					<id.ref id="policy"/>
+					<id.ref id="wrap" type="&lt;&gt;">
+						<id.ref id="iterator_range" type="&lt;&gt;">
+							<id.ref id="Iterator"/>
+						</id.ref>
+						<id.ref type="::">
+							<id.ref/>
+							<id.ref id="std"/>
+							<id.ref id="pair" type="&lt;&gt;">
+								<id.ref id="Iterator"/>
+								<id.ref id="Iterator"/>
+							</id.ref>
+						</id.ref>
+					</id.ref>
+				</id.ref>
+				<id.ref id="helper" type="&lt;&gt;">
+					<id.ref id="iterator_range" type="&lt;&gt;">
+						<id.ref id="Iterator"/>
+					</id.ref>
+					<id.ref id="Iterator"/>
+					<id.ref id="Iterator"/>
+				</id.ref>
+				<typedef id="iterator">
+					<id.ref id="Iterator"/>
+				</typedef>
+				<typedef id="const_iterator">
+					<id.ref id="Iterator"/>
+				</typedef>
+				<typedef id="internal_type">
+					<id.ref type="::">
+						<id.ref/>
+						<id.ref id="std"/>
+						<id.ref id="pair" type="&lt;&gt;">
+							<id.ref id="Iterator"/>
+							<id.ref id="Iterator"/>
+						</id.ref>
+					</id.ref>
+				</typedef>
+				<method id="iterator_range"/>
+				<method id="iterator_range">
+					<parameter>
+						<id.ref type="&amp;">
+							<id.ref type="const"><id.ref id="iterator"/></id.ref>
+						</id.ref>
+					</parameter>
+					<parameter>
+						<id.ref type="&amp;">
+							<id.ref type="const"><id.ref id="iterator"/></id.ref>
+						</id.ref>
+					</parameter>
+				</method>
+				<method id="iterator_range">
+					<explicit/>
+					<parameter>
+						<id.ref type="&amp;">
+							<id.ref type="const"><id.ref id="internal_type"/></id.ref>
+						</id.ref>
+					</parameter>
+				</method>
+				<template>
+					<id id="Range"/>
+					<method id="iterator_range">
+						<explicit/>
+						<parameter>
+							<id.ref type="&amp;">
+								<id.ref type="const"><id.ref id="Range"/></id.ref>
+							</id.ref>
+						</parameter>
+					</method>
+				</template>
+				<template>
+					<id id="Range"/>
+					<method id="iterator_range">
+						<explicit/>
+						<parameter>
+							<id.ref type="&amp;"><id.ref id="Range"/></id.ref>
+						</parameter>
+					</method>
+				</template>
+				<method id="begin">
+					<id.ref id="iterator"/>
+					<const/>
+				</method>
+				<method id="end">
+					<id.ref id="iterator"/>
+					<const/>
+				</method>
+			</access>
+		</class>
+	</template>
+	<template>
+		<id id="Iterator"/>
+		<method id="make_iterator_range">
+			<id.ref id="..."/>
+			<parameter>
+				<id.ref type="&amp;">
+					<id.ref type="const"><id.ref id="Iterator"/></id.ref>
+				</id.ref>
+			</parameter>
+			<parameter>
+				<id.ref type="&amp;">
+					<id.ref type="const"><id.ref id="Iterator"/></id.ref>
+				</id.ref>
+			</parameter>
+		</method>
+	</template>
+	<template>
+		<id id="Iterator"/>
+		<method id="make_iterator_range">
+			<id.ref id="..."/>
+			<parameter>
+				<id.ref type="&amp;">
+					<id.ref type="const">
+						<id.ref type="::">
+							<id.ref/>
+							<id.ref id="std"/>
+							<id.ref id="pair" type="&lt;&gt;">
+								<id.ref id="Iterator"/>
+								<id.ref id="Iterator"/>
+							</id.ref>
+						</id.ref>
+					</id.ref>
+				</id.ref>
+			</parameter>
+		</method>
+	</template>
+	<template>
+		<id id="Range"/>
+		<method id="make_iterator_range">
+			<id.ref id="..."/>
+			<parameter>
+				<id.ref type="&amp;">
+					<id.ref type="const"><id.ref id="Range"/></id.ref>
+				</id.ref>
+			</parameter>
+		</method>
+	</template>
+	<template>
+		<id id="Range"/>
+		<method id="make_iterator_range">
+			<id.ref id="..."/>
+			<parameter>
+				<id.ref type="&amp;"><id.ref id="Range"/></id.ref>
+			</parameter>
+		</method>
+	</template>
+</namespace>
+</namespace>
+</header>
+</unit>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../../project/html.xsl"?><!--
+The MIT License
+
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of 
+this software and associated documentation files (the "Software"), to deal in 
+the Software without restriction, including without limitation the rights to 
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so, 
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--><section xmlns="http://cbear.berlios.de/project" name="Universally Unique Identifier, UUID">
+	
+	<p>
+Header <a href="uuid.hpp"/>.
+	</p>
+<pre>class uuid
+{
+public:
+
+	uuid();
+
+	bool operator==(const uuid &amp;) const;
+	bool operator!=(const uuid &amp;) const;
+
+	bool operator&lt;(const uuid &amp;) const;
+	bool operator&gt;(const uuid &amp;) const;
+	bool operator&lt;=(const uuid &amp;) const;
+	bool operator&gt;=(const uuid &amp;) const;
+
+	typedef ... data1_type;
+	typedef ... data2_type;
+	typedef ... data3_type;
+	typedef ... data4_value_type;
+	typedef ... data4_type;
+
+	uuid(
+		const data1_type &amp;Data1,
+		const data2_type &amp;Data2,
+		const data3_type &amp;Data3,
+		const data4_value_type &amp;Data40,
+		const data4_value_type &amp;Data41,
+		const data4_value_type &amp;Data42,
+		const data4_value_type &amp;Data43,
+		const data4_value_type &amp;Data44,
+		const data4_value_type &amp;Data45,
+		const data4_value_type &amp;Data46,
+		const data4_value_type &amp;Data47);
+
+	template&lt;class Interface&gt;
+	struct of_type;
+
+	template&lt;class Interface&gt;
+	static uuid of();
+
+	typedef ... internal_type;
+
+	explicit uuid(const internal_type &amp;);
+
+	internal_type &amp;internal();
+	const internal_type &amp;internal() const;
+};
+
+#define NET_SOURCEFORGE_CBEAR_COM_UUID_DECLARE(Interface)</pre>
+	<p>
+See also <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/rpc/rpc/uuid_1.asp">MSDN, UUID</a> and <a href="http://www.opengroup.org/onlinepubs/9629399/apdxa.htm">DCE, UUID</a>.
+	</p>
+</section>

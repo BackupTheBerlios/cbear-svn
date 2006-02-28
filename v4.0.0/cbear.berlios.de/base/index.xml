@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../project/html.xsl"?><!--
+The MIT License
+
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of 
+this software and associated documentation files (the "Software"), to deal in 
+the Software without restriction, including without limitation the rights to 
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so, 
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--><section xmlns="http://cbear.berlios.de/project" name="Basic Types">
+	
+	<p>
+Namespace <em>cbear_berlios_de::base</em>.
+	</p>
+	<section name="Integer Types">
+		
+		<p>
+Header <a href="integer.hpp"/>. Test program 
+<a href="integer.hpp.test.cpp"/>.
+		</p>
+		<section name="is_integer Meta Function">
+			
+			<p>
+Returns <em>true</em> if the given type is an integer type.
+			</p>
+<pre>template&lt;class Type&gt; 
+struct is_integer
+{ 
+	typedef ... type;
+	static const bool value;
+};</pre>
+		</section>
+		<section name="is_signed Meta Function">
+			
+			<p>
+Returns <em>true</em> if the given type is signed integer type.
+			</p>
+<pre>template&lt;class Type&gt;
+struct is_signed
+{
+	typedef ... type;
+	static const bool value;
+};</pre>
+		</section>
+		<section name="Integer Type Selection (int_t, uint_t)">
+			
+			<p>
+These functions are based on <a href="http://www.boost.org/libs/integer/integer.htm">Boost, Integer Type Selection Templates</a>.
+			</p>
+			<p>
+<em>int_t</em> returns the built-in signed integral type with the 
+given number of bits, including the sign bit.
+			</p>
+<pre>template&lt;std::size_t Bits&gt;
+struct int_t
+{
+	typedef ... type;
+};</pre>
+			<p>
+<em>uint_t</em> returns the built-in unsigned integral type with the
+given number of bits.
+			</p>
+<pre>template&lt;std::size_t Bits&gt;
+struct uint_t
+{
+	typedef ... type;
+};</pre>
+			<p>
+See also <a href="http://www.boost.org/libs/integer/integer.htm">Boost, Integer Type Selection Templates</a> and <a href="http://www.boost.org/libs/integer/cstdint.htm">Boost, Header boost/cstdint.hpp</a>.
+			</p>
+		</section>
+		<section name="Convertions (make_signed, make_unsigned)">
+			
+			<p>
+<em>make_signed</em> returns the built-in signed integral type with 
+the same number of bits, including the sign bit, as the given type has.
+			</p>
+<pre>template&lt;class Type&gt;
+struct make_signed
+{
+	typedef ... type;
+};</pre>
+			<p>
+<em>make_unsigned</em> returns the built-in unsigned integral type 
+with the same number of bits as the given type has.
+			</p>
+<pre>template&lt;class Type&gt;
+struct make_unsigned
+{
+	typedef ... type;
+};</pre>
+		</section>
+		<section name="Integer Parts">
+			
+<pre>template&lt;class Type&gt;
+struct half
+{
+	typedef ... type;
+}
+
+template&lt;class Type&gt;
+typename half&lt;Type&gt;::type &amp;low(Type &amp;X);
+
+template&lt;class Type&gt;
+typename half&lt;Type&gt;::type low(const Type &amp;X);
+
+template&lt;class Type&gt;
+typename half&lt;Type&gt;::type &amp;high(Type &amp;X);
+
+template&lt;class Type&gt;
+typename half&lt;Type&gt;::type high(const Type &amp;X);
+
+template&lt;class Half&gt;
+struct compose_result
+{
+	typedef ... type;
+};
+
+template&lt;class Half&gt;
+typename compose_result&lt;Half&gt;::type compose(const Half &amp;High, const Half &amp;Low);</pre>
+		</section>
+	</section>
+	<section href="singleton.xml"/>
+</section>
