@@ -20,39 +20,44 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_RANGE_LEXICOGRAPHIC_COMPARE_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_RANGE_LEXICOGRAPHIC_COMPARE_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_BASE_COMPARE_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_BASE_COMPARE_HPP_INCLUDED
 
-#include <cbear.berlios.de/base/compare.hpp>
-#include <cbear.berlios.de/range/sub_range.hpp>
+#include <boost/mpl/if.hpp>
+#include <boost/type_traits/is_class.hpp>
 
 namespace cbear_berlios_de
 {
-namespace range
-{
-namespace lexicographic
+namespace base
 {
 
-// Warning: ::std::lexicographical_compare has different functionality!
-// See also lexicographic::less.
-// Returns -1 if R1 < R2, 0 if R1==R2, 1 if R1 > R2.
-template<class Range1, class Range2>
-int compare(const Range1 &R1, const Range2 &R2)
+namespace detail
 {
-	range::sub_range<Range1>::type S1(R1);
-	range::sub_range<Range2>::type S2(R2);
-	for(;;)
-	{
-		if(S1.empty()) return S2.empty() ? 0: -1;
-		if(S2.empty()) return 1;
-		int result = base::compare(S1.front(), S2.front());
-		if(result != 0) return result;
-		S1.begin()++;
-		S2.begin()++;
-	}
-}
+
+class default_compare
+{
+public:
+	template<class T>
+	static int do_(const T &A, const T &B) { return A == B ? 0: A<B ? -1: 1; }
+};
+
+class class_compare
+{
+public:
+	template<class T>
+	static int do_(const T &A, const T &B) { return A.compare(B); }
+};
 
 }
+
+template<class T>
+int compare(const T &A, const T &B)
+{
+	return boost::mpl::if_<
+		boost::is_class<T>, detail::class_compare, detail::default_compare>::type::
+		do_(A, B);
+}
+
 }
 }
 
