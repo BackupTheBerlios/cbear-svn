@@ -20,27 +20,31 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_RANGE_LEXICOGRAPHICAL_COMPARE_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_RANGE_LEXICOGRAPHICAL_COMPARE_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_RANGE_LEXICOGRAPHIC_LESS_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_RANGE_LEXICOGRAPHIC_LESS_HPP_INCLUDED
 
 // std::lexicographical_compare
 #include <algorithm>
 
-#include <cbear.berlios.de/range/begin.hpp>
-#include <cbear.berlios.de/range/end.hpp>
+#include <cbear.berlios.de/range/sub_range.hpp>
 
 namespace cbear_berlios_de
 {
 namespace range
 {
+namespace lexicographic
+{
 
+// Calls ::std::lexicographical_compare.
+// Returns true if R1 < R2, false if R1 >= R2.
 template<class Range1, class Range2>
-bool lexicographical_compare(const Range1 &A, const Range2 &B)
+bool less(const Range1 &R1, const Range2 &R2)
 {
 	return ::std::lexicographical_compare(
-		range::begin(A), range::end(A), range::begin(B), range::end(B));
+		range::begin(R1), range::end(R2), range::begin(R1), range::end(R2));
 }
 
+}
 }
 }
 
