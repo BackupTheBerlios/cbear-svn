@@ -20,35 +20,33 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_RANGE_LEXICOGRAPHIC_COMPARE_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_RANGE_LEXICOGRAPHIC_COMPARE_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_USB_DEVICE_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_WINDOWS_USB_DEVICE_HPP_INCLUDED
 
-#include <cbear.berlios.de/base/compare.hpp>
-#include <cbear.berlios.de/range/sub_range.hpp>
+#include <cbear.berlios.de/windows/handle.hpp>
 
 namespace cbear_berlios_de
 {
-namespace range
+namespace windows
 {
-namespace lexicographic
+namespace usb
 {
 
-// Warning: ::std::lexicographical_compare has different functionality!
-// See also lexicographic::less.
-// Returns -1 if R1 < R2, 0 if R1==R2, 1 if R1 > R2.
-template<class Range1, class Range2>
-int compare(const Range1 &R1, const Range2 &R2)
+inline const com::uuid &device_uuid()
 {
-	range::sub_range<Range1>::type S1(R1);
-	range::sub_range<Range2>::type S2(R2);
-	for(;;)
-	{
-		if(S1.empty()) return S2.empty() ? 0: -1;
-		if(S2.empty()) return 1;
-		if(S1.front()!=S2.front()) return S1.front() < S2.front() ? -1: 1;
-		S1.begin()++;
-		S2.begin()++;
-	}
+	static const com::uuid Result(
+		0xA5DCBF10L, 
+		0x6530, 
+		0x11D2, 
+		0x90, 
+		0x1F, 
+		0x00, 
+		0xC0, 
+		0x4F, 
+		0xB9, 
+		0x51, 
+		0xED);
+	return Result;
 }
 
 }
