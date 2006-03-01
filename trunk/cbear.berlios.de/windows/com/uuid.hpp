@@ -36,7 +36,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/base/integer.hpp>
 #include <cbear.berlios.de/policy/main.hpp>
-#include <cbear.berlios.de/range/lexicographical_compare.hpp>
+#include <cbear.berlios.de/range/lexicographic/less.hpp>
 #include <cbear.berlios.de/base/integer.hpp>
 #include <cbear.berlios.de/windows/select.hpp>
 #include <cbear.berlios.de/windows/com/traits.hpp>
@@ -110,7 +110,7 @@ struct uuid_policy: policy::standard_policy<uuid_internal_type>
 		if(A.Data1!=B.Data1) return A.Data1<B.Data1;
 		if(A.Data2!=B.Data2) return A.Data2<B.Data2;
 		if(A.Data3!=B.Data3) return A.Data3<B.Data3;
-		return range::lexicographical_compare(A.Data4, B.Data4);
+		return range::lexicographic::less(A.Data4, B.Data4);
 	}
 };
 

@@ -27,7 +27,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/range/iterator_range.hpp>
 #include <cbear.berlios.de/range/fill.hpp>
 #include <cbear.berlios.de/range/copy.hpp>
-#include <cbear.berlios.de/range/lexicographical_compare.hpp>
+#include <cbear.berlios.de/range/lexicographic/compare.hpp>
 #include <cbear.berlios.de/base/const_ref.hpp>
 #include <cbear.berlios.de/base/swap.hpp>
 #include <cbear.berlios.de/windows/com/traits.hpp>
@@ -266,7 +266,7 @@ public:
 
 	int compare(const bstr_t &X) const
 	{
-		return range::lexicographical_compare(*this, X);
+		return range::lexicographic::compare(*this, X);
 	}
 
 	typedef void *extra_result;
