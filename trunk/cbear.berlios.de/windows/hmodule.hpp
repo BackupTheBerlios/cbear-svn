@@ -34,6 +34,8 @@ namespace cbear_berlios_de
 namespace windows
 {
 
+typedef ::FARPROC farproc;
+
 class hmodule: public policy::wrap<hmodule, ::HMODULE>
 {
 public:
@@ -54,6 +56,14 @@ public:
 				this->internal(), Buffer, max_path);
 		}
 		return std::basic_string<Char>(Buffer, Length);
+	}
+
+	template<class Char>
+	farproc GetProcAddress(const basic_lpstr<const Char> &ProcName)
+	{
+		exception::scope_last_error ScopeLastError;
+		return select<Char>(::GetProcAddressA, ::GetProcAddressW)(
+			this->internal(), ProcName.internal());
 	}
 };
 
