@@ -55,7 +55,7 @@ std::basic_ostream<Char> &operator<<(
 	static const char_type Minus = Windows::select<char_type>('-', L'-');
 	O << ::cbear_berlios_de::base::hex(X.Data1, 8) <<
 		Minus <<
-		::cbear_berlios_de::base::hex(X.Data1, 4) <<
+		::cbear_berlios_de::base::hex(X.Data2, 4) <<
 		Minus <<
 		::cbear_berlios_de::base::hex(X.Data3, 4) <<
 		Minus;
