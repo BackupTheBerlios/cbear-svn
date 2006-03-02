@@ -55,7 +55,7 @@ std::basic_ostream<Char> &operator<<(
 	static const char_type Minus = Windows::select<char_type>('-', L'-');
 	O << ::cbear_berlios_de::base::hex(X.Data1, 8) <<
 		Minus <<
-		::cbear_berlios_de::base::hex(X.Data1, 4) <<
+		::cbear_berlios_de::base::hex(X.Data2, 4) <<
 		Minus <<
 		::cbear_berlios_de::base::hex(X.Data3, 4) <<
 		Minus;
@@ -68,24 +68,6 @@ std::basic_ostream<Char> &operator<<(
 	{
 		O << ::cbear_berlios_de::base::hex(R[0], 2);
 	}
-	/*
-	O << std::uppercase << std::hex << std::setfill(Zero) << 
-		std::setw(8) << X.Data1 <<
-		Minus <<
-		std::setw(4) << X.Data2 <<
-		Minus <<
-		std::setw(4) << X.Data3 <<
-		Minus;
-	for(range_type R(X.Data4, X.Data4 + 2); !R.empty(); R.begin()++)
-	{
-		O << std::setw(2) << R[0];
-	}
-	O << Minus;
-	for(range_type R(X.Data4 + 2, X.Data4 + 8); !R.empty(); R.begin()++)
-	{
-		O << std::setw(2) << R[0];
-	}
-	*/
 	return O;
 }
 
