@@ -272,7 +272,7 @@ public:
 		const sp_device_interface_data &deviceInterfaceData,
 		const optional_ref<sp_devinfo_data> &deviceInfoData) const
 	{
-		dword_t requiredSize;
+		dword_t requiredSize = 0;
 		try
 		{
 			exception::scope_last_error ScopeLastError;
