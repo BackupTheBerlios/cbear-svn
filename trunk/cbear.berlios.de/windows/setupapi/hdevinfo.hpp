@@ -363,6 +363,18 @@ hdevinfo GetClassDevsEx(
 	return Result;
 }
 
+template<class Handler>
+class devices
+{
+public:
+	devices(const Handler &H, const com::uuid &Uuid): H(H), Uuid(Uuid)
+	{
+		
+	}
+private:
+	Handler H;
+};
+
 }
 }
 }

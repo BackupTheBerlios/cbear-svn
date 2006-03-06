@@ -31,6 +31,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/com/enum.hpp>
 #include <cbear.berlios.de/windows/com/clsctx.hpp>
 
+// ::CoInitializeEx
+#pragma comment(lib, "ole32.lib")
+
 namespace cbear_berlios_de
 {
 namespace windows

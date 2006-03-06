@@ -118,6 +118,7 @@ public:
 	typedef InternalPolicy internal_policy;
 
 	internal_type &internal() { return this->Internal; }
+
 	const internal_type &internal() const { return this->Internal; }
 
 	void swap(type &X) { internal_policy::swap(this->Internal, X.Internal); }

@@ -32,6 +32,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/base/swap.hpp>
 #include <cbear.berlios.de/windows/com/traits.hpp>
 
+// ::SysStringLen
+#pragma comment(lib, "oleaut32.lib")
+
 namespace cbear_berlios_de
 {
 namespace windows
@@ -227,7 +230,7 @@ public:
 	}
 
 	template< ::std::size_t Size>
-	explicit bstr_t(const wchar_t (&X)[Size]): helper_type(const_iterator_range(X), 0) {}
+	bstr_t(const wchar_t (&X)[Size]): helper_type(const_iterator_range(X), 0) {}
 
 	explicit bstr_t(const std::basic_string<wchar_t> &X): 
 		helper_type(const_iterator_range(X.c_str(), (size_type)X.size()), 0)

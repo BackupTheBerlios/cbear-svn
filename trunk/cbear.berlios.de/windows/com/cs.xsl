@@ -339,23 +339,49 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:apply-templates select="odl:method" mode="odl:cs.method"/>
 </xsl:template>
 
+<xsl:template match="odl:interface[odl:type.ref]" mode="odl:cs.interface.type">
+	<xsl:variable name="id" select="odl:type.ref/@id"/>
+	<xsl:apply-templates 
+		select="/odl:library/odl:interface[@id=$id]" mode="odl:cs.interface.type"/>
+</xsl:template>
+
+<xsl:template 
+	match="odl:interface[odl:type.ref/@library]" mode="odl:cs.interface.type">
+	<xsl:variable name="library" select="odl:type.ref/@library"/>
+	<xsl:variable name="id" select="odl:type.ref/@id"/>
+	<xsl:variable 
+		name="href" select="/odl:library/odl:importlib[@id=$library]/@href"/>
+	<xsl:apply-templates 
+		select="document(
+			substring($href, 1, string-length() - 4), '.odl.xml')/
+			odl:library/odl:interface[@id=$id]" mode="odl:cs.interface.type"/>
+</xsl:template>
+
+<xsl:template 
+	match="odl:interface[odl:type.ref/@id='IDispatch']" 
+	mode="odl:cs.interface.type"/>
+
+<xsl:template 
+	match="odl:interface[odl:type.ref/@id='IUnknown']" 
+	mode="odl:cs.interface.type">
+	<attribute>
+		<id.ref type="()">
+			<id.ref type=".">
+				<xsl:call-template name="odl:cs.interop-services"/>
+				<id.ref id="InterfaceType"/>
+			</id.ref>
+			<id.ref type=".">
+				<xsl:call-template name="odl:cs.interop-services"/>
+				<id.ref id="ComInterfaceType"/>
+				<id.ref id="InterfaceIsIUnknown"/>
+			</id.ref>
+		</id.ref>
+	</attribute>
+</xsl:template>
+
 <xsl:template match="odl:interface" mode="odl:cs">
 	<interface id="{@id}" access="public">
-		<xsl:if test="odl:type.ref/@id='IUnknown'">
-			<attribute>
-				<id.ref type="()">
-					<id.ref type=".">
-						<xsl:call-template name="odl:cs.interop-services"/>
-						<id.ref id="InterfaceType"/>
-					</id.ref>
-					<id.ref type=".">
-						<xsl:call-template name="odl:cs.interop-services"/>
-						<id.ref id="ComInterfaceType"/>
-						<id.ref id="InterfaceIsIUnknown"/>
-					</id.ref>
-				</id.ref>
-			</attribute>
-		</xsl:if>
+		<xsl:apply-templates select="." mode="odl:cs.interface.type"/>
 		<attribute>
 			<id.ref type="()">
 				<id.ref type=".">
