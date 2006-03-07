@@ -35,7 +35,7 @@ class noncreatable
 {
 private:
 	noncreatable() {}
-	noncreatable(const nocreatable &) {}
+	noncreatable(const noncreatable &) {}
 	noncreatable &operator=(const noncreatable &) {}
 	~noncreatable() {}	
 };
