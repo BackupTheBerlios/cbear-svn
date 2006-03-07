@@ -229,16 +229,15 @@ public:
 		if(this->X / this->P >= Base) this->X %= this->P * Base;
 	}
 
-	template<class OStream>
-	void print(OStream &O) const
+	template<class Char>
+	void print(std::basic_ostream<Char> &O) const
 	{
-		typedef typename OStream::char_type char_type;
 		T PI = this->P;
 		T XI = this->X;
 		for(;;)
 		{
 			const T S = XI / PI;
-			O << char_type(S + (S < 10 ? '0': 'A' - 10));
+			O << Char(S + (S < 10 ? '0': 'A' - 10));
 			if(PI==1) return;
 			XI %= PI;
 			PI /= Base;

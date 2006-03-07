@@ -42,31 +42,34 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/com/traits.hpp>
 
 template<class Char>
-std::basic_ostream<Char> &operator<<(
-	std::basic_ostream<Char> &O, const ::UUID &X)
+::std::basic_ostream<Char> &operator<<(
+	::std::basic_ostream<Char> &O, const ::UUID &X)
 {
 	// For example: "9051E94D-6A0C-44b8-B163-716CD2117C58"
 	// Format:      "11111111-2222-3333-4444-444444444444"
 	namespace Windows = cbear_berlios_de::windows;
 	namespace Range = cbear_berlios_de::range;
+	//namespace Stream = cbear_berlios_de::stream;
+	namespace Base = cbear_berlios_de::base;
 	typedef Char char_type;
 	typedef Range::iterator_range<const boost::uint8_t *> range_type;
 	static const char_type Zero = Windows::select<char_type>('0', L'0');
 	static const char_type Minus = Windows::select<char_type>('-', L'-');
-	O << ::cbear_berlios_de::base::hex(X.Data1, 8) <<
+	O << 
+		Base::hex(X.Data1, 8) <<
 		Minus <<
-		::cbear_berlios_de::base::hex(X.Data2, 4) <<
+		Base::hex(X.Data2, 4) <<
 		Minus <<
-		::cbear_berlios_de::base::hex(X.Data3, 4) <<
+		Base::hex(X.Data3, 4) <<
 		Minus;
 	for(range_type R(X.Data4, X.Data4 + 2); !R.empty(); R.begin()++)
 	{
-		O << ::cbear_berlios_de::base::hex(R[0], 2);
+		O << Base::hex(R[0], 2);
 	}
 	O << Minus;
 	for(range_type R(X.Data4 + 2, X.Data4 + 8); !R.empty(); R.begin()++)
 	{
-		O << ::cbear_berlios_de::base::hex(R[0], 2);
+		O << Base::hex(R[0], 2);
 	}
 	return O;
 }

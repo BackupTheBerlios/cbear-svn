@@ -101,8 +101,11 @@ struct standard_policy
 
 	static reference reference_of(const type &This) { return *This; }
 
-	template<class Stream>
-	static void output(Stream &S, const type &This) { S << This; }
+	template<class Char>
+	static void output(std::basic_ostream<Char> &S, const type &This) 
+	{ 
+		S << This; 
+	}
 };
 
 template<
@@ -147,19 +150,22 @@ public:
 		return &internal_policy::reference_of(this->Internal);
 	}
 
-	friend ::std::basic_ostream<char> &operator<<(
-		::std::basic_ostream<char> &S, const type &A)
+	template<class Char>
+	friend ::std::basic_ostream<Char> &operator<<(
+		::std::basic_ostream<Char> &S, const type &A)
 	{
 		internal_policy::output(S, A.Internal);
 		return S;
 	}
 
+	/*
 	friend ::std::basic_ostream<wchar_t> &operator<<(
 		::std::basic_ostream<wchar_t> &S, const type &A)
 	{
 		internal_policy::output(S, A.Internal);
 		return S;
 	}
+	*/
 
 	type &operator++()
 	{
