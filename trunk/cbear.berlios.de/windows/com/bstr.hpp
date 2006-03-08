@@ -183,7 +183,13 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 	typedef standard_policy_type::reference reference;
 	typedef standard_policy_type::pointer pointer;
 
-	using standard_policy_type::output;
+	//using standard_policy_type::output;
+
+	static void output(::std::basic_ostream<wchar_t> &S, const type &This)
+	{
+		if(!This) return;
+		S << This;
+	}
 };
 
 typedef policy::wrap<bstr_t, ::BSTR, bstr_policy> bstr_wrap;

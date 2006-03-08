@@ -126,6 +126,18 @@ struct make_signed<std::size_t>
 	typedef std::ptrdiff_t type;
 };
 
+template<class T>
+typename make_unsigned<T>::type unsigned_(T X)
+{
+	return make_unsigned<T>::type(X);
+}
+
+template<class T>
+typename make_signed<T>::type signed_(T X)
+{
+	return make_signed<T>::type(X);
+}
+
 namespace detail
 {
 

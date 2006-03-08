@@ -28,6 +28,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/hwnd.hpp>
 #include <cbear.berlios.de/policy/main.hpp>
 
+#pragma comment(lib, "user32.lib")
+
 namespace cbear_berlios_de
 {
 namespace windows

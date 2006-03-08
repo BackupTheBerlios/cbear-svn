@@ -28,6 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <boost/preprocessor/wstringize.hpp>
 
 #include <cbear.berlios.de/base/exception.hpp>
+#include <cbear.berlios.de/base/integer.hpp>
 #include <cbear.berlios.de/locale/cast.hpp>
 #include <cbear.berlios.de/windows/com/hresult.hpp>
 #include <cbear.berlios.de/windows/com/bstr.hpp>
@@ -134,7 +135,7 @@ public:
 	{
 		O << 
 			L"cbear_berlios_de::com::exception(0x" << 
-			base::hex(this->Result.internal()) << 
+			base::hex(base::unsigned_(this->Result.internal())) << 
 			L"):" <<
 			std::endl;
 		if(this->ErrorInfo)
