@@ -158,15 +158,6 @@ public:
 		return S;
 	}
 
-	/*
-	friend ::std::basic_ostream<wchar_t> &operator<<(
-		::std::basic_ostream<wchar_t> &S, const type &A)
-	{
-		internal_policy::output(S, A.Internal);
-		return S;
-	}
-	*/
-
 	type &operator++()
 	{
 		internal_policy::increment(this->Internal);

@@ -44,6 +44,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <setupapi.h>
 
+#pragma comment(lib, "setupapi.lib")
+
 namespace cbear_berlios_de
 {
 namespace windows
@@ -154,6 +156,10 @@ public:
 	}
 
 	std::size_t size() const { return this->Buffer.size(); }
+
+	const wchar_t *DevicePath() const { return this->internal().DevicePath; }
+
+	wchar_t *DevicePath() { return this->internal().DevicePath; }
 
 private:
 	std::vector<char> Buffer;
