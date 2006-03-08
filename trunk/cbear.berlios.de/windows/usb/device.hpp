@@ -49,6 +49,40 @@ inline const com::uuid &device_uuid()
 	return Result;
 }
 
+inline const com::uuid &hub_uuid()
+{
+	static const com::uuid Result(
+		0xf18a0e88, 
+		0xc30c, 
+		0x11d0, 
+		0x88, 
+		0x15, 
+		0x00,
+    0xa0, 
+		0xc9, 
+		0x06, 
+		0xbe, 
+		0xd8);
+	return Result;
+}
+
+inline const com::uuid &host_controller_uuid()
+{
+	static const com::uuid Result(
+		0x3abf6f2d, 
+		0x71c4, 
+		0x462a, 
+		0x8a, 
+		0x92, 
+		0x1e,
+		0x68, 
+		0x61, 
+		0xe6, 
+		0xaf, 
+		0x27);
+	return Result;
+}
+
 }
 }
 }
