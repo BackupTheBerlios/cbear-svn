@@ -36,6 +36,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/registry/options.hpp>
 #include <cbear.berlios.de/windows/registry/value.hpp>
 
+// RegCloseKey, ...
+#pragma comment(lib, "advapi32.lib")
+
 namespace cbear_berlios_de
 {
 namespace windows
