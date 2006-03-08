@@ -27,6 +27,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/windows/hmodule.hpp>
 
+#pragma comment(lib, "dbghelp.lib")
+
 namespace cbear_berlios_de
 {
 namespace windows
