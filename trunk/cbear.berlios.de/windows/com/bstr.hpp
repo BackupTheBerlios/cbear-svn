@@ -238,6 +238,9 @@ public:
 	template< ::std::size_t Size>
 	bstr_t(const wchar_t (&X)[Size]): helper_type(const_iterator_range(X), 0) {}
 
+	template<class Char>
+	bstr_t(const range::iterator_range<Char> &X): helper_type(X, 0) {}
+
 	explicit bstr_t(const std::basic_string<wchar_t> &X): 
 		helper_type(const_iterator_range(X.c_str(), (size_type)X.size()), 0)
 	{

@@ -169,6 +169,10 @@ public:
 	enum enum_
 	{
 		usb_get_node_information = IOCTL_USB_GET_NODE_INFORMATION,
+		usb_get_node_connection_information_ex = 
+			IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX,
+		usb_get_node_connection_driverkey_name =
+			IOCTL_USB_GET_NODE_CONNECTION_DRIVERKEY_NAME,
 	};
 
 	ioctl(enum_ E): wrap(E) {}
@@ -195,18 +199,16 @@ public:
 		const optional_ref<overlapped> &Overlapped) const
 	{
 		dword_t BytesReturned;
-		{
-			exception::scope_last_error ScopeLastError;
-			::DeviceIoControl(
-				this->internal(),
-				IoControlCode.internal(),
-				In.begin(),
-				dword_t(In.size()),
-				Out.begin(),
-				dword_t(Out.size()),
-				&BytesReturned, 
-				Overlapped.internal());
-		}
+		exception::scope_last_error ScopeLastError;
+		::DeviceIoControl(
+			this->internal(),
+			IoControlCode.internal(),
+			In.begin(),
+			dword_t(In.size()),
+			Out.begin(),
+			dword_t(Out.size()),
+			&BytesReturned, 
+			Overlapped.internal());
 		return BytesReturned;
 	}
 

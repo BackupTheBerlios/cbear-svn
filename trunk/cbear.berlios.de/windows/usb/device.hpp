@@ -23,7 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_USB_DEVICE_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_USB_DEVICE_HPP_INCLUDED
 
-#include <cbear.berlios.de/windows/handle.hpp>
+#include <cbear.berlios.de/windows/dynamic.hpp>
 
 namespace cbear_berlios_de
 {
@@ -84,6 +84,30 @@ inline const com::uuid &host_controller_uuid()
 }
 
 typedef ::USB_NODE_INFORMATION node_information;
+
+typedef ::USB_NODE_CONNECTION_INFORMATION_EX node_connection_information_ex;
+
+class node_connection_driverkey_name: 
+	public dynamic< ::USB_NODE_CONNECTION_DRIVERKEY_NAME>
+{
+public:
+
+	typedef dynamic< ::USB_NODE_CONNECTION_DRIVERKEY_NAME> wrap;
+
+	range::iterator_range<wchar_t *> DriverKeyName()
+	{
+		static const int remainder_size = 
+			sizeof(internal_type) - sizeof(this->internal().DriverKeyName);
+		// Ask Microsoft about this constant.
+		static const int magic_size_correction = - 1;
+		return range::iterator_range<wchar_t *>(
+			this->internal().DriverKeyName,
+			(this->wrap::size() - remainder_size) / sizeof(wchar_t) - 
+				1 + magic_size_correction);
+	}
+};
+
+// typedef ::USB_NODE_CONNECTION_DRIVERKEY_NAME node_connection_driverkey_name;
 
 }
 }

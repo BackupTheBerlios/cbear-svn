@@ -36,6 +36,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/registry/data.hpp>
 
 #include <cbear.berlios.de/windows/optional_ref.hpp>
+#include <cbear.berlios.de/windows/dynamic.hpp>
 
 #include <cbear.berlios.de/windows/com/uuid.hpp>
 #include <cbear.berlios.de/windows/com/bstr.hpp>
@@ -130,44 +131,47 @@ public:
 };
 
 template<class Char>
-class sp_device_interface_detail_data
+class sp_device_interface_detail_data: public dynamic<typename select_traits<
+	Char, 
+	::SP_DEVICE_INTERFACE_DETAIL_DATA_A, 
+	::SP_DEVICE_INTERFACE_DETAIL_DATA_W>::type>
 {
 public:
 
-	typedef typename select_traits<
+	typedef dynamic<typename select_traits<
 		Char, 
 		::SP_DEVICE_INTERFACE_DETAIL_DATA_A, 
-		::SP_DEVICE_INTERFACE_DETAIL_DATA_W>::type
-		internal_type;
+		::SP_DEVICE_INTERFACE_DETAIL_DATA_W>::type>
+		wrap;
 
-	sp_device_interface_detail_data(std::size_t Size): Buffer(Size)
+	typedef typename wrap::internal_type internal_type;
+
+	sp_device_interface_detail_data()
 	{
 		this->internal().cbSize = sizeof(internal_type);
 	}
 
-	const internal_type &internal() const
-	{ 
-		return *reinterpret_cast<const internal_type *>(&*Buffer.begin());
+	range::iterator_range<wchar_t *> DevicePath()
+	{
+		static const int remainder_size = 
+			sizeof(internal_type) - sizeof(this->internal().DevicePath);
+		return range::iterator_range<wchar_t *>(
+			this->internal().DevicePath, 
+			(this->wrap::size() - remainder_size) / sizeof(wchar_t) - 1);
 	}
 
-	internal_type &internal()
-	{ 
-		return *reinterpret_cast<internal_type *>(&*Buffer.begin());
-	}
-
-	std::size_t size() const 
+	/*
+	std::size_t DevicePathSize() const 
 	{ 
 		static const int remainder_size = 
 			sizeof(internal_type) - sizeof(this->internal().DevicePath);
-		return (this->Buffer.size() - remainder_size) / sizeof(wchar_t) - 1;
+		return (this->wrap::size() - remainder_size) / sizeof(wchar_t) - 1;
 	}
 
 	const Char *DevicePath() const { return this->internal().DevicePath; }
 
 	Char *DevicePath() { return this->internal().DevicePath; }
-
-private:
-	std::vector<char> Buffer;
+	*/
 };
 
 class digcf: public policy::wrap<digcf, dword_t>
@@ -354,7 +358,8 @@ public:
 		{
 			if(E.result()!=windows::exception::insufficient_buffer) throw;
 		}
-		sp_device_interface_detail_data<Char> deviceInterfaceDetailData(requiredSize);
+		sp_device_interface_detail_data<Char> deviceInterfaceDetailData;
+		deviceInterfaceDetailData.resize(requiredSize);
 		{
 			exception::scope_last_error ScopeLastError;
 			select<Char>(
