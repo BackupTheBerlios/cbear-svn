@@ -155,24 +155,82 @@ public:
 		return *reinterpret_cast<internal_type *>(&*Buffer.begin());
 	}
 
-	std::size_t size() const { return this->Buffer.size(); }
+	std::size_t size() const 
+	{ 
+		static const int remainder_size = 
+			sizeof(internal_type) - sizeof(this->internal().DevicePath);
+		return (this->Buffer.size() - remainder_size) / sizeof(wchar_t) - 1;
+	}
 
-	const wchar_t *DevicePath() const { return this->internal().DevicePath; }
+	const Char *DevicePath() const { return this->internal().DevicePath; }
 
-	wchar_t *DevicePath() { return this->internal().DevicePath; }
+	Char *DevicePath() { return this->internal().DevicePath; }
 
 private:
 	std::vector<char> Buffer;
+};
+
+class digcf: public policy::wrap<digcf, dword_t>
+{
+public:
+	typedef policy::wrap<digcf, dword_t> wrap;
+
+	enum enum_t
+	{
+		allclasses = DIGCF_ALLCLASSES,
+		deviceinterface = DIGCF_DEVICEINTERFACE,
+		present = DIGCF_PRESENT,
+		profile = DIGCF_PROFILE,
+	};
+
+	digcf(enum_t E): wrap(E) {}
+	digcf(): wrap(0) {}
 };
 
 class hdevinfo: public policy::wrap<hdevinfo, ::HDEVINFO>
 {
 public:
 
-	void DestroyDeviceInfoList() const
+	void Create(const com::uuid *ClassGuid, hwnd Parent)
 	{
+		this->Destroy();
+		exception::scope_last_error ScopeLastError;
+		this->internal() = 
+			::SetupDiCreateDeviceInfoList(
+				ClassGuid ? &ClassGuid->internal(): 0,
+				Parent.internal());
+	}
+
+	template<class Char>
+	void GetClassDevsEx(
+		const optional_ref<const com::uuid> &ClassGuid,
+		const basic_lpstr<const Char> &Enumerator,
+		const hwnd &Parent,
+		const digcf &Flags,
+		hdevinfo DeviceInfoSet,
+		const basic_lpstr<const Char> &MachineName)
+	{
+		this->Destroy();
+		exception::scope_last_error ScopeLastError;
+		this->internal() = 
+			select<Char>(::SetupDiGetClassDevsExA, ::SetupDiGetClassDevsExW)(
+				ClassGuid.internal(),
+				Enumerator.internal(),
+				Parent.internal(),
+				Flags.internal(),
+				DeviceInfoSet.internal(),
+				MachineName.internal(),
+				0);
+	}
+
+	~hdevinfo() { this->Destroy(); }
+
+	void Destroy()
+	{
+		if(!this->internal()) return;
 		exception::scope_last_error ScopeLastError;
 		::SetupDiDestroyDeviceInfoList(this->internal());
+		this->internal() = 0;
 	}
 
 	bool EnumDeviceInfo(
@@ -305,80 +363,12 @@ public:
 				const_cast< ::SP_DEVICE_INTERFACE_DATA *>(
 					&deviceInterfaceData.internal()),
 				&deviceInterfaceDetailData.internal(),
-				(dword_t)deviceInterfaceDetailData.size(),
+				requiredSize,
 				0,
 				deviceInfoData.internal());
 		}
 		return deviceInterfaceDetailData;
 	}
-};
-
-inline hdevinfo CreateDeviceInfoList(
-	const com::uuid *ClassGuid, hwnd Parent)
-{
-	hdevinfo Result;
-	{
-		exception::scope_last_error ScopeLastError;
-		Result.internal() = 
-			::SetupDiCreateDeviceInfoList(
-				ClassGuid ? &ClassGuid->internal(): 0,
-				Parent.internal());
-	}
-	return Result;
-}
-
-class digcf: public policy::wrap<digcf, dword_t>
-{
-public:
-	typedef policy::wrap<digcf, dword_t> wrap;
-
-	enum enum_t
-	{
-		allclasses = DIGCF_ALLCLASSES,
-		deviceinterface = DIGCF_DEVICEINTERFACE,
-		present = DIGCF_PRESENT,
-		profile = DIGCF_PROFILE,
-	};
-
-	digcf(enum_t E): wrap(E) {}
-	digcf(): wrap(0) {}
-};
-
-template<class Char>
-hdevinfo GetClassDevsEx(
-	const optional_ref<const com::uuid> &ClassGuid,
-	const basic_lpstr<const Char> &Enumerator,
-	const hwnd &Parent,
-	const digcf &Flags,
-	hdevinfo DeviceInfoSet,
-	const basic_lpstr<const Char> &MachineName)
-{
-	hdevinfo Result;
-	{
-		exception::scope_last_error ScopeLastError;
-		Result.internal() = 
-			select<Char>(::SetupDiGetClassDevsExA, ::SetupDiGetClassDevsExW)(
-				ClassGuid.internal(),
-				Enumerator.internal(),
-				Parent.internal(),
-				Flags.internal(),
-				DeviceInfoSet.internal(),
-				MachineName.internal(),
-				0);
-	}
-	return Result;
-}
-
-template<class Handler>
-class devices
-{
-public:
-	devices(const Handler &H, const com::uuid &Uuid): H(H), Uuid(Uuid)
-	{
-		
-	}
-private:
-	Handler H;
 };
 
 }

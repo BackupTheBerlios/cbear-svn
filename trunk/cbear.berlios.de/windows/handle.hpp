@@ -25,6 +25,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <windows.h>
 
+extern "C"
+{
+#include <usbioctl.h>
+}
+
 #include <cbear.berlios.de/range/iterator_range.hpp>
 #include <cbear.berlios.de/windows/base.hpp>
 #include <cbear.berlios.de/windows/overlapped.hpp>
@@ -43,55 +48,6 @@ class win32_find_data:
 	public select_traits<Char, WIN32_FIND_DATAA, WIN32_FIND_DATAW>::type
 {
 };
-
-// Handle to an object.
-class handle: public policy::wrap<handle, ::HANDLE>
-{
-public:
-	typedef policy::wrap<handle, ::HANDLE> wrap_type;
-	typedef wrap_type::internal_type internal_type;
-
-	handle() {}
-	explicit handle(internal_type X): wrap_type(X) {}
-
-	dword_t DeviceIoControl(
-		dword_t IoControlCode,
-		const byte_range &In,
-		const byte_range &Out,
-		windows::overlapped_t *Overlapped) const
-	{
-		dword_t BytesReturned;
-		{
-			exception::scope_last_error ScopeLastError;
-			::DeviceIoControl(
-				this->internal(),
-				IoControlCode,
-				In.begin(),
-				dword_t(In.size()),
-				Out.begin(),
-				dword_t(Out.size()),
-				&BytesReturned, 
-				Overlapped);
-		}
-		return BytesReturned;
-	}
-};
-
-template<class Char>
-handle FindFirstFile(
-	const basic_lpstr<const Char> &fileName, 
-	win32_find_data<Char> &findFileData)
-{
-	handle result;
-	{
-		exception::scope_last_error ScopeLastError;
-		result.internal() = 
-			select<Char>(::FindFirstFileA, ::FindFirstFileW)(
-				fileName.internal(),
-				&findFileData);
-	}
-	return result;
-}
 
 class desired_access: public policy::wrap<desired_access, dword_t>
 {
@@ -204,31 +160,96 @@ public:
 	flags_and_attributes(enum_ E): wrap(E) {}
 };
 
-template<class Char>
-handle CreateFile(
-	const basic_lpstr<const Char> &fileName,
-	desired_access desiredAccess,
-	file_share fileShare,
-	security_attributes securityAttributes,
-	creation_disposition creationDisposition,
-	flags_and_attributes flagsAndAttributes,
-	handle templateFile)
+class ioctl: public policy::wrap<ioctl, dword_t>
 {
-	handle result;
+public:
+
+	typedef policy::wrap<ioctl, dword_t> wrap;
+
+	enum enum_
 	{
-		exception::scope_last_error ScopeLastError;
-		result.internal() = 
-			select<Char>(::CreateFileA, ::CreateFileW)(
-				fileName.internal(),
-				desiredAccess.internal(),
-				fileShare.internal(),
-				securityAttributes.internal(),
-				creationDisposition.internal(),
-				flagsAndAttributes.internal(),
-				templateFile.internal());
+		usb_get_node_information = IOCTL_USB_GET_NODE_INFORMATION,
+	};
+
+	ioctl(enum_ E): wrap(E) {}
+};
+
+// Handle to an object.
+class handle: 
+	public policy::wrap<handle, ::HANDLE>,
+	boost::noncopyable
+{
+public:
+	typedef policy::wrap<handle, ::HANDLE> wrap_type;
+	typedef wrap_type::internal_type internal_type;
+
+	handle() {}
+	explicit handle(internal_type X): wrap_type(X) {}
+
+	~handle() { this->Close(); }
+
+	dword_t DeviceIoControl(
+		const ioctl &IoControlCode,
+		const byte_range &In,
+		const byte_range &Out,
+		const optional_ref<overlapped> &Overlapped) const
+	{
+		dword_t BytesReturned;
+		{
+			exception::scope_last_error ScopeLastError;
+			::DeviceIoControl(
+				this->internal(),
+				IoControlCode.internal(),
+				In.begin(),
+				dword_t(In.size()),
+				Out.begin(),
+				dword_t(Out.size()),
+				&BytesReturned, 
+				Overlapped.internal());
+		}
+		return BytesReturned;
 	}
-	return result;	
-}	
+
+	template<class Char>
+	void CreateFile(
+		const basic_lpstr<const Char> &fileName,
+		desired_access desiredAccess,
+		file_share fileShare,
+		security_attributes securityAttributes,
+		creation_disposition creationDisposition,
+		flags_and_attributes flagsAndAttributes,
+		const handle &templateFile)
+	{
+		this->Close();
+		exception::scope_last_error ScopeLastError;
+		this->internal() = select<Char>(::CreateFileA, ::CreateFileW)(
+			fileName.internal(),
+			desiredAccess.internal(),
+			fileShare.internal(),
+			securityAttributes.internal(),
+			creationDisposition.internal(),
+			flagsAndAttributes.internal(),
+			templateFile.internal());
+	}
+
+	template<class Char>
+	void FindFirstFile(
+		const basic_lpstr<const Char> &fileName, 
+		win32_find_data<Char> &findFileData)
+	{
+		this->Close();
+		exception::scope_last_error ScopeLastError;
+		this->internal() = select<Char>(::FindFirstFileA, ::FindFirstFileW)(
+			fileName.internal(),
+			&findFileData);
+	}
+
+	void Close()
+	{
+		::CloseHandle(this->internal());
+		this->internal() = 0;
+	}
+};
 
 }
 }

@@ -83,6 +83,8 @@ inline const com::uuid &host_controller_uuid()
 	return Result;
 }
 
+typedef ::USB_NODE_INFORMATION node_information;
+
 }
 }
 }
