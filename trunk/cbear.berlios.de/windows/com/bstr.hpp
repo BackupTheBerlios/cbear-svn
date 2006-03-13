@@ -149,7 +149,7 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 	static void assign(type &This, const type &Source)
 	{
 		if(This==Source) return;
-		if(!This) { construct_copy(This, Source); }
+		if(!This) { construct_copy(This, Source); return; }
 		reconstruct_copy(This, Source);
 	}
 
