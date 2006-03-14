@@ -85,7 +85,11 @@ inline const com::uuid &host_controller_uuid()
 
 typedef ::USB_NODE_INFORMATION node_information;
 
+typedef ::USB_NODE_CONNECTION_INFORMATION node_connection_information;
+
+/*
 typedef ::USB_NODE_CONNECTION_INFORMATION_EX node_connection_information_ex;
+*/
 
 class node_connection_driverkey_name: 
 	public dynamic< ::USB_NODE_CONNECTION_DRIVERKEY_NAME>

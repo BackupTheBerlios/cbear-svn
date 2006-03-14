@@ -32,7 +32,9 @@ namespace cbear_berlios_de
 namespace windows
 {
 
-class hwnd: public policy::wrap<hwnd, ::HWND>
+class hwnd: 
+	public policy::wrap<hwnd, ::HWND>,
+	boost::noncopyable
 {
 public:
 	typedef policy::wrap<hwnd, ::HWND> wrap_type;

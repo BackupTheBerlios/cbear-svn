@@ -31,6 +31,7 @@ extern "C"
 }
 
 #include <cbear.berlios.de/range/iterator_range.hpp>
+#include <cbear.berlios.de/windows/optional_ref.hpp>
 #include <cbear.berlios.de/windows/base.hpp>
 #include <cbear.berlios.de/windows/overlapped.hpp>
 #include <cbear.berlios.de/windows/exception.hpp>
@@ -169,8 +170,12 @@ public:
 	enum enum_
 	{
 		usb_get_node_information = IOCTL_USB_GET_NODE_INFORMATION,
+		usb_get_node_connection_information = 
+			IOCTL_USB_GET_NODE_CONNECTION_INFORMATION,
+			/*
 		usb_get_node_connection_information_ex = 
 			IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX,
+			*/
 		usb_get_node_connection_driverkey_name =
 			IOCTL_USB_GET_NODE_CONNECTION_DRIVERKEY_NAME,
 	};
