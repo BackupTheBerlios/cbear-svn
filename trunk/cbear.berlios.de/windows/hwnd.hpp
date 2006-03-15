@@ -26,6 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <windows.h>
 
 #include <cbear.berlios.de/windows/base.hpp>
+#include <cbear.berlios.de/windows/exception.hpp>
 
 namespace cbear_berlios_de
 {
@@ -41,7 +42,25 @@ public:
 	typedef wrap_type::internal_type internal_type;
 
 	hwnd() {}
-	explicit hwnd(internal_type X): wrap_type(X) {}
+	// explicit hwnd(internal_type X): wrap_type(X) {}
+
+	~hwnd() { this->Destroy(); }
+
+	void Destroy()
+	{
+		if(!this->internal()) return;
+		{
+			exception::scope_last_error ScopeLastError;
+			::DestroyWindow(this->internal());
+		}
+		this->internal() = 0;
+	}
+
+	void Create()
+	{
+		this->Destroy();
+		exception::scope_last_error ScopeLastError;
+	}
 };
 
 }

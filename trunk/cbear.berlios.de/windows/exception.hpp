@@ -30,6 +30,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/base/exception.hpp>
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/windows/base.hpp>
+#include <cbear.berlios.de/windows/select.hpp>
 
 namespace cbear_berlios_de
 {
