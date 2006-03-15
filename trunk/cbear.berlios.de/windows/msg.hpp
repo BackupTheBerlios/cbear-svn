@@ -55,25 +55,24 @@ public:
 			&this->internal(), Wnd.internal(), FilterMin, FilterMax));
 	}
 
-	template<class Char>
 	bool_t translate() const
 	{
 		return bool_t(::TranslateMessage(&this->internal()));
 	}
 
-	template<class Char>
 	lresult_t dispatch() const
 	{
 		return ::DispatchMessage(&this->internal());
 	}
 
 	template<class Char>
-	void loop(const hwnd &Wnd, uint_t FilterMin, uint_t FilterMax)
+	static void loop(const hwnd &Wnd, uint_t FilterMin, uint_t FilterMax)
 	{
-		while(this->get<Char>(Wnd, FilterMin, FilterMax))
+		msg This;
+		while(This.get<Char>(Wnd, FilterMin, FilterMax))
 		{
-			this->translate<Char>();
-			this->dispatch<Char>();
+			This.translate();
+			This.dispatch();
 		}
 	}
 };

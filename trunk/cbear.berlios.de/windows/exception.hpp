@@ -88,6 +88,8 @@ public:
 
 	dword_t result() const throw() { return this->Result; }
 
+	explicit exception(dword_t X): Result(X) {}
+
 private:
 
 	template<class Char>
@@ -128,8 +130,6 @@ private:
 	}
 
 	dword_t Result;
-
-	exception(dword_t X): Result(X) {}
 };
 
 template<class Stream>

@@ -122,7 +122,7 @@ public:
 
 	template<class Char>
 	void Register(
-		const handle &Recipient, 
+		const hwnd &Recipient, 
 		dev_broadcast_deviceinterface<Char> &NotificationFilter,
 		const flag &Flags)
 	{
