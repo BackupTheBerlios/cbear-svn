@@ -151,10 +151,16 @@ public:
 	}
 
 	template<class Char>
+	void output(::std::basic_ostream<Char> &S) const
+	{
+		internal_policy::output(S, this->Internal);
+	}
+
+	template<class Char>
 	friend ::std::basic_ostream<Char> &operator<<(
 		::std::basic_ostream<Char> &S, const type &A)
 	{
-		internal_policy::output(S, A.Internal);
+		A.output(S);
 		return S;
 	}
 

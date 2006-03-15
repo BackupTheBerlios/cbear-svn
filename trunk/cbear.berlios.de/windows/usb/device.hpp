@@ -25,6 +25,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/windows/dynamic.hpp>
 
+extern "C"
+{
+#include <usbioctl.h>
+}
+
 namespace cbear_berlios_de
 {
 namespace windows
@@ -86,6 +91,14 @@ inline const com::uuid &host_controller_uuid()
 typedef ::USB_NODE_INFORMATION node_information;
 
 typedef ::USB_NODE_CONNECTION_INFORMATION node_connection_information;
+
+typedef ioctl::const_<IOCTL_USB_GET_NODE_INFORMATION> get_node_information;
+
+typedef ioctl::const_<IOCTL_USB_GET_NODE_CONNECTION_INFORMATION> 
+	get_node_connection_information;
+
+typedef ioctl::const_<IOCTL_USB_GET_NODE_CONNECTION_DRIVERKEY_NAME> 
+	get_node_connection_driverkey_name;
 
 /*
 typedef ::USB_NODE_CONNECTION_INFORMATION_EX node_connection_information_ex;

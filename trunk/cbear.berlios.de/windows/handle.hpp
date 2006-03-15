@@ -25,10 +25,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <windows.h>
 
+/*
 extern "C"
 {
 #include <usbioctl.h>
 }
+*/
 
 #include <cbear.berlios.de/range/iterator_range.hpp>
 #include <cbear.berlios.de/windows/optional_ref.hpp>
@@ -161,6 +163,7 @@ public:
 	flags_and_attributes(enum_ E): wrap(E) {}
 };
 
+/*
 class ioctl: public policy::wrap<ioctl, dword_t>
 {
 public:
@@ -172,15 +175,32 @@ public:
 		usb_get_node_information = IOCTL_USB_GET_NODE_INFORMATION,
 		usb_get_node_connection_information = 
 			IOCTL_USB_GET_NODE_CONNECTION_INFORMATION,
-			/*
-		usb_get_node_connection_information_ex = 
-			IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX,
-			*/
+		//usb_get_node_connection_information_ex = 
+		//	IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX,
+		//
 		usb_get_node_connection_driverkey_name =
 			IOCTL_USB_GET_NODE_CONNECTION_DRIVERKEY_NAME,
 	};
 
 	ioctl(enum_ E): wrap(E) {}
+};
+*/
+
+class ioctl: public policy::wrap<ioctl, dword_t>
+{
+public:
+
+	typedef policy::wrap<ioctl, dword_t> wrap;
+
+	template<dword_t X>
+	class const_
+	{
+	public:
+		operator ioctl() const { return ioctl(X); }
+	};
+
+private:
+	explicit ioctl(dword_t X): wrap(X) {}
 };
 
 // Handle to an object.
