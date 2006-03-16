@@ -76,14 +76,14 @@ public:
 		insufficient_buffer = ERROR_INSUFFICIENT_BUFFER,
 	};
 
-	void print(std::ostream &Stream) const
+	void output(std::ostream &Stream) const
 	{
-		this->detail_print(Stream);
+		this->detail_output(Stream);
 	}
 
-	void print(std::wostream &Stream) const
+	void output(std::wostream &Stream) const
 	{
-		this->detail_print(Stream);
+		this->detail_output(Stream);
 	}
 
 	dword_t result() const throw() { return this->Result; }
@@ -108,7 +108,7 @@ private:
 	};
 
 	template<class Char>
-	void detail_print(std::basic_ostream<Char> &O) const
+	void detail_output(std::basic_ostream<Char> &O) const
 	{
 		policy::std_wrap<Char *, buffer_policy<Char> > Buffer;
 		select<Char>(::FormatMessageA, ::FormatMessageW)(
@@ -132,12 +132,14 @@ private:
 	dword_t Result;
 };
 
+/*
 template<class Stream>
 Stream &operator<<(Stream &S, const exception &E)
 {
-	E.print(S);
+	E.output(S);
 	return S;
 }
+*/
 
 #pragma warning(pop)
 

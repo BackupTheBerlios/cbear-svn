@@ -131,7 +131,7 @@ public:
 	const ierrorinfo &errorinfo() const throw() { return this->ErrorInfo; }
 	
 	// print.
-	void print(std::wostream &O) const
+	void output(std::wostream &O) const
 	{
 		O << 
 			L"cbear_berlios_de::com::exception(0x" << 

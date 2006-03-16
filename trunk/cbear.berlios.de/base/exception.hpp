@@ -37,7 +37,7 @@ template<class Char>
 class basic_exception
 {
 public:
-	virtual void print(std::basic_ostream<Char> &O) const = 0;
+	virtual void output(std::basic_ostream<Char> &O) const = 0;
 };
 
 typedef basic_exception<char> exception;
@@ -46,10 +46,11 @@ typedef basic_exception<wchar_t> wexception;
 template<class Stream, class Char>
 Stream &operator<<(Stream &S, const basic_exception<Char> &E)
 {
-	E.print(S);
+	E.output(S);
 	return S;
 }
 
+/*
 template<class Char>
 class basic_string_exception: public basic_exception<Char>
 {
@@ -60,13 +61,14 @@ public:
 	{ 
 		return "::cbear_berlios_de::base::basic_string_exception"; 
 	}
-	virtual void print(std::basic_ostream<Char> &O) const { O << Msg; }
+	virtual void output(std::basic_ostream<Char> &O) const { O << Msg; }
 private:
 	basic_string<Char> Msg;
 };
 
 typedef basic_string_exception<char> string_exception;
 typedef basic_string_exception<wchar_t> wstring_exception;
+*/
 
 }
 }

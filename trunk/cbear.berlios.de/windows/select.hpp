@@ -58,4 +58,14 @@ typename select_traits<Char, A, W>::type select(A a, W w)
 }
 }
 
+#define CBEAR_BERLIOS_DE_WINDOWS_SELECT_STRING(Char, X) \
+	select<Char>(X, CBEAR_BERLIOS_DE_PP_WIDEN(X))
+
+#define CBEAR_BERLIOS_DE_WINDOWS_SELECT_FUNCTION(Char, Name) \
+	select<Char>(BOOST_PP_CAT(Name, A), BOOST_PP_CAT(Name, W))
+
+#define CBEAR_BERLIOS_DE_WINDOWS_SELECT_TYPE(Char, Name) \
+	typename select_traits<Char, BOOST_PP_CAT(Name, A), BOOST_PP_CAT(Name, W)>:: \
+		type
+
 #endif
