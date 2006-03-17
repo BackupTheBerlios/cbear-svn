@@ -275,6 +275,16 @@ public:
 				&RequiredSize);
 	}
 
+	class get_device_registry_property_exception: public std::exception
+	{
+	public:
+		const char *what() const throw() 
+		{ 
+			return 
+				"::cbear_berlios_de::windows::setupapi::hdevinfo::GetDeviceRegistryProperty";
+		}
+	};
+
 	registry::data_id_type GetDeviceRegistryProperty(
 		const sp_devinfo_data &DeviceInfoData,
 		spdrp Property,
@@ -297,7 +307,7 @@ public:
 			if(
 				PropertyRegDataType!=registry::data_id_type::sz &&
 				PropertyRegDataType!=registry::data_id_type::multi_sz)
-				throw base::wstring_exception(L"the property is not a string");
+				throw get_device_registry_property_exception();
 		}
 		Buffer.resize(RequiredSize/2 - 1);
 		this->GetDeviceRegistryProperty<wchar_t>(
