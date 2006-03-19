@@ -332,7 +332,7 @@ public:
 			exception::scope_last_error ScopeLastError;
 			SetupDiEnumDeviceInterfaces(
 				this->internal(),
-				const_cast<::SP_DEVINFO_DATA *>(deviceInfoData.internal()),
+				const_cast< ::SP_DEVINFO_DATA *>(deviceInfoData.internal()),
 				&interfaceClassGuid.internal(),
 				memberIndex,
 				&deviceInterfaceData.internal());
