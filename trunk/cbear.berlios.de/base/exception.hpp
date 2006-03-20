@@ -43,8 +43,9 @@ public:
 typedef basic_exception<char> exception;
 typedef basic_exception<wchar_t> wexception;
 
-template<class Stream, class Char>
-Stream &operator<<(Stream &S, const basic_exception<Char> &E)
+template<class Char>
+std::basic_ostream<Char> &operator<<(
+	std::basic_ostream<Char> &S, const basic_exception<Char> &E)
 {
 	E.output(S);
 	return S;
