@@ -165,6 +165,8 @@ public:
 	{
 	public:
 
+		typedef policy::wrap<style, dword_t> wrap;
+
 		enum enum_
 		{
 			border = WS_BORDER,
