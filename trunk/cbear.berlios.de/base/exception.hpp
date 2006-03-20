@@ -51,26 +51,6 @@ std::basic_ostream<Char> &operator<<(
 	return S;
 }
 
-/*
-template<class Char>
-class basic_string_exception: public basic_exception<Char>
-{
-public:
-	template<class T>
-	basic_string_exception(const T &X): Msg(X) {}
-	const char *what() const throw() 
-	{ 
-		return "::cbear_berlios_de::base::basic_string_exception"; 
-	}
-	virtual void output(std::basic_ostream<Char> &O) const { O << Msg; }
-private:
-	basic_string<Char> Msg;
-};
-
-typedef basic_string_exception<char> string_exception;
-typedef basic_string_exception<wchar_t> wstring_exception;
-*/
-
 }
 }
 
