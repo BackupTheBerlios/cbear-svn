@@ -256,6 +256,21 @@ public:
 		}
 	}
 
+	template<class S>
+	void write(S &s) const
+	{
+		T PI = this->P;
+		T XI = this->X;
+		for(;;)
+		{
+			const T c = XI / PI;
+			stream::write(s, S::char_type(c + (c < 10 ? '0': 'A' - 10)));
+			if(PI==1) return;
+			XI %= PI;
+			PI /= Base;
+		}
+	}
+
 private:
 	T X;
 	T P;

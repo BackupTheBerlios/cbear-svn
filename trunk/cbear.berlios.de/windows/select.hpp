@@ -39,7 +39,7 @@ template<class A, class W>
 struct select_traits<char_t, A, W>
 {
 	typedef A type;
-	static type get(A X, W) { return X; }
+	static type get(A X, W ) { return X; }
 };
 
 template<class A, class W>
@@ -53,6 +53,15 @@ template<class Char, class A, class W>
 typename select_traits<Char, A, W>::type select(A a, W w)
 {
 	return select_traits<Char, A, W>::get(a, w);
+}
+
+template<class Char, std::size_t Size>
+typename select_traits<
+	Char, const char (&)[Size], const wchar_t (&)[Size]>::type
+select(const char (&a)[Size], const wchar_t (&w)[Size])
+{
+	return select_traits<
+		Char, const char (&)[Size], const wchar_t (&)[Size]>::get(a, w);
 }
 
 }
