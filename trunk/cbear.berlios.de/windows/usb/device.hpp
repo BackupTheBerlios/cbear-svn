@@ -100,10 +100,6 @@ typedef ioctl::const_<IOCTL_USB_GET_NODE_CONNECTION_INFORMATION>
 typedef ioctl::const_<IOCTL_USB_GET_NODE_CONNECTION_DRIVERKEY_NAME> 
 	get_node_connection_driverkey_name;
 
-/*
-typedef ::USB_NODE_CONNECTION_INFORMATION_EX node_connection_information_ex;
-*/
-
 class node_connection_driverkey_name: 
 	public dynamic< ::USB_NODE_CONNECTION_DRIVERKEY_NAME>
 {
@@ -123,8 +119,6 @@ public:
 				1 + magic_size_correction);
 	}
 };
-
-// typedef ::USB_NODE_CONNECTION_DRIVERKEY_NAME node_connection_driverkey_name;
 
 }
 }
