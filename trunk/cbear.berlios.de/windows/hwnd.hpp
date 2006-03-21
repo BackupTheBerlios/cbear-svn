@@ -39,7 +39,7 @@ typedef ::HINSTANCE hinstance;
 template<class Char>
 class basic_wndclass: public policy::wrap<
 	basic_wndclass<Char>, 
-	typename select_traits<Char, ::WNDCLASSA, ::WNDCLASSW>::type>
+	typename CBEAR_BERLIOS_DE_WINDOWS_TYPE(Char, ::WNDCLASS)>
 {
 public:
 

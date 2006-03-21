@@ -82,19 +82,19 @@ typename registry::root_list<Char> coclass_registry(
 	typedef std::basic_string<Char> string;
 	typedef std::basic_ostringstream<Char> ostream;
 
-	static const Char Dot = select<Char>('.', L'.');
-	static const Char Open = select<Char>('{', L'{');
-	static const Char Close = select<Char>('}', L'}');
-	static const string ClsidKey = select<Char>("CLSID", L"CLSID");
-	static const string CurVerKey = select<Char>("CurVer", L"CurVer");
+	static const Char Dot = CBEAR_BERLIOS_DE_BASE_SELECT(Char, '.');
+	static const Char Open = CBEAR_BERLIOS_DE_BASE_SELECT(Char, '{');
+	static const Char Close = CBEAR_BERLIOS_DE_BASE_SELECT(Char, '}');
+	static const string ClsidKey = CBEAR_BERLIOS_DE_BASE_SELECT(Char, "CLSID");
+	static const string CurVerKey = CBEAR_BERLIOS_DE_BASE_SELECT(Char, "CurVer");
 	static const string LocalServer32Key = ServerType==local_server32 ? 
-		select<Char>("LocalServer32", L"LocalServer32"):
-		select<Char>("InProcServer32", L"InProcServer32");
-	static const string TypeLibKey = select<Char>("TypeLib", L"TypeLib");
-	static const string ViProgIdKey = select<Char>(
-		"VersionIndependentProgId", L"VersionIndependentProgId");
-	static const string ProgIdKey = select<Char>(
-		"ProgId", L"ProgId");
+		CBEAR_BERLIOS_DE_BASE_SELECT(Char, "LocalServer32"):
+		CBEAR_BERLIOS_DE_BASE_SELECT(Char, "InProcServer32");
+	static const string TypeLibKey = 
+		CBEAR_BERLIOS_DE_BASE_SELECT(Char, "TypeLib");
+	static const string ViProgIdKey = 
+		CBEAR_BERLIOS_DE_BASE_SELECT(Char, "VersionIndependentProgId");
+	static const string ProgIdKey = CBEAR_BERLIOS_DE_BASE_SELECT(Char, "ProgId");
 
 	string ViProgId = Info.vendor + Dot + Info.component;
 	string ProgId = ViProgId + Dot + Info.version;

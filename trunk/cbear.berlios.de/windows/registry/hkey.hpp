@@ -110,25 +110,26 @@ public:
 		const create_options<Char> &Options) const
 	{
 		create_result Result;
-		exception::throw_if(select<Char>(::RegCreateKeyExA, ::RegCreateKeyExW)(
-			//HKEY hKey,
-			this->internal(),
-			// LPCTSTR lpSubKey,
-			SubKey.internal(),
-			//DWORD Reserved,
-			0,
-			//LPTSTR lpClass,
-			const_cast<Char *>(Options.class_.internal()),
-			//DWORD dwOptions,
-			Options.options.internal(),
-			//REGSAM samDesired,
-			Options.sam.internal(),
-			//LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-			Options.security_attributes.internal(),
-			//PHKEY phkResult,
-			&Result.hkey.internal(),
-			//LPDWORD lpdwDisposition,
-			&Result.disposition.internal()));
+		exception::throw_if(
+			CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::RegCreateKeyEx)(
+				//HKEY hKey,
+				this->internal(),
+				// LPCTSTR lpSubKey,
+				SubKey.internal(),
+				//DWORD Reserved,
+				0,
+				//LPTSTR lpClass,
+				const_cast<Char *>(Options.class_.internal()),
+				//DWORD dwOptions,
+				Options.options.internal(),
+				//REGSAM samDesired,
+				Options.sam.internal(),
+				//LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+				Options.security_attributes.internal(),
+				//PHKEY phkResult,
+				&Result.hkey.internal(),
+				//LPDWORD lpdwDisposition,
+				&Result.disposition.internal()));
 		return Result;
 	}
 
@@ -137,7 +138,7 @@ public:
 	{
 		hkey Result;
 		exception::throw_if(
-			select<Char>(::RegConnectRegistryA, ::RegConnectRegistryW)(
+			CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::RegConnectRegistry)(
 				X.internal(), this->internal(), &Result.internal()));
 		return Result;
 	}
@@ -146,20 +147,19 @@ public:
 	hkey open(const basic_lpstr<const Char> &SubKey, sam Sam) const
 	{
 		hkey Result;
-		exception::throw_if(
-			select<Char>(::RegOpenKeyExA, ::RegOpenKeyExW)(
-				this->internal(), 
-				SubKey.internal(), 
-				0, 
-				Sam.internal(), 
-				&Result.internal()));
+		exception::throw_if(CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::RegOpenKeyEx)(
+			this->internal(), 
+			SubKey.internal(), 
+			0, 
+			Sam.internal(), 
+			&Result.internal()));
 		return Result;
 	}
 
 	template<class Char>
 	void delete_(const basic_lpstr<const Char> &X) const
 	{
-		exception::throw_if(select<Char>(::RegDeleteKeyA, ::RegDeleteKeyW)(
+		exception::throw_if(CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::RegDeleteKey)(
 			this->internal(), X.internal()));
 	}
 
@@ -180,7 +180,7 @@ public:
 		typedef data<Char> data_type;
 		typedef typename data_type::properties_type properties_type;
 		properties_type Properties = data_type::properties(Data);
-		exception::throw_if(select<Char>(RegSetValueExA, RegSetValueExW)(
+		exception::throw_if(CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, RegSetValueEx)(
 			this->internal(), 
 			ValueName.internal(),
 			0,
@@ -204,7 +204,8 @@ public:
 	template<class Char>
 	void delete_value(const basic_lpstr<const Char> &ValueName)
 	{
-		exception::throw_if(select<Char>(::RegDeleteValueA, ::RegDeleteValueW)(
+		exception::throw_if(
+			CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::RegDeleteValue)(
 			this->internal(), ValueName.internal()));
 	}
 

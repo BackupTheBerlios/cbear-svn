@@ -52,7 +52,7 @@ public:
 		dword_t Length;
 		{
 			exception::scope_last_error ScopeLastError;
-			Length = select<Char>(::GetModuleFileNameA, ::GetModuleFileNameW)(
+			Length = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::GetModuleFileName)(
 				this->internal(), Buffer, max_path);
 		}
 		return std::basic_string<Char>(Buffer, Length);

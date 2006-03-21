@@ -44,7 +44,7 @@ handle create_mutex(
 	const basic_lpstr<const Char> &Name)
 {
 	exception::scope_last_error ScopeLastError;
-	return handle(select<Char>(CreateMutexA, CreateMutexW)(
+	return handle(CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::CreateMutex)(
 		MutexAttributes.internal(), InitialOwner.internal(), Name.internal()));
 }
 

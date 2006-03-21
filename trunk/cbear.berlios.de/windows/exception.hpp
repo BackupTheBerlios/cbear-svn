@@ -111,7 +111,7 @@ private:
 	void detail_output(std::basic_ostream<Char> &O) const
 	{
 		policy::std_wrap<Char *, buffer_policy<Char> > Buffer;
-		select<Char>(::FormatMessageA, ::FormatMessageW)(
+		CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::FormatMessage)(
 			FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
 			0,
 			this->result(),
@@ -120,26 +120,16 @@ private:
 			0,
 			0);
 		O << 
-			select<Char>(
-				"cbear_berlios_de::windows::exception(0x", 
-				L"cbear_berlios_de::windows::exception(0x") << 
+			CBEAR_BERLIOS_DE_BASE_SELECT(
+				Char, "cbear_berlios_de::windows::exception(0x") <<
 			base::hex(this->result()) << 
-			select<Char>("): ", L"): ") << 
+			CBEAR_BERLIOS_DE_BASE_SELECT(Char, "): ") << 
 			std::endl << 
 			Buffer.internal();
 	}
 
 	dword_t Result;
 };
-
-/*
-template<class Stream>
-Stream &operator<<(Stream &S, const exception &E)
-{
-	E.output(S);
-	return S;
-}
-*/
 
 #pragma warning(pop)
 

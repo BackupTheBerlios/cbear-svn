@@ -53,8 +53,8 @@ template<class Char>
 	namespace Base = cbear_berlios_de::base;
 	typedef Char char_type;
 	typedef Range::iterator_range<const boost::uint8_t *> range_type;
-	static const char_type Zero = Windows::select<char_type>('0', L'0');
-	static const char_type Minus = Windows::select<char_type>('-', L'-');
+	static const char_type Zero = CBEAR_BERLIOS_DE_BASE_SELECT(char_type, '0');
+	static const char_type Minus = CBEAR_BERLIOS_DE_BASE_SELECT(char_type, '-');
 	O << 
 		Base::hex(X.Data1, 8) <<
 		Minus <<

@@ -65,7 +65,7 @@ select(const char (&a)[Size], const wchar_t (&w)[Size])
 }
 }
 
-#define CBEAR_BERLIOS_DE_BASE_SELECT_STRING(Char, X) \
+#define CBEAR_BERLIOS_DE_BASE_SELECT(Char, X) \
 	::cbear_berlios_de::base::select<Char>(X, CBEAR_BERLIOS_DE_PP_WIDEN(X))
 
 #endif

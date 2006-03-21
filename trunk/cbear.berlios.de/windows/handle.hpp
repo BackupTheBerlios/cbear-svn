@@ -48,7 +48,7 @@ namespace windows
 
 template<class Char>
 class win32_find_data: 
-	public select_traits<Char, WIN32_FIND_DATAA, WIN32_FIND_DATAW>::type
+	public CBEAR_BERLIOS_DE_WINDOWS_TYPE(Char, ::WIN32_FIND_DATA)
 {
 };
 

@@ -210,7 +210,7 @@ dialog_box_id message_box(
 	const message_box_style &Type)
 {
 	exception::scope_last_error ScopeLastError;
-	return dialog_box_id(select<Char>(MessageBoxExA, MessageBoxExW)(
+	return dialog_box_id(CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, MessageBoxEx)(
 		Wnd.internal(),
 		Text.internal(),
 		Caption.internal(),

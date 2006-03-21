@@ -131,17 +131,13 @@ public:
 };
 
 template<class Char>
-class sp_device_interface_detail_data: public dynamic<typename select_traits<
-	Char, 
-	::SP_DEVICE_INTERFACE_DETAIL_DATA_A, 
-	::SP_DEVICE_INTERFACE_DETAIL_DATA_W>::type>
+class sp_device_interface_detail_data: public dynamic<typename 
+	CBEAR_BERLIOS_DE_WINDOWS_TYPE(Char, ::SP_DEVICE_INTERFACE_DETAIL_DATA_)>
 {
 public:
 
-	typedef dynamic<typename select_traits<
-		Char, 
-		::SP_DEVICE_INTERFACE_DETAIL_DATA_A, 
-		::SP_DEVICE_INTERFACE_DETAIL_DATA_W>::type>
+	typedef dynamic<typename CBEAR_BERLIOS_DE_WINDOWS_TYPE(
+		Char, ::SP_DEVICE_INTERFACE_DETAIL_DATA_)>
 		wrap;
 
 	typedef typename wrap::internal_type internal_type;
@@ -263,8 +259,8 @@ public:
 		dword_t &RequiredSize) const
 	{
 		exception::scope_last_error ScopeLastError;
-		select<Char>(
-			::SetupDiGetDeviceRegistryPropertyA, ::SetupDiGetDeviceRegistryPropertyW)(
+		CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
+			Char, ::SetupDiGetDeviceRegistryProperty)(
 				this->internal(), 
 				const_cast<sp_devinfo_data::internal_type *>(
 					&DeviceInfoData.internal()),

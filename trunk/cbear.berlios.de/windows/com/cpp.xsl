@@ -802,6 +802,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 								</id.ref>
 							</id.ref>
 						</id.ref>
+						<id.ref type="()" id="CBEAR_BERLIOS_DE_BASE_SELECT">
+							<id.ref id="Char"/>
+							<id.ref type="value" id="{concat('&#x22;', ../@id, '&#x22;')}"/>
+						</id.ref>
+						<id.ref type="()" id="CBEAR_BERLIOS_DE_BASE_SELECT">
+							<id.ref id="Char"/>
+							<id.ref type="value" id="{concat('&#x22;', @id, '&#x22;')}"/>
+						</id.ref>
+						<id.ref type="()" id="CBEAR_BERLIOS_DE_BASE_SELECT">
+							<id.ref id="Char"/>
+							<id.ref type="value" id="{concat('&#x22;', ../odl:attribute[@id='version']/@value, '&#x22;')}"/>
+						</id.ref>
+						<!--
 						<id.ref>
 							<xsl:copy-of select="$select"/>
 							<id.ref type="()">
@@ -823,6 +836,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 								<id.ref type="value" id="{concat('L&#x22;', ../odl:attribute[@id='version']/@value, '&#x22;')}"/>
 							</id.ref>
 						</id.ref>
+						-->
 					</id.ref>
 				</id.ref>
 			</body>

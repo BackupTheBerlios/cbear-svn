@@ -34,7 +34,8 @@ namespace windows
 template<class Char>
 basic_lpstr<Char> command_line()
 {
-	return make_lpstr(select<Char>(::GetCommandLineA, ::GetCommandLineW)());
+	return make_lpstr(CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
+		Char, ::GetCommandLine)());
 }
 
 }
