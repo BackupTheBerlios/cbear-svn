@@ -26,11 +26,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // boost::mpl::bool_
 #include <boost/mpl/bool.hpp>
 
+#include <cbear.berlios.de/stream/write.hpp>
+
 namespace cbear_berlios_de
 {
 namespace base
 {
 
+	/*
 namespace detail
 {
 
@@ -56,6 +59,15 @@ template<class T, class S>
 T lexical_cast(const S &s)
 {
 	return detail::lexical_cast_traits<T>::do_(s);
+}
+*/
+
+template<class Stream, class T>
+Stream to_stream(const T &t)
+{
+	Stream s;
+	s << t;
+	return s;
 }
 
 }

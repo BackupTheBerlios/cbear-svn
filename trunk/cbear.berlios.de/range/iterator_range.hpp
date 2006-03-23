@@ -62,6 +62,7 @@ public:
 	typedef typename detail::iterator_range_traits<Iterator>::helper_type 
 		helper_type;
 	typedef typename helper_type::size_type size_type;
+	typedef typename helper_type::value_type value_type;
 	
 	iterator_range() {}
 	explicit iterator_range(const internal_type &X): wrap_type(X) {}
@@ -95,6 +96,14 @@ public:
 	explicit iterator_range(const Range &R): 
 		wrap_type(internal_type(iterator(range::begin(R)), iterator(range::end(R)))) 
 	{
+	}
+
+	template<class Stream>
+	typename boost::enable_if<boost::is_same<
+		value_type, typename Stream::value_type> >::type
+	write(Stream &S) const
+	{
+		S.push_back(*this);
 	}
 };
 

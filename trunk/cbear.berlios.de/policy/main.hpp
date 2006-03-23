@@ -156,6 +156,7 @@ public:
 		internal_policy::output(S, this->Internal);
 	}
 
+	/*
 	template<class Char>
 	friend ::std::basic_ostream<Char> &operator<<(
 		::std::basic_ostream<Char> &S, const type &A)
@@ -163,6 +164,7 @@ public:
 		A.output(S);
 		return S;
 	}
+	*/
 
 	type &operator++()
 	{

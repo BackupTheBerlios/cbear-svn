@@ -29,6 +29,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/base/exception.hpp>
 #include <cbear.berlios.de/base/integer.hpp>
+#include <cbear.berlios.de/base/lexical_cast.hpp>
 #include <cbear.berlios.de/locale/cast.hpp>
 #include <cbear.berlios.de/windows/com/hresult.hpp>
 #include <cbear.berlios.de/windows/com/bstr.hpp>
@@ -115,7 +116,7 @@ typedef object< ::ICreateErrorInfo> icreateerrorinfo;
 
 class exception: 
 	public std::exception,
-	public base::wexception
+	public stream::wvirtual_write
 {
 public:
 
@@ -131,21 +132,21 @@ public:
 	const ierrorinfo &errorinfo() const throw() { return this->ErrorInfo; }
 	
 	// print.
-	void output(std::wostream &O) const
+	template<class Stream>
+	void write(Stream &O) const
 	{
 		O << 
 			L"cbear_berlios_de::com::exception(0x" << 
 			base::hex(base::unsigned_(this->Result.internal())) << 
-			L"):" <<
-			std::endl;
+			L"):\n";
 		if(this->ErrorInfo)
 		{
 			O << 
-				L"Description: " << this->ErrorInfo.GetDescription() << std::endl <<
-				L"GUID: " << this->ErrorInfo.GetGUID() << std::endl <<
-				L"Help Context: " << this->ErrorInfo.GetHelpContext() << std::endl <<
-				L"Help File: " << this->ErrorInfo.GetHelpFile() << std::endl <<
-				L"Source: " << this->ErrorInfo.GetSource() << std::endl;
+				L"Description: " << this->ErrorInfo.GetDescription() << L"\n" <<
+				L"GUID: " << this->ErrorInfo.GetGUID() << L"\n" <<
+				L"Help Context: " << this->ErrorInfo.GetHelpContext() << L"\n" <<
+				L"Help File: " << this->ErrorInfo.GetHelpFile() << L"\n" <<
+				L"Source: " << this->ErrorInfo.GetSource() << L"\n";
 		}
 	}
 
@@ -186,6 +187,11 @@ private:
 	{
 		if(this->ErrorInfo) ::SetErrorInfo(0, com::internal<in>(this->ErrorInfo));
 		return this->Result;
+	}
+
+	void detail_write(cbear_berlios_de::stream::wvirtual_write::stream &S) const
+	{
+		this->write(S);
 	}
 };
 
@@ -243,11 +249,11 @@ public:
 			{
 				return B.set();
 			}
-			catch(const base::wexception &W)
+			catch(const ::cbear_berlios_de::stream::wvirtual_write &W)
 			{			
-				std::wostringstream O;
-				O << W;
-				return create_exception().Description(O.str()).set();
+				//std::wostringstream O;
+				//O << W;
+				return create_exception().Description(base::to_stream<bstr_t>(W)).set();
 			}
 			catch(const ::std::exception &S)
 			{

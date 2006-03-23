@@ -51,7 +51,7 @@ public:
 	bool_t get(const hwnd &Wnd, uint_t FilterMin, uint_t FilterMax)
 	{
 		exception::scope_last_error ScopeLastError;
-		return bool_t(select<Char>(::GetMessageA, ::GetMessageW)(
+		return bool_t(CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::GetMessage)(
 			&this->internal(), Wnd.internal(), FilterMin, FilterMax));
 	}
 

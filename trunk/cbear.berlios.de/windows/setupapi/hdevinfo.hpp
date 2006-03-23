@@ -213,7 +213,7 @@ public:
 		this->Destroy();
 		exception::scope_last_error ScopeLastError;
 		this->internal() = 
-			select<Char>(::SetupDiGetClassDevsExA, ::SetupDiGetClassDevsExW)(
+			CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::SetupDiGetClassDevsEx)(
 				ClassGuid.internal(),
 				Enumerator.internal(),
 				Parent.internal(),
@@ -350,8 +350,8 @@ public:
 		try
 		{
 			exception::scope_last_error ScopeLastError;
-			select<Char>(
-				::SetupDiGetDeviceInterfaceDetailA, ::SetupDiGetDeviceInterfaceDetailW)(
+			CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
+				Char, ::SetupDiGetDeviceInterfaceDetail)(
 					this->internal(),
 					const_cast< ::SP_DEVICE_INTERFACE_DATA *>(
 						&deviceInterfaceData.internal()),
@@ -368,15 +368,15 @@ public:
 		deviceInterfaceDetailData.resize(requiredSize);
 		{
 			exception::scope_last_error ScopeLastError;
-			select<Char>(
-				::SetupDiGetDeviceInterfaceDetailA, ::SetupDiGetDeviceInterfaceDetailW)(
-				this->internal(),
-				const_cast< ::SP_DEVICE_INTERFACE_DATA *>(
-					&deviceInterfaceData.internal()),
-				&deviceInterfaceDetailData.internal(),
-				requiredSize,
-				0,
-				deviceInfoData.internal());
+			CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
+				Char, ::SetupDiGetDeviceInterfaceDetail)(
+					this->internal(),
+					const_cast< ::SP_DEVICE_INTERFACE_DATA *>(
+						&deviceInterfaceData.internal()),
+					&deviceInterfaceDetailData.internal(),
+					requiredSize,
+					0,
+					deviceInfoData.internal());
 		}
 		return deviceInterfaceDetailData;
 	}

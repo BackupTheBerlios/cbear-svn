@@ -249,7 +249,7 @@ public:
 	{
 		this->Close();
 		exception::scope_last_error ScopeLastError;
-		this->internal() = select<Char>(::CreateFileA, ::CreateFileW)(
+		this->internal() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::CreateFile)(
 			fileName.internal(),
 			desiredAccess.internal(),
 			fileShare.internal(),

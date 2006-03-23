@@ -27,7 +27,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <boost/noncopyable.hpp>
 
-#include <cbear.berlios.de/base/exception.hpp>
+#include <cbear.berlios.de/stream/virtual_write.hpp>
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/windows/base.hpp>
 #include <cbear.berlios.de/windows/select.hpp>
@@ -47,8 +47,8 @@ namespace windows
 // Exception.
 class exception:
 	public std::exception,
-	public base::exception, 
-	public base::wexception
+	public stream::virtual_write, 
+	public stream::wvirtual_write
 {
 public:
 
@@ -76,6 +76,7 @@ public:
 		insufficient_buffer = ERROR_INSUFFICIENT_BUFFER,
 	};
 
+	/*
 	void output(std::ostream &Stream) const
 	{
 		this->detail_output(Stream);
@@ -84,6 +85,29 @@ public:
 	void output(std::wostream &Stream) const
 	{
 		this->detail_output(Stream);
+	}
+	*/
+
+	template<class S>
+	void write(S &O) const
+	{
+		typedef typename S::value_type char_type;
+		policy::std_wrap<char_type *, buffer_policy<char_type> > Buffer;
+		const dword_t Size = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
+			char_type, ::FormatMessage)(
+				FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
+				0,
+				this->result(),
+				0,
+				(char_type *)&Buffer.internal(),
+				0,
+				0);
+		O << 
+			CBEAR_BERLIOS_DE_BASE_SELECT(
+				char_type, "cbear_berlios_de::windows::exception(0x") <<
+			base::hex(this->result()) << 
+			CBEAR_BERLIOS_DE_BASE_SELECT(char_type, "):\n") << 
+			range::make_iterator_range(Buffer.internal(), Size);
 	}
 
 	dword_t result() const throw() { return this->Result; }
@@ -107,6 +131,17 @@ private:
 		}
 	};
 
+	void detail_write(::cbear_berlios_de::stream::virtual_write::stream &S) const
+	{
+		this->write(S);
+	}
+
+	void detail_write(::cbear_berlios_de::stream::wvirtual_write::stream &S) const
+	{
+		this->write(S);
+	}
+
+	/*
 	template<class Char>
 	void detail_output(std::basic_ostream<Char> &O) const
 	{
@@ -127,6 +162,7 @@ private:
 			std::endl << 
 			Buffer.internal();
 	}
+	*/
 
 	dword_t Result;
 };

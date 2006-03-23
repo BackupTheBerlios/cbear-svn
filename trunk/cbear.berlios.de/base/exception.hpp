@@ -33,6 +33,7 @@ namespace cbear_berlios_de
 namespace base
 {
 
+/*
 template<class Char>
 class basic_exception
 {
@@ -50,6 +51,7 @@ std::basic_ostream<Char> &operator<<(
 	E.output(S);
 	return S;
 }
+*/
 
 }
 }

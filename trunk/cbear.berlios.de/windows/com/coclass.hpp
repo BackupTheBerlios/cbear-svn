@@ -25,6 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <boost/lexical_cast.hpp>
 
+#include <cbear.berlios.de/base/swap.hpp>
 #include <cbear.berlios.de/base/default.hpp>
 #include <cbear.berlios.de/windows/com/uuid.hpp>
 #include <cbear.berlios.de/windows/registry/root.hpp>
@@ -79,8 +80,8 @@ typename registry::root_list<Char> coclass_registry(
 	typedef registry::path<Char> path;
 	typedef registry::key<Char> key;
 	typedef registry::value<Char> value;
-	typedef std::basic_string<Char> string;
-	typedef std::basic_ostringstream<Char> ostream;
+	typedef base::basic_string<Char> string;
+	// typedef std::basic_ostringstream<Char> ostream;
 
 	static const Char Dot = CBEAR_BERLIOS_DE_BASE_SELECT(Char, '.');
 	static const Char Open = CBEAR_BERLIOS_DE_BASE_SELECT(Char, '{');
@@ -88,8 +89,8 @@ typename registry::root_list<Char> coclass_registry(
 	static const string ClsidKey = CBEAR_BERLIOS_DE_BASE_SELECT(Char, "CLSID");
 	static const string CurVerKey = CBEAR_BERLIOS_DE_BASE_SELECT(Char, "CurVer");
 	static const string LocalServer32Key = ServerType==local_server32 ? 
-		CBEAR_BERLIOS_DE_BASE_SELECT(Char, "LocalServer32"):
-		CBEAR_BERLIOS_DE_BASE_SELECT(Char, "InProcServer32");
+		base::move_copy<string>(CBEAR_BERLIOS_DE_BASE_SELECT(Char, "LocalServer32")):
+		base::move_copy<string>(CBEAR_BERLIOS_DE_BASE_SELECT(Char, "InProcServer32"));
 	static const string TypeLibKey = 
 		CBEAR_BERLIOS_DE_BASE_SELECT(Char, "TypeLib");
 	static const string ViProgIdKey = 
@@ -99,8 +100,8 @@ typename registry::root_list<Char> coclass_registry(
 	string ViProgId = Info.vendor + Dot + Info.component;
 	string ProgId = ViProgId + Dot + Info.version;
 
-	string ClsidStr = Open + boost::lexical_cast<string>(Info.id) + Close;
-	string TypeLibStr = Open + boost::lexical_cast<string>(Info.lib_id) + Close;
+	string ClsidStr = Open + base::to_stream<string>(Info.id) + Close;
+	string TypeLibStr = Open + base::to_stream<string>(Info.lib_id) + Close;
 
 	return root_list()
 		(root(registry::hkey::classes_root)

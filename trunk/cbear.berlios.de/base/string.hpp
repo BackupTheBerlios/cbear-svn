@@ -191,7 +191,11 @@ public:
 		return this->compare(0, base_type::npos, C);
 	}
 
+	typedef move_t<basic_string> move_type;
+
 	basic_string() {}
+
+	basic_string(const move_type &M) { M.swap(*this); }
 
 	template<class Container>
 	basic_string(const Container &C) { this->assign(C); }
@@ -199,8 +203,17 @@ public:
 	template<class Container>
 	basic_string &operator=(const Container &C) { return this->assign(C); }
 
+	basic_string &operator=(const move_type &C) { C.swap(*this); return *this; }
+
 	template<class Container>
 	basic_string &operator+=(const Container &C) { return this->append(C); }
+
+	template<class T>
+	basic_string &operator<<(const T &t)
+	{
+		stream::write(*this, t);
+		return *this;
+	}
 };
 
 template<class Char>

@@ -65,10 +65,8 @@ template<class Char>
 class dev_broadcast_deviceinterface: 
 	public detail::basic_dev_broadcast<
 		dev_broadcast_deviceinterface<Char>,
-		typename select_traits<
-			Char, 
-			::DEV_BROADCAST_DEVICEINTERFACE_A, 
-			::DEV_BROADCAST_DEVICEINTERFACE_W>::type,
+		typename CBEAR_BERLIOS_DE_WINDOWS_TYPE(
+			Char, ::DEV_BROADCAST_DEVICEINTERFACE_),
 		DBT_DEVTYP_DEVICEINTERFACE>
 {
 public:
@@ -128,8 +126,8 @@ public:
 	{
 		this->Unregister();
 		exception::scope_last_error ScopeLastError;
-		this->internal() = select<Char>(
-			::RegisterDeviceNotificationA, ::RegisterDeviceNotificationW)(
+		this->internal() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
+			Char, ::RegisterDeviceNotification)(
 				Recipient.internal(),
 				&NotificationFilter.internal(),
 				Flags.internal());

@@ -28,6 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/range/fill.hpp>
 #include <cbear.berlios.de/range/copy.hpp>
 #include <cbear.berlios.de/range/lexicographic/compare.hpp>
+#include <cbear.berlios.de/range/empty.hpp>
 #include <cbear.berlios.de/base/const_ref.hpp>
 #include <cbear.berlios.de/base/swap.hpp>
 #include <cbear.berlios.de/windows/com/traits.hpp>
@@ -158,12 +159,16 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 		return range::equal(make_sub_range(A), make_sub_range(B));
 	}
 
-	static void add(type &This, const iterator_range &Range)
+	// 2. realloc can work only to decrease 
+	// 1. The source range can be a subrange of an operated object so
+	// we can't use resize.
+	template<class SourceRange>
+	static void push_back(type &This, const SourceRange &Range)
 	{
-		if(Range.empty()) return;
+		if(range::empty(Range)) return;
 		//
 		const iterator_range ThisRange = make_sub_range(This);
-		const std::size_t NewSize = ThisRange.size() + Range.size();
+		const std::size_t NewSize = ThisRange.size() + range::size(Range);
 		// constructing a new BSTR.
 		type New;
 		alloc(New, NewSize);
@@ -174,9 +179,14 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 		This = New;
 	}
 
+	static void push_back(type &This, const value_type &V)
+	{
+		push_back(This, const_iterator_range(&V, &V + 1));
+	}
+
 	static void add(type &This, const type &Source) 
 	{
-		add(This, make_sub_range(Source));
+		push_back(This, make_sub_range(Source));
 	}
 
 	typedef standard_policy_type::value_type value_type;
@@ -220,6 +230,8 @@ public:
 	typedef internal_policy::const_iterator const_iterator;
 	typedef internal_policy::const_iterator_range const_iterator_range;
 	typedef iterator_range::size_type size_type; 
+
+	typedef value_type char_type;
 
 	static const vartype_t vt = ::VT_BSTR;
 
@@ -282,6 +294,25 @@ public:
 	}
 
 	typedef void *extra_result;
+
+	template<class C>
+	void push_back(const C &c)
+	{
+		internal_policy::push_back(this->internal(), c);
+	}
+
+	template<class S>
+	void write(S &s) const
+	{
+		s.push_back(iterator_range(*this));
+	}
+
+	template<class T>
+	bstr_t &operator<<(const T &t)
+	{
+		stream::write(*this, t);
+		return *this;
+	}
 };
 
 #pragma pack(pop)

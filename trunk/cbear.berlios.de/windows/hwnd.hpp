@@ -264,19 +264,20 @@ public:
 		this->Destroy();
 		{
 			exception::scope_last_error ScopeLastError;
-			this->internal() = select<Char>(::CreateWindowExA, ::CreateWindowExW)(
-				ExStyle.internal(),
-				ClassName.internal(),
-				WindowName.internal(),
-				Style.internal(),
-				X,
-				Y,
-				Width,
-				Height,
-				Parent.internal(),
-				Menu,
-				Instance,
-				Param);
+			this->internal() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
+				Char, ::CreateWindowEx)(
+					ExStyle.internal(),
+					ClassName.internal(),
+					WindowName.internal(),
+					Style.internal(),
+					X,
+					Y,
+					Width,
+					Height,
+					Parent.internal(),
+					Menu,
+					Instance,
+					Param);
 		}
 		// to fix MS design bug.
 		if(!this->internal()) throw create_exception();
