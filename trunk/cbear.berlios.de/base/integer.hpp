@@ -266,7 +266,7 @@ public:
 		for(;;)
 		{
 			const T c = XI / PI;
-			stream::write(s, S::value_type(c + (c < 10 ? '0': 'A' - 10)));
+			s << S::value_type(c + (c < 10 ? '0': 'A' - 10));
 			if(PI==1) return;
 			XI %= PI;
 			PI /= Base;
@@ -283,15 +283,6 @@ out_t<Base, T> out(T X) { return out_t<Base, T>(X); }
 
 template<std::size_t Base, class T>
 out_t<Base, T> out(T X, std::size_t I) { return out_t<Base, T>(X, I); }
-
-/*
-template<class OStream, std::size_t Base, class T>
-OStream &operator<<(OStream &O, const out_t<Base, T> &Out)
-{
-	Out.print(O);
-	return O;
-}
-*/
 
 template<class T>
 out_t<16, T> hex(T X) { return out_t<16, T>(X); }

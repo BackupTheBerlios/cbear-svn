@@ -163,7 +163,7 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 	// 1. The source range can be a subrange of an operated object so
 	// we can't use resize.
 	template<class SourceRange>
-	static void push_back(type &This, const SourceRange &Range)
+	static void append(type &This, const SourceRange &Range)
 	{
 		if(range::empty(Range)) return;
 		//
@@ -179,14 +179,14 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 		This = New;
 	}
 
-	static void push_back(type &This, const value_type &V)
+	static void append(type &This, const value_type &V)
 	{
-		push_back(This, const_iterator_range(&V, &V + 1));
+		append(This, const_iterator_range(&V, &V + 1));
 	}
 
-	static void add(type &This, const type &Source) 
+	static void append(type &This, const type &Source) 
 	{
-		push_back(This, make_sub_range(Source));
+		append(This, make_sub_range(Source));
 	}
 
 	typedef standard_policy_type::value_type value_type;
@@ -296,21 +296,21 @@ public:
 	typedef void *extra_result;
 
 	template<class C>
-	void push_back(const C &c)
+	void append(const C &c)
 	{
-		internal_policy::push_back(this->internal(), c);
+		internal_policy::append(this->internal(), c);
 	}
 
 	template<class S>
 	void write(S &s) const
 	{
-		s.push_back(iterator_range(*this));
+		s.append(iterator_range(*this));
 	}
 
 	template<class T>
 	bstr_t &operator<<(const T &t)
 	{
-		stream::write(*this, t);
+		::cbear_berlios_de::stream::write(*this, t);
 		return *this;
 	}
 };

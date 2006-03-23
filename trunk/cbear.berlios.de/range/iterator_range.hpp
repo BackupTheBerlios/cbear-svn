@@ -103,7 +103,7 @@ public:
 		value_type, typename Stream::value_type> >::type
 	write(Stream &S) const
 	{
-		S.push_back(*this);
+		S.append(*this);
 	}
 };
 

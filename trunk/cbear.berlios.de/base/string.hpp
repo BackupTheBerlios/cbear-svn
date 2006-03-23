@@ -208,6 +208,12 @@ public:
 	template<class Container>
 	basic_string &operator+=(const Container &C) { return this->append(C); }
 
+	template<class Container>
+	void push_back(const Container &c)
+	{
+		this->append(c);
+	}
+
 	template<class T>
 	basic_string &operator<<(const T &t)
 	{

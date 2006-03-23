@@ -156,16 +156,6 @@ public:
 		internal_policy::output(S, this->Internal);
 	}
 
-	/*
-	template<class Char>
-	friend ::std::basic_ostream<Char> &operator<<(
-		::std::basic_ostream<Char> &S, const type &A)
-	{
-		A.output(S);
-		return S;
-	}
-	*/
-
 	type &operator++()
 	{
 		internal_policy::increment(this->Internal);
@@ -180,7 +170,7 @@ public:
 
 	type &operator+=(const type &B)
 	{
-		internal_policy::add(this->Internal, B.Internal);
+		internal_policy::append(this->Internal, B.Internal);
 		return this->This();
 	}
 
