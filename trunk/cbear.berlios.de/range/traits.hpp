@@ -23,6 +23,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_RANGE_TRAITS_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_RANGE_TRAITS_HPP_INCLUDED
 
+#include <cstdlib>
+
 // std::iterator_traits
 #include <iterator>
 
@@ -162,6 +164,20 @@ template<class Item, std::size_t Size>
 struct traits<const Item[Size]>: detail::array_traits<const Item, Size>
 {
 };
+
+template<class Item, std::size_t Size>
+struct traits<Item (&)[Size]>: detail::array_traits<Item, Size>
+{
+};
+
+template<class Item, std::size_t Size>
+struct traits<const Item (&)[Size]>: detail::array_traits<const Item, Size>
+{
+};
+
+// VC 7.1 must die.
+template<class T>
+struct const_traits: traits<const T> {};
 
 }
 }

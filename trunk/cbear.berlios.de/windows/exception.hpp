@@ -23,8 +23,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_EXCEPTION_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_EXCEPTION_HPP_INCLUDED
 
-#include <sstream>
-
 #include <boost/noncopyable.hpp>
 
 #include <cbear.berlios.de/stream/virtual_write.hpp>
@@ -75,18 +73,6 @@ public:
 		no_more_items = ERROR_NO_MORE_ITEMS,
 		insufficient_buffer = ERROR_INSUFFICIENT_BUFFER,
 	};
-
-	/*
-	void output(std::ostream &Stream) const
-	{
-		this->detail_output(Stream);
-	}
-
-	void output(std::wostream &Stream) const
-	{
-		this->detail_output(Stream);
-	}
-	*/
 
 	template<class S>
 	void write(S &O) const
@@ -140,29 +126,6 @@ private:
 	{
 		this->write(S);
 	}
-
-	/*
-	template<class Char>
-	void detail_output(std::basic_ostream<Char> &O) const
-	{
-		policy::std_wrap<Char *, buffer_policy<Char> > Buffer;
-		CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::FormatMessage)(
-			FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
-			0,
-			this->result(),
-			0,
-			(Char *)&Buffer.internal(),
-			0,
-			0);
-		O << 
-			CBEAR_BERLIOS_DE_BASE_SELECT(
-				Char, "cbear_berlios_de::windows::exception(0x") <<
-			base::hex(this->result()) << 
-			CBEAR_BERLIOS_DE_BASE_SELECT(Char, "): ") << 
-			std::endl << 
-			Buffer.internal();
-	}
-	*/
 
 	dword_t Result;
 };

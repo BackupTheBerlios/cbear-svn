@@ -31,6 +31,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/range/size_type.hpp>
 #include <cbear.berlios.de/range/begin.hpp>
 #include <cbear.berlios.de/range/end.hpp>
+#include <cbear.berlios.de/base/swap.hpp>
 
 namespace cbear_berlios_de
 {

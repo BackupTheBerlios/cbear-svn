@@ -41,7 +41,7 @@ template<class Range1, class Range2>
 bool less(const Range1 &R1, const Range2 &R2)
 {
 	return ::std::lexicographical_compare(
-		range::begin(R1), range::end(R2), range::begin(R1), range::end(R2));
+		range::begin(R1), range::end(R1), range::begin(R2), range::end(R2));
 }
 
 }

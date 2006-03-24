@@ -31,7 +31,7 @@ namespace range
 {
 
 template<class Container>
-typename size_type<const Container>::type size(const Container &X) 
+typename const_traits<Container>::size_type size(const Container &X)
 { 
 	return traits<const Container>::size(X);
 }

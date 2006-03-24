@@ -31,13 +31,13 @@ namespace range
 {
 
 template<class Container>
-typename iterator<Container>::type begin(Container &X) 
+typename traits<Container>::iterator begin(Container &X) 
 { 
 	return traits<Container>::begin(X); 
 }
 
 template<class Container>
-typename iterator<const Container>::type begin(const Container &X) 
+typename const_traits<Container>::iterator begin(const Container &X) 
 { 
 	return traits<const Container>::begin(X);
 }
