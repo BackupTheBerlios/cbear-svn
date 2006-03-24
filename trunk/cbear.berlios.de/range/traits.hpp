@@ -165,16 +165,6 @@ struct traits<const Item[Size]>: detail::array_traits<const Item, Size>
 {
 };
 
-template<class Item, std::size_t Size>
-struct traits<Item (&)[Size]>: detail::array_traits<Item, Size>
-{
-};
-
-template<class Item, std::size_t Size>
-struct traits<const Item (&)[Size]>: detail::array_traits<const Item, Size>
-{
-};
-
 // VC 7.1 must die.
 template<class T>
 struct const_traits: traits<const T> {};
