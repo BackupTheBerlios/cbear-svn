@@ -53,7 +53,7 @@ void write(
 
 // One symbol.
 template<class S>
-void write(S &s, const typename S::char_type &x)
+void write(S &s, const typename S::value_type &x)
 {
 	s.append(range::make_iterator_range(&x, &x + 1));
 }
@@ -62,11 +62,11 @@ void write(S &s, const typename S::char_type &x)
 template<class S>
 void write(S &s, const bool &x)
 {
-	typedef typename S::char_type char_type;
+	typedef typename S::value_type value_type;
 	if(x)
-		s.append(base::select<char_type>("true", L"true"));
+		s.append(base::select<value_type>("true", L"true"));
 	else
-		s.append(base::select<char_type>("false", L"false"));
+		s.append(base::select<value_type>("false", L"false"));
 }
 
 // Integers.
