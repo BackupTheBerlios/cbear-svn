@@ -224,7 +224,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- property -->
 	
 <xsl:template match="api:property" mode="api:html.name">
-	<xsl:value-of select="'Property '"/>
+	<xsl:apply-templates select="api:get|api:set" mode="api:html.name"/>
+	<xsl:value-of select="' property '"/>
 	<span class="id">
 		<xsl:value-of select="@id"/>
 	</span>
@@ -233,7 +234,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:apply-templates select="api:parameter" mode="api:html.name"/>
 		<xsl:value-of select="']'"/>
 	</xsl:if>
-	<xsl:apply-templates select="api:get|api:set" mode="api:html.name"/>
 	<xsl:value-of select="' of type '"/>
 	<xsl:apply-templates select="api:type.ref" mode="api:html.link"/>
 </xsl:template>
@@ -241,7 +241,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- method -->
 	
 <xsl:template match="api:method" mode="api:html.name">
-	<xsl:value-of select="'Function '"/>
+	<xsl:value-of select="'function '"/>
 	<span class="id">
 		<xsl:value-of select="@id"/>
 	</span>
