@@ -224,8 +224,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- property -->
 	
 <xsl:template match="api:property" mode="api:html.name">
-	<xsl:apply-templates select="api:type.ref" mode="api:html.link"/>
-	<xsl:value-of select="' '"/>
+	<xsl:value-of select="'Property '"/>
 	<span class="id">
 		<xsl:value-of select="@id"/>
 	</span>
@@ -235,13 +234,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:value-of select="']'"/>
 	</xsl:if>
 	<xsl:apply-templates select="api:get|api:set" mode="api:html.name"/>
+	<xsl:value-of select="' of type '"/>
+	<xsl:apply-templates select="api:type.ref" mode="api:html.link"/>
 </xsl:template>
 
 <!-- method -->
 	
 <xsl:template match="api:method" mode="api:html.name">
-	<xsl:apply-templates select="api:type.ref" mode="api:html.link"/>
-	<xsl:value-of select="' '"/>
+	<xsl:value-of select="'Function '"/>
 	<span class="id">
 		<xsl:value-of select="@id"/>
 	</span>
@@ -250,6 +250,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:apply-templates select="api:parameter" mode="api:html.name"/>
 	</xsl:if>
 	<xsl:value-of select="')'"/>
+	<xsl:for-each select="api:type.ref">
+		<xsl:value-of select="' returns '"/>
+		<xsl:apply-templates select="." mode="api:html.link"/>
+	</xsl:for-each>
 </xsl:template>
 
 <!-- const -->
