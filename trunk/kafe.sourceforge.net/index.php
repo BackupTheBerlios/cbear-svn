@@ -1,12 +1,5 @@
 <?php 
-foreach($_SERVER as $i => $value)
-{
-	echo "[$i] $value <br/>";
-}
-/*
-	$link = getcwd();
-	$dir = "http://cbear.berlios.de/?" . $link;
-	header("Location: $dir");
-	exit; 
-*/
+	$query = $_SERVER["QUERY_STRING"];
+	header("Location: http://cbear.berlios.de/$query");
+	exit;
 ?>
