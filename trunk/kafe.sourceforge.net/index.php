@@ -1,1 +1,5 @@
-<?php header("Location: http://cbear.berlios.de/"); exit; ?>
+<?php 
+	$dir = "http://cbear.berlios.de/" + getcwd();
+	header("Location: $dir");
+	exit; 
+?>
