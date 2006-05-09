@@ -43,7 +43,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <xsl:template match="api:*" mode="api:html.name">
+	<!--
 	<xsl:value-of select="'The '"/>
+	-->
 	<xsl:apply-templates select="." mode="api:html.id"/>
 	<xsl:value-of select="' '"/>
 	<xsl:apply-templates select="." mode="api:html.type"/>			
