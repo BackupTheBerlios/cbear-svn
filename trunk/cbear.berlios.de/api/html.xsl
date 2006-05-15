@@ -66,6 +66,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="api:*" mode="api:html">
 	<xsl:variable name="class" select="concat('h', count(ancestor::*) + 1)"/>
 	<div class="{$class}">
+		<hr/>
 		<xsl:attribute name="id">
 			<xsl:apply-templates select="." mode="api:html.id"/>
 		</xsl:attribute>		
@@ -316,6 +317,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	
 <xsl:template match="api:library" mode="api:html.body">
 	<div class="h2">
+		<hr/>
 		<h2>Table Of Contents</h2>
 		<ul>
 			<xsl:apply-templates select="api:*" mode="api:html.table"/>
@@ -350,6 +352,16 @@ a:hover
 /* For Internet Explorer */
 hr { width: 100%; height: 1px; color: black; border: none; }
 
+/* For Gecko */
+body hr 
+{ 
+	margin-right: 0; 
+	width: 100%; 
+	height: 1px; 
+	background-color: black;
+	border: none; 
+}
+
 ul 
 { 
 	list-style-type: disc; 
@@ -377,13 +389,17 @@ div
 }
 .h2 
 { 	
+	/*
 	border-top-style: solid;
 	border-width: 1px; 
+	*/
 }
 .h3
 {
+	/*
 	border-top-style: solid;
 	border-width: 1px; 
+	*/
 	margin: 0px 0px 20px 20px;
 }
 h1 { font-size: 20pt; font-width: bold; }
