@@ -33,11 +33,11 @@ namespace registry
 {
 
 template<class Char>
-class value: public std::pair<std::basic_string<Char>, data<Char> >
+class value: public std::pair<base::basic_string<Char>, data<Char> >
 {
 public:
 	typedef Char char_type;
-	typedef std::basic_string<char_type> string_type;
+	typedef base::basic_string<char_type> string_type;
 	typedef data<char_type> data_type;
 	typedef std::pair<string_type, data_type> base_type;
 

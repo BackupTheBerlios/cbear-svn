@@ -97,7 +97,7 @@ class path: public path_base<Char, path<Char> >
 {
 public:
 	typedef path_base<Char, path<Char> > base_type;
-	typedef std::basic_string<Char> string_type;
+	typedef base::basic_string<Char> string_type;
 
 	string_type name;
 

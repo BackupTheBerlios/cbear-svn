@@ -140,7 +140,7 @@ public:
 
 	typedef Char char_type;
 	typedef key_base<char_type, key> base_type;
-	typedef std::basic_string<char_type> string_type;
+	typedef base::basic_string<char_type> string_type;
 
 	string_type name;
 

@@ -54,7 +54,7 @@ class data_variant
 {
 public:
 	typedef boost::variant<
-		data_none, dword_t, ulonglong_t, std::basic_string<Char> >
+		data_none, dword_t, ulonglong_t, base::basic_string<Char> >
 		type;
 };
 
@@ -165,7 +165,7 @@ public:
 	{
 	};
 
-	typedef std::basic_string<char_type> string_type;
+	typedef base::basic_string<char_type> string_type;
 
 	template<>
 	class traits<string_type>: public traits_helper<string_type, id_type::sz>

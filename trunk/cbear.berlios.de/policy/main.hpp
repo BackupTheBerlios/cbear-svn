@@ -170,7 +170,7 @@ public:
 
 	type &operator+=(const type &B)
 	{
-		internal_policy::append(this->Internal, B.Internal);
+		internal_policy::push_back_range(this->Internal, B.Internal);
 		return this->This();
 	}
 

@@ -39,7 +39,7 @@ namespace base
 {
 
 template<class ValueType>
-class basic_string: public std::basic_string<ValueType>
+class basic_string: private std::basic_string<ValueType>
 {
 public:
 
@@ -84,6 +84,20 @@ private:
 
 public:
 
+	typedef typename base_type::iterator iterator;
+	typedef typename base_type::const_iterator const_iterator;
+	typedef typename base_type::reverse_iterator reverse_iterator;
+
+	using base_type::c_str;
+	using base_type::begin;
+	using base_type::end;
+	using base_type::size;
+
+	void swap(basic_string &S)
+	{
+		this->base_type::swap(S);
+	}
+
 	typedef typename base_type::size_type size_type;
 	typedef typename base_type::iterator iterator;
 
@@ -95,7 +109,7 @@ public:
 	}
 
 	template<class Container>
-	basic_string &append(const Container &C)
+	basic_string &push_back_range(const Container &C)
 	{
 		this->base_type::append(container::begin(C), container::end(C));
 		return *this;
@@ -209,11 +223,13 @@ public:
 	template<class Container>
 	basic_string &operator+=(const Container &C) { return this->append(C); }
 
+	/*
 	template<class Container>
 	void push_back(const Container &c)
 	{
 		this->append(c);
 	}
+	*/
 
 	template<class T>
 	basic_string &operator<<(const T &t)
@@ -228,7 +244,7 @@ basic_string<Char> operator+(
 	const basic_string<Char> &A, const basic_string<Char> &B)
 {
 	basic_string<Char> Result(A);
-	Result.append(B);
+	Result.push_back_range(B);
 	return Result;
 }
 
@@ -236,7 +252,7 @@ template<class Char, class Container>
 basic_string<Char> operator+(const basic_string<Char> &A, const Container &B)
 {
 	basic_string<Char> Result(A);
-	Result.append(B);
+	Result.push_back_range(B);
 	return Result;
 }
 
@@ -244,7 +260,7 @@ template<class Char, class Container>
 basic_string<Char> operator+(const Container &A, const basic_string<Char> &B)
 {
 	basic_string<Char> Result(A);
-	Result.append(B);
+	Result.push_back_range(B);
 	return Result;
 }
 

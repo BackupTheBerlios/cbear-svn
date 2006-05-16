@@ -44,9 +44,9 @@ protected:
 		typedef range::iterator_range<const Char *> range_type;
 
 		template<class Container>
-		void append(const Container &R) 
+		void push_back_range(const Container &R) 
 		{ 
-			this->detail_append(range_type(R)); 
+			this->detail_push_back_range(range_type(R)); 
 		}
 
 		template<class T>
@@ -58,7 +58,7 @@ protected:
 
 	protected:
 
-		virtual void detail_append(const range_type &R) = 0;
+		virtual void detail_push_back_range(const range_type &R) = 0;
 	};
 
 private:
@@ -69,9 +69,9 @@ private:
 	public:
 		stream_implementation(S &s): s(s) {}
 	protected:
-		void detail_append(const range::iterator_range<const Char *> &R) 
+		void detail_push_back_range(const range::iterator_range<const Char *> &R) 
 		{ 
-			this->s.append(R);
+			this->s.push_back_range(R);
 		}
 	private:
 		S &s;

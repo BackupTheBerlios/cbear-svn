@@ -48,14 +48,14 @@ void write(
 	typename boost::enable_if<boost::is_same<
 		typename S::value_type, Char> >::type * = 0)
 { 
-	s.append(t); 
+	s.push_back_range(t); 
 }
 
 // One symbol.
 template<class S>
 void write(S &s, const typename S::value_type &x)
 {
-	s.append(range::make_iterator_range(&x, &x + 1));
+	s.push_back_range(range::make_iterator_range(&x, &x + 1));
 }
 
 // Boolean.
@@ -64,9 +64,9 @@ void write(S &s, const bool &x)
 {
 	typedef typename S::value_type value_type;
 	if(x)
-		s.append(CBEAR_BERLIOS_DE_BASE_SELECT("true"));
+		s.push_back_range(CBEAR_BERLIOS_DE_BASE_SELECT("true"));
 	else
-		s.append(CBEAR_BERLIOS_DE_BASE_SELECT("false"));
+		s.push_back_range(CBEAR_BERLIOS_DE_BASE_SELECT("false"));
 }
 
 // Integers.

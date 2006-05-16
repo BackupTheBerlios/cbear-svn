@@ -163,7 +163,7 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 	// 1. The source range can be a subrange of an operated object so
 	// we can't use resize.
 	template<class SourceRange>
-	static void append(type &This, const SourceRange &Range)
+	static void push_back_range(type &This, const SourceRange &Range)
 	{
 		if(range::empty(Range)) return;
 		//
@@ -179,14 +179,14 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 		This = New;
 	}
 
-	static void append(type &This, const value_type &V)
+	static void push_back_range(type &This, const value_type &V)
 	{
-		append(This, const_iterator_range(&V, &V + 1));
+		push_back_range(This, const_iterator_range(&V, &V + 1));
 	}
 
-	static void append(type &This, const type &Source) 
+	static void push_back_range(type &This, const type &Source) 
 	{
-		append(This, make_sub_range(Source));
+		push_back_range(This, make_sub_range(Source));
 	}
 
 	typedef standard_policy_type::value_type value_type;
@@ -296,15 +296,15 @@ public:
 	typedef void *extra_result;
 
 	template<class C>
-	void append(const C &c)
+	void push_back_range(const C &c)
 	{
-		internal_policy::append(this->internal(), c);
+		internal_policy::push_back_range(this->internal(), c);
 	}
 
 	template<class S>
 	void write(S &s) const
 	{
-		s.append(iterator_range(*this));
+		s.push_back_range(iterator_range(*this));
 	}
 
 	template<class T>
