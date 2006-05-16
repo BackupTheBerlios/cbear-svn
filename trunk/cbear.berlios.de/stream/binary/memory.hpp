@@ -20,63 +20,65 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_STREAM_WRITE_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_STREAM_WRITE_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_STREAM_BINARY_MEMORY_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_STREAM_BINARY_MEMORY_HPP_INCLUDED
 
 #include <cbear.berlios.de/range/iterator_range.hpp>
-#include <cbear.berlios.de/range/begin.hpp>
-#include <cbear.berlios.de/range/size.hpp>
+#include <cbear.berlios.de/stream/virtual_write.hpp>
 
 namespace cbear_berlios_de
 {
 namespace stream
 {
-
-// Complex structures.
-template<class S, class T>
-typename boost::enable_if<boost::is_class<T> >::type 
-write(S &s, const T &t)
+namespace binary
 {
-	t.write(s);
-}
 
-// An array of symbols.
-template<class S, class Char, std::size_t Size>
-void write(
-	S &s, 
-	const Char (&t)[Size], 
-	typename boost::enable_if<boost::is_same<
-		typename S::value_type, Char> >::type * = 0)
-{ 
-	s.push_back_range(t); 
-}
-
-// One symbol.
-template<class S>
-void write(S &s, const typename S::value_type &x)
+class memory
 {
-	s.push_back_range(range::make_iterator_range(&x, &x + 1));
-}
+public:
 
-// Boolean.
-template<class S>
-void write(S &s, const bool &x)
-{
-	typedef typename S::value_type value_type;
-	if(x)
-		s.push_back_range(CBEAR_BERLIOS_DE_BASE_SELECT(value_type, "true"));
-	else
-		s.push_back_range(CBEAR_BERLIOS_DE_BASE_SELECT(value_type, "false"));
-}
+	typedef range::iterator_range<char *> range_type;
 
-// Integers.
-template<class S, class I>
-typename boost::enable_if<boost::is_integral<I> >::type
-write(S &s, const I &i)
-{
-	base::out<10>(i).write(s);
-}
+	explicit memory(const range_type &R): R(R) {}
 
+	class exception: 
+		public stream::virtual_write,
+		public stream::wvirtual_write
+	{
+	public:
+		template<class S>
+		void write(S &s) const
+		{		
+			S << 
+				CBEAR_BERLIOS_DE_BASE_SELECT(
+					typename S::value_type, 
+					"::cbear_berlios_de::stream::binary::memory::exception");
+		}
+	protected:
+		void detail_write(::cbear_berlios_de::stream::virtual_write::stream &S) 
+			const
+		{
+			this->write(S);
+		}
+		void detail_write(::cbear_berlios_de::stream::wvirtual_write::stream &S) 
+			const
+		{
+			this->write(S);
+		}
+	};
+
+	void pop_front_range(range_type N)
+	{
+		if(N.size() > this->R.size()) throw exception();
+		for(; !N.empty(); ++N.begin(), ++this->R.begin())
+			N.front() = this->R.front();
+	}	
+
+private:
+	range_type R;
+};
+
+}
 }
 }
 
