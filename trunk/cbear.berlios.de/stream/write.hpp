@@ -64,9 +64,9 @@ void write(S &s, const bool &x)
 {
 	typedef typename S::value_type value_type;
 	if(x)
-		s.append(base::select<value_type>("true", L"true"));
+		s.append(CBEAR_BERLIOS_DE_BASE_SELECT("true"));
 	else
-		s.append(base::select<value_type>("false", L"false"));
+		s.append(CBEAR_BERLIOS_DE_BASE_SELECT("false"));
 }
 
 // Integers.
