@@ -26,6 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/range/iterator_range.hpp>
 #include <cbear.berlios.de/stream/virtual_write.hpp>
 #include <cbear.berlios.de/stream/binary/read.hpp>
+#include <cbear.berlios.de/base/select.hpp>
 
 namespace cbear_berlios_de
 {
@@ -50,9 +51,10 @@ public:
 		template<class S>
 		void write(S &s) const
 		{		
+			typedef typename S::value_type value_type;
 			s << 
 				CBEAR_BERLIOS_DE_BASE_SELECT(
-					typename S::value_type, 
+					value_type,
 					"::cbear_berlios_de::stream::binary::memory::exception");
 		}
 	protected:
