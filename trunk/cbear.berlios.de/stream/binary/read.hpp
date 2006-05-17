@@ -33,10 +33,10 @@ namespace binary
 {
 
 // POD.
-template<class S>
+template<class S, class T>
 typename boost::enable_if<boost::is_pod<T> >::type read(S &s, T &t)
 {
-	char *B = static_cast<char *>(&t);
+	char *B = &reinterpret_cast<char &>(t);
 	s.pop_front_range(range::make_iterator_range(B, B + sizeof(T)));
 }
 

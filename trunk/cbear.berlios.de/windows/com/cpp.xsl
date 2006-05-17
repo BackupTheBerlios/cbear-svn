@@ -301,6 +301,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					</id.ref>
 				</body>
 			</method>
+			<!-- Serialization
 			<template>
 				<id id="ArchiveType"/>
 				<method id="serialize">
@@ -330,6 +331,35 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 											<id.ref id="this"/>
 											<id.ref id="{@id}"/>
 										</id.ref>
+									</id.ref>
+								</id.ref>
+							</id.ref>
+						</xsl:for-each>
+					</body>
+				</method>
+			</template>
+			-->
+			<template>
+				<id id="StreamType"/>
+				<method id="binary_read">
+					<id.ref id="void"/>
+					<parameter id="Stream">
+						<id.ref type="&amp;">
+							<id.ref id="StreamType"/>
+						</id.ref>
+					</parameter>
+					<body>
+						<xsl:for-each select="odl:object">
+							<id.ref type="::">
+								<id.ref/>
+								<id.ref id="cbear_berlios_de"/>
+								<id.ref id="stream"/>	
+								<id.ref id="binary"/>
+								<id.ref id="read" type="()">
+									<id.ref id="Stream"/>
+									<id.ref type="-&gt;">
+										<id.ref id="this"/>
+										<id.ref id="{@id}"/>
 									</id.ref>
 								</id.ref>
 							</id.ref>

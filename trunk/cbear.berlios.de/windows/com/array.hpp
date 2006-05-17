@@ -42,6 +42,7 @@ public:
 	typedef typename parent::reference reference;
 	typedef typename parent::const_reference const_reference;
 	typedef typename parent::iterator iterator;
+	typedef range::iterator_range<iterator> range_type;
 
 	reference operator[](std::size_t I) 
 	{ 
@@ -54,6 +55,7 @@ public:
 		return this->parent::operator[](I); 
 	}
 
+	/*
 	template<class ArchiveT>
 	void serialize(ArchiveT &Archive, const unsigned int Version)
 	{
@@ -61,6 +63,14 @@ public:
 		{
 			Archive & boost::serialization::make_nvp("item", *It);
 		}
+	}
+	*/
+
+	template<class StreamType>
+	void binary_read(StreamType &S)
+	{
+		for(range_type R(*this); !R.empty(); ++R.begin())
+			stream::binary::read(S, R.front());
 	}
 };
 
