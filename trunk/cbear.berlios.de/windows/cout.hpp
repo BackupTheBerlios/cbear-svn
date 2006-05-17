@@ -48,7 +48,7 @@ public:
 	typedef Char char_type;
 
 	template<class C>
-	void append(const C &c)
+	void push_back_range(const C &c)
 	{
 		// Because VC 7.1 is a bad compiler.
 		//BOOST_STATIC_ASSERT((boost::is_same<
