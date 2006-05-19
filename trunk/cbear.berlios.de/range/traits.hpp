@@ -78,7 +78,7 @@ struct class_std_traits
 	static iterator end(container &X) { return X.end(); }
 	
 	static bool empty(container &X) { return X.empty(); }
-	static size_type size(container &X) { return X.size(); }
+	static size_type size(container &X) { X; return X.size(); }
 	
 	static reference front(container &X) { return X.front(); }
 	static reference back(container &X) { return X.back(); }
