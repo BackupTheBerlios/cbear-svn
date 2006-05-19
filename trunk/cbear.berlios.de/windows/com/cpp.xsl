@@ -367,6 +367,35 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					</body>
 				</method>
 			</template>
+			<template>
+				<id id="StreamType"/>
+				<method id="binary_write">
+					<id.ref id="void"/>
+					<parameter id="Stream">
+						<id.ref type="&amp;">
+							<id.ref id="StreamType"/>
+						</id.ref>
+					</parameter>
+					<const/>
+					<body>
+						<xsl:for-each select="odl:object">
+							<id.ref type="::">
+								<id.ref/>
+								<id.ref id="cbear_berlios_de"/>
+								<id.ref id="stream"/>	
+								<id.ref id="binary"/>
+								<id.ref id="write" type="()">
+									<id.ref id="Stream"/>
+									<id.ref type="-&gt;">
+										<id.ref id="this"/>
+										<id.ref id="{@id}"/>
+									</id.ref>
+								</id.ref>
+							</id.ref>
+						</xsl:for-each>
+					</body>
+				</method>
+			</template>
 		</access>
 	</class>
 </xsl:template>

@@ -43,6 +43,7 @@ public:
 	typedef typename parent::const_reference const_reference;
 	typedef typename parent::iterator iterator;
 	typedef range::iterator_range<iterator> range_type;
+	typedef range::iterator_range<const_iterator> const_range_type;
 
 	reference operator[](std::size_t I) 
 	{ 
@@ -71,6 +72,13 @@ public:
 	{
 		for(range_type R(*this); !R.empty(); ++R.begin())
 			stream::binary::read(S, R.front());
+	}
+
+	template<class StreamType>
+	void binary_write(StreamType &S) const
+	{
+		for(const_range_type R(*this); !R.empty(); ++R.begin())
+			stream::binary::write(S, R.front());
 	}
 };
 

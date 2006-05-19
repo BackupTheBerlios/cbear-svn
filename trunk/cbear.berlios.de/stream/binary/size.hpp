@@ -20,14 +20,11 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_STREAM_BINARY_MEMORY_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_STREAM_BINARY_MEMORY_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_STREAM_BINARY_SIZE_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_STREAM_BINARY_SIZE_HPP_INCLUDED
 
 #include <cbear.berlios.de/range/iterator_range.hpp>
-#include <cbear.berlios.de/stream/virtual_write.hpp>
-#include <cbear.berlios.de/stream/binary/read.hpp>
 #include <cbear.berlios.de/stream/binary/write.hpp>
-#include <cbear.berlios.de/base/select.hpp>
 
 namespace cbear_berlios_de
 {
@@ -36,69 +33,30 @@ namespace stream
 namespace binary
 {
 
-class memory: private std::vector<char>
+class size
 {
 public:
 
-	typedef range::iterator_range<char *> range_type;
 	typedef range::iterator_range<const char *> const_range_type;
 
-	class exception: 
-		public stream::virtual_write,
-		public stream::wvirtual_write
-	{
-	public:
-		template<class S>
-		void write(S &s) const
-		{		
-			typedef typename S::value_type value_type;
-			s << 
-				CBEAR_BERLIOS_DE_BASE_SELECT(
-					value_type,
-					"::cbear_berlios_de::stream::binary::memory::exception");
-		}
-	protected:
-		void detail_write(::cbear_berlios_de::stream::virtual_write::stream &S) 
-			const
-		{
-			this->write(S);
-		}
-		void detail_write(::cbear_berlios_de::stream::wvirtual_write::stream &S) 
-			const
-		{
-			this->write(S);
-		}
-	};
+	size(): V(0) {}
 
 	void push_back_range(const const_range_type &N)
 	{
-		this->insert(this->end(), N.begin(), N.end());
-	}
-
-	void pop_front_range(const range_type &N)
-	{
-		if(N.size() > this->size()) throw exception();
-
-		const iterator B = this->begin();
-		iterator I = B;
-		for(range_type NI(N); !NI.empty(); ++NI.begin(), ++I)
-			NI.front() = *I;
-		this->erase(B, I);
-	}
+		this->V += N.size();
+	}	
 
 	template<class T>
-	memory &operator<<(const T &X)
+	size &operator<<(const T &t)
 	{
-		binary::write(*this, X);
-		return *this; 
+		binary::write(*this, t);
+		return *this;
 	}
 
-	template<class T>
-	memory &operator>>(T &X)
-	{
-		binary::read(*this, X);
-		return *this; 
-	}
+	std::size_t operator()() const { return this->V; }
+
+private:
+	std::size_t V;
 };
 
 }
