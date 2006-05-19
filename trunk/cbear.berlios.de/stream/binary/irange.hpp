@@ -40,7 +40,7 @@ class irange
 public:
 
 	typedef range::iterator_range<char *> range_type;
-	typedef range::iterator_range<const_iterator> const_range_type;
+	typedef range::iterator_range<const char *> const_range_type;
 
 	irange(const const_range_type &R): R(R) {}
 
