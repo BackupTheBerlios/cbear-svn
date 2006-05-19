@@ -56,7 +56,7 @@ public:
 			s << 
 				CBEAR_BERLIOS_DE_BASE_SELECT(
 					value_type,
-					"::cbear_berlios_de::stream::binary::omemory_range::exception");
+					"::cbear_berlios_de::stream::binary::orange::exception");
 		}
 	protected:
 		void detail_write(::cbear_berlios_de::stream::virtual_write::stream &S) 
