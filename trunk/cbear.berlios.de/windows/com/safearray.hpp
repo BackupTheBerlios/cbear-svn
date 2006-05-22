@@ -240,17 +240,16 @@ public:
 		internal_policy::resize(this->internal(), Size);
 	}
 
-	/*
-	void reset(std::size_t Size)
-	{
-		safearray_t New(Size);
-		this->swap(New);
-	}
-	*/
-
 	void clear()
 	{
 		internal_policy::clear(this->internal());
+	}
+
+	void push_back(const_reference R)
+	{
+		const std::size_t I = this->size();
+		this->resize(I + 1);
+		this->begin()[I] = R;
 	}
 };
 
