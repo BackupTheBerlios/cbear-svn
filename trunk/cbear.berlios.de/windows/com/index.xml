@@ -53,4 +53,7 @@ class traits
 		<section name="Separated Fabrics"/>
 		<section name="Garbage Collection"/>
 	</section>
+	<section name="Articles (Russian)">
+		<section href="manager.ru.xml"/>
+	</section>
 </section>

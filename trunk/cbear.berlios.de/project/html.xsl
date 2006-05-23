@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 The MIT License
 
@@ -132,7 +132,10 @@ pre
 </xsl:template>
 
 <xsl:template match="prj:*" mode="prj:html.id">
-	<xsl:value-of select="translate(@name, ' ,()+', '_____')"/>
+	<xsl:value-of select="translate(
+		@name, 
+		' ,()+АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя', 
+		' ,()+ABVGDEEJZIYKLMNOPRSTUFHCHHHYYYEUAabvgdeejziyklmnoprstufhchhhyyyeua')"/>
 </xsl:template>
 
 <!-- a -->
