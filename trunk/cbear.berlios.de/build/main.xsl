@@ -25,7 +25,7 @@
 			'-',  
 			@version,
 			'.', 
-			document('.svn/entries', .)/svn:wc-entries/svn:entry/@revision,
+			document('_svn/entries', .)/svn:wc-entries/svn:entry/@revision,
 			'.zip')"/>
 	<exsl:document
 				href="_build.bat"
