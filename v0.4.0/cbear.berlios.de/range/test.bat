@@ -1,1 +1,0 @@
-..\xsd\bin\Debug\xsd.exe iterator_range.xml
