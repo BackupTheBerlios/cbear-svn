@@ -38,8 +38,13 @@ namespace com
 
 class exception;
 
+namespace dynamic
+{
+
 template<class Base, class Interface = Base>
 class implementation;
+
+}
 
 template<class Interface>
 class object;
@@ -97,7 +102,10 @@ class object_base: public object_policy<Interface>::wrap
 {
 public:
 	typedef Interface interface_type;
-	typedef implementation<interface_type> implementation_type;
+
+	// This type is deprecated!
+	typedef dynamic::implementation<interface_type> dynamic_implementation_type;
+
 	typedef interface_type *internal_type;
 	typedef object_policy<interface_type> internal_policy;
 

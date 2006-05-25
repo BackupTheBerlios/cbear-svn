@@ -37,6 +37,9 @@ typedef DISPID dispid_t;
 typedef DISPPARAMS dispparams_t;
 typedef EXCEPINFO excepinfo_t;
 
+namespace dynamic
+{
+
 template<class Base>
 class implementation<Base, ::IDispatch>:
 	public implementation_base<Base, ::IDispatch, ::IUnknown>
@@ -96,6 +99,7 @@ public:
 	}
 };
 
+}
 }
 }
 }

@@ -44,6 +44,8 @@ namespace windows
 {
 namespace com
 {
+namespace dynamic
+{
 
 class group;
 
@@ -105,11 +107,11 @@ protected:
 		return hresult::e_nointerface;
 	}
 
-	com::group &group() const { return *this->Group; }
+	dynamic::group &group() const { return *this->Group; }
 
 private:
 
-	com::group *Group;
+	dynamic::group *Group;
 
 	list_type List;
 
@@ -319,7 +321,7 @@ protected:
 
 	typedef atomic::wrap<ulong_t>::internal_type internal_type;
 
-	implementation_counter(com::group &Group)
+	implementation_counter(dynamic::group &Group)
 	{
 		this->Group = &Group;
 		this->Group->increment();
@@ -347,7 +349,7 @@ template<class T>
 class implementation_instance: 
 	private implementation_counter,
 	public T,
-	public isupporterrorinfo::implementation_type
+	public isupporterrorinfo::dynamic_implementation_type
 {
 public:
 	// IUnknown
@@ -365,37 +367,41 @@ private:
 
 	friend class group;
 
-	implementation_instance(com::group &Group): implementation_counter(Group) {}
+	implementation_instance(dynamic::group &Group): implementation_counter(Group) {}
 
   template<class P>
-	implementation_instance(com::group &Group, const P &X): 
+	implementation_instance(dynamic::group &Group, const P &X): 
 		implementation_counter(Group), T(X) 
 	{
 	}
 
   template<class P1, class P2>
-	implementation_instance(com::group &Group, const P1 &X1, const P2 &X2): 
+	implementation_instance(dynamic::group &Group, const P1 &X1, const P2 &X2): 
 		implementation_counter(Group), T(X1, X2)
 	{
 	}
 
   template<class P1, class P2, class P3>
 	implementation_instance(
-		com::group &Group, const P1 &X1, const P2 &X2, const P3 &X3):
+		dynamic::group &Group, const P1 &X1, const P2 &X2, const P3 &X3):
 		implementation_counter(Group), T(X1, X2, X3)
 	{
 	}
 
   template<class P1, class P2, class P3, class P4>
 	implementation_instance(
-		com::group &Group, const P1 &X1, const P2 &X2, const P3 &X3, const P4 &X4):
+		dynamic::group &Group, 
+		const P1 &X1, 
+		const P2 &X2, 
+		const P3 &X3, 
+		const P4 &X4):
 		implementation_counter(Group), T(X1, X2, X3, X4)
 	{
 	}
 
   template<class P1, class P2, class P3, class P4, class P5>
 	implementation_instance(
-		com::group &Group, 
+		dynamic::group &Group, 
 		const P1 &X1, 
 		const P2 &X2, 
 		const P3 &X3, 
@@ -408,6 +414,7 @@ private:
 
 }
 
+}
 }
 }
 }

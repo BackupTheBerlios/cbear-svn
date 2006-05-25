@@ -753,32 +753,34 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			</access>
 		</class>
 	</template>
-	<template>
-		<id id="Base"/>
-		<class>
-			<id.ref id="implementation" type="&lt;&gt;">
-				<id.ref id="Base"/>
-				<id.ref type="::">
-					<id.ref/>
-					<id.ref id="{@id}"/>
-				</id.ref>
-			</id.ref>
-			<access access="public">
-				<id.ref id="implementation_base" type="&lt;&gt;">
+	<namespace id="dynamic">
+		<template>
+			<id id="Base"/>
+			<class>
+				<id.ref id="implementation" type="&lt;&gt;">
 					<id.ref id="Base"/>
 					<id.ref type="::">
 						<id.ref/>
 						<id.ref id="{@id}"/>
 					</id.ref>
-					<id.ref type="::">
-						<id.ref/>
-						<id.ref id="{odl:type.ref/@id}"/>
-					</id.ref>
 				</id.ref>
-				<xsl:apply-templates select="odl:method" mode="odl:cpp.implementation"/>
-			</access>
-		</class>
-	</template>
+				<access access="public">
+					<id.ref id="implementation_base" type="&lt;&gt;">
+						<id.ref id="Base"/>
+						<id.ref type="::">
+							<id.ref/>
+							<id.ref id="{@id}"/>
+						</id.ref>
+						<id.ref type="::">
+							<id.ref/>
+							<id.ref id="{odl:type.ref/@id}"/>
+						</id.ref>
+					</id.ref>
+					<xsl:apply-templates select="odl:method" mode="odl:cpp.implementation"/>
+				</access>
+			</class>
+		</template>
+	</namespace>
 	<template>
 		<class>
 			<id.ref id="library_info" type="&lt;&gt;">
@@ -1079,7 +1081,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			</namespace>
 			<namespace id="cbear_berlios_de">
 				<namespace id="windows">
-					<namespace id="com">
+					<namespace id="com">						
 						<xsl:apply-templates select="odl:typedef/odl:struct" mode="odl:cpp.uuid"/>
 						<xsl:apply-templates select="odl:interface" mode="odl:cpp.object"/>
 					</namespace>
