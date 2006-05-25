@@ -23,7 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_IDISPATCH_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_IDISPATCH_HPP_INCLUDED
 
-#include <cbear.berlios.de/windows/com/implementation.hpp>
+#include <cbear.berlios.de/windows/com/dynamic_implementation.hpp>
 
 namespace cbear_berlios_de
 {
@@ -42,27 +42,6 @@ class implementation<Base, ::IDispatch>:
 	public implementation_base<Base, ::IDispatch, ::IUnknown>
 {
 public:
-
-	implementation()
-	{
-		/*
-		for(
-			range::sub_range<com::group::typelibs_type>::type R(
-				this->group().typelibs);
-			!R.empty();
-			++R.begin())
-		{
-			try
-			{
-				this->TypeInfo = R.front().gettypeinfoofguid<Base>();
-				return;
-			}
-			catch(com::exception &)
-			{
-			}
-		}
-		*/
-	}
 
 	hresult::internal_type __stdcall GetTypeInfoCount(
 		internal_result<out, uint_t>::type _result) 
@@ -115,8 +94,6 @@ public:
 			pexcepinfo, 
 			puArgErr);
 	}
-private:
-	//itypeinfo TypeInfo;
 };
 
 }

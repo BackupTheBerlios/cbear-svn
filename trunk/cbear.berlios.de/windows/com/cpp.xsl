@@ -1006,7 +1006,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<include href="cbear.berlios.de/windows/com/safearray.hpp"/>
 			<include href="cbear.berlios.de/windows/com/object.hpp"/>
 			<include href="cbear.berlios.de/windows/com/exception.hpp"/>
-			<include href="cbear.berlios.de/windows/com/implementation.hpp"/>
+			<include href="cbear.berlios.de/windows/com/dynamic_implementation.hpp"/>
 			<include href="cbear.berlios.de/windows/com/coclass.hpp"/>
 			<include href="cbear.berlios.de/windows/com/idispatch.hpp"/>
 			<include href="cbear.berlios.de/base/swap.hpp"/>

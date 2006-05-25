@@ -46,7 +46,7 @@ class traits
 	<section href="uuid.xml"/>
 	<section href="hresult.xml"/>
 	<section href="object.xml"/>
-	<section href="implementation.xml"/>
+	<section href="dynamic_implementation.xml"/>
 	<section href="odl.xml"/>
 	<section name="Tasks">
 		<section name="Scoped Library Initialization"/>
