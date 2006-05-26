@@ -24,7 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_SVN_CLIENT_HPP_INCLUDED
 
 #include <cbear.berlios.de/svn/version.hpp>
-#include <cbear.berlios.de/svn/auth.hpp>
+#include <cbear.berlios.de/svn/auth/main.hpp>
 #include <cbear.berlios.de/svn/apr/pools.hpp>
 
 #include <svn_client.h>
