@@ -1,4 +1,4 @@
-#include <cbear.berlios.de/svn/client.hpp>
+#include <cbear.berlios.de/svn/client/main.hpp>
 #include <iostream>
 
 namespace Svn = cbear_berlios_de::svn;
