@@ -68,6 +68,30 @@ move_t<T> move(T &B) { return move_t<T>(B); }
 template<class T>
 move_t<T> move_copy(const T &B) { T Copy(B); return move_t<T>(Copy); }
 
+template<class T>
+class move_ref_t
+{
+public:
+    explicit move_ref_t(T &B): A(B) {}
+
+    const move_ref_t &operator=(const move_t<T> &B) const 
+    { 
+        B.swap(this->A); return *this; 
+    }
+    const move_ref_t &operator=(T &B) const 
+    { 
+        B.swap(this->A); return *this; 
+    }
+
+private:
+    mutable T &A;
+    // VC warning.
+    move_ref_t &operator=(const move_ref_t &);
+};
+
+template<class T>
+move_ref_t<T> move_ref(T &B) { return move_ref_t<T>(B); }
+
 }
 }
 
