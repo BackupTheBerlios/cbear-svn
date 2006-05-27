@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+The MIT License
+
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of 
+this software and associated documentation files (the "Software"), to deal in 
+the Software without restriction, including without limitation the rights to 
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so, 
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<?xml-stylesheet type="text/xsl" href="../project/html.xsl"?>
+<section xmlns="http://cbear.berlios.de/project" name="meta::if_">
+	<p>
+Файл <a href="if.hpp"/>. Аналоги 
+<a href="http://www.boost.org/libs/mpl/doc/refmanual/if.html">boost::mpl::if_</a>
+и
+<a href="http://www.boost.org/libs/utility/enable_if.html">boost::enable_if</a>.
+	</p>
+	<section name="Синопсис">
+<pre><![CDATA[template<bool Condition, class Then, class Else = ...>
+class if_c;
+{
+public:
+
+	typedef if_c o;
+
+	// Не определен, если !Condition и не определен Else.
+	typedef ... type;
+
+	// Не определен, если определен Else.
+	template<bool Condition1, class Then1, class Else1 = ...>
+	class else_if_c;
+
+	// Не определен, если определен Else.
+	template<class Condition1, class Then1, class Else1 = ...>
+	class else_if;
+};
+
+template<class Condition, class Then, class Else = ...>
+class if_c;]]></pre>
+	</section>
+	<section name="Сравнение с boost::mpl::if_">
+<pre><![CDATA[namespace Mpl = boost::mpl;
+namespace Meta = cbear_berlios_de::meta;]]></pre>
+		<ul>
+			<li>
+Если C::value == true то X это T, иначе X это E.				
+<pre><![CDATA[// Boost
+typedef Mpl::if_<C, T, E>::type X;
+
+// C Bear
+typedef Meta::if_<C, T, E>::type X;]]></pre>
+			</li>
+			<li>
+<![CDATA[Если C::value == true то X<C>::type это T, иначе X<C>::type это E.]]>
+<pre><![CDATA[// Boost
+template<class C>
+struct X: Mpl::if_<C, T, E> {};
+
+// C Bear
+template<class C>
+struct X: Meta::if_<C, T, E> {};]]></pre>
+			</li>
+			<li>
+Два условия. Если C1::value == true то X это T1, иначе если C2::value = true то 
+X это T2, иначе X это E.
+<pre><![CDATA[// Boost
+typedef Mpl::if_<C1, T1, Mpl::if_<C2, T2, E>::type>::type X;
+
+// C Bear
+typedef Meta::if_<C1, T1>::else_if<C2, T2, E>::type X;]]></pre>
+			</li>
+			<li>
+<![CDATA[Два условия. Если C1::value == true то X<C1, C2>::type это T1, иначе 
+если C2::value == true то X<C1, C2>::type это T2, иначе X<C1, C2>::type это 
+E.]]>
+<pre><![CDATA[// Boost
+template<class C1, class C2>
+struct X: Mpl::if_<C1, T1, typename Mpl::if_<C2, T2, E>::type> {};
+
+// C Bear
+template<class C1, class C2>
+struct X: Meta::if_<C1, T1>::template else_if<C2, T2, E> {};]]></pre>
+			</li>
+			<li>
+<![CDATA[Шаблон с пятью условия.]]>
+<pre><![CDATA[// Boost
+template<class C1, class C2, class C3, class C4, class C5>
+struct X: 
+	Mpl::if_<C1, T1, 
+	typename Mpl::if_<C2, T2, 
+	typename Mpl::if_<C3, T3, 
+	typename Mpl::if_<C4, T4, 
+	typename Mpl::if_<C5, T5, 	
+	E >::type >::type >::type >::type >
+{
+};
+
+// C Bear
+template<class C1, class C2, class C3, class C4, class C5>
+struct X:
+	Meta::if_<C1, T1>::
+	template else_if<C2, T2>::
+	template else_if<C3, T3>::
+	template else_if<C4, T4>::
+	template else_if<C5, T5>::	
+	template else_<E>
+{
+};
+
+// C Bear на VC 8.0
+template<class C1, class C2, class C3, class C4, class C5>
+struct X:
+	Meta::if_<C1, T1>::
+	template else_if<C2, T2>::o::
+	template elst_if<C3, T3>::o::
+	template else_if<C4, T4>::o::
+	template else_if<C5, T5>::o::	
+	template else_<E>
+{
+};]]></pre>
+			</li>						
+		</ul>
+	</section>
+</section>

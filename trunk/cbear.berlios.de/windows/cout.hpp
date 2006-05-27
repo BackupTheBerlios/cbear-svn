@@ -46,6 +46,7 @@ public:
 	}
 
 	typedef Char char_type;
+	typedef Char value_type;
 
 	template<class C>
 	void push_back_range(const C &c)

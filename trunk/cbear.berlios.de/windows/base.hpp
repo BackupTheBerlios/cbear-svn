@@ -27,6 +27,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #pragma warning(disable: 4311)
 #pragma warning(disable: 4312)
 #include <windows.h>
+#include <wtypes.h>
 #pragma warning(pop)
 
 #include <cstddef>
@@ -84,6 +85,7 @@ typedef DWORD dword_t;
 typedef FLOAT float_t;
 
 // Floating-point variable. (64 bits).
+// WTypes.h
 typedef DOUBLE double_t;
 
 // 16-bit Unicode character.

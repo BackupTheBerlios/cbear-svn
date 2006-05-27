@@ -35,12 +35,11 @@ namespace cbear_berlios_de
 {
 namespace svn
 {
-
 namespace client
 {
 
 /// Get libsvn_client version information.
-inline const version_t &version() { return *::svn_client_version(); }
+inline const version_t &version() { return version_t::make_ref(*::svn_client_version()); }
 
 /// Create and return @a *provider, an authentication provider of type
 /// svn_auth_cred_simple_t that gets information by prompting the user

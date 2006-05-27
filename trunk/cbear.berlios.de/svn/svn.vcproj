@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;c:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\Include&quot;;&quot;c:\svn-win32-1.3.1\include&quot;;&quot;c:\svn-win32-1.3.1\include\apr&quot;;c:\cbear"
+				AdditionalIncludeDirectories="&quot;c:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\Include&quot;;&quot;c:\Boost\include\boost-1_33_1&quot;;&quot;c:\svn-win32-1.3.1\include&quot;;&quot;c:\svn-win32-1.3.1\include\apr&quot;;c:\cbear"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -117,7 +117,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;c:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\Include&quot;;&quot;c:\svn-win32-1.3.1\include&quot;;&quot;c:\svn-win32-1.3.1\include\apr&quot;;c:\cbear"
+				AdditionalIncludeDirectories="&quot;c:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\Include&quot;;&quot;c:\Boost\include\boost-1_33_1&quot;;&quot;c:\svn-win32-1.3.1\include&quot;;&quot;c:\svn-win32-1.3.1\include\apr&quot;;c:\cbear"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"

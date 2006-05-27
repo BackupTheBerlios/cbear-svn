@@ -41,4 +41,5 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<section href="windows/index.xml"/>
 	<section href="cpp/index.xml"/>
 	<section href="api/index.xml"/>
+	<section href="meta/index.xml"/>
 </section>
