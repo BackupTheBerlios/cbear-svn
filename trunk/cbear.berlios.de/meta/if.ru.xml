@@ -29,7 +29,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 и
 <a href="http://www.boost.org/libs/utility/enable_if.html">boost::enable_if</a>.
 	</p>
-	<section name="Синопсис">
+	<section name="Краткое описание">
 <pre><![CDATA[template<bool Condition, class Then, class Else = ...>
 class if_c;
 {
@@ -65,7 +65,7 @@ typedef Mpl::if_<C, T, E>::type X;
 typedef Meta::if_<C, T, E>::type X;]]></pre>
 			</li>
 			<li>
-<![CDATA[Шаблон с пятью условия.]]>
+<![CDATA[Шаблон с пятью условиями.]]>
 <pre><![CDATA[// Boost
 template<class C1, class C2, class C3, class C4, class C5>
 struct X: 
@@ -124,7 +124,8 @@ template<class T>
 T foo(T t, typename Meta::if_<boost::is_arithmetic<T> >::type* dummy = 0);]]></pre>
 			</li>
 			<li>
-Только если T целый тип и возвращать T, или если T указатель и возвращать int.
+Только если T целый тип (при этом возвращать T), или если T указатель (при этом 
+возвращать int).
 <pre><![CDATA[// Boost
 template<class T>
 typename lazy_enable_if<
