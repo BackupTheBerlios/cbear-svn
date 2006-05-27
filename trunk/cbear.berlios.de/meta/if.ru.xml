@@ -100,7 +100,7 @@ template<class C1, class C2, class C3, class C4, class C5>
 struct X:
 	Meta::if_<C1, T1>::
 	template else_if<C2, T2>::o::
-	template elst_if<C3, T3>::o::
+	template else_if<C3, T3>::o::
 	template else_if<C4, T4>::o::
 	template else_if<C5, T5>::o::	
 	template else_<E>
