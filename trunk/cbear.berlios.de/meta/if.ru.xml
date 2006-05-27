@@ -65,37 +65,6 @@ typedef Mpl::if_<C, T, E>::type X;
 typedef Meta::if_<C, T, E>::type X;]]></pre>
 			</li>
 			<li>
-<![CDATA[Если C::value == true то X<C>::type это T, иначе X<C>::type это E.]]>
-<pre><![CDATA[// Boost
-template<class C>
-struct X: Mpl::if_<C, T, E> {};
-
-// C Bear
-template<class C>
-struct X: Meta::if_<C, T, E> {};]]></pre>
-			</li>
-			<li>
-Два условия. Если C1::value == true то X это T1, иначе если C2::value = true то 
-X это T2, иначе X это E.
-<pre><![CDATA[// Boost
-typedef Mpl::if_<C1, T1, Mpl::if_<C2, T2, E>::type>::type X;
-
-// C Bear
-typedef Meta::if_<C1, T1>::else_if<C2, T2, E>::type X;]]></pre>
-			</li>
-			<li>
-<![CDATA[Два условия. Если C1::value == true то X<C1, C2>::type это T1, иначе 
-если C2::value == true то X<C1, C2>::type это T2, иначе X<C1, C2>::type это 
-E.]]>
-<pre><![CDATA[// Boost
-template<class C1, class C2>
-struct X: Mpl::if_<C1, T1, typename Mpl::if_<C2, T2, E>::type> {};
-
-// C Bear
-template<class C1, class C2>
-struct X: Meta::if_<C1, T1>::template else_if<C2, T2, E> {};]]></pre>
-			</li>
-			<li>
 <![CDATA[Шаблон с пятью условия.]]>
 <pre><![CDATA[// Boost
 template<class C1, class C2, class C3, class C4, class C5>
@@ -104,8 +73,13 @@ struct X:
 	typename Mpl::if_<C2, T2, 
 	typename Mpl::if_<C3, T3, 
 	typename Mpl::if_<C4, T4, 
-	typename Mpl::if_<C5, T5, 	
-	E >::type >::type >::type >::type >
+	typename Mpl::if_<C5, T5, 
+	E
+	>::type 
+	>::type 
+	>::type 
+	>::type 
+	>
 {
 };
 
@@ -133,6 +107,37 @@ struct X:
 {
 };]]></pre>
 			</li>						
+		</ul>
+	</section>
+	<section name="Сравнение с boost::enable_if">
+<pre><![CDATA[namespace Mpl = boost::mpl;
+namespace Meta = cbear_berlios_de::meta;]]></pre>
+		<ul>
+			<li>
+Только если T арифметический тип.
+<pre><![CDATA[// Boost
+template<class T>
+T foo(T t, typename boost::enable_if<boost::is_arithmetic<T> >::type* dummy = 0);
+
+// C Bear
+template<class T>
+T foo(T t, typename Meta::if_<boost::is_arithmetic<T> >::type* dummy = 0);]]></pre>
+			</li>
+			<li>
+Только если T целый тип и возвращать T, или если T указатель и возвращать int.
+<pre><![CDATA[// Boost
+template<class T>
+typename lazy_enable_if<
+	Mpl::or_<boost::is_integral<T>, boost::is_pointer<T> >, 
+	Mpl::if_<boost::is_integral<T>, T, int> >::type
+foo(T t);
+
+// C Bear
+template<class T>
+typename Meta::if_<boost::is_integral<T>, T>::
+template else_if<boost::is_pointer<T>, int>::type
+foo(T t);]]></pre>
+			</li>
 		</ul>
 	</section>
 </section>
