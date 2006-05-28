@@ -34,7 +34,7 @@ namespace detail
 class no_else;
 }
 
-template<bool C, class T, class E = detail::no_else>
+template<bool C, class T = void, class E = detail::no_else>
 class if_c;
 
 namespace detail
@@ -47,13 +47,13 @@ public:
 
 	typedef if_c o;
 
-	template<bool C1, class T1, class E1 = no_else>
+	template<bool C1, class T1 = void, class E1 = no_else>
 	class else_if_c: 
 		public meta::if_c<C || C1, typename meta::if_c<C, T, T1>::type, E1>
 	{
 	};
 
-	template<class C1, class T1, class E1 = no_else>
+	template<class C1, class T1 = void, class E1 = no_else>
 	class else_if: public else_if_c<C1::value, T1, E1> {};
 
 	template<class E>
@@ -88,7 +88,7 @@ public:
 	typedef T type;
 };
 
-template<class C, class T, class E = detail::no_else>
+template<class C, class T = void, class E = detail::no_else>
 class if_: public if_c<C::value, T, E> {};
 
 }
