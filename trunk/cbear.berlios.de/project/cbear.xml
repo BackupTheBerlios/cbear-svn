@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<td xmlns="http://www.w3.org/1999/xhtml" style="vertical-align: top; text-align: center;">
+<!-- SiteSearch Google -->
+<form method="get" action="http://www.google.com/custom" target="google_window">
+<table border="0" bgcolor="#cccccc">
+<tr><td nowrap="nowrap" valign="top" align="left" height="32">
+<a href="http://www.google.com/">
+<img src="http://www.google.com/logos/Logo_25gry.gif" border="0" alt="Google" align="middle"></img></a>
+<br/>
+<input type="hidden" name="domains" value="cbear.berlios.de"></input>
+<input type="text" name="q" size="25" maxlength="255" value=""></input>
+</td></tr>
+<tr>
+<td nowrap="nowrap">
+<table>
+<tr>
+<td>
+<input type="radio" name="sitesearch" value=""></input>
+<font size="-1" color="#000000">Web</font>
+</td>
+<td>
+<input type="radio" name="sitesearch" value="cbear.berlios.de" checked="checked"></input>
+<font size="-1" color="#000000">cbear.berlios.de</font>
+</td>
+</tr>
+</table>
+<input type="submit" name="sa" value="Search"></input>
+<input type="hidden" name="client" value="pub-3298900216650066"></input>
+<input type="hidden" name="forid" value="1"></input>
+<input type="hidden" name="channel" value="7219731056"></input>
+<input type="hidden" name="ie" value="UTF-8"></input>
+<input type="hidden" name="oe" value="UTF-8"></input>
+<input type="hidden" name="cof" value="GALT:#008000;GL:1;DIV:#336699;VLC:663399;AH:center;BGC:FFFFFF;LBGC:336699;ALC:0000FF;LC:0000FF;T:000000;GFNT:0000FF;GIMP:0000FF;FORID:1;"></input>
+<input type="hidden" name="hl" value="en"></input>
+</td></tr></table>
+</form>
+	<br/>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3298900216650066";
+google_ad_width = 160;
+google_ad_height = 600;
+google_ad_format = "160x600_as";
+google_ad_type = "text_image";
+google_ad_channel ="5882639306";
+google_color_border = "FFFFFF";
+google_color_link = "0000FF";
+google_color_bg = "FFFFFF";
+google_color_text = "000000";
+google_color_url = "008000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+	<br/>
+	<br/>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3298900216650066";
+google_ad_width = 110;
+google_ad_height = 32;
+google_ad_format = "110x32_as_rimg";
+google_cpa_choice = "CAAQga7zzwEaCAqINcPi102eKLPGvnU";
+//--></script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+	<br/>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3298900216650066";
+google_ad_width = 110;
+google_ad_height = 32;
+google_ad_format = "110x32_as_rimg";
+google_cpa_choice = "CAAQ0Lnh8AEaCF83OMyEKbvzKPi96n4";
+//--></script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+	<br/>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3298900216650066";
+google_ad_width = 110;
+google_ad_height = 32;
+google_ad_format = "110x32_as_rimg";
+google_cpa_choice = "CAAQ7-ObzgEaCPkjF0Y96nIgKJPw43Q";
+//--></script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+	<br/>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3298900216650066";
+google_ad_width = 110;
+google_ad_height = 32;
+google_ad_format = "110x32_as_rimg";
+google_cpa_choice = "CAAQkMWI_AEaCPWk5Got6RhJKODDrYMB";
+//--></script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+	<br/>
+	<br/>
+		<a href="http://developer.berlios.de" title="BerliOS Developer">
+			<img 
+				src="http://developer.berlios.de/bslogo.php?group_id=4712" 
+				width="124px" 
+				height="32px" 
+				border="0" 
+				alt="BerliOS Developer Logo"/>
+		</a>
+	<br/>
+		<a href="http://sourceforge.net">
+			<img 
+				src="http://sflogo.sourceforge.net/sflogo.php?group_id=147280&amp;type=2" 
+				width="125" 
+				height="37" 
+				border="0" 
+				alt="SourceForge.net Logo" />
+		</a>
+</td>

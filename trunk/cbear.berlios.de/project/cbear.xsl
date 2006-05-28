@@ -32,6 +32,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:import href="list.xsl"/>
 
+<!--
 <xsl:template match="prj:section" mode="prj:html.top">
 	<div class="background">
 		<img border="0" src="http://cbear.berlios.de/mainlogo.png"/>
@@ -39,11 +40,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <xsl:template match="prj:section" mode="prj:html.bottom">
-	<div class="background">
+	<div class="background" style="position: fixed; left: 0; top: 0;">
 		<table style="margin: 0 auto 0 auto;">
 			<tr>
 				<td>
-<!-- SiteSearch Google -->
+<!- - SiteSearch Google - ->
 <form method="get" action="http://www.google.com/custom" target="_top">
 <table border="0" bgcolor="#cccccc">
 <tr><td nowrap="nowrap" valign="top" align="left" height="32">
@@ -81,7 +82,7 @@ border="0" alt="Google"></img></a>
 
 </td></tr></table>
 </form>
-<!-- SiteSearch Google -->
+<!- - SiteSearch Google - ->
 				</td>
 			</tr>
 		</table>
@@ -108,6 +109,21 @@ google_color_text = "FFFFFF";
 			</tr>
 		</table>
 	</div>
+</xsl:template>
+-->
+
+<xsl:template match="prj:section" mode="prj:html.body">
+	<table style="margin: 0 auto 0 auto;">
+		<tr>
+			<td style="vertical-align: top; width: 100%;">
+				<div class="background">
+					<img border="0" src="http://cbear.berlios.de/mainlogo.png"/>
+				</div>
+				<xsl:apply-imports/>
+			</td>
+			<xsl:copy-of select="document('cbear.xml')"/>
+		</tr>
+	</table>
 </xsl:template>
 
 </xsl:stylesheet>

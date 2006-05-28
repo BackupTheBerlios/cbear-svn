@@ -299,9 +299,26 @@ pre
 	<div><h2><xsl:apply-templates select="." mode="prj:html.link"/></h2></div>
 </xsl:template>
 
+<!--
 <xsl:template match="*" mode="prj:html.top"/>
-
 <xsl:template match="*" mode="prj:html.bottom"/>
+-->
+
+<xsl:template match="prj:section" mode="prj:html.body">
+	<xsl:variable name="id">
+		<xsl:apply-templates select="." mode="prj:html.id"/>
+	</xsl:variable>
+	<div class="background">
+		<xsl:apply-templates select="." mode="prj:html.history"/>
+		<div id="{$id}">
+			<h1>
+				<xsl:value-of select="@name"/>
+			</h1>
+			<xsl:apply-templates select="." mode="prj:html.content.table"/>
+			<xsl:apply-templates mode="prj:html"/>
+		</div>
+	</div>		
+</xsl:template>
 
 <xsl:template match="/prj:section" mode="prj:html">
 	<html>
@@ -310,19 +327,22 @@ pre
 			<style type="text/css"><xsl:copy-of select="$prj:html.style"/></style>
 		</head>
 		<body>
+			<xsl:apply-templates select="." mode="prj:html.body"/>
+			<!--
 			<xsl:variable name="id">
 				<xsl:apply-templates select="." mode="prj:html.id"/>
 			</xsl:variable>
 			<div class="background">
-				<xsl:apply-templates select="." mode="prj:html.top"/>
 				<xsl:apply-templates select="." mode="prj:html.history"/>
 				<div id="{$id}">
-					<h1><xsl:value-of select="@name"/></h1>
+					<h1>
+						<xsl:value-of select="@name"/>
+					</h1>
 					<xsl:apply-templates select="." mode="prj:html.content.table"/>
 					<xsl:apply-templates mode="prj:html"/>
 				</div>
-				<xsl:apply-templates select="." mode="prj:html.bottom"/>
 			</div>
+			-->
 		</body>
 	</html>
 </xsl:template>
