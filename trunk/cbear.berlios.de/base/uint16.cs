@@ -1,4 +1,4 @@
-namespace cbear_berlios_de.@base.integer
+namespace cbear_berlios_de.@base
 {
     public struct uint16
     {
