@@ -7,8 +7,8 @@
     <ProjectGuid>{DC8368DE-F8A2-491A-BEEB-A9972D26AD51}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>base.integer</RootNamespace>
-    <AssemblyName>base.integer</AssemblyName>
+    <RootNamespace>cbear_berlios_de.base</RootNamespace>
+    <AssemblyName>cbear_berlios_de.base</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
