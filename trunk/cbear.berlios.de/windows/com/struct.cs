@@ -79,6 +79,7 @@ namespace cbear_berlios_de.windows.com
 
         public static T @new<T>() { return (T)@new(typeof(T)); }
 
+        /*
         public static void write(IO.Stream Stream, System.Byte O)
         {
             Stream.WriteByte(O);
@@ -216,5 +217,6 @@ namespace cbear_berlios_de.windows.com
         public static void read(IO.Stream Stream, ref object O)
         {
         }
+         */
     }
 }

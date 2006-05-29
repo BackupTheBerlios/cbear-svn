@@ -7,7 +7,7 @@
     <ProjectGuid>{AE905296-652A-46FF-9D51-8318A9573B5E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>stream.binary</RootNamespace>
+    <RootNamespace>cbear_berlios_de.stream.binary</RootNamespace>
     <AssemblyName>cbear_berlios_de.stream.binary</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -38,12 +38,18 @@
     <Compile Include="dynamic_implementation.cs" />
     <Compile Include="dynamic.cs" />
     <Compile Include="int32.cs" />
+    <Compile Include="value_type_list.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\base\base.csproj">
       <Project>{DC8368DE-F8A2-491A-BEEB-A9972D26AD51}</Project>
       <Name>base</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
