@@ -28,10 +28,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="byte.cs" />
+    <Compile Include="int64.cs" />
+    <Compile Include="uint64.cs" />
     <Compile Include="uint32.cs" />
     <Compile Include="int16.cs" />
     <Compile Include="uint16.cs" />

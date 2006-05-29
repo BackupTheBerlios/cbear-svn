@@ -24,25 +24,30 @@ namespace cbear_berlios_de.stream.binary
 {
     using IO = System.IO;
 
-    public class @sbyte : dynamic_implementation<System.SByte>
+    public class uint64 : dynamic_implementation<System.UInt64>
     {
-        public static System.SByte static_read(IO.Stream Stream)
+        public static System.UInt64 static_read(IO.Stream Stream)
         {
-            return (System.SByte)@byte.static_read(Stream);
+            @base.uint64 X;
+            X.low = @uint32.static_read(Stream);
+            X.high = @uint32.static_read(Stream);
+            return X;
         }
 
-        public static void static_write(IO.Stream Stream, System.SByte Value)
+        public static void static_write(IO.Stream Stream, System.UInt64 Value)
         {
-            @byte.static_write(Stream, (System.Byte)Value);
+            @base.uint64 X = Value;
+            uint32.static_write(Stream, X.low);
+            uint32.static_write(Stream, X.high);
         }
 
-        protected override System.SByte read(System.IO.Stream Stream)
+        protected override System.UInt64 read(System.IO.Stream Stream)
         {
             return static_read(Stream);
         }
 
         protected override void write(
-            System.IO.Stream Stream, System.SByte Value)
+            System.IO.Stream Stream, System.UInt64 Value)
         {
             static_write(Stream, Value);
         }

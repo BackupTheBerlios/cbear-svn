@@ -1,3 +1,25 @@
+/*
+The MIT License
+
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of 
+this software and associated documentation files (the "Software"), to deal in 
+the Software without restriction, including without limitation the rights to 
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so, 
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
 namespace cbear_berlios_de.windows.com
 {
     using IO = System.IO;
@@ -7,164 +29,13 @@ namespace cbear_berlios_de.windows.com
 
     public class @struct
     {
-        /*
-        private static System.UInt16 make(System.Byte H, System.Byte L)
-        {
-            return (System.UInt16)(
-                ((System.UInt16)H << 8) + (System.UInt16)L);
-        }
-
-        private static System.UInt32 make(System.UInt16 H, System.UInt16 L)
-        {
-            return (System.UInt32)(
-                ((System.UInt32)H << 16) + (System.UInt32)L);
-        }
-
-        private static System.UInt64 make(System.UInt32 H, System.UInt32 L)
-        {
-            return (System.UInt64)(
-                ((System.UInt64)H << 32) + (System.UInt64)L);
-        }
-
-        private static System.Byte hi(System.UInt16 X) 
-        { 
-            return (System.Byte)(X >> 8); 
-        }
-
-        private static System.Byte lo(System.UInt16 X) 
-        { 
-            return (System.Byte)X; 
-        }
-
-        private static System.UInt16 hi(System.UInt32 X) 
-        { 
-            return (System.UInt16)(X >> 16); 
-        }
-
-        private static System.UInt16 lo(System.UInt32 X) 
-        {
-            return (System.UInt16)X; 
-        }
-
-        private static System.UInt32 hi(System.UInt64 X) 
-        {
-            return (System.UInt32)(X >> 32); 
-        }
-
-        private static System.UInt32 lo(System.UInt64 X) 
-        {
-            return (System.UInt32)X;
-        }
-
-        private abstract class io_implementation<T> : io_base
-        {
-            #region io_base Members
-
-            System.Type io_base.type() { return typeof(T); }
-
-            object io_base.read(IO.Stream Stream)
-            {
-                return (object)this.read(Stream);
-            }
-
-            void io_base.write(IO.Stream Stream, object t)
-            {
-                this.write(Stream, (T)t);
-            }
-
-            #endregion
-
-            protected abstract T read(IO.Stream Stream);
-            protected abstract void write(IO.Stream Stream, T t);
-        }
-
-        private static System.Byte read8(IO.Stream Stream)
-        {
-            return (System.Byte)Stream.ReadByte();
-        }
-
-        private static void write8(IO.Stream Stream, System.Byte X)
-        {
-            Stream.WriteByte(X);
-        }
-
-        private class io_byte: io_implementation<System.Byte>
-        {
-            protected override System.Byte read(System.IO.Stream Stream)
-            {
-                return read8(Stream);
-            }
-
-            protected override void write(
-                System.IO.Stream Stream, System.Byte X)
-            {
-                write8(Stream, X);
-            }
-        }
-
-        private class io_sbyte : io_implementation<System.SByte>
-        {
-
-            protected override System.SByte read(System.IO.Stream Stream)
-            {
-                return (System.SByte)read8(Stream);
-            }
-
-            protected override void write(System.IO.Stream Stream, System.SByte X)
-            {
-                write8(Stream, (System.Byte)X);
-            }
-        }
-
-        private static System.UInt16 read16(IO.Stream Stream)
-        {
-            System.Byte L = read8(Stream);
-            System.Byte H = read8(Stream);
-            return make(H, L);
-        }
-
-        private static void write16(IO.Stream Stream, System.UInt16 X)
-        {
-            write8(Stream, lo(X));
-            write8(Stream, hi(X));
-        }
-
-        private class io_uint16 : io_implementation<System.UInt16>
-        {
-            protected override System.UInt16 read(System.IO.Stream Stream)
-            {
-                return read16(Stream);
-            }
-
-            protected override void write(
-                System.IO.Stream Stream, System.UInt16 X)
-            {
-                write16(Stream, X);
-            }
-        }
-
-        private class io_int16 : io_implementation<System.Int16>
-        {
-            protected override System.Int16 read(System.IO.Stream Stream)
-            {
-                return (System.Int16)read16(Stream);
-            }
-
-            protected override void write(
-                System.IO.Stream Stream, System.Int16 X)
-            {
-                write16(Stream, (System.UInt16)X);
-            }
-        }
-        */
-
         private static T GetCustomAttribute<T>(
             Reflection.FieldInfo Field, bool Inherit, int I)
         {
             return (T)Field.GetCustomAttributes(typeof(T), Inherit)[I];
         }
 
-        public static object @new(System.Type T, object[] A)
+        private static object @new(System.Type T, object[] A)
         {
             object R = System.Activator.CreateInstance(T, A);
 
