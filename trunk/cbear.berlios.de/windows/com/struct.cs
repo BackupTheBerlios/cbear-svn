@@ -5,8 +5,9 @@ namespace cbear_berlios_de.windows.com
     using BitConverter = System.BitConverter;
     using InteropServices = System.Runtime.InteropServices;
 
-    public class struct_
+    public class @struct
     {
+        /*
         private static System.UInt16 make(System.Byte H, System.Byte L)
         {
             return (System.UInt16)(
@@ -53,13 +54,6 @@ namespace cbear_berlios_de.windows.com
         private static System.UInt32 lo(System.UInt64 X) 
         {
             return (System.UInt32)X;
-        }
-
-        private interface io_base
-        {
-            System.Type type();
-            object read(IO.Stream Stream);
-            void write(IO.Stream Stream, object t);
         }
 
         private abstract class io_implementation<T> : io_base
@@ -162,7 +156,7 @@ namespace cbear_berlios_de.windows.com
                 write16(Stream, (System.UInt16)X);
             }
         }
-
+        */
 
         private static T GetCustomAttribute<T>(
             Reflection.FieldInfo Field, bool Inherit, int I)
@@ -170,7 +164,7 @@ namespace cbear_berlios_de.windows.com
             return (T)Field.GetCustomAttributes(typeof(T), Inherit)[I];
         }
 
-        public static object new_(System.Type T, object[] A)
+        public static object @new(System.Type T, object[] A)
         {
             object R = System.Activator.CreateInstance(T, A);
 
@@ -182,7 +176,7 @@ namespace cbear_berlios_de.windows.com
                 System.Array RA = (System.Array)R;
                 for (int I = 0; I < RA.Length; ++I)
                 {
-                    RA.SetValue(new_(T.GetElementType(), null), I);
+                    RA.SetValue(@new(T.GetElementType(), null), I);
                 }
             }
             else
@@ -192,7 +186,7 @@ namespace cbear_berlios_de.windows.com
                     System.Type FT = F.FieldType;
                     F.SetValue(
                         R, 
-                        new_(
+                        @new(
                             FT, 
                             FT.IsArray ? 
                                 new object[] 
@@ -207,7 +201,12 @@ namespace cbear_berlios_de.windows.com
             return R;
         }
 
-        public static T new_<T>() { return (T)new_(typeof(T), null); }
+        public static object @new(System.Type T)
+        {
+            return @new(T, null);
+        }
+
+        public static T @new<T>() { return (T)@new(typeof(T)); }
 
         public static void write(IO.Stream Stream, System.Byte O)
         {
