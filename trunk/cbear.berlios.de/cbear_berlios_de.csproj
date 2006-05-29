@@ -4,11 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AE905296-652A-46FF-9D51-8318A9573B5E}</ProjectGuid>
+    <ProjectGuid>{EE063AA3-9EAF-4BDC-B02C-EF61A1651477}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>cbear_berlios_de.stream.binary</RootNamespace>
-    <AssemblyName>cbear_berlios_de.stream.binary</AssemblyName>
+    <RootNamespace>cbear_berlios_de</RootNamespace>
+    <AssemblyName>cbear_berlios_de</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,33 +27,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="byte.cs" />
-    <Compile Include="int64.cs" />
-    <Compile Include="uint64.cs" />
-    <Compile Include="uint32.cs" />
-    <Compile Include="int16.cs" />
-    <Compile Include="uint16.cs" />
-    <Compile Include="sbyte.cs" />
-    <Compile Include="dynamic_implementation.cs" />
-    <Compile Include="dynamic.cs" />
-    <Compile Include="int32.cs" />
-    <Compile Include="value_type_list.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\base\base.csproj">
-      <Project>{DC8368DE-F8A2-491A-BEEB-A9972D26AD51}</Project>
-      <Name>base</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -62,4 +35,24 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Compile Include="base\uint16.cs" />
+    <Compile Include="base\uint32.cs" />
+    <Compile Include="base\uint64.cs" />
+    <Compile Include="stream\binary\byte.cs" />
+    <Compile Include="stream\binary\dynamic.cs" />
+    <Compile Include="stream\binary\dynamic_implementation.cs" />
+    <Compile Include="stream\binary\int16.cs" />
+    <Compile Include="stream\binary\int32.cs" />
+    <Compile Include="stream\binary\int64.cs" />
+    <Compile Include="stream\binary\sbyte.cs" />
+    <Compile Include="stream\binary\uint16.cs" />
+    <Compile Include="stream\binary\uint32.cs" />
+    <Compile Include="stream\binary\uint64.cs" />
+    <Compile Include="stream\binary\value_type_list.cs" />
+    <Compile Include="windows\com\struct.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
 </Project>
