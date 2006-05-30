@@ -47,7 +47,7 @@ namespace cbear_berlios_de.windows.com
                 System.Array RA = (System.Array)R;
                 for (int I = 0; I < RA.Length; ++I)
                 {
-                    RA.SetValue(@new(T.GetElementType(), null), I);
+                    RA.SetValue(@new(T.GetElementType(), (object[])null), I);
                 }
             }
             else
@@ -72,12 +72,21 @@ namespace cbear_berlios_de.windows.com
             return R;
         }
 
-        public static object @new(System.Type T)
+        private static object @new(System.Type T, object[] A, IO.Stream Stream)
         {
-            return @new(T, null);
+            throw new System.Exception();
+        }
+
+        public static object @new(System.Type T) { return @new(T, (object[])null); }
+
+        public static object @new(System.Type T, IO.Stream Stream)
+        {
+            return @new(T, null, Stream); 
         }
 
         public static T @new<T>() { return (T)@new(typeof(T)); }
+
+        public static T @new<T>(IO.Stream Stream) { return (T)@new(typeof(T), Stream); }
 
         /*
         public static void write(IO.Stream Stream, System.Byte O)
