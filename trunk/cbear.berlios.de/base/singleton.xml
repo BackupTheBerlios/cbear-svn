@@ -39,7 +39,7 @@ Thread safe =&gt; use <em>thread::static_mutex</em> or
 			</li>
 			<li>
 				<p>
-Even two different static variables in a function body is not thread safe.
+Even two different static variables in a function body are not thread safe.
 				</p>
 			</li>
 		</ul>
