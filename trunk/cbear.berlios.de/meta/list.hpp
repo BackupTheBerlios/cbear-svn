@@ -240,15 +240,19 @@ protected:
 };
 
 template<class>
-class detail_list_cast;
+class list_cast;
 template<class Front, class PopFront>
-class detail_list_cast<list<Front, PopFront> >: 
-	public wrap<list<Front, PopFront> >
+class list_cast<list<Front, PopFront> >: public wrap<list<Front, PopFront> >
 {
 };
 
+}
+
 template<class List>
-class list_cast: public detail_list_cast<typename List::type> {};
+class list_cast: public detail::list_cast<typename List::type> {};
+
+namespace detail
+{
 
 // list.
 template<class Front, class PopFront>
@@ -262,6 +266,10 @@ public:
 	typedef list o; // VC 8.0
 
 	typedef list<> clear;
+
+	// size steps.
+	template<class B>
+	class x: public base::template push_back<B> {};
 
 	template<class N>
 	class at: public base::template at_c<N::value> {};
