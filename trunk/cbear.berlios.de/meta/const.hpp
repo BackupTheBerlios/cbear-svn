@@ -42,11 +42,11 @@ public:
 
 #define CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(O, N) \
 	private:\
-	template<class _2> class detail##N;\
-	template<value_type Value2>	class detai##N<_<value_type, Value2>: \
+	template<class _2> class detail_##N;\
+	template<value_type Value2>	class detail_##N<_<value_type, Value2> >: \
 	public _<value_type, value + Value2> {};\
 	public:\
-	template<class _2> class N: public detail##N<typename _2::type> {};\
+	template<class _2> class N: public detail_##N<typename _2::type> {};\
 	template<class _2> typename N<_2>::type operator O(_2) const\
 	{ return N<_2>::type(); }
 
@@ -77,8 +77,10 @@ CBEAR_BERLIOS_DE_META_CONST_OPERATOR(--, prior, value-1);
 
 };
 
-_<bool, true> true_() { return _<bool, true>(); }
-_<bool, false> false_() { return _<bool, false>(); }
+typedef _<bool, true> true_;
+true_ true_f() { return true_(); }
+typedef _<bool, true> false_;
+false_ false_f() { return false_(); }
 
 namespace detail
 {

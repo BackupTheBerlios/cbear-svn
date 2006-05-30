@@ -25,6 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/meta/const.hpp>
 #include <cbear.berlios.de/meta/wrap.hpp>
+#include <cstddef>
 
 namespace cbear_berlios_de
 {
@@ -77,13 +78,13 @@ public:
 	template<class X>
 	class insert_c<0, X>: public list<X, type> {};
 
-	// erase_c
-	template<std::size_t, std::size_t>
-	class erase_c;
-	template<>
-	class erase_c<0, 0>: public type {};
-
 protected:
+
+	// erase_c
+	template<std::size_t, std::size_t, class EmptyList = type>
+	class erase_c;
+	template<class EmptyList>
+	class erase_c<0, 0, EmptyList>: public EmptyList {};
 
 	template<class List>
 	class push_front_list: public List {};
@@ -107,8 +108,8 @@ public:
 	typedef const_::_<std::size_t, 1> size;
 	typedef wrap<Front> front;
 	typedef wrap<Front> back;
-	typedef empty_list pop_front;
-	typedef empty_list pop_back;
+	typedef list<> pop_front;
+	typedef list<> pop_back;
 
 	template<class Front1>
 	class push_front: public list<Front1, type> {};
@@ -124,20 +125,20 @@ public:
 	template<std::size_t, class>
 	class insert_c;
 	template<class X>
-	class insert_c<0>: public list<X, type> {}
+	class insert_c<0, X>: public list<X, type> {};
 	template<class X>
-	class insert_c<1>: public list<Front, list<X> > {}
-
-	template<std::size_t, std::size_t>
-	class erase_c;
-	template<>
-	class erase_c<0, 0>: public type {};
-	template<>
-	class erase_c<0, 1>: public list<> {};
-	template<>
-	class erase_c<1, 1>: public type {};
+	class insert_c<1, X>: public list<Front, list<X> > {};
 
 protected:
+
+	template<std::size_t, std::size_t, class EmptyList = list<> >
+	class erase_c;
+	template<class EmptyList>
+	class erase_c<0, 0, EmptyList>: public type {};
+	template<class EmptyList>
+	class erase_c<0, 1, EmptyList>: public EmptyList {};
+	template<class EmptyList>
+	class erase_c<1, 1, EmptyList>: public type {};
 
 	// List::size steps.
 	template<class List>
@@ -196,6 +197,8 @@ public:
 	template<class X>
 	class insert_c<0, X>: public list<X, type> {};
 
+protected:
+
 	// N2 steps.
 	template<std::size_t N1, std::size_t N2>
 	class erase_c: 
@@ -210,8 +213,6 @@ public:
 	class erase_c<0, 0>: public type {};
 	template<>
 	class erase_c<0, 1>: public PopFront {};
-
-protected:
 
 	// L::size steps.
 	template<class List>
