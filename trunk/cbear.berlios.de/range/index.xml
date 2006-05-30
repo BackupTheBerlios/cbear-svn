@@ -32,13 +32,15 @@ Based on <a href="http://www.boost.org/libs/range/index.html">Boost, Range Libra
 Don't use it with arrays of <em>char</em> or 
 <em>wchar_t</em> until the <a href="https://sourceforge.net/tracker/?func=detail&amp;aid=1272315&amp;group_id=7586&amp;atid=107586">Boost.Range Bug</a> is fixed.
 	</p>
-	<section name="Lexicographical Compare">
+	<section name="Lexicographical Compare and Less">
 		
 		<p>
-Header <a href="lexicographical_compare.hpp"/>.
+Header <a href="lexicographical::compare.hpp"/>.
 		</p>
 <pre>template&lt;class Range1, class Range2&gt; 
-bool lexicographical_compare(const Range1 &amp;A, const Range2 &amp;B);</pre>
+int lexicographical::compare(const Range1 &amp;A, const Range2 &amp;B);</pre>
+<pre>template&lt;class Range1, class Range2&gt; 
+bool lexicographical::less(const Range1 &amp;A, const Range2 &amp;B);</pre>
 	</section>
 	<section name="Files">
 		
