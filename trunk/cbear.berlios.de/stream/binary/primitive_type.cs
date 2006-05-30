@@ -22,9 +22,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 namespace cbear_berlios_de.stream.binary
 {
-    class value_type_list
+    using IO = System.IO;
+
+    class primitive_type
     {
-        public readonly static dynamic[] dynamic =
+        public readonly static dynamic[] list =
         {
             new @byte(),
             new @sbyte(),
@@ -35,6 +37,20 @@ namespace cbear_berlios_de.stream.binary
             new uint64(),
             new int64(),
         };
+
+        public static object read(System.Type T, IO.Stream Stream)
+        {
+            foreach (
+                stream.binary.dynamic D in
+                stream.binary.primitive_type.list)
+            {
+                if (D.type() == T)
+                {
+                    return D.read(Stream);
+                }
+            }
+            throw new System.Exception("Unknown Primitive Type");
+        }
     }
 }
 

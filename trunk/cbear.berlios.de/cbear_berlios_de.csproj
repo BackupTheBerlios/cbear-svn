@@ -49,7 +49,7 @@
     <Compile Include="stream\binary\uint16.cs" />
     <Compile Include="stream\binary\uint32.cs" />
     <Compile Include="stream\binary\uint64.cs" />
-    <Compile Include="stream\binary\value_type_list.cs" />
+    <Compile Include="stream\binary\primitive_type.cs" />
     <Compile Include="windows\com\struct.cs" />
   </ItemGroup>
   <ItemGroup>
