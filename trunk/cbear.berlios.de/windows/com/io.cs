@@ -29,13 +29,13 @@ namespace cbear_berlios_de.windows.com
 
     public class io
     {
-        private static T GetCustomAttribute<T>(
+        private static T get_custom_attribute<T>(
             Reflection.FieldInfo Field, bool Inherit, int I)
         {
             return (T)Field.GetCustomAttributes(typeof(T), Inherit)[I];
         }
 
-        private static object @new(System.Type T, object[] A, IO.Stream Stream)
+        private static object read(IO.Stream Stream, System.Type T, object[] A)
         {
             if (T.IsPrimitive)
             {
@@ -50,7 +50,7 @@ namespace cbear_berlios_de.windows.com
                 for (int I = 0; I < RA.Length; ++I)
                 {
                     RA.SetValue(
-                        @new(T.GetElementType(), (object[])null, Stream), I);
+                        read(Stream, T.GetElementType(), (object[])null), I);
                 }
             }
             else
@@ -60,17 +60,17 @@ namespace cbear_berlios_de.windows.com
                     System.Type FT = F.FieldType;
                     F.SetValue(
                         R,
-                        @new(
+                        read(
+                            Stream,
                             FT,
                             FT.IsArray ?
                                 new object[] 
                                 {
-                                    GetCustomAttribute<
+                                    get_custom_attribute<
                                         InteropServices.MarshalAsAttribute>(
                                         F, false, 0).SizeConst
                                 } :
-                                null,
-                            Stream));
+                                null));
                 }
             }
             return R;
@@ -78,19 +78,19 @@ namespace cbear_berlios_de.windows.com
 
         public static object @new(System.Type T) 
         { 
-            return @new(T, null, null);
-        }
-
-        public static object read(System.Type T, IO.Stream Stream)
-        {
-            return @new(T, null, Stream); 
+            return read(null, T, null);
         }
 
         public static T @new<T>() { return (T)@new(typeof(T)); }
 
+        public static object read(IO.Stream Stream, System.Type T)
+        {
+            return read(Stream, T, null);
+        }
+
         public static T read<T>(IO.Stream Stream)
-        { 
-            return (T)read(typeof(T), Stream); 
+        {
+            return (T)read(Stream, typeof(T));
         }
     }
 }
