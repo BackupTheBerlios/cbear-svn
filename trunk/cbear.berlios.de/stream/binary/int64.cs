@@ -1,3 +1,4 @@
+#region Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 /*
 The MIT License
 
@@ -20,6 +21,8 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+#endregion
+
 namespace cbear_berlios_de.stream.binary
 {
     using IO = System.IO;

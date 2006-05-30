@@ -1,3 +1,4 @@
+#region Copyright (c) 2005 C Bear (http://cbear.berlios.de)
 /*
 The MIT License
 
@@ -20,6 +21,8 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+#endregion
+
 namespace cbear_berlios_de.windows.com
 {
     using IO = System.IO;
@@ -40,21 +43,23 @@ namespace cbear_berlios_de.windows.com
             if (T.IsPrimitive)
             {
                 if (Stream == null) return System.Activator.CreateInstance(T);
-                return stream.binary.primitive_type.read(T, Stream);
+                return stream.binary.primitive_type.read(Stream, T);
             }
 
-            object R = System.Activator.CreateInstance(T, A);
             if (T.IsArray)
             {
-                System.Array RA = (System.Array)R;
-                for (int I = 0; I < RA.Length; ++I)
+                System.Array R = 
+                    (System.Array)System.Activator.CreateInstance(T, A);
+                for (int I = 0; I < R.Length; ++I)
                 {
-                    RA.SetValue(
+                    R.SetValue(
                         read(Stream, T.GetElementType(), (object[])null), I);
                 }
+                return R;
             }
-            else
+
             {
+                object R = System.Activator.CreateInstance(T);
                 foreach (Reflection.FieldInfo F in T.GetFields())
                 {
                     System.Type FT = F.FieldType;
@@ -72,8 +77,8 @@ namespace cbear_berlios_de.windows.com
                                 } :
                                 null));
                 }
+                return R;
             }
-            return R;
         }
 
         public static object @new(System.Type T) 
@@ -91,6 +96,35 @@ namespace cbear_berlios_de.windows.com
         public static T read<T>(IO.Stream Stream)
         {
             return (T)read(Stream, typeof(T));
+        }
+
+        public static void write(IO.Stream Stream, object Value)
+        {
+            System.Type T = Value.GetType();
+
+            if (T.IsPrimitive)
+            {
+                stream.binary.primitive_type.write(Stream, Value);
+                return;
+            }
+
+            if (T.IsArray)
+            {
+                System.Array R = (System.Array)Value;
+                foreach (object O in R)
+                {
+                    write(Stream, O);
+                }
+                return;
+            }
+
+            foreach (Reflection.FieldInfo F in T.GetFields())
+                write(Stream, F.GetValue(Value));
+        }
+
+        public static void write<T>(IO.Stream Stream, T Value)
+        {
+            write(Stream, (object)Value);
         }
     }
 }

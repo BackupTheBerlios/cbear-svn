@@ -40,6 +40,7 @@
     <Compile Include="base\uint32.cs" />
     <Compile Include="base\uint64.cs" />
     <Compile Include="stream\binary\byte.cs" />
+    <Compile Include="stream\binary\single.cs" />
     <Compile Include="stream\binary\dynamic.cs" />
     <Compile Include="stream\binary\dynamic_implementation.cs" />
     <Compile Include="stream\binary\int16.cs" />
