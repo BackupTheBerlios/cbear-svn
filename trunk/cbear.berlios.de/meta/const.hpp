@@ -30,15 +30,6 @@ namespace meta
 namespace const_
 {
 
-public:
-
-	template<class _2>
-	class plus: public detail_plus<typename _2::type> {};
-
-	template<class _2>
-	typename plus<_2>::type operator+(_2) const { return plus<_2>::type(); }
-	
-
 template<class ValueType, ValueType Value>
 class _
 {
@@ -49,111 +40,41 @@ public:
 
 	value_type operator()() const { return value; }
 
-// +, plus
+#define CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(O, N) \
+	private:\
+	template<class _2> class detail##N;\
+	template<value_type Value2>	class detai##N<_<value_type, Value2>: \
+	public _<value_type, value + Value2> {};\
+	public:\
+	template<class _2> class N: public detail##N<typename _2::type> {};\
+	template<class _2> typename N<_2>::type operator O(_2) const\
+	{ return N<_2>::type(); }
 
-private:
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(+, plus2)
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(-, minus2)
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(*, mul)
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(/, div)
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(%, mod)
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(|, or)
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(&, and)
 
-	template<class _2>
-	class detail_plus;
+#undef CBEAR_BERLIOS_DE_META_CONST_OPERATOR2
 
-	template<value_type Value2>
-	class detail_plus<_<value_type, Value2>: 
-		public _<value_type, value + Value2> 
-	{
-	};
+#define CBEAR_BERLIOS_DE_META_CONST_OPERATOR(O, N, V)\
+	private:\
+	static const value_type N##_value = V;\
+	public:\
+	typedef _<value_type, N##_value> N;\
+	N operator O() const { return N(); }
 
-public:
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR(!, not, !value);
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR(+, plus, +value);
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR(-, minus, -value);
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR(++, next, value+1);
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR(--, prior, value-1);
 
-	template<class _2>
-	class plus: public detail_plus<typename _2::type> {};
+#undef CBEAR_BERLIOS_DE_META_CONST_OPERATOR
 
-	template<class _2>
-	typename plus<_2>::type operator+(_2) const { return plus<_2>::type(); }
-
-// -, minus
-
-private:
-
-	template<class _2>
-	class detail_minus;
-
-	template<value_type Value2>
-	class detail_minus<_<value_type, Value2>: 
-		public _<value_type, value + Value2> 
-	{
-	};
-
-public:
-
-	template<class _2>
-	class minus: public detail_minus<typename _2::type> {};
-
-	template<class _2>
-	typename minus<_2>::type operator-(_2) const
-	{
-		return minus<_2>::type();
-	}
-
-// *, mul
-
-private:
-
-	template<class _2>
-	class detail_mul;
-
-	template<value_type Value>
-	class detail_mul<_<value_type, Value2>:
-		public _<value_type, value + Value2>
-	{
-	}
-
-public:
-
-	template<class _2>
-	class mul: public detail_mul<typename _2::type> {};
-
-	template<class _2>
-	typename mul<_2>::type operator*(_2) const
-	{
-		return mul<_2>::type();
-	}
-
-// /, div
-
-	template<value_type Value2>
-	_<value_type, value / Value2> operator/(_<value_type, Value2>) const
-	{
-		return _<value_type, value / Value2>();
-	}
-
-	template<value_type Value2>
-	_<value_type, value % Value2> operator%(_<value_type, Value2>) const
-	{
-		return _<value_type, value % Value2>();
-	}
-
-	template<value_type Value2>
-	_<value_type, value | Value2> operator|(_<value_type, Value2>) const
-	{
-		return _<value_type, value | Value2>();
-	}
-
-	template<value_type Value2>
-	_<value_type, value | Value2> operator&(_<value_type, Value2>) const
-	{
-		return _<value_type, value & Value2>();
-	}
-
-private:
-	static const ValueType not = !Value;
-	static const ValueType plus = +Value;
-	static const ValueType minus = -Value;
-public:
-	_<value_type, not> operator!() const { return _<value_type, not>(); }
-	_<value_type, plus> operator+() const { return _<value_type, plus>(); }
-	_<value_type, minus> operator-() const { return _<value_type, minus>(); }
-	_<value_type, value+1> operator++() const { return _<value_type, value+1>(); }
-	_<value_type, value-1> operator--() const { return _<value_type, value-1>(); }
 };
 
 _<bool, true> true_() { return _<bool, true>(); }
