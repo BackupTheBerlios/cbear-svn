@@ -48,18 +48,115 @@ class none;
 template<class Front = none, class PopFront = none>
 class list;
 
-template<class>
-class detail_list_cast;
+// list base.
 template<class Front, class PopFront>
-class detail_list_cast<list<Front, PopFront> >: 
-	public wrap<list<Front, PopFront> >
+class list_base;
+
+// empty list base.
+template<>
+class list_base<none, none>
 {
+public:
+	typedef list<> type;
+	typedef const_::true_ empty;
+	typedef const_::_<std::size_t, 0> size;
+	// no front
+	// no back
+	// no pop_front
+	// no pop_back
+
+	template<class Front1>
+	class push_front: public list<Front1, type> {};
+
+	template<class Back1>
+	class push_back: public list<Back1, type> {};
+
+	// no at_c
+
+	template<std::size_t, class>
+	class insert_c;
+	template<class X>
+	class insert_c<0, X>: public list<X, type> {};
+
+protected:
+
+	// erase_c
+	template<std::size_t, std::size_t, class EmptyList = type>
+	class erase_c;
+	template<class EmptyList>
+	class erase_c<0, 0, EmptyList>: public EmptyList {};
+
+	template<class List>
+	class push_front_list: public List {};
+
+	template<class List>
+	class push_back_list: public List {};
+
+	template<std::size_t, class>
+	class insert_list_c;
+	template<class List>
+	class insert_list_c<0, List>: public List {};
 };
 
-template<class List>
-class list_cast: public detail_list_cast<typename List::type> {};
+// list base of one item.
+template<class Front>
+class list_base<Front, list<> >
+{
+public:
+	typedef list<Front, list<> > type;
+	typedef const_::false_ empty;
+	typedef const_::_<std::size_t, 1> size;
+	typedef wrap<Front> front;
+	typedef wrap<Front> back;
+	typedef list<> pop_front;
+	typedef list<> pop_back;
 
-// list base of two or more items.
+	template<class Front1>
+	class push_front: public list<Front1, type> {};
+
+	template<class Back1>
+	class push_back: public list<Front, list<Back1> > {};
+
+	template<std::size_t>
+	class at_c;
+	template<>
+	class at_c<0>: public wrap<Front> {};
+
+	template<std::size_t, class>
+	class insert_c;
+	template<class X>
+	class insert_c<0, X>: public list<X, type> {};
+	template<class X>
+	class insert_c<1, X>: public list<Front, list<X> > {};
+
+protected:
+
+	template<std::size_t, std::size_t, class EmptyList = list<> >
+	class erase_c;
+	template<class EmptyList>
+	class erase_c<0, 0, EmptyList>: public type {};
+	template<class EmptyList>
+	class erase_c<0, 1, EmptyList>: public EmptyList {};
+	template<class EmptyList>
+	class erase_c<1, 1, EmptyList>: public type {};
+
+	// List::size steps.
+	template<class List>
+	class push_front_list: public List::template push_back<Front>::type {};
+
+	template<class List>
+	class push_back_list: public list<Front, List> {};
+
+	template<std::size_t, class>
+	class insert_list_c;
+	// List::size steps.
+	template<class List>
+	class insert_list_c<0, List>: public List::template push_back<Front>::type {};
+	template<class List>
+	class insert_list_c<1, List>: public list<Front, List> {};
+};
+
+// list of two or more items.
 template<class Front, class PopFront>
 class list_base
 {
@@ -100,7 +197,8 @@ public:
 	template<class X>
 	class insert_c<0, X>: public list<X, type> {};
 
-<<<<<<< .mine
+protected:
+
 	// N2 steps.
 	template<std::size_t N1, std::size_t N2>
 	class erase_c: 
@@ -111,15 +209,8 @@ public:
 	// N2 steps.
 	template<std::size_t N2>
 	class erase_c<0, N2>: public PopFront::template erase_c<0, N2 - 1>::type {};
-=======
-protected:
-
-	// erase_c
-	template<std::size_t, std::size_t, class EmptyList = type>
-	class erase_c;
->>>>>>> .r361
-	template<class EmptyList>
-	class erase_c<0, 0, EmptyList>: public EmptyList {};
+	template<>
+	class erase_c<0, 0>: public type {};
 	template<>
 	class erase_c<0, 1>: public PopFront {};
 
@@ -148,134 +239,6 @@ protected:
 	};
 };
 
-// list base of one item.
-template<class Front>
-class list_base<Front, list<> >
-{
-public:
-	typedef list<Front, list<> > type;
-	typedef const_::false_ empty;
-	typedef const_::_<std::size_t, 1> size;
-	typedef wrap<Front> front;
-	typedef wrap<Front> back;
-	typedef list<> pop_front;
-	typedef list<> pop_back;
-
-	template<class Front1>
-	class push_front: public list<Front1, type> {};
-
-	template<class Back1>
-	class push_back: public list<Front, list<Back1> > {};
-
-	template<std::size_t>
-	class at_c;
-	template<>
-	class at_c<0>: public wrap<Front> {};
-
-	template<std::size_t, class>
-	class insert_c;
-	template<class X>
-	class insert_c<0, X>: public list<X, type> {};
-	template<class X>
-	class insert_c<1, X>: public list<Front, list<X> > {};
-
-protected:
-
-	template<std::size_t, std::size_t, class EmptyList = list<> >
-	class erase_c;
-<<<<<<< .mine
-	template<>
-	class erase_c<0, 0>: public type {};
-	template<>
-	class erase_c<0, 1>: public type {};
-	template<>
-	class erase_c<1, 1>: public type {};
-=======
-	template<class EmptyList>
-	class erase_c<0, 0, EmptyList>: public type {};
-	template<class EmptyList>
-	class erase_c<0, 1, EmptyList>: public EmptyList {};
-	template<class EmptyList>
-	class erase_c<1, 1, EmptyList>: public type {};
->>>>>>> .r361
-
-	// List::size steps.
-	template<class List>
-	class push_front_list: public List::template push_back<Front>::type {};
-
-	template<class List>
-	class push_back_list: public list<Front, List> {};
-
-	template<std::size_t, class>
-	class insert_list_c;
-	// List::size steps.
-	template<class List>
-	class insert_list_c<0, List>: public List::template push_back<Front>::type {};
-	template<class List>
-	class insert_list_c<1, List>: public list<Front, List> {};
-};
-
-// empty list base.
-template<>
-class list_base<none, none>
-{
-public:
-	typedef list<> type;
-	typedef const_::true_ empty;
-	typedef const_::_<std::size_t, 0> size;
-	// no front
-	// no back
-	// no pop_front
-	// no pop_back
-
-	template<class Front1>
-	class push_front: public list<Front1, type> {};
-
-	template<class Back1>
-	class push_back: public list<Back1, type> {};
-
-	// no at_c
-
-	template<std::size_t, class>
-	class insert_c;
-	template<class X>
-	class insert_c<0, X>: public list<X, type> {};
-
-<<<<<<< .mine
-	// erase_c
-	template<std::size_t, std::size_t>
-	class erase_c;
-=======
-protected:
-
-	// N2 steps.
-	template<std::size_t N1, std::size_t N2>
-	class erase_c: 
-		public list<
-			Front, typename PopFront::template erase_c<N1 - 1, N2 - 1>::type>
-	{
-	};
-	// N2 steps.
-	template<std::size_t N2>
-	class erase_c<0, N2>: public PopFront::template erase_c<0, N2 - 1>::type {};
->>>>>>> .r361
-	template<>
-	class erase_c<0, 0, T>: public type {};
-
-	template<class List>
-	class push_front_list: public List {};
-
-	template<class List>
-	class push_back_list: public List {};
-
-	template<std::size_t, class>
-	class insert_list_c;
-	template<class List>
-	class insert_list_c<0, List>: public List {};
-};
-
-<<<<<<< .mine
-=======
 template<class>
 class list_cast;
 template<class Front, class PopFront>
@@ -288,7 +251,6 @@ class list_cast<list<Front, PopFront> >: public wrap<list<Front, PopFront> >
 template<class List>
 class list_cast: public detail::list_cast<typename List::type> {};
 
->>>>>>> .r361
 namespace detail
 {
 
