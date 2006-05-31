@@ -77,9 +77,18 @@ CBEAR_BERLIOS_DE_META_CONST_OPERATOR(--, prior, value-1);
 
 };
 
+<<<<<<< .mine
+typedef _<bool, true> true_;
+=======
 typedef _<bool, true> true_;
 true_ true_f() { return true_(); }
 typedef _<bool, true> false_;
+false_ false_f() { return false_(); }
+>>>>>>> .r361
+
+true_ true_f() { return true_(); }
+
+typedef _<bool, false> false_;
 false_ false_f() { return false_(); }
 
 namespace detail
