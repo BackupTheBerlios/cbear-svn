@@ -42,6 +42,8 @@ class tuple
 {
 public:
 
+	typedef base::tuple<List> type;
+
 	// front
 	typedef typename List::front::type front_t;
 	front_t &front() { return this->Front; }
@@ -72,7 +74,7 @@ public:
 	template<class Front1>
 	typename push_front_t<Front1>::type push_front(const Front1 &Value) const
 	{
-		return push_front_t<Front1>::type(Value, *this);
+		return push_front_t<Front1>::type(Value, this->This());
 	}
 
 	// push_back
@@ -118,10 +120,11 @@ public:
 		public base::tuple<typename List::template insert_c<N, Value>::type>
 	{
 	public:
-		typedef base::tuple<typename List::template insert_c<N, Value>::type> type;
-		static type make(const tuple &This, const Value &V)
+		typedef base::tuple<typename List::template insert_c<N, Value>::type> 
+			result_t;
+		static result_t make(const type &This, const Value &V)
 		{
-			return type(
+			return result_t(
 				This.Front, This.PopFront.template insert_c<N - 1, Value>(V));
 		}
 	};
@@ -130,12 +133,53 @@ public:
 		public base::tuple<typename List::template insert_c<0, Value>::type>
 	{
 	public:
-		typedef base::tuple<typename List::template insert_c<0, Value>::type> type;
-		static type make(const tuple &This, const Value &V)
+		typedef base::tuple<typename List::template insert_c<0, Value>::type> 
+			result_t;
+		static result_t make(const type &This, const Value &V)
 		{
-			return type(V, This);
+			return result_t(V, This);
 		}
 	};
+
+protected:
+
+	// erase_c
+	template<std::size_t N1, std::size_t N2>
+	class erase_c_t: 
+		public base::tuple<typename List::template erase_c<N1, N2>::type>
+	{
+	public:
+		typedef base::tuple<typename List::template erase_c<N1, N2>::type> result_t;
+		static result_t make(const type &This)
+		{
+			return result_t(
+				This.Front, This.PopFront.template erase_c<N1 - 1, N2 - 1>());
+		}
+	};
+	template<std::size_t N2>
+	class erase_c_t<0, N2>:
+		public base::tuple<typename List::template erase_c<0, N2>::type>
+	{
+	public:
+		typedef base::tuple<typename List::template erase_c<0, N2>::type> result_t;
+		static result_t make(const type &This)
+		{
+			return This.PopFront.template erase_c<0, N2 - 1>();
+		}
+	};
+	template<>
+	class erase_c_t<0, 0>:
+		public base::tuple<typename List::template erase_c<0, 0>::type>
+	{
+	public:
+		typedef base::tuple<typename List::template erase_c<0, 0>::type> result_t;
+		static result_t make(const type &This)
+		{
+			return This;
+		}
+	};
+
+public:
 
 	// constructor
 	tuple(
@@ -148,6 +192,8 @@ public:
 private:
 	front_t Front;
 	pop_front_t PopFront;
+	type &This() { return *static_cast<type*>(this); }
+	const type &This() const { return *static_cast<const type*>(this); }
 };
 
 // one item tuple.
@@ -155,6 +201,8 @@ template<class List>
 class tuple<List, 1>
 {
 public:
+
+	typedef base::tuple<List> type;
 
 	// front
 	typedef typename List::front::type front_t;
@@ -183,7 +231,7 @@ public:
 	template<class Front1>
 	typename push_front_t<Front1>::type push_front(const Front1 &Value) const
 	{
-		return push_front_t<Front1>::type(Value, *this);
+		return push_front_t<Front1>::type(Value, this->This());
 	}
 
 	// push_back
@@ -213,19 +261,17 @@ public:
 
 	// insert_c
 	template<std::size_t N, class Value>
-	class insert_c_t: 
-		public base::tuple<typename List::template insert_c<N, Value>::type>
-	{
-	};
+	class insert_c_t;
 	template<class Value>
 	class insert_c_t<0, Value>: 
 		public base::tuple<typename List::template insert_c<0, Value>::type>
 	{
 	public:
-		typedef base::tuple<typename List::template insert_c<0, Value>::type> type;
-		static type make(const tuple &This, const Value &V) 
+		typedef base::tuple<typename List::template insert_c<0, Value>::type> 
+			result_t;
+		static result_t make(const type &This, const Value &V) 
 		{
-			return type(V, This);
+			return result_t(V, This);
 		}
 	};
 	template<class Value>
@@ -233,10 +279,11 @@ public:
 		public base::tuple<typename List::template insert_c<1, Value>::type>
 	{
 	public:
-		typedef base::tuple<typename List::template insert_c<1, Value>::type> type;
-		static type make(const tuple &This, const Value &V)
+		typedef base::tuple<typename List::template insert_c<1, Value>::type> 
+			result_t;
+		static result_t make(const type &This, const Value &V)
 		{
-			return type(This.Front, pop_front_t().template insert_c<1>(V));
+			return result_t(This.Front, pop_front_t().template insert_c<1>(V));
 		}
 	};
 
@@ -244,27 +291,40 @@ protected:
 
 	// erase_c
 	template<std::size_t N1, std::size_t N2>
-	class erase_c_t: 
-		public base::tuple<typename List::template erase_c<N1, N2>::type>
+	class erase_c_t;
+	template<>
+	class erase_c_t<0, 0>:
+		public base::tuple<typename List::template erase_c<0, 0>::type>
 	{
+	public:
+		typedef base::tuple<typename List::template erase_c<0, 0>::type> result_t;
+		static result_t make(const type &This)
+		{
+			return this->This();
+		}
 	};
-	template<std::size_t N1, std::size_t N2>
-	typename erase_c_t<N1, N2>::type erase_c() const;
 	template<>
-	typename erase_c_t<0, 0>::type erase_c() const 
-	{ 
-		return *this; 
-	}
+	class erase_c_t<0, 1>:
+		public base::tuple<typename List::template erase_c<0, 1>::type>
+	{
+	public:
+		typedef base::tuple<typename List::template erase_c<0, 1>::type> result_t;
+		static result_t make(const type &)
+		{
+			return result_t();
+		}
+	};
 	template<>
-	typename erase_c_t<0, 1>::type erase_c() const 
-	{ 
-		return erase_c_t<0, 1>::type(); 
-	}
-	template<>
-	typename erase_c_t<1, 1>::type erase_c() const 
-	{ 
-		return *this; 
-	}
+	class erase_c_t<1, 1>:
+		public base::tuple<typename List::template erase_c<1, 1>::type>
+	{
+	public:
+		typedef base::tuple<typename List::template erase_c<1, 1>::type> result_t;
+		static result_t make(const type &This)
+		{
+			return this->This();
+		}
+	};
 
 public:
 
@@ -278,6 +338,8 @@ public:
 
 private:
 	front_t Front;
+	type &This() { return *static_cast<type*>(this); }
+	const type &This() const { return *static_cast<const type*>(this); }
 };
 
 // empty tuple.
@@ -319,17 +381,17 @@ public:
 
 	// insert_c
 	template<std::size_t N, class Value>
-	class insert_c_t: 
-		public base::tuple<typename meta::list::insert_c<N, Value>::type>
-	{
-	};
+	class insert_c_t;
 	template<class Value>
 	class insert_c_t<0, Value>: 
 		public base::tuple<typename meta::list::insert_c<0, Value>::type>
 	{
 	public:
-		typedef base::tuple<typename meta::list::insert_c<0, Value>::type> type;
-		static type make(const tuple &, const Value &V) { return type(V); }
+		typedef base::tuple<typename meta::list::insert_c<0, Value>::type> result_t;
+		static result_t make(const meta::list &, const Value &V) 
+		{ 
+			return result_t(V); 
+		}
 	};
 
 protected:
@@ -385,7 +447,7 @@ public:
 		return this->base_t::at_c<N::value>(); 
 	}
 
-	// insert
+	// insert, insert_c
 	template<std::size_t N, class Value>
 	class insert_c_t: public base_t::template insert_c_t<N, Value>::type {};
 	template<std::size_t N, class Value>
@@ -399,6 +461,27 @@ public:
 	typename insert_t<N, Value>::type insert(N, const Value &V) const
 	{
 		return this->insert_c<N::value, Value>(V);
+	}
+
+	// erase, erase_c
+	template<std::size_t N1, std::size_t N2 = N1 + 1>
+	class erase_c_t: public base_t::template erase_c_t<N1, N2>::type {};
+	template<std::size_t N1, std::size_t N2 = N1 + 1>
+	typename erase_c_t<N1, N2>::type erase_c() const
+	{
+		return erase_c_t<N1, N2>::make(*this);
+	}
+	template<class N1, class N2 = typename N1::next>
+	class erase_t: public erase_c_t<N1::value, N2::value> {};
+	template<class N1, class N2>
+	typename erase_t<N1, N2>::type erase(N1, N2) const
+	{
+		return erase_t<N1, N2>::make(*this);
+	}
+	template<class N1>
+	typename erase_t<N1>::type erase(N1) const
+	{
+		return erase_t<N1>::make(*this);
 	}
 };
 
