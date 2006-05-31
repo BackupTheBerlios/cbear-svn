@@ -36,7 +36,8 @@ class tuple;
 namespace detail
 {
 
-template<class List>
+// size steps.
+template<class List, std::size_t Size = List::size::value>
 class tuple
 {
 public:
@@ -48,8 +49,11 @@ public:
 
 	typedef typename List::back::type back_type;	
 
+	back_type &back() { return this->PopFront.back(); }
+	const back_type &back() const { return this->PopFront.back(); }
+
 	// size steps.
-	typedef typename base::tuple<List::pop_front> pop_front_type;
+	typedef typename base::tuple<typename List::pop_front> pop_front_type;
 
 	tuple(
 		const front_type &Front = front_type(),
@@ -62,10 +66,51 @@ private:
 	pop_front_type PopFront;
 };
 
-template<>
-class tuple<meta::list> 
+template<class List>
+class tuple<List, 1>
 {
 public:
+
+	typedef typename List::front::type front_type;
+
+	front_type &front() { return this->Front; }
+	const front_type &front() const { return this->Front; }
+
+	typedef typename List::back::type back_type;
+
+	back_type &back() { return this->Front; }
+	const back_type &back() const { return this->Front; }
+
+	typedef typename List::pop_front pop_front_type;
+
+	template<class Back1>
+	class push_back_type: 
+		public base::tuple<typename List::template push_back<Back1>::type>
+	{
+	};
+
+	template<class Back1>
+	typename push_back_type<Back1>::type push_back(const Back1 &Value) const
+	{
+		return push_back_type<Back1>::type(this->Front, Value);
+	}
+
+	tuple(const front_type &Front = front_type()): Front(Front) {}
+
+private:
+	front_type Front;
+};
+
+// empty tuple.
+template<>
+class tuple<meta::list, 0> 
+{
+public:
+
+	// no front
+	// no back
+	// no pop_front
+	// no pop_back
 
 	template<class Back1>
 	class push_back_type: 
@@ -80,15 +125,20 @@ public:
 	}
 
 	template<class Back1>
-	typename push_back_type<Back1>::type operator,(const Back1 &Value) const
+	class x: public base::tuple<typename meta::list::x<Back1>::type>
 	{
-		return push_back_type<Back1>::type(Value);
+	};
+
+	template<class Back1>
+	typename x<Back1>::type operator,(const Back1 &Value) const
+	{
+		return x<Back1>::type(Value);
 	}
 };
 
 }
 
-template<class List>
+template<class List = meta::list>
 class tuple: public detail::tuple<typename meta::list_cast<List>::type>
 {
 public:
