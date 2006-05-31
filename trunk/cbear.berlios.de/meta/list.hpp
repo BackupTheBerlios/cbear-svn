@@ -32,6 +32,9 @@ namespace cbear_berlios_de
 namespace meta
 {
 
+//
+// not implemented:
+//
 // boost (http://boost.org)
 // 
 // begin<v>::type 	
@@ -39,6 +42,7 @@ namespace meta
 //
 // end<v>::type 	
 // An iterator pointing to the end of v; see Random Access Sequence.
+//
 
 namespace detail
 {
