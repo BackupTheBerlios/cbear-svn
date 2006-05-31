@@ -326,6 +326,32 @@ protected:
 		}
 	};
 
+	// push_front_tuple
+	template<class Tuple>
+	class push_front_tuple_t: 
+		public base::tuple<
+			typename List::template push_front_list<typename Tuple::list_t>::type>
+	{
+	};
+	template<class Tuple>
+	typename push_front_tuple_t<Tuple>::type push_front_tuple(const Tuple &V)
+	{
+		return V.push_back(this->Front);
+	}
+
+	// push_back_tuple
+	template<class Tuple>
+	class push_back_tuple_t:
+		public base::tuple<
+			typename List::template push_back_list<typename Tuple::list_t>::type>
+	{
+	};
+	template<class Tuple>
+	typename push_back_tuple_t<Tuple>::type push_back_tuple(const Tuple &V)
+	{
+		return push_back_tuple_t<Tuple>::type(this->Front, V);
+	}
+
 public:
 
 	// constructor
@@ -394,9 +420,23 @@ public:
 		}
 	};
 
-protected:
+public:
 
 	// no erase_c
+
+protected:
+
+	// push_front_tuple
+	template<class Tuple>
+	class push_front_tuple_t: public Tuple {};
+	template<class Tuple>
+	static Tuple push_front_tuple(const Tuple &V) { return V; }
+
+	// push_back_tuple
+	template<class Tuple>
+	class push_back_tuple_t: public Tuple {};
+	template<class Tuple>
+	static Tuple push_back_tuple(const Tuple &V) { return V; }
 };
 
 }
