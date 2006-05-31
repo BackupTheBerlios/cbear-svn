@@ -84,7 +84,7 @@ public:
 
 protected:
 
-	// erase_c
+	// erase_c, EmptyList is required to avoid undefined type.
 	template<std::size_t, std::size_t, class EmptyList = type>
 	class erase_c;
 	template<class EmptyList>
@@ -135,6 +135,7 @@ public:
 
 protected:
 
+	// erase_c, EmptyList is required to avoid undefined type.
 	template<std::size_t, std::size_t, class EmptyList = list<> >
 	class erase_c;
 	template<class EmptyList>
