@@ -31,6 +31,6 @@ Namespace <em>cbear_berlios_de::windows::com</em>.
 	<p>
 File <a href="dynamic_implementation.hpp"/>. Implementation info should be 
 based on <em>intrusive::map</em>. See also 
-<a href="dynamic_implementation.svg"/>.
+<a href="implementation.svg"/>.
 	</p>
 </section>
