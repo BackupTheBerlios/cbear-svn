@@ -45,20 +45,24 @@ public:
 	typedef base::tuple<List> type;
 
 	// front
+public:
 	typedef typename List::front::type front_t;
 	front_t &front() { return this->Front; }
 	const front_t &front() const { return this->Front; }
 
 	// back
+public:
 	typedef typename List::back::type back_t;	
 	back_t &back() { return this->PopFront.back(); }
 	const back_t &back() const { return this->PopFront.back(); }
 
 	// pop_front
+public:
 	typedef typename base::tuple<typename List::pop_front> pop_front_t;
 	pop_front_t pop_front() const { return this->PopFront; }
 
 	// pop_back
+public:
 	typedef typename base::tuple<typename List::pop_back> pop_back_t;
 	pop_back_t pop_back() const 
 	{ 
@@ -66,6 +70,7 @@ public:
 	}
 
 	// push_front
+public:
 	template<class Front1>
 	class push_front_t: 
 		public base::tuple<typename List::template push_front<Front1>::type> 
@@ -78,6 +83,7 @@ public:
 	}
 
 	// push_back
+public:
 	template<class Back1>
 	class push_back_t:
 		public base::tuple<typename List::template push_back<Back1>::type>
@@ -91,6 +97,7 @@ public:
 	}
 
 	// at_c
+public:
 	template<std::size_t N>
 	class at_c_t: public base::tuple<typename List::template at_c<N>::type> {};
 	template<std::size_t N>
@@ -115,6 +122,7 @@ public:
 	}
 
 	// insert_c
+public:
 	template<std::size_t N, class Value>
 	class insert_c_t: 
 		public base::tuple<typename List::template insert_c<N, Value>::type>
@@ -141,9 +149,8 @@ public:
 		}
 	};
 
-protected:
-
 	// erase_c
+protected:
 	template<std::size_t N1, std::size_t N2>
 	class erase_c_t: 
 		public base::tuple<typename List::template erase_c<N1, N2>::type>
@@ -179,9 +186,8 @@ protected:
 		}
 	};
 
-public:
-
 	// constructor
+public:
 	tuple(
 		const front_t &Front = front_t(),
 		const pop_front_t &PopFront = pop_front_t()):
@@ -189,6 +195,7 @@ public:
 	{
 	}
 
+	// internal members
 private:
 	front_t Front;
 	pop_front_t PopFront;
@@ -205,24 +212,29 @@ public:
 	typedef base::tuple<List> type;
 
 	// front
+public:
 	typedef typename List::front::type front_t;
 	front_t &front() { return this->Front; }
 	const front_t &front() const { return this->Front; }
 
 	// back
+public:
 	typedef typename List::back::type back_t;
 	back_t &back() { return this->Front; }
 	const back_t &back() const { return this->Front; }
 
 	// pop_front
+public:
 	typedef base::tuple<typename List::pop_front> pop_front_t;
 	static pop_front_t pop_front() { return pop_front_t(); }
 
 	// pop_back
+public:
 	typedef base::tuple<typename List::pop_back> pop_back_t;
 	static pop_back_t pop_back() { return pop_back_t(); }
 
 	// push_front
+public:
 	template<class Front1>
 	class push_front_t: 
 		public base::tuple<typename List::template push_front<Front1>::type>
@@ -235,6 +247,7 @@ public:
 	}
 
 	// push_back
+public:
 	template<class Back1>
 	class push_back_t: 
 		public base::tuple<typename List::template push_back<Back1>::type>
@@ -248,6 +261,7 @@ public:
 	}
 
 	// at_c
+public:
 	template<std::size_t N>
 	class at_c_t: public base::tuple<typename List::template at_c<N>::type> {};
 	template<std::size_t N>
@@ -260,6 +274,7 @@ public:
 	typename const at_c_t<0>::type &at_c<0>() const { return this->Front; }
 
 	// insert_c
+public:
 	template<std::size_t N, class Value>
 	class insert_c_t;
 	template<class Value>
@@ -287,9 +302,8 @@ public:
 		}
 	};
 
-protected:
-
 	// erase_c
+protected:
 	template<std::size_t N1, std::size_t N2>
 	class erase_c_t;
 	template<>
@@ -327,12 +341,14 @@ protected:
 	};
 
 	// push_front_tuple
+protected:
 	template<class Tuple>
 	class push_front_tuple_t: 
 		public base::tuple<
 			typename List::template push_front_list<typename Tuple::list_t>::type>
 	{
 	};
+public:
 	template<class Tuple>
 	typename push_front_tuple_t<Tuple>::type push_front_tuple(const Tuple &V)
 	{
@@ -340,21 +356,22 @@ protected:
 	}
 
 	// push_back_tuple
+protected:
 	template<class Tuple>
 	class push_back_tuple_t:
 		public base::tuple<
 			typename List::template push_back_list<typename Tuple::list_t>::type>
 	{
 	};
+public:
 	template<class Tuple>
 	typename push_back_tuple_t<Tuple>::type push_back_tuple(const Tuple &V)
 	{
 		return push_back_tuple_t<Tuple>::type(this->Front, V);
 	}
 
-public:
-
 	// constructor
+public:
 	tuple(
 		const front_t &Front = front_t(), 
 		const pop_front_t & = pop_front_t()): 
@@ -362,6 +379,7 @@ public:
 	{
 	}
 
+	// internal members
 private:
 	front_t Front;
 	type &This() { return *static_cast<type*>(this); }
@@ -372,14 +390,13 @@ private:
 template<>
 class tuple<meta::list, 0> 
 {
-public:
-
 	// no front
 	// no back
 	// no pop_front
 	// no pop_back
 
 	// push_front
+public:
 	template<class Front1>
 	class push_front_t:
 		public base::tuple<typename meta::list::push_front<Front1>::type>
@@ -392,6 +409,7 @@ public:
 	}
 
 	// push_back
+public:
 	template<class Back1>
 	class push_back_t: 
 		public base::tuple<typename meta::list::push_back<Back1>::type>
@@ -406,6 +424,7 @@ public:
 	// no at_c
 
 	// insert_c
+public:
 	template<std::size_t N, class Value>
 	class insert_c_t;
 	template<class Value>
@@ -420,26 +439,35 @@ public:
 		}
 	};
 
-public:
-
 	// no erase_c
 
-protected:
-
 	// push_front_tuple
+protected:
 	template<class Tuple>
 	class push_front_tuple_t: public Tuple {};
+public:
 	template<class Tuple>
 	static Tuple push_front_tuple(const Tuple &V) { return V; }
 
 	// push_back_tuple
+protected:
 	template<class Tuple>
 	class push_back_tuple_t: public Tuple {};
+public:
 	template<class Tuple>
 	static Tuple push_back_tuple(const Tuple &V) { return V; }
 };
 
+template<class Tuple>
+class tuple_cast;
+
+template<class List>
+class tuple_cast<base::tuple<List> >: public base::tuple<List> {};
+
 }
+
+template<class Tuple>
+class tuple_cast: public detail::tuple_cast<typename Tuple::type> {};
 
 //
 template<class List>
@@ -523,6 +551,19 @@ public:
 	{
 		return erase_t<N1>::make(*this);
 	}
+
+	// push_front_tuple_t
+	template<class Tuple>
+	class push_front_tuple_t: 
+		public base_t::template push_front_tuple_t<typename tuple_cast<Tuple>::type>
+	{
+	};
+	// push_back_tuple_t
+	template<class Tuple>
+	class push_back_tuple_t: 
+		public base_t::template push_back_tuple_t<typename tuple_cast<Tuple>::type>
+	{
+	};
 };
 
 }
