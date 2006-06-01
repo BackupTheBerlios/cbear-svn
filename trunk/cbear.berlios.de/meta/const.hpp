@@ -86,7 +86,7 @@ class const_traits
 {
 public:
 	template<ValueType Value>
-	const_<ValueType, Value> make() const { return const_<ValueType, Value>(); }
+	static const_<ValueType, Value> make() { return const_<ValueType, Value>(); }
 };
 
 template<class ValueType>

@@ -219,6 +219,38 @@ public:
 			this->Front, this->PopFront::template push_back_tuple(V));
 	}
 
+	// insert_tuple_c_t
+protected:
+	template<std::size_t N, class Tuple>
+	class inset_tuple_c_t:		
+		public base::tuple<
+			typename List::template insert_c<N, typename Tuple::list_t>::type>
+	{
+	public:
+		typedef base::tuple<
+			typename List::template insert_c<N, typename Tuple::list_t>::type> 
+			result_t;
+		static result_t make(const type &This, const Tuple &V)
+		{ 
+			return result_t(
+				This.Front, This.PopFront.template insert_c<N - 1, Tuple>(V));
+		}
+	};
+	template<class Tuple>
+	class inset_tuple_c_t<0, Tuple>: 		
+		public base::tuple<
+			typename List::template insert_c<0, typename Tuple::list_t>::type>
+	{
+	public:
+		typedef base::tuple<
+			typename List::template insert_c<0, typename Tuple::list_t>::type> 
+			result_t;
+		static result_t make(const type &This, const Tuple &V)
+		{ 
+			return V.push_back_tuple(This);
+		}
+	};
+
 	// constructor
 public:
 	tuple(
@@ -369,7 +401,7 @@ protected:
 		typedef base::tuple<typename List::template erase_c<1, 1>::type> result_t;
 		static result_t make(const type &This)
 		{
-			return this->This();
+			return This;
 		}
 	};
 
@@ -404,6 +436,37 @@ public:
 	{
 		return push_back_tuple_t<Tuple>::type(this->Front, V);
 	}
+
+	// insert_tuple_c_t
+protected:
+	template<std::size_t N, class Tuple>
+	class inset_tuple_c_t; 
+	template<class Tuple>
+	class inset_tuple_c_t<0, Tuple>: 		
+		public base::tuple<
+			typename List::template insert_c<0, typename Tuple::list_t>::type>
+	{
+	public:
+		typedef base::tuple<
+			typename List::template insert_c<0, typename Tuple::list_t>::type> result_t;
+		static result_t make(const type &This, const Tuple &V)
+		{ 
+			return V.push_back(this->Front);
+		}
+	};
+	template<class Tuple>
+	class inset_tuple_c_t<1, Tuple>: 		
+		public base::tuple<
+			typename List::template insert_c<1, typename Tuple::list_t>::type>
+	{
+	public:
+		typedef base::tuple<
+			typename List::template insert_c<1, typename Tuple::list_t>::type> result_t;
+		static result_t make(const type &This, const Tuple &V)
+		{ 
+			return result_t(this->Front, V);
+		}
+	};
 
 	// constructor
 public:
@@ -468,7 +531,7 @@ public:
 	{
 	public:
 		typedef base::tuple<typename meta::list::insert_c<0, Value>::type> result_t;
-		static result_t make(const meta::list &, const Value &V) 
+		static result_t make(const base::tuple<> &, const Value &V) 
 		{ 
 			return result_t(V); 
 		}
@@ -491,6 +554,17 @@ protected:
 public:
 	template<class Tuple>
 	static Tuple push_back_tuple(const Tuple &V) { return V; }
+
+	// insert_tuple_c_t
+protected:
+	template<std::size_t N, class Tuple>
+	class inset_tuple_c_t; 
+	template<class Tuple>
+	class inset_tuple_c_t<0, Tuple>: public Tuple
+	{
+	public:
+		static Tuple make(const base::tuple<> &, const Tuple &V) { return V; }
+	};
 };
 
 template<class Tuple>
