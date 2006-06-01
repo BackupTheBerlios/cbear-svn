@@ -59,7 +59,7 @@ public:
 	com::uuid GetGUID() const
 	{
 		com::uuid Result;
-		this->internal_reference().GetGUID(com::internal<out>(Result));
+		this->internal_reference().GetGUID(Result.c_out());
 		return Result;
 	}
 	dword_t GetHelpContext() const
@@ -96,7 +96,7 @@ public:
 	}
 	void SetGUID(const com::uuid &X) const
 	{
-		this->internal_reference().SetGUID(X.internal());
+		this->internal_reference().SetGUID(*X.c_in());
 	}
 	void SetHelpContext(dword_t X) const
 	{

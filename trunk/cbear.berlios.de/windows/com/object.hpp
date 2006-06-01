@@ -29,6 +29,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/com/enum.hpp>
 #include <cbear.berlios.de/windows/com/ulong.hpp>
 
+#include <cbear.berlios.de/windows/com/pointer.hpp>
+
 namespace cbear_berlios_de
 {
 namespace windows
@@ -118,7 +120,7 @@ public:
 	static void *extra() 
 	{ 
 		return const_cast<uuid::internal_type*>(
-			&uuid::of<interface_type>().internal());
+			uuid::of<interface_type>().c_in());
 	}
 
 	template<class Type>
@@ -130,7 +132,7 @@ public:
 		if(P)
 		{
 			P->QueryInterface(
-				com::internal<in>(object_type::uuid()), 
+				*object_type::uuid().c_in(), 
 				(void **)com::internal<out>(Result));
 		}
 		return Result;

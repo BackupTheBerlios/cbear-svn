@@ -63,10 +63,10 @@ object<T> create_instance(
 {
 	object<T> Result;
 	exception::throw_unless(::CoCreateInstance(
-		internal<in>(Uuid), 
+		*Uuid.c_in(), 
 		internal<in>(UnkOuter), 
 		internal<in>(ClsContext), 
-		internal<in>(uuid::of<T>()), 
+		*uuid::of<T>().c_in(), 
 		(void**)internal<out>(Result)));
 	return Result;
 }

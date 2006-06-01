@@ -88,14 +88,14 @@ protected:
 	typedef intrusive::list<basic_interface_info> list_type;
 
 	hresult::internal_type query_interface(
-		const uuid::internal_type &Uuid, void **PP)
+		const uuid::c_t &Uuid, void **PP)
 	{
 		for(
 			range::sub_range<list_type>::type R(this->List); 
 			!R.empty(); 
 			++R.begin())
 		{
-			if(R.front().get_uuid().internal()==Uuid)
+			if(*R.front().get_uuid().c_in()==Uuid)
 			{
 				iunknown::internal_policy::construct_copy(
 					*reinterpret_cast<iunknown::internal_type *>(PP), 
@@ -175,7 +175,7 @@ class implementation<Base, ::IClassFactory>:
 public:
 	hresult::internal_type __stdcall CreateInstance(
 		internal_result<in, iunknown>::type Outer, 
-		const uuid::internal_type &Uuid, 
+		const uuid::c_t &Uuid, 
 		void **ppObject)
 	{
 		// Cannot aggregate.
@@ -358,7 +358,7 @@ public:
   ulong_t __stdcall Release() { return implementation_counter::release(); }
 
 	hresult::internal_type __stdcall QueryInterface(
-		const uuid::internal_type &U, void **PP)
+		const uuid::c_t &U, void **PP)
   { 
      return implementation_info::query_interface(U, PP); 
   }

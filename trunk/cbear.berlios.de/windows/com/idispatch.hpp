@@ -64,7 +64,7 @@ public:
 	}
 
 	hresult::internal_type __stdcall GetIDsOfNames(
-		const uuid::internal_type &, 
+		const uuid::c_t &, 
 		lpolestr_t::internal_type *rgszNames, 
 		uint_t cNames, 
 		lcid_t, 
@@ -79,7 +79,7 @@ public:
 
 	HRESULT __stdcall Invoke(
 		dispid_t dispidMember,
-		const uuid::internal_type &,
+		const uuid::c_t &,
 		lcid_t,
 		word_t wFlags,
 		dispparams_t * pdispparams,

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+/*
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.berlios.de)
@@ -20,16 +19,5 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
--->
-<?xml-stylesheet type="text/xsl" href="../../../project/html.xsl"?>
-<section 
-	xmlns="http://cbear.berlios.de/project" name="Dynamic Implementation">
-	
-	<p>
-Namespace <em>cbear_berlios_de::windows::com::dynamic</em>.
-	</p>
-	<p>
-File <a href="implementation.hpp"/>. Implementation info should be 
-based on <em>intrusive::list</em>. See also <a href="implementation.svg"/>.
-	</p>
-</section>
+*/
+#include <cbear.berlios.de/windows/com/pointer_base.hpp>
