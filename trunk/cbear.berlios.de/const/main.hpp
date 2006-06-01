@@ -20,12 +20,10 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_META_CONST_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_META_CONST_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_CONST_MAIN_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_CONST_MAIN_HPP_INCLUDED
 
 namespace cbear_berlios_de
-{
-namespace meta
 {
 namespace const_
 {
@@ -40,7 +38,7 @@ public:
 
 	value_type operator()() const { return value; }
 
-#define CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(O, N) \
+#define CBEAR_BERLIOS_DE_CONST_OPERATOR2(O, N) \
 	private:\
 	template<class _2> class detail_##N;\
 	template<value_type Value2>	class detail_##N<_<value_type, Value2> >: \
@@ -50,30 +48,30 @@ public:
 	template<class _2> typename N<_2>::type operator O(_2) const\
 	{ return N<_2>::type(); }
 
-CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(+, plus2)
-CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(-, minus2)
-CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(*, mul)
-CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(/, div)
-CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(%, mod)
-CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(|, or)
-CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(&, and)
+CBEAR_BERLIOS_DE_CONST_OPERATOR2(+, plus2)
+CBEAR_BERLIOS_DE_CONST_OPERATOR2(-, minus2)
+CBEAR_BERLIOS_DE_CONST_OPERATOR2(*, mul)
+CBEAR_BERLIOS_DE_CONST_OPERATOR2(/, div)
+CBEAR_BERLIOS_DE_CONST_OPERATOR2(%, mod)
+CBEAR_BERLIOS_DE_CONST_OPERATOR2(|, or)
+CBEAR_BERLIOS_DE_CONST_OPERATOR2(&, and)
 
-#undef CBEAR_BERLIOS_DE_META_CONST_OPERATOR2
+#undef CBEAR_BERLIOS_DE_CONST_OPERATOR2
 
-#define CBEAR_BERLIOS_DE_META_CONST_OPERATOR(O, N, V)\
+#define CBEAR_BERLIOS_DE_CONST_OPERATOR(O, N, V)\
 	private:\
 	static const value_type N##_value = V;\
 	public:\
 	typedef _<value_type, N##_value> N;\
 	N operator O() const { return N(); }
 
-CBEAR_BERLIOS_DE_META_CONST_OPERATOR(!, not, !value);
-CBEAR_BERLIOS_DE_META_CONST_OPERATOR(+, plus, +value);
-CBEAR_BERLIOS_DE_META_CONST_OPERATOR(-, minus, -value);
-CBEAR_BERLIOS_DE_META_CONST_OPERATOR(++, next, value+1);
-CBEAR_BERLIOS_DE_META_CONST_OPERATOR(--, prior, value-1);
+CBEAR_BERLIOS_DE_CONST_OPERATOR(!, not, !value);
+CBEAR_BERLIOS_DE_CONST_OPERATOR(+, plus, +value);
+CBEAR_BERLIOS_DE_CONST_OPERATOR(-, minus, -value);
+CBEAR_BERLIOS_DE_CONST_OPERATOR(++, next, value+1);
+CBEAR_BERLIOS_DE_CONST_OPERATOR(--, prior, value-1);
 
-#undef CBEAR_BERLIOS_DE_META_CONST_OPERATOR
+#undef CBEAR_BERLIOS_DE_CONST_OPERATOR
 
 };
 
@@ -100,9 +98,8 @@ traits<ValueType> make_traits(ValueType) { return traits<ValueType>(); }
 
 }
 }
-}
 
-#define CBEAR_BERLIOS_DE_META_CONST(X) \
+#define CBEAR_BERLIOS_DE_CONST(X) \
 	::cbear_berlios_de::meta::const_::detail::make_traits(X).make<X>()
 
 #endif
