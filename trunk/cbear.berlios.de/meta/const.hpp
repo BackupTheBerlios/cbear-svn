@@ -38,7 +38,7 @@ public:
 
 	value_type operator()() const { return value; }
 
-#define CBEAR_BERLIOS_DE_CONST_OPERATOR2(O, N) \
+#define CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(O, N) \
 	private:\
 	template<class _2> class detail_##N;\
 	template<value_type Value2>	class detail_##N<const_<value_type, Value2> >: \
@@ -48,30 +48,30 @@ public:
 	template<class _2> typename N<_2>::type operator O(_2) const\
 	{ return N<_2>::type(); }
 
-CBEAR_BERLIOS_DE_CONST_OPERATOR2(+, plus2)
-CBEAR_BERLIOS_DE_CONST_OPERATOR2(-, minus2)
-CBEAR_BERLIOS_DE_CONST_OPERATOR2(*, mul)
-CBEAR_BERLIOS_DE_CONST_OPERATOR2(/, div)
-CBEAR_BERLIOS_DE_CONST_OPERATOR2(%, mod)
-CBEAR_BERLIOS_DE_CONST_OPERATOR2(|, or)
-CBEAR_BERLIOS_DE_CONST_OPERATOR2(&, and)
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(+, plus2)
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(-, minus2)
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(*, mul)
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(/, div)
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(%, mod)
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(|, or)
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(&, and)
 
-#undef CBEAR_BERLIOS_DE_CONST_OPERATOR2
+#undef CBEAR_BERLIOS_DE_META_CONST_OPERATOR2
 
-#define CBEAR_BERLIOS_DE_CONST_OPERATOR(O, N, V)\
+#define CBEAR_BERLIOS_DE_META_CONST_OPERATOR(O, N, V)\
 	private:\
 	static const value_type N##_value = V;\
 	public:\
 	typedef const_<value_type, N##_value> N;\
 	N operator O() const { return N(); }
 
-CBEAR_BERLIOS_DE_CONST_OPERATOR(!, not, !value);
-CBEAR_BERLIOS_DE_CONST_OPERATOR(+, plus, +value);
-CBEAR_BERLIOS_DE_CONST_OPERATOR(-, minus, -value);
-CBEAR_BERLIOS_DE_CONST_OPERATOR(++, next, value+1);
-CBEAR_BERLIOS_DE_CONST_OPERATOR(--, prior, value-1);
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR(!, not, !value);
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR(+, plus, +value);
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR(-, minus, -value);
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR(++, next, value+1);
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR(--, prior, value-1);
 
-#undef CBEAR_BERLIOS_DE_CONST_OPERATOR
+#undef CBEAR_BERLIOS_DE_META_CONST_OPERATOR
 
 };
 
