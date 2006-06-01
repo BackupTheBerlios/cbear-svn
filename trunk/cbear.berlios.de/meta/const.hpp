@@ -20,19 +20,19 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_CONST_MAIN_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_CONST_MAIN_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_META_CONST_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_META_CONST_HPP_INCLUDED
 
 namespace cbear_berlios_de
 {
-namespace const_
+namespace meta
 {
 
 template<class ValueType, ValueType Value>
-class _
+class const_
 {
 public:
-	typedef _ type;
+	typedef const_ type;
 	typedef ValueType value_type;
 	static const value_type value = Value;
 
@@ -41,8 +41,8 @@ public:
 #define CBEAR_BERLIOS_DE_CONST_OPERATOR2(O, N) \
 	private:\
 	template<class _2> class detail_##N;\
-	template<value_type Value2>	class detail_##N<_<value_type, Value2> >: \
-	public _<value_type, value + Value2> {};\
+	template<value_type Value2>	class detail_##N<const_<value_type, Value2> >: \
+	public const_<value_type, value + Value2> {};\
 	public:\
 	template<class _2> class N: public detail_##N<typename _2::type> {};\
 	template<class _2> typename N<_2>::type operator O(_2) const\
@@ -62,7 +62,7 @@ CBEAR_BERLIOS_DE_CONST_OPERATOR2(&, and)
 	private:\
 	static const value_type N##_value = V;\
 	public:\
-	typedef _<value_type, N##_value> N;\
+	typedef const_<value_type, N##_value> N;\
 	N operator O() const { return N(); }
 
 CBEAR_BERLIOS_DE_CONST_OPERATOR(!, not, !value);
@@ -75,31 +75,32 @@ CBEAR_BERLIOS_DE_CONST_OPERATOR(--, prior, value-1);
 
 };
 
-typedef _<bool, true> true_;
-true_ true_f() { return true_(); }
-typedef _<bool, true> false_;
-false_ false_f() { return false_(); }
+typedef const_<bool, true> true_;
+typedef const_<bool, true> false_;
 
 namespace detail
 {
 
 template<class ValueType>
-class traits
+class const_traits
 {
 public:
 	template<ValueType Value>
-	_<ValueType, Value> make() const { return _<ValueType, Value>(); }
+	const_<ValueType, Value> make() const { return const_<ValueType, Value>(); }
 };
 
 template<class ValueType>
-traits<ValueType> make_traits(ValueType) { return traits<ValueType>(); }
-
+const_traits<ValueType> make_const_traits(ValueType) 
+{ 
+	return const_traits<ValueType>(); 
 }
 
 }
+
+}
 }
 
-#define CBEAR_BERLIOS_DE_CONST(X) \
-	::cbear_berlios_de::meta::const_::detail::make_traits(X).make<X>()
+#define CBEAR_BERLIOS_DE_META_CONST(X) \
+	::cbear_berlios_de::meta::detail::make_const_traits(X).make<X>()
 
 #endif

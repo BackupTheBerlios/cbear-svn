@@ -62,8 +62,8 @@ class list_base<none, none>
 {
 public:
 	typedef list<> type;
-	typedef const_::true_ empty;
-	typedef const_::_<std::size_t, 0> size;
+	typedef true_ empty;
+	typedef const_<std::size_t, 0> size;
 	// no front
 	// no back
 	// no pop_front
@@ -108,8 +108,8 @@ class list_base<Front, list<> >
 {
 public:
 	typedef list<Front, list<> > type;
-	typedef const_::false_ empty;
-	typedef const_::_<std::size_t, 1> size;
+	typedef false_ empty;
+	typedef const_<std::size_t, 1> size;
 	typedef wrap<Front> front;
 	typedef wrap<Front> back;
 	typedef list<> pop_front;
@@ -167,7 +167,7 @@ class list_base
 {
 public:
 	typedef list<Front, PopFront> type;
-	typedef const_::false_ empty;
+	typedef false_ empty;
 	// size steps.
 	typedef typename PopFront::size::next size;
 	typedef wrap<Front> front;
