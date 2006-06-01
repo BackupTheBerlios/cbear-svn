@@ -186,6 +186,39 @@ protected:
 		}
 	};
 
+	// push_front_tuple
+protected:
+	template<class Tuple>
+	class push_front_tuple_t: 
+		public base::tuple<
+			typename List::template push_front_list<typename Tuple::list_t>::type>
+	{
+	};
+public:
+	template<class Tuple>
+	typename push_front_tuple_t<Tuple>::type 
+	push_front_tuple(const Tuple &V) const
+	{
+		return V.push_back_tuple(this->This());
+	}
+
+	// push_back_tuple
+protected:
+	template<class Tuple>
+	class push_back_tuple_t: 
+		public base::tuple<
+			typename List::template push_back_list<typename Tuple::list_t>::type>
+	{
+	};
+public:
+	template<class Tuple>
+	typename push_back_tuple_t<Tuple>::type 
+	push_back_tuple(const Tuple &V) const
+	{
+		return push_back_tuple_t<Tuple>::type(
+			this->Front, this->PopFront::template push_back_tuple(V));
+	}
+
 	// constructor
 public:
 	tuple(
@@ -350,7 +383,8 @@ protected:
 	};
 public:
 	template<class Tuple>
-	typename push_front_tuple_t<Tuple>::type push_front_tuple(const Tuple &V)
+	typename push_front_tuple_t<Tuple>::type 
+	push_front_tuple(const Tuple &V) const
 	{
 		return V.push_back(this->Front);
 	}
@@ -365,7 +399,8 @@ protected:
 	};
 public:
 	template<class Tuple>
-	typename push_back_tuple_t<Tuple>::type push_back_tuple(const Tuple &V)
+	typename push_back_tuple_t<Tuple>::type 
+	push_back_tuple(const Tuple &V) const
 	{
 		return push_back_tuple_t<Tuple>::type(this->Front, V);
 	}
