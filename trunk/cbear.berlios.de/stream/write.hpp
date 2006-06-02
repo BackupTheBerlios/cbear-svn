@@ -26,6 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/range/iterator_range.hpp>
 #include <cbear.berlios.de/range/begin.hpp>
 #include <cbear.berlios.de/range/size.hpp>
+#include <cbear.berlios.de/base/select.hpp>
 
 namespace cbear_berlios_de
 {
@@ -126,7 +127,7 @@ public:
 	static void write(S &s, const T &t)
 	{
 		typedef typename S::value_type value_type;
-		if(x)
+		if(t)
 			s.push_back_range(CBEAR_BERLIOS_DE_BASE_SELECT(value_type, "true"));
 		else
 			s.push_back_range(CBEAR_BERLIOS_DE_BASE_SELECT(value_type, "false"));
