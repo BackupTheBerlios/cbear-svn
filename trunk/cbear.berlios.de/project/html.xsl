@@ -123,6 +123,10 @@ pre
 
 <!-- * -->
 
+<xsl:template match="*" mode="prj:html">
+	<xsl:copy-of select="."/>
+</xsl:template>
+
 <xsl:template match="prj:*" mode="prj:html.content.table.item"/>
 
 <xsl:template match="prj:*" mode="prj:html">
