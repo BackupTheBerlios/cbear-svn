@@ -115,17 +115,17 @@ public:
 	typedef c_t *c_out_t;
 	typedef c_t *c_in_out_t;
 
-	c_in_t c_in() const throw()
+	c_in_t c_in_cast() const throw()
 	{
 		return &this->V;
 	}
 
-	c_out_t c_out() throw()
+	c_out_t c_out_cast() throw()
 	{
 		return &this->V;
 	}
 
-	c_in_out_t c_in_out() throw()
+	c_in_out_t c_in_out_cast() throw()
 	{
 		return &this->V;
 	}

@@ -26,6 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <boost/filesystem/path.hpp>
 
 #include <cbear.berlios.de/windows/hmodule.hpp>
+#include <cbear.berlios.de/windows/syskind.hpp>
 #include <cbear.berlios.de/windows/com/object.hpp>
 #include <cbear.berlios.de/windows/com/exception.hpp>
 #include <cbear.berlios.de/windows/com/lcid.hpp>
@@ -107,17 +108,17 @@ public:
 	itypeinfo gettypeinfoofguid() const
 	{
 		itypeinfo Result;
-		exception::throw_unless(this->internal_reference().GetTypeInfoOfGuid(
-			*uuid::of<Interface>().c_in(),
+		exception::throw_unless(this->reference().GetTypeInfoOfGuid(
+			*uuid::of<Interface>().c_in_cast(),
 			com::internal<out>(Result)));
 		return Result;
 	}
 	tlibattr_t getlibattr() const 
 	{ 
 		tlibattr_t::internal_type *Temp;
-		exception::throw_unless(this->internal_reference().GetLibAttr(&Temp));
+		exception::throw_unless(this->reference().GetLibAttr(&Temp));
 		tlibattr_t Result(*Temp);
-		this->internal_reference().ReleaseTLibAttr(Temp);
+		this->reference().ReleaseTLibAttr(Temp);
 		return Result;
 	}
 };
@@ -149,7 +150,7 @@ inline void un_register_type_lib(
 	const syskind_t &Syskind)
 {
 	com::exception::throw_unless(::UnRegisterTypeLib( 
-		*LibId.c_in(),
+		*LibId.c_in_cast(),
 		VerMajor,  
 		VerMinor,  
 		com::internal<in>(Lcid),                 

@@ -30,12 +30,14 @@ namespace windows
 namespace com
 {
 
+class uninitialized {};
+
 template<class I>
 class pointer_base
 {
 protected:
 
-	pointer_base() throw(): 
+	pointer_base() throw():
 		P(0) 
 	{
 	}
@@ -56,9 +58,22 @@ protected:
     this->destructor();
   }
 
+	void reset() throw()
+	{
+		this->destructor();
+		this->constructor();
+	}
+
+	template<class I1>
+	void assign(const pointer_base<I1> &O1) throw()
+	{
+		this->assign(O1.c_in_cast());
+	}
+
   pointer_base &operator=(const pointer_base &O1) throw()
   {
     this->assign(O1);
+		return *this;
   }
 
   void swap(pointer_base &O1) throw()
@@ -74,27 +89,65 @@ public:
 	typedef I **c_out_t;
 	typedef I **c_in_out_t;
 
-	c_in_t c_in() const throw()
+	c_in_t c_in_cast() const throw()
 	{
 		return this->P;
 	}
 
-	c_out_t c_out() throw()
+	c_out_t c_out_cast() throw()
 	{
-		this->assign(0);
+		this->reset();
 		return &this->P;
 	}
 
-	c_in_out_t c_in_out() throw()
+	c_in_out_t c_in_out_cast() throw()
 	{
 		return &this->P;
+	}
+
+public:
+
+	I &reference() const throw(uninitialized)
+	{
+		if(this->P) 
+		{
+			return *this->P;
+		}
+		else
+		{
+			throw uninitialized();
+		}
+	}
+
+	I &operator*() const throw(uninitialized)
+	{
+		return this->reference();
+	}
+
+	I *operator->() const throw(uninitialized)
+	{
+		return &this->reference();
+	}
+
+// deprecated
+public: 
+
+	I &internal_reference() const throw(uninitialized)
+	{
+		return this->reference();
 	}
 
 private:
 
   I *P;
 
-  void constructor(I *P1) throw()
+	void constructor() throw()
+	{
+		this->P = 0;
+	}
+
+	template<class I1>
+  void constructor(I1 *P1) throw()
   {
     this->P = P1;
     if(this->P) this->P->AddRef();
@@ -106,7 +159,8 @@ private:
     this->P->Release();
   }
 
-	void assign(I *P1) throw()
+	template<class I1>
+	void assign(I1 *P1) throw()
 	{
 		this->destructor();
 		this->constructor(P1);

@@ -31,10 +31,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/base/integer.hpp>
 #include <cbear.berlios.de/base/lexical_cast.hpp>
 #include <cbear.berlios.de/locale/cast.hpp>
+#include <cbear.berlios.de/windows/com/uint.hpp>
 #include <cbear.berlios.de/windows/com/hresult.hpp>
 #include <cbear.berlios.de/windows/com/bstr.hpp>
 #include <cbear.berlios.de/windows/com/uuid.hpp>
 #include <cbear.berlios.de/windows/com/object.hpp>
+#include <cbear.berlios.de/windows/com/ulong.hpp>
 #include <cbear.berlios.de/pp/cat.hpp>
 #include <cbear.berlios.de/pp/widen.hpp>
 
@@ -53,31 +55,31 @@ public:
 	bstr_t GetDescription() const
 	{
 		bstr_t Result;
-		this->internal_reference().GetDescription(com::internal<out>(Result));
+		this->reference().GetDescription(com::internal<out>(Result));
 		return Result;
 	}
 	com::uuid GetGUID() const
 	{
 		com::uuid Result;
-		this->internal_reference().GetGUID(Result.c_out());
+		this->reference().GetGUID(Result.c_out_cast());
 		return Result;
 	}
 	dword_t GetHelpContext() const
 	{
 		dword_t Result;
-		this->internal_reference().GetHelpContext(com::internal<out>(Result));
+		this->reference().GetHelpContext(com::internal<out>(Result));
 		return Result;
 	}
 	bstr_t GetHelpFile() const
 	{
 		bstr_t Result;
-		this->internal_reference().GetHelpFile(com::internal<out>(Result));
+		this->reference().GetHelpFile(com::internal<out>(Result));
 		return Result;
 	}
 	bstr_t GetSource() const
 	{
 		bstr_t Result;
-		this->internal_reference().GetSource(com::internal<out>(Result));
+		this->reference().GetSource(com::internal<out>(Result));
 		return Result;
 	}
 };
@@ -91,24 +93,24 @@ class object_content<Base, ::ICreateErrorInfo>:
 public:
 	void SetDescription(lpcwstr_t X) const
 	{
-		this->internal_reference().SetDescription(
+		this->reference().SetDescription(
 			const_cast<lpwstr_t::internal_type>(const_cast<wchar_t *>(X.internal())));
 	}
 	void SetGUID(const com::uuid &X) const
 	{
-		this->internal_reference().SetGUID(*X.c_in());
+		this->reference().SetGUID(*X.c_in_cast());
 	}
 	void SetHelpContext(dword_t X) const
 	{
-		this->internal_reference().SetHelpContext(X);
+		this->reference().SetHelpContext(X);
 	}
 	void SetHelpFile(lpcwstr_t X) const
 	{
-		this->internal_reference().SetHelpFile(const_cast<wchar_t *>(X.internal()));
+		this->reference().SetHelpFile(const_cast<wchar_t *>(X.internal()));
 	}
 	void SetSource(lpcwstr_t X) const
 	{
-		this->internal_reference().SetSource(const_cast<wchar_t *>(X.internal()));
+		this->reference().SetSource(const_cast<wchar_t *>(X.internal()));
 	}
 };
 
@@ -202,8 +204,8 @@ public:
 	create_exception(const hresult &X = user()): com::exception(X)
 	{
 		::CreateErrorInfo(com::internal<out>(this->CreateErrorInfo));
-		this->com::exception::ErrorInfo = CreateErrorInfo.
-			query_interface<ierrorinfo>();
+		this->com::exception::ErrorInfo = *CreateErrorInfo.
+			query_interface<ierrorinfo::interface_t>();
 	}
 
 	const create_exception &Description(lpcwstr_t X) const

@@ -197,7 +197,7 @@ public:
 		exception::scope_last_error ScopeLastError;
 		this->internal() = 
 			::SetupDiCreateDeviceInfoList(
-				ClassGuid ? ClassGuid->c_in(): 0,
+				ClassGuid ? ClassGuid->c_in_cast(): 0,
 				Parent.internal());
 	}
 
@@ -329,7 +329,7 @@ public:
 			SetupDiEnumDeviceInterfaces(
 				this->internal(),
 				const_cast< ::SP_DEVINFO_DATA *>(deviceInfoData.internal()),
-				interfaceClassGuid.c_in(),
+				interfaceClassGuid.c_in_cast(),
 				memberIndex,
 				&deviceInterfaceData.internal());
 		}

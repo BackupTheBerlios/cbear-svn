@@ -23,13 +23,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_OBJECT_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_OBJECT_HPP_INCLUDED
 
-#include <cbear.berlios.de/windows/syskind.hpp>
+// ::cbear_berlios_de::base::safe_reinterpret_cast
+#include <cbear.berlios.de/base/safe_reinterpret_cast.hpp>
+// ::cbear_berlios_de::windows::com::object_content
+#include <cbear.berlios.de/windows/com/object_content.hpp>
+// ::cbear_berlios_de::windows::com::uuid
 #include <cbear.berlios.de/windows/com/uuid.hpp>
-#include <cbear.berlios.de/windows/com/bstr.hpp>
-#include <cbear.berlios.de/windows/com/enum.hpp>
-#include <cbear.berlios.de/windows/com/ulong.hpp>
-
-#include <cbear.berlios.de/windows/com/pointer.hpp>
+// ::cbear_berlios_de::base::swap
+#include <cbear.berlios.de/base/swap.hpp>
 
 namespace cbear_berlios_de
 {
@@ -38,185 +39,158 @@ namespace windows
 namespace com
 {
 
-class exception;
-
-namespace dynamic
+template<class I>
+class object: public object_content<I, I>
 {
+private:
 
-template<class Base, class Interface = Base>
-class implementation;
+	typedef pointer_base<I> base_t;
 
-}
-
-template<class Interface>
-class object;
-
-template<class Interface>
-struct object_policy: private policy::standard_policy<Interface *>
-{
-	typedef policy::standard_policy<Interface *> standard_policy;
-
-	using standard_policy::construct;
-	using standard_policy::equal;
-	using standard_policy::less;
-	using standard_policy::swap;
-	using standard_policy::reference_of;
-
-	typedef typename standard_policy::pointer pointer;
-	typedef typename standard_policy::reference reference;
-
-	typedef Interface interface_type;
-	typedef object<interface_type> object_type;
-	typedef Interface *type;
-
-	static void add_ref(type X) { if(X) X->AddRef(); }
-	static void release(type X) { if(X) X->Release(); }
-
-	static void construct_copy(type &This, const type &Source)
-	{
-		This = Source;
-		add_ref(This);
-	}
-
-	static void assign(type &This, const type &Source) 
-	{
-		add_ref(Source);
-		release(This);
-		This = Source; 
-	}
-
-	static void destroy(type &This)
-	{
-		release(This);
-	}
-
-	typedef policy::wrap<object_type, type, object_policy> wrap;
-};
-
-template<class Interface1>
-struct add_object { typedef object<Interface1> type; };
-
-template<class Interface1>
-struct add_object<object<Interface1> > { typedef object<Interface1> type; };
-
-template<class Interface>
-class object_base: public object_policy<Interface>::wrap
-{
 public:
-	typedef Interface interface_type;
 
-	// This type is deprecated!
-	typedef dynamic::implementation<interface_type> dynamic_implementation_type;
+	typedef I interface_t;
 
-	typedef interface_type *internal_type;
-	typedef object_policy<interface_type> internal_policy;
+	typedef base::move_t<object> move_t;
+
+	object() throw() 
+	{
+	}
+
+	template<class I1>
+	object(const object<I1> &O1) throw()
+	{
+		this->assign(O1);
+	} 
+
+	object(const move_t &M) throw() 
+	{ 
+		M.swap(*this); 
+	}
+
+	object &operator=(const move_t &M) throw()
+	{
+		M.swap(*this);
+		return *this;
+	}
+
+	void swap(object &O1) throw() 
+	{ 
+		this->base_t::swap(O1); 
+	}
+
+public:
+
+	template<class I1>
+	bool operator==(const object<I1> &O1) const throw()
+	{
+		return this->c_in_cast() == O1.c_in_cast();
+	}
+
+	template<class I1>
+	bool operator!=(const object<I1> &O1) const throw()
+	{
+		return this->c_in_cast() != O1.c_in_cast();
+	}
+
+	operator bool() const throw()
+	{
+		return this->c_in_cast() != 0;
+	}
+
+	bool operator!() const throw()
+	{
+		return this->c_in_cast() == 0;
+	}
+
+public:
+
+	template<class I1>
+	typename object<I1>::move_t query_interface() const throw()
+	{
+		const c_in_t P = this->c_in_cast();
+		typename object<I1>::move_t R;
+		if(P)
+		{
+			P->QueryInterface(
+				*uuid::of<I1>().c_in_cast(), 
+				reinterpret_cast<void **>(R->c_out_cast()));
+		}
+		return R;
+	}
+
+	template<class O1>
+	typename O1::move_t interface_cast() const throw()
+	{
+		return this->query_interface<typename O1::interface_t>();
+	}
+
+public:
+
+	template<class O1>
+	typename O1::move_t dynamic_cast_() const throw()
+	{
+		return base::move_copy(O1::cpp_in_cast(dynamic_cast<O1::c_in_t>(
+			this->c_in_cast())));
+	}
+
+public:
+
+	static const object &cpp_in_cast(const c_in_t &P) throw() 
+	{ 
+		return base::safe_reinterpret_cast<const object &>(P);
+	}
+
+	static object &cpp_in_out_cast(c_in_out_t P) throw() 
+	{ 
+		return base::safe_reinterpret_cast<object &>(*P);
+	}
+
+	static object &cpp_out_cast(c_out_t P) throw() 
+	{ 
+		*P = 0;
+		return base::safe_reinterpret_cast<object &>(*P);
+	}
+
+// deprecated
+public:
+
+	// typedef object_policy<interface_type> internal_policy;
+	class internal_policy
+	{
+	public:
+		typedef I *type;
+		static void construct(I *P)
+		{
+			P = 0;
+		}
+	};
 
 	static const vartype_t vt = 
-		boost::is_base_of< ::IDispatch, Interface>::value ?
+		boost::is_base_of< ::IDispatch, I>::value ? 
 			::VT_DISPATCH: ::VT_UNKNOWN;
 
 	typedef void *extra_result;
 
-	static void *extra() 
+	typedef move_t move_type;
+
+	c_in_t internal() const throw()
 	{ 
-		return const_cast<uuid::internal_type*>(
-			uuid::of<interface_type>().c_in());
+		return this->c_in_cast(); 
 	}
 
-	template<class Type>
-	typename add_object<Type>::type query_interface() const
-	{
-		typedef typename add_object<Type>::type object_type;
-		object_type Result;
-		internal_type P = this->internal();
-		if(P)
-		{
-			P->QueryInterface(
-				*object_type::uuid().c_in(), 
-				(void **)com::internal<out>(Result));
-		}
-		return Result;
-	}		
-
-	template<class Type>
-	typename add_object<Type>::type dynamic_cast_() const
-	{
-		typedef typename add_object<Type>::type object_type;
-		return object_type(dynamic_cast<typename object_type::internal_type>(
-				this->internal()));
-	}
-
-	static const com::uuid &uuid() { return uuid::of<interface_type>(); }
-
-	class uninitialized: public std::exception
-	{
-	public:
-		const char *what() const throw()
-		{ 
-			return this->Message.c_str();
-		}
-		uninitialized()
-		{
-			std::ostringstream O;
-			O << "cbear_berlios_de::com::object<" << typeid(Interface).name() << 
-				"> is uninitialized.";
-			this->Message = O.str();
-		}
-	private:
-		std::string Message;
-	};
-
-protected:
-
-	interface_type &internal_reference() const
+	c_in_t &internal() throw()
 	{ 
-		internal_type P = this->internal();
-		if(!P) throw uninitialized();
-		return *P;
+		return *this->c_in_out_cast(); 
 	}
-};
 
-template<class Base, class Interface>
-class object_content: public object_base<Base>
-{
-};
-
-template<class Interface>
-class object: public object_content<Interface, Interface>
-{
-public:
-
-	typedef Interface interface_type;
-	typedef interface_type *internal_type;
-	typedef object_policy<interface_type> internal_policy;
-	typedef object move_type;
-
-	object() {}
-
-	template<class Interface1>
-	object(const object<Interface1> &P)
+	static void *extra()
 	{
-		internal_policy::construct_copy(this->internal(), P.internal());
+		return const_cast<uuid::c_in_out_t>(uuid::of<interface_t>().c_in_cast());
 	}
 
-	object(const base::move_t<object> &C) { C.swap(*this); }
-	object &operator=(const base::move_t<object> &C) { C.swap(*this); }
-
-	explicit object(internal_type X)
-	{
-		internal_policy::construct_copy(this->internal(), X);
-	}
-
-	operator bool() const { return this->internal() != 0; }
-	bool operator!() const { return this->internal() == 0; }
+	static const object &wrap_ref(const c_in_t &P) { return cpp_in_cast(P); }
+	static object &wrap_ref(interface_t * &P) { return cpp_in_out_cast(&P); }
 };
-
-template<class T>
-object<T> make_object(T *P) { return object<T>(P); }
-
-typedef object< ::IUnknown> iunknown;
-typedef object< ::IDispatch> idispatch;
-typedef object< ::IClassFactory> iclassfactory;
 
 }
 }

@@ -64,7 +64,7 @@ public:
 		scoped_info()
 		{
 			exception::throw_unless(::GetRecordInfoFromTypeInfo(
-				Type::library_info::typelib().gettypeinfoofguid<ValueType>().internal(),
+				Type::library_info::typelib().gettypeinfoofguid<ValueType>().c_in_cast(),
 				com::internal<out>(record_info)));
 		}
 	};
@@ -72,7 +72,7 @@ public:
 	static extra_result extra() 
 	{ 
 		BOOST_STATIC_ASSERT(sizeof(Type)==sizeof(ValueType));
-		return record_info.internal();
+		return record_info.c_in_cast();
 	}
 
 	ValueType &internal()

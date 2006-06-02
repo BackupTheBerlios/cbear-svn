@@ -35,6 +35,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/com/uint.hpp>
 #include <cbear.berlios.de/windows/com/lcid.hpp>
 #include <cbear.berlios.de/windows/com/itypelib.hpp>
+#include <cbear.berlios.de/windows/com/iunknown.hpp>
 #include <cbear.berlios.de/range/sub_range.hpp>
 #include <cbear.berlios.de/intrusive/list.hpp>
 
@@ -58,7 +59,7 @@ class basic_interface_info: public intrusive::node<basic_interface_info>
 {
 public:
 	virtual const com::uuid &get_uuid() = 0;
-	virtual iunknown::internal_type get_pointer() = 0;
+	virtual iunknown::c_in_t get_pointer() = 0;
 };
 
 template<class Interface>
@@ -90,20 +91,18 @@ protected:
 	hresult::internal_type query_interface(
 		const uuid::c_t &Uuid, void **PP)
 	{
+		iunknown &P = iunknown::cpp_out_cast(reinterpret_cast<iunknown::c_out_t>(PP));
 		for(
 			range::sub_range<list_type>::type R(this->List); 
 			!R.empty(); 
 			++R.begin())
 		{
-			if(*R.front().get_uuid().c_in()==Uuid)
+			if(*R.front().get_uuid().c_in_cast()==Uuid)
 			{
-				iunknown::internal_policy::construct_copy(
-					*reinterpret_cast<iunknown::internal_type *>(PP), 
-					R.front().get_pointer());
+				P = iunknown::cpp_in_cast(R.front().get_pointer());
 				return hresult::s_ok;
 			}
 		}
-		*PP = 0;
 		return hresult::e_nointerface;
 	}
 
@@ -120,6 +119,9 @@ private:
 
 }
 
+template<class Base, class Interface = Base>
+class implementation;
+
 template<class Base, class Interface, class Parent>
 class implementation_base: 
 	public implementation<Base, Parent>,
@@ -131,7 +133,7 @@ public:
 		detail::implementation_info::add_interface<Interface>(this); 
 	}
 private:
-	iunknown::internal_type get_pointer() 
+	iunknown::c_in_t get_pointer() 
 	{ 
 		return static_cast<Interface *>(this); 
 	}
@@ -139,7 +141,7 @@ private:
 
 template<class Base, class Interface>
 class implementation: 
-	public implementation_base<Base, Interface, iunknown::interface_type>
+	public implementation_base<Base, Interface, iunknown::c_in_t>
 {
 };
 
@@ -222,44 +224,45 @@ public:
 	template<class T>
 	typename new_result<T>::type new_()
 	{
-		return new_result<T>::type(new detail::implementation_instance<T>(*this));
+		return new_result<T>::type::cpp_in_cast(
+			new detail::implementation_instance<T>(*this));
 	};
 
 	template<class T, class P>
 	typename new_result<T>::type new_(const P &X)
 	{
-		return new_result<T>::type(new detail::implementation_instance<T>(
-			*this, X));
+		return new_result<T>::type::cpp_in_cast(
+			new detail::implementation_instance<T>(*this, X));
 	}
 
 	template<class T, class P1, class P2>
 	typename new_result<T>::type new_(const P1 &X1, const P2 &X2)
 	{
-		return new_result<T>::type(new detail::implementation_instance<T>(
-			*this, X1, X2));
+		return new_result<T>::type::cpp_in_cast(
+			new detail::implementation_instance<T>(*this, X1, X2));
 	}
 
 	template<class T, class P1, class P2, class P3>
 	typename new_result<T>::type new_(const P1 &X1, const P2 &X2, const P3 &X3)
 	{
-		return new_result<T>::type(new detail::implementation_instance<T>(
-			*this, X1, X2, X3));
+		return new_result<T>::type::cpp_in_cast(
+			new detail::implementation_instance<T>(*this, X1, X2, X3));
 	}
 
 	template<class T, class P1, class P2, class P3, class P4>
 	typename new_result<T>::type new_(
 		const P1 &X1, const P2 &X2, const P3 &X3, const P4 &X4)
 	{
-		return new_result<T>::type(new detail::implementation_instance<T>(
-			*this, X1, X2, X3, X4));
+		return new_result<T>::type::cpp_in_cast(
+			new detail::implementation_instance<T>(*this, X1, X2, X3, X4));
 	}
 
 	template<class T, class P1, class P2, class P3, class P4, class P5>
 	typename new_result<T>::type new_(
 		const P1 &X1, const P2 &X2, const P3 &X3, const P4 &X4, const P5 &X5)
 	{
-		return new_result<T>::type(new detail::implementation_instance<T>(
-			*this, X1, X2, X3, X4, X5));
+		return new_result<T>::type::cpp_in_cast(
+			new detail::implementation_instance<T>(*this, X1, X2, X3, X4, X5));
 	}
 
 	//typedef std::vector<itypelib> typelibs_type;
@@ -349,7 +352,7 @@ template<class T>
 class implementation_instance: 
 	private implementation_counter,
 	public T,
-	public isupporterrorinfo::dynamic_implementation_type
+	public dynamic::implementation<isupporterrorinfo::interface_t>
 {
 public:
 	// IUnknown

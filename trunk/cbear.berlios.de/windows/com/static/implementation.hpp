@@ -20,19 +20,8 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_SYSTEM_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_WINDOWS_COM_SYSTEM_HPP_INCLUDED
-
-// COINIT
-#include <objbase.h>
-
-#include <cbear.berlios.de/windows/com/exception.hpp>
-#include <cbear.berlios.de/windows/com/object.hpp>
-#include <cbear.berlios.de/windows/com/enum.hpp>
-#include <cbear.berlios.de/windows/com/clsctx.hpp>
-
-// ::CoInitializeEx
-#pragma comment(lib, "ole32.lib")
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_IMPLEMENTATION_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_IMPLEMENTATION_HPP_INCLUDED
 
 namespace cbear_berlios_de
 {
@@ -40,37 +29,35 @@ namespace windows
 {
 namespace com
 {
+namespace static_
+{
 
-class system
+namespace detail
+{
+
+template<class T, class L>
+class traits
 {
 public:
-
-	enum coinit_type
-	{
-		multithreaded = COINIT_MULTITHREADED,
-		apartmentthreaded = COINIT_APARTMENTTHREADED,
-		disable_ole1dde = COINIT_DISABLE_OLE1DDE,
-		speed_over_memory = COINIT_SPEED_OVER_MEMORY,
-	};
-
-	system(coinit_type C) { exception::throw_unless(::CoInitializeEx(0, C)); }
-	~system() { ::CoUninitialize(); }
+	typedef object<T> new_t;
 };
 
-template<class T>
-object<T> create_instance(
-	const uuid &Uuid, const object<IUnknown> &UnkOuter, clsctx ClsContext)
-{
-	object<T> Result;
-	exception::throw_unless(::CoCreateInstance(
-		*Uuid.c_in_cast(), 
-		internal<in>(UnkOuter), 
-		internal<in>(ClsContext), 
-		*uuid::of<T>().c_in_cast(), 
-		(void**)internal<out>(Result)));
-	return Result;
 }
 
+template<class T, class L>
+class new_t
+{
+public:
+	typedef void type;
+};
+
+template<class T, class L, class P>
+typename new_t<T, L>::type new_(const P &Param)
+{
+	return new new_t<T, L>::type(Param);
+}
+
+}
 }
 }
 }
