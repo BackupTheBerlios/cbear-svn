@@ -53,6 +53,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:element>
 </xsl:template>
 
+<xsl:template match="imagedata" mode="prj:converter">
+	<img src="{@fileref}"/>
+</xsl:template>
+
 <xsl:template match="programlisting" mode="prj:converter">
 	<pre><xsl:apply-templates mode="prj:converter"/></pre>
 </xsl:template>

@@ -144,12 +144,18 @@ pre
 
 <!-- a -->
 
-<xsl:template match="prj:a[.='']" mode="prj:html.a">
+<xsl:template match="prj:a" mode="prj:html.a">
+	<xsl:apply-templates mode="prj:html"/>
+</xsl:template>
+	
+<xsl:template match="prj:a[.='' and not(*)]" mode="prj:html.a">
 	<xsl:value-of select="@href"/>
 </xsl:template>
 
 <xsl:template match="prj:a" mode="prj:html">
-	<a href="{@href}"><xsl:apply-templates select="." mode="prj:html.a"/></a>
+	<a href="{@href}">
+		<xsl:apply-templates select="." mode="prj:html.a"/>
+	</a>
 </xsl:template>
 
 <!-- section -->
