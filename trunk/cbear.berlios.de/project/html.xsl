@@ -131,6 +131,7 @@ pre
 
 <xsl:template match="prj:*" mode="prj:html">
 	<xsl:element name="{local-name()}">
+		<xsl:copy-of select="@*"/>
 		<xsl:apply-templates mode="prj:html"/>
 	</xsl:element>
 </xsl:template>
