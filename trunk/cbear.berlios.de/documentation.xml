@@ -44,5 +44,5 @@ Each class should implement swap and move constructor.
 	<section href="windows/index.xml"/>
 	<section href="cpp/index.xml"/>
 	<section href="api/index.xml"/>
-	<section href="other/index.ru.xml"/>
+	<section href="others/index.ru.xml"/>
 </section>
