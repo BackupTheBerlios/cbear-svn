@@ -23,7 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <?xml-stylesheet type="text/xsl" href="../project/html.xsl"?>
 <section 
-	xmlns="http://cbear.berlios.de/project" name="С++ Objects, комментарии">
+	xmlns="http://cbear.berlios.de/project" name="С++ Object, комментарии">
 	<ol>
 		<li>
 <b>Subversion.</b> Для будущих возможных версий и ответвлений, лучше сделать директорию 
