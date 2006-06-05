@@ -35,7 +35,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/com/hresult.hpp>
 #include <cbear.berlios.de/windows/com/bstr.hpp>
 #include <cbear.berlios.de/windows/com/uuid.hpp>
-#include <cbear.berlios.de/windows/com/object.hpp>
+#include <cbear.berlios.de/windows/com/pointer.hpp>
 #include <cbear.berlios.de/windows/com/ulong.hpp>
 #include <cbear.berlios.de/pp/cat.hpp>
 #include <cbear.berlios.de/pp/widen.hpp>
@@ -48,8 +48,8 @@ namespace com
 {
 
 template<class Base>
-class object_content<Base, ::IErrorInfo>: 
-	public object_content<Base, ::IUnknown>
+class pointer_content<Base, ::IErrorInfo>: 
+	public pointer_content<Base, ::IUnknown>
 {
 public:
 	bstr_t GetDescription() const
@@ -84,11 +84,11 @@ public:
 	}
 };
 
-typedef object< ::IErrorInfo> ierrorinfo;
+typedef pointer< ::IErrorInfo> ierrorinfo;
 
 template<class Base>
-class object_content<Base, ::ICreateErrorInfo>:
-	public object_content<Base, ::IUnknown>
+class pointer_content<Base, ::ICreateErrorInfo>:
+	public pointer_content<Base, ::IUnknown>
 {
 public:
 	void SetDescription(lpcwstr_t X) const
@@ -114,7 +114,7 @@ public:
 	}
 };
 
-typedef object< ::ICreateErrorInfo> icreateerrorinfo;
+typedef pointer< ::ICreateErrorInfo> icreateerrorinfo;
 
 class exception: 
 	public std::exception,

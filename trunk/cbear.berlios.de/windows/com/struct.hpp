@@ -24,7 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_STRUCT_HPP_INCLUDED
 
 #include <cbear.berlios.de/windows/com/traits.hpp>
-#include <cbear.berlios.de/windows/com/object.hpp>
+#include <cbear.berlios.de/windows/com/pointer.hpp>
 
 namespace cbear_berlios_de
 {
@@ -33,7 +33,7 @@ namespace windows
 namespace com
 {
 
-typedef object< ::IRecordInfo> irecordinfo;
+typedef pointer< ::IRecordInfo> irecordinfo;
 
 template<class Type, class ValueType>
 class struct_t

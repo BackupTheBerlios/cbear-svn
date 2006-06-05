@@ -27,7 +27,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/windows/hmodule.hpp>
 #include <cbear.berlios.de/windows/syskind.hpp>
-#include <cbear.berlios.de/windows/com/object.hpp>
+#include <cbear.berlios.de/windows/com/pointer.hpp>
 #include <cbear.berlios.de/windows/com/exception.hpp>
 #include <cbear.berlios.de/windows/com/lcid.hpp>
 #include <cbear.berlios.de/windows/com/itypeinfo.hpp>
@@ -101,7 +101,8 @@ public:
 };
 
 template<class Base>
-class object_content<Base, ::ITypeLib>: public object_content<Base, ::IUnknown>
+class pointer_content<Base, ::ITypeLib>: 
+	public pointer_content<Base, ::IUnknown>
 {
 public:
 	template<class Interface>
@@ -123,7 +124,7 @@ public:
 	}
 };
 
-typedef object< ::ITypeLib> itypelib;
+typedef pointer< ::ITypeLib> itypelib;
 
 inline itypelib loadtypelib(const lpcwstr_t File)
 {

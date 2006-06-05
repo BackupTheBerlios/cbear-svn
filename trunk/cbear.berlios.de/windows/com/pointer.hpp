@@ -20,13 +20,13 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_OBJECT_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_WINDOWS_COM_OBJECT_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_POINTER_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_WINDOWS_COM_POINTER_HPP_INCLUDED
 
 // ::cbear_berlios_de::base::safe_reinterpret_cast
 #include <cbear.berlios.de/base/safe_reinterpret_cast.hpp>
-// ::cbear_berlios_de::windows::com::object_content
-#include <cbear.berlios.de/windows/com/object_content.hpp>
+// ::cbear_berlios_de::windows::com::pointer_content
+#include <cbear.berlios.de/windows/com/pointer_content.hpp>
 // ::cbear_berlios_de::windows::com::uuid
 #include <cbear.berlios.de/windows/com/uuid.hpp>
 // ::cbear_berlios_de::base::swap
@@ -40,7 +40,7 @@ namespace com
 {
 
 template<class I>
-class object: public object_content<I, I>
+class pointer: public pointer_content<I, I>
 {
 private:
 
@@ -50,30 +50,30 @@ public:
 
 	typedef I interface_t;
 
-	typedef base::move_t<object> move_t;
+	typedef base::move_t<pointer> move_t;
 
-	object() throw() 
+	pointer() throw() 
 	{
 	}
 
 	template<class I1>
-	object(const object<I1> &O1) throw()
+	pointer(const pointer<I1> &O1) throw()
 	{
 		this->assign(O1);
 	} 
 
-	object(const move_t &M) throw() 
+	pointer(const move_t &M) throw() 
 	{ 
 		M.swap(*this); 
 	}
 
-	object &operator=(const move_t &M) throw()
+	pointer &operator=(const move_t &M) throw()
 	{
 		M.swap(*this);
 		return *this;
 	}
 
-	void swap(object &O1) throw() 
+	void swap(pointer &O1) throw() 
 	{ 
 		this->base_t::swap(O1); 
 	}
@@ -81,13 +81,13 @@ public:
 public:
 
 	template<class I1>
-	bool operator==(const object<I1> &O1) const throw()
+	bool operator==(const pointer<I1> &O1) const throw()
 	{
 		return this->c_in_cast() == O1.c_in_cast();
 	}
 
 	template<class I1>
-	bool operator!=(const object<I1> &O1) const throw()
+	bool operator!=(const pointer<I1> &O1) const throw()
 	{
 		return this->c_in_cast() != O1.c_in_cast();
 	}
@@ -105,10 +105,10 @@ public:
 public:
 
 	template<class I1>
-	typename object<I1>::move_t query_interface() const throw()
+	typename pointer<I1>::move_t query_interface() const throw()
 	{
 		const c_in_t P = this->c_in_cast();
-		typename object<I1>::move_t R;
+		typename pointer<I1>::move_t R;
 		if(P)
 		{
 			P->QueryInterface(
@@ -135,20 +135,20 @@ public:
 
 public:
 
-	static const object &cpp_in_cast(const c_in_t &P) throw() 
+	static const pointer &cpp_in_cast(const c_in_t &P) throw() 
 	{ 
-		return base::safe_reinterpret_cast<const object &>(P);
+		return base::safe_reinterpret_cast<const pointer &>(P);
 	}
 
-	static object &cpp_in_out_cast(c_in_out_t P) throw() 
+	static pointer &cpp_in_out_cast(c_in_out_t P) throw() 
 	{ 
-		return base::safe_reinterpret_cast<object &>(*P);
+		return base::safe_reinterpret_cast<pointer &>(*P);
 	}
 
-	static object &cpp_out_cast(c_out_t P) throw() 
+	static pointer &cpp_out_cast(c_out_t P) throw() 
 	{ 
 		*P = 0;
-		return base::safe_reinterpret_cast<object &>(*P);
+		return base::safe_reinterpret_cast<pointer &>(*P);
 	}
 
 // deprecated
@@ -188,8 +188,8 @@ public:
 		return const_cast<uuid::c_in_out_t>(uuid::of<interface_t>().c_in_cast());
 	}
 
-	static const object &wrap_ref(const c_in_t &P) { return cpp_in_cast(P); }
-	static object &wrap_ref(interface_t * &P) { return cpp_in_out_cast(&P); }
+	static const pointer &wrap_ref(const c_in_t &P) { return cpp_in_cast(P); }
+	static pointer &wrap_ref(interface_t * &P) { return cpp_in_out_cast(&P); }
 };
 
 }

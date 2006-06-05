@@ -23,7 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_CLASS_OBJECT_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_CLASS_OBJECT_HPP_INCLUDED
 
-#include <cbear.berlios.de/windows/com/object.hpp>
+#include <cbear.berlios.de/windows/com/pointer.hpp>
 #include <cbear.berlios.de/windows/com/exception.hpp>
 #include <cbear.berlios.de/windows/com/clsctx.hpp>
 #include <cbear.berlios.de/windows/com/regcls.hpp>

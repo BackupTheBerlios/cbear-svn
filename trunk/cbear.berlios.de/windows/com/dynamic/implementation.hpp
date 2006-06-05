@@ -31,7 +31,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/atomic/main.hpp>
 #include <cbear.berlios.de/windows/bool.hpp>
 #include <cbear.berlios.de/windows/com/hresult.hpp>
-#include <cbear.berlios.de/windows/com/object.hpp>
+#include <cbear.berlios.de/windows/com/pointer.hpp>
 #include <cbear.berlios.de/windows/com/uint.hpp>
 #include <cbear.berlios.de/windows/com/lcid.hpp>
 #include <cbear.berlios.de/windows/com/itypelib.hpp>
@@ -191,7 +191,7 @@ public:
 	}
 };
 
-typedef object< ::IClassFactory> iclassfactory;
+typedef pointer< ::IClassFactory> iclassfactory;
 
 namespace detail
 {
@@ -218,7 +218,7 @@ public:
 	template<class T>
 	struct new_result 
 	{ 
-		typedef object<detail::implementation_instance<T> > type; 
+		typedef pointer<detail::implementation_instance<T> > type; 
 	};
 
 	template<class T>
@@ -311,7 +311,7 @@ private:
 	implementation &operator=(const implementation &);
 };
 
-typedef object< ::ISupportErrorInfo> isupporterrorinfo;
+typedef pointer< ::ISupportErrorInfo> isupporterrorinfo;
 
 namespace detail
 {

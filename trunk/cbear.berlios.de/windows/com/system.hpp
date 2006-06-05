@@ -27,7 +27,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <objbase.h>
 
 #include <cbear.berlios.de/windows/com/exception.hpp>
-#include <cbear.berlios.de/windows/com/object.hpp>
+#include <cbear.berlios.de/windows/com/pointer.hpp>
 #include <cbear.berlios.de/windows/com/enum.hpp>
 #include <cbear.berlios.de/windows/com/clsctx.hpp>
 
@@ -58,10 +58,10 @@ public:
 };
 
 template<class T>
-object<T> create_instance(
-	const uuid &Uuid, const object<IUnknown> &UnkOuter, clsctx ClsContext)
+pointer<T> create_instance(
+	const uuid &Uuid, const pointer<IUnknown> &UnkOuter, clsctx ClsContext)
 {
-	object<T> Result;
+	pointer<T> Result;
 	exception::throw_unless(::CoCreateInstance(
 		*Uuid.c_in_cast(), 
 		internal<in>(UnkOuter), 

@@ -720,7 +720,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<id.ref id="cbear_berlios_de"/>
 			<id.ref id="windows"/>
 			<id.ref id="com"/>
-			<id.ref id="object" type="&lt;&gt;">				
+			<id.ref id="pointer" type="&lt;&gt;">				
 				<id.ref type="::">
 					<id.ref/>
 					<id.ref id="{@id}"/>
@@ -734,7 +734,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<template>
 		<id id="Base"/>
 		<class>
-			<id.ref id="object_content" type="&lt;&gt;">
+			<id.ref id="pointer_content" type="&lt;&gt;">
 				<id.ref id="Base"/>
 				<id.ref type="::">
 					<id.ref/>
@@ -742,7 +742,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				</id.ref>
 			</id.ref>
 			<access access="public">
-				<id.ref id="object_content" type="&lt;&gt;">
+				<id.ref id="pointer_content" type="&lt;&gt;">
 					<id.ref id="Base"/>
 					<id.ref type="::">
 						<id.ref/>
@@ -1006,7 +1006,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<include href="cbear.berlios.de/windows/com/bstr.hpp"/>
 			<include href="cbear.berlios.de/windows/com/date.hpp"/>
 			<include href="cbear.berlios.de/windows/com/safearray.hpp"/>
-			<include href="cbear.berlios.de/windows/com/object.hpp"/>
+			<include href="cbear.berlios.de/windows/com/pointer.hpp"/>
 			<include href="cbear.berlios.de/windows/com/exception.hpp"/>
 			<include href="cbear.berlios.de/windows/com/coclass.hpp"/>
 			<include href="cbear.berlios.de/windows/com/idispatch.hpp"/>
