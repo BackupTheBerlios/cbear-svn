@@ -24,7 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_TRAITS_HPP_INCLUDED
 
 #include <cbear.berlios.de/base/undefined.hpp>
-#include <cbear.berlios.de/base/move.hpp>
+#include <cbear.berlios.de/move/main.hpp>
 #include <cbear.berlios.de/windows/message_box.hpp>
 #include <cbear.berlios.de/policy/main.hpp>
 
