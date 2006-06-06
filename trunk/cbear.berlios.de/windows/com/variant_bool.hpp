@@ -87,6 +87,10 @@ public:
 	{
 		Archive & boost::serialization::make_nvp("bool", this->internal());
 	}
+	void move_assign(variant_bool_t &F)
+	{
+		this->internal() = F.internal();
+	}
 };
 
 }

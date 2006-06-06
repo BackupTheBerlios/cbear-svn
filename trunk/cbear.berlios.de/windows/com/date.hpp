@@ -46,6 +46,11 @@ public:
 			const_cast<systemtime_t*>(&SystemTime), &this->internal())==0)
 			throw std::exception("wrong system time");
 	}
+
+	void move_assign(date_t &F)
+	{
+		this->internal() = F.internal();
+	}
 };
 
 }

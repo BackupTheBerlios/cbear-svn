@@ -24,7 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_TRAITS_HPP_INCLUDED
 
 #include <cbear.berlios.de/base/undefined.hpp>
-#include <cbear.berlios.de/base/swap.hpp>
+#include <cbear.berlios.de/base/move.hpp>
 #include <cbear.berlios.de/windows/message_box.hpp>
 #include <cbear.berlios.de/policy/main.hpp>
 
@@ -225,18 +225,18 @@ typename internal_result<Io, Type>::type internal(Type &X)
 }
 
 template<io_type Io, class Type>
-struct internal_result<Io, base::move_t<Type> >: internal_result<Io, Type>
+struct internal_result<Io, move::t<Type> >: internal_result<Io, Type>
 { 
 };
 
 template<io_type Io, class Type>
-typename internal_result<Io, Type>::type internal(const base::move_t<Type> &X)
+typename internal_result<Io, Type>::type internal(const move::t<Type> &X)
 {
 	return io_traits<Io, Type>::internal(X.get());
 }
 
 template<io_type Io, class Type>
-typename internal_result<Io, Type>::type internal(base::move_t<Type> &X)
+typename internal_result<Io, Type>::type internal(move::t<Type> &X)
 {
 	return io_traits<Io, Type>::internal(X.get());
 }

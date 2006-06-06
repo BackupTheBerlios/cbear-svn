@@ -83,7 +83,18 @@ protected:
     O1.P = PT;
   }
 
+	template<class I1>
+	void move_assign(pointer_base<I1> &O1) throw()
+	{
+		this->destructor();
+		this->P = O1.P;
+		O1.P = 0;
+	}
+
 public:
+
+	template<class T1>
+	friend class pointer_base;
 
 	typedef I *c_in_t;
 	typedef I **c_out_t;

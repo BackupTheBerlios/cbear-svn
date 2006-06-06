@@ -37,61 +37,6 @@ void swap(T &A, T &B)
 		type::swap(A, B);
 }
 
-template<class T>
-class move_t
-{
-public:
-
-	move_t() {}
-
-	explicit move_t(T &B) { base::swap(this->A, B); }
-	move_t(const move_t &B) { base::swap(this->A, B.A); }
-
-	move_t &operator=(const move_t &B) { base::swap(this->A, B.A); return *this; }
-
-	void swap(T &B) const { base::swap(this->A, B); }
-
-	friend void swap(const move_t &A, T &B) { base::swap(A.A, B); }
-	friend void swap(T &A, const move_t &B) { base::swap(A, B.A); }
-
-	T &get() const { return this->A; }
-	T &operator*() const { return this->A; }
-	T *operator->() const { return &this->A; }
-
-private:
-	mutable T A;
-};
-
-template<class T>
-move_t<T> move(T &B) { return move_t<T>(B); }
-
-template<class T>
-move_t<T> move_copy(const T &B) { T Copy(B); return move_t<T>(Copy); }
-
-template<class T>
-class move_ref_t
-{
-public:
-    explicit move_ref_t(T &B): A(B) {}
-
-    const move_ref_t &operator=(const move_t<T> &B) const 
-    { 
-        B.swap(this->A); return *this; 
-    }
-    const move_ref_t &operator=(T &B) const 
-    { 
-        B.swap(this->A); return *this; 
-    }
-
-private:
-    mutable T &A;
-    // VC warning.
-    move_ref_t &operator=(const move_ref_t &);
-};
-
-template<class T>
-move_ref_t<T> move_ref(T &B) { return move_ref_t<T>(B); }
-
 }
 }
 

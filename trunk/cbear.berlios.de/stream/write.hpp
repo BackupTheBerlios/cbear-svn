@@ -27,10 +27,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/range/begin.hpp>
 #include <cbear.berlios.de/range/size.hpp>
 #include <cbear.berlios.de/base/select.hpp>
+#include <cbear.berlios.de/meta/if.hpp>
 
 namespace cbear_berlios_de
 {
 
+	/*
 namespace meta
 {
 
@@ -97,6 +99,7 @@ template<class C, class T, class E = detail::no_else>
 class if_: public if_c<C::value, T, E> {};
 
 }
+*/
 
 namespace stream
 {

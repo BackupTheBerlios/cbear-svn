@@ -172,7 +172,7 @@ public:
 	typedef detail::safearray_policy<ValueType> internal_policy;
 	typedef typename internal_policy::helper_type helper_type;
 
-	typedef base::move_t<safearray_t> move_type;
+	typedef move::t<safearray_t> move_type;
 
 	typedef typename helper_type::size_type size_type;
 	typedef typename helper_type::iterator iterator;
@@ -207,12 +207,20 @@ public:
 	{
 	}
 
-	safearray_t(const move_type &C) { C.swap(*this); }
+	safearray_t(const move_type &C) throw()
+	{ 
+		this->move_assign(*C);
+	}
 
-	safearray_t &operator=(const move_type &C)
+	safearray_t &operator=(const move_type &C) throw()
 	{
-		C.swap(*this);
+		this->move_assign(*C);
 		return *this;
+	}
+
+	void move_assign(safearray_t &F) throw()
+	{
+		this->swap(F);
 	}
 
 	bool empty() const { return internal_policy::empty(this->internal()); }

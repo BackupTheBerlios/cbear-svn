@@ -222,7 +222,7 @@ public:
 	typedef detail::bstr_wrap wrap_type;
 	typedef wrap_type::internal_policy internal_policy;
 
-	typedef base::move_t<bstr_t> move_type;
+	typedef move::t<bstr_t> move_type;
 
 	typedef internal_policy::value_type value_type;
 	typedef internal_policy::iterator iterator;
@@ -258,9 +258,18 @@ public:
 	{
 	}
 
-	bstr_t(const move_type &C) { C.swap(*this); }
+	bstr_t(const move_type &F) { this->move_assign(*F); }
 
-	bstr_t &operator=(const move_type &C) { C.swap(*this); return *this; }
+	bstr_t &operator=(const move_type &F)
+	{ 
+		this->move_assign(*F); 
+		return *this; 
+	}
+
+	void move_assign(bstr_t &X)
+	{
+		this->swap(X);
+	}
 
 	const wchar_t *c_str() const { return this->internal(); }
 

@@ -1,42 +1,88 @@
-#ifndef CBEAR_BERLIOS_DE_BASE_SWAP_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_BASE_SWAP_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_BASE_MOVE_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_BASE_MOVE_HPP_INCLUDED
 
-#include <algorithm>
-#include <boost/type_traits.hpp>
-#include <boost/mpl/if.hpp>
+#include <cbear.berlios.de/base/swap.hpp>
+#include <cbear.berlios.de/meta/if.hpp>
 
 namespace cbear_berlios_de
 {
-namespace base
+namespace move
 {
 
-namespace detail
-{
-
-class class_swap_traits
+class class_traits
 {
 public:
-	template<class T>
-	static void swap(T &A, T &B) { A.swap(B); }
+	template<class To, class From>
+	static void assign(To &T, From &F)
+	{
+		T.move_assign(F);
+	}
 };
 
-class std_swap_traits
+class assign_traits
 {
 public:
-	template<class T>
-	static void swap(T &A, T &B) { std::swap(A, B); }
+	template<class To, class From>
+	static void assign(To &T, From &F)
+	{
+		T = F;
+	}
 };
 
+template<class To>
+class traits: 
+	public meta::if_<boost::is_class<To>, class_traits, assign_traits>::type
+{
+};
+
+template<class To, class From>
+void assign(To &T, From &F)
+{
+	traits<To>::assign(T, F);
 }
 
 template<class T>
-void swap(T &A, T &B) 
+class t
+{
+public:
+
+	t() {}
+
+	t(const t &B) { move::assign(this->A, *B); }
+
+	template<class T1>
+	t(const t<T1> &B) { move::assign(this->A, *B); }
+
+	explicit t(T &B) { move::assign(this->A, B); }
+
+	const t &operator=(const t &B) const { move::assign(this->A, *B); }
+
+	template<class T1>
+	const t &operator=(const t<T1> &B) const { move::assign(this->A, *B); }
+
+	template<class T1>
+	void assign(T &B) const { move::assign(this->A, B); }
+
+	template<class T1>
+	void assign(const t<T1> &B) const { move::assign(this->A, *B); }
+
+	T &get() const { return this->A; }
+	T &operator*() const { return this->A; }
+	T *operator->() const { return &this->A; }
+
+private:
+	mutable T A;
+};
+
+template<class T>
+t<T> copy(const T &B) 
 { 
-	boost::mpl::if_<
-		boost::is_class<T>, detail::class_swap_traits, detail::std_swap_traits>::
-		type::swap(A, B);
+	t<T> C;
+	*C = B;
+	return C;
 }
 
+	/*
 template<class T>
 class move_t
 {
@@ -91,6 +137,7 @@ private:
 
 template<class T>
 move_ref_t<T> move_ref(T &B) { return move_ref_t<T>(B); }
+*/
 
 }
 }

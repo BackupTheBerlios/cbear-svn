@@ -204,13 +204,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 						</id.ref>
 					</id.ref>
 				</parameter>
+				<!--
 				<xsl:apply-templates select="odl:object" mode="odl:cpp.ctor"/>
+				-->
 				<body>
-					<id.ref type=".">
-						<id.ref id="X"/>
-						<id.ref type="()" id="swap">
+					<id.ref type="-&gt;">
+						<id.ref type="this"/>
+						<id.ref type="()" id="move_assign">
 							<id.ref type="*">
-								<id.ref type="this"/>
+								<id.ref id="X"/>
 							</id.ref>
 						</id.ref>
 					</id.ref>
@@ -230,12 +232,39 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 							<id.ref id="cbear_berlios_de"/>
 							<id.ref id="base"/>
 							<id.ref type="()" id="swap">
+								<id.ref type="-&gt;">
+									<id.ref id="this"/>
+									<id.ref id="{@id}"/>
+								</id.ref>
 								<id.ref type=".">
 									<id.ref id="X"/>
 									<id.ref id="{@id}"/>
 								</id.ref>
+							</id.ref>
+						</id.ref>
+					</xsl:for-each>
+				</body>
+			</method>
+			<method id="move_assign">
+				<id.ref id="void"/>
+				<parameter id="X">
+					<id.ref type="&amp;">
+						<xsl:copy-of select="$name"/>
+					</id.ref>
+				</parameter>
+				<body>
+					<xsl:for-each select="odl:object">
+						<id.ref type="::">
+							<id.ref/>
+							<id.ref id="cbear_berlios_de"/>
+							<id.ref id="move"/>
+							<id.ref type="()" id="assign">
 								<id.ref type="-&gt;">
 									<id.ref id="this"/>
+									<id.ref id="{@id}"/>
+								</id.ref>
+								<id.ref type=".">
+									<id.ref id="X"/>
 									<id.ref id="{@id}"/>
 								</id.ref>
 							</id.ref>

@@ -108,6 +108,11 @@ public:
 		return *this;
 	}
 
+	void move_assign(basic_string &F)
+	{
+		this->swap(F);
+	}
+
 	template<class Container>
 	basic_string &push_back_range(const Container &C)
 	{
@@ -206,11 +211,11 @@ public:
 		return this->compare(0, base_type::npos, C);
 	}
 
-	typedef move_t<basic_string> move_type;
+	typedef move::t<basic_string> move_type;
 
 	basic_string() {}
 
-	basic_string(const move_type &M) { M.swap(*this); }
+	basic_string(const move_type &M) { this->move_assign(*M); }
 
 	template<class Container>
 	basic_string(const Container &C) { this->assign(C); }

@@ -50,7 +50,7 @@ public:
 		}
 	};
 
-	typedef base::move_t<Type> move_type;
+	typedef move::t<Type> move_type;
 
 	static const vartype_t vt = ::VT_RECORD;
 

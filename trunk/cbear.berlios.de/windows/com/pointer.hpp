@@ -50,7 +50,7 @@ public:
 
 	typedef I interface_t;
 
-	typedef base::move_t<pointer> move_t;
+	typedef move::t<pointer> move_t;
 
 	pointer() throw() 
 	{
@@ -62,20 +62,28 @@ public:
 		this->assign(O1);
 	} 
 
-	pointer(const move_t &M) throw() 
+	template<class I1>
+	pointer(const move::t<pointer<I1> > &M) throw() 
 	{ 
-		M.swap(*this); 
+		this->base_t::move_assign(*M);
 	}
 
-	pointer &operator=(const move_t &M) throw()
+	template<class I1>
+	pointer &operator=(const move::t<pointer<I1> > &M) throw()
 	{
-		M.swap(*this);
+		this->base_t::move_assign(*M);
 		return *this;
 	}
 
 	void swap(pointer &O1) throw() 
 	{ 
 		this->base_t::swap(O1); 
+	}
+
+	template<class I1>
+	void move_assign(pointer<I1> &O1) throw()
+	{
+		this->base_t::move_assign(O1);
 	}
 
 public:
@@ -129,7 +137,7 @@ public:
 	template<class O1>
 	typename O1::move_t dynamic_cast_() const throw()
 	{
-		return base::move_copy(O1::cpp_in_cast(dynamic_cast<O1::c_in_t>(
+		return move::copy(O1::cpp_in_cast(dynamic_cast<O1::c_in_t>(
 			this->c_in_cast())));
 	}
 

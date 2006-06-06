@@ -49,38 +49,36 @@ class owner
 public:
 	typedef implementation<T> implementation_t;
 	typedef pointer<implementation_t> pointer_t;
+
 	~owner()
 	{
 		this->clear();
 	}
+
 	void clear() throw()
 	{
-		if(this->P) 
+		if(this->P)
 		{
 			this->P->clear();
-			this->P = pointer_t();
 		}
 	}
+
+	void new_()
+	{
+		this->clear();
+		this->P = type::cpp_in(new implementation_t());
+	}
+
+	template<class P>
+	void new_(const P &P_)
+	{
+		this->clear();
+		this->P = type::cpp_in(new implementation_t(P_));
+	}
+
 private:
 	pointer_t P;	
 };
-
-template<class T>
-class new_t: public meta::identity<pointer<implementation<T> > > {};
-
-template<class T>
-typename new_t<T>::type::move_t new_()
-{
-	typedef typename new_t<T>::type::interface_t interface_t;
-	return base::move_copy(type::cpp_in(new interface_t()));
-}
-
-template<class T, class P>
-typename new_t<T>::type::move_t new_(const P &P_)
-{
-	typedef typename new_t<T>::type::interface_t interface_t;
-	return base::move_copy(type::cpp_in(new interface_t(P_)));
-}
 
 }
 }

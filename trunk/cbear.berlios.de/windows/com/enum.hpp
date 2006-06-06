@@ -51,6 +51,10 @@ public:
 	{
 		Archive & boost::serialization::make_nvp("enum", this->internal());
 	}
+	void move_assign(enum_t &F)
+	{
+		this->internal() = F.internal();
+	}
 protected:
 	enum_t() {}
 	enum_t(ValueType X): policy::wrap<Type, ValueType, enum_policy<ValueType> >(X) 

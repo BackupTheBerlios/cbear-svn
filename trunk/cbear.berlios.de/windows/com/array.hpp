@@ -80,6 +80,14 @@ public:
 		for(const_range_type R(*this); !R.empty(); ++R.begin())
 			stream::binary::write(S, R.front());
 	}
+
+	void move_assign(array_t &A)
+	{
+		for(range_type R(*this), RA(A); !R.empty(); ++R.begin(), ++RA.begin())
+		{
+			move::assign(R.front(), RA.front());
+		}
+	}
 };
 
 }
