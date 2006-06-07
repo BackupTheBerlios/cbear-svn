@@ -36,21 +36,31 @@ namespace com
 namespace static_
 {
 
-template<class B, class I = B>
+template<class T>
+class implementation;
+
+template<class T, class B, class I = B>
 class interface_;
 
-template<class B, class I>
-class interface_content: public interface_<B, ::IUnknown>
+template<class T, class B, class I>
+class interface_content: public interface_<T, B, ::IUnknown>
 {
 };
 
-template<class B>
-class interface_content<B, ::IUnknown>: public B
+template<class T, class B>
+class interface_content<T, B, ::IUnknown>: public B
 {
+protected:
+	typedef implementation<T> implementation_t;
+	typedef typename T::template implementation_t<implementation_t> base_t;
+	base_t &base()
+	{
+		return *static_cast<base_t>(static_cast<implementation_t *>(this));
+	}
 };
 
-template<class B, class I>
-class interface_: public interface_content<B, I>
+template<class T, class B, class I>
+class interface_: public interface_content<T, B, I>
 {
 protected:
 	iunknown::move_t query_interface(const uuid &U) throw()
@@ -63,14 +73,14 @@ protected:
 	}
 };
 
-template<class L>
+template<class T, class L>
 class interface_list: 
-	public interface_<typename L::front::type>, 
-	public interface_list<typename L::pop_front::type>
+	public interface_<T, typename L::front::type>, 
+	public interface_list<T, typename L::pop_front::type>
 {
 protected:
-	typedef interface_<typename L::front::type> interface_t;
-	typedef interface_list<typename L::pop_front::type> pop_front_t;
+	typedef interface_<T, typename L::front::type> interface_t;
+	typedef interface_list<T, typename L::pop_front::type> pop_front_t;
 	iunknown::move_t query_interface(const uuid &U) throw()
 	{
 		iunknown::move_t R = this->interface_t::query_interface(U);
@@ -82,8 +92,8 @@ protected:
 	}
 };
 
-template<>
-class interface_list<meta::list>
+template<class T>
+class interface_list<T, meta::list>
 {
 protected:
 	iunknown::move_t query_interface(const uuid &) throw()
@@ -95,12 +105,12 @@ protected:
 template<class T>
 class implementation: 
 	public T::template implementation_t<implementation<T> >,
-	public interface_list<typename T::interface_list_t>
+	public interface_list<T, typename T::interface_list_t>
 {
 public:
 
 	typedef typename T::template implementation_t<implementation> base_t;
-	typedef interface_list<typename T::interface_list_t> interface_list_t;
+	typedef interface_list<T, typename T::interface_list_t> interface_list_t;
 
 	typedef com::pointer<implementation> pointer_t;
 
