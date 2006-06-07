@@ -82,7 +82,7 @@ protected:
 	template<class T1>
 	t_base(const t_base<T1> &B) 
 	{ 
-		move::assign(this->A, B->get()); 
+		move::assign(this->A, B.get());
 	}
 	explicit t_base(T &B) 
 	{ 
