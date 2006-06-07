@@ -531,10 +531,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template 
 	match="odl:parameter[odl:attribute/@id='in' and odl:attribute/@id='out']"
 	mode="odl:cpp.parameter.io">
-	<id.ref type="|">
-		<id.ref id="in"/>
-		<id.ref id="out"/>
-	</id.ref>
+	<id.ref id="in_out"/>
 </xsl:template>
 
 <xsl:template match="odl:parameter" mode="odl:cpp.method.call">
