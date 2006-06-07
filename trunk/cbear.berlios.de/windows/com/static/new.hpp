@@ -33,52 +33,45 @@ namespace static_
 {
 
 template<class T>
-class implementation
+class implementation: public T::template t<implementation<T> >
 {
 public:
-	implementation() {}
-	implementation(const P &P_) {}
-	void clear() throw()
+
+	typedef T::template t<implementation<T> > base_t;
+
+	typedef com::pointer<implementation> pointer_t;
+
+	implementation() 
 	{
+	}
+
+	implementation(const P &P_): 
+		base_t(P_)
+	{
+	}		
+
+	static typename pointer_t::move_t this_pointer(base_t &B)
+	{
+		return move::copy(pointer_t::cpp_in_cast(
+			&static_cast<implementation &>(B)));
 	}
 };
 
 template<class T>
-class owner
+typename pointer<implementation<T> >::move_t new_()
 {
-public:
 	typedef implementation<T> implementation_t;
 	typedef pointer<implementation_t> pointer_t;
+	return move::copy(pointer_t::cpp_in_cast(new implementation_t()));
+}
 
-	~owner()
-	{
-		this->clear();
-	}
-
-	void clear() throw()
-	{
-		if(this->P)
-		{
-			this->P->clear();
-		}
-	}
-
-	void new_()
-	{
-		this->clear();
-		this->P = type::cpp_in(new implementation_t());
-	}
-
-	template<class P>
-	void new_(const P &P_)
-	{
-		this->clear();
-		this->P = type::cpp_in(new implementation_t(P_));
-	}
-
-private:
-	pointer_t P;	
-};
+template<class T, class P>
+typename pointer<implementation<T> >::move_t new_(const P &P_)
+{
+	typedef implementation<T> implementation_t;
+	typedef pointer<implementation_t> pointer_t;
+	return move::copy(pointer_t::cpp_in_cast(new implementation_t(P_)));
+}
 
 }
 }

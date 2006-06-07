@@ -34,10 +34,7 @@ namespace detail
 {
 
 template<class To, class From>
-struct safe_reinterpret_cast_traits;
-
-template<class To, class From>
-struct safe_reinterpret_cast_traits<To *, From *>
+struct safe_reinterpret_cast_traits
 {
 	typedef To to_type;
 	typedef From from_type;
@@ -45,6 +42,13 @@ struct safe_reinterpret_cast_traits<To *, From *>
 
 template<class To, class From>
 struct safe_reinterpret_cast_traits<To &, From>
+{
+	typedef To to_type;
+	typedef From from_type;
+};
+
+template<class To, class From>
+struct safe_reinterpret_cast_traits<To *, From *>
 {
 	typedef To to_type;
 	typedef From from_type;
