@@ -140,19 +140,19 @@ public:
 
 	const t &operator=(const t &B) const 
 	{ 
-		move::assign(this->get(), *B); 
+		move::assign(this->get(), B.get()); 
 	}
 
 	template<class T1>
 	const t &operator=(const t<T1> &B) const 
 	{ 
-		move::assign(this->get(), *B); 
+		move::assign(this->get(), B.get()); 
 	}
 
 	template<class T1>
 	void assign(const t<T1> &B) const 
 	{ 
-		move::assign(this->get(), *B); 
+		move::assign(this->get(), B.get()); 
 	}
 
 	template<class T1>
