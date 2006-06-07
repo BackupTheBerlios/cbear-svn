@@ -42,36 +42,113 @@ void assign(To &T, From &F)
 }
 
 template<class T>
-class t
+class t_base
 {
 public:
+	typedef T &reference;
+	typedef T *pointer;
+	T &get() const throw()
+	{ 
+		return this->A; 
+	}
+protected:
+	t_base() {}
+	t_base(const t_base &B) 
+	{ 
+		move::assign(this->A, B.A);
+	}
+	template<class T1>
+	t_base(const t_base<T1> &B) 
+	{ 
+		move::assign(this->A, B->get()); 
+	}
+	explicit t_base(T &B) 
+	{ 
+		move::assign(this->A, B);
+	}
+private:
+	mutable T A;
+};
+
+template<class T>
+class t_base<T &>
+{
+public:
+	typedef T &reference;
+	typedef T *pointer;
+	T &get() const 
+	{ 
+		return this->A; 
+	}
+protected:
+	t_base(T &A): 
+		A(A) 
+	{
+	}
+private:
+	mutable T &A;
+	// anti VC 8.0 warning
+	t_base &operator=(const t_base &);
+};
+
+template<class T>
+class t: public t_base<T>
+{
+private:
+
+	typedef t_base<T> base_t;
+
+public:
+
+	typedef typename base_t::reference reference;
+	typedef typename base_t::pointer pointer;
 
 	t() {}
 
-	t(const t &B) { move::assign(this->A, *B); }
+	template<class T1>
+	t(const t<T1> &B):
+		base_t(B) 
+	{
+	}
+
+	explicit t(reference B): 
+		base_t(B) 
+	{
+	}
+
+	const t &operator=(const t &B) const 
+	{ 
+		move::assign(this->get(), *B); 
+	}
 
 	template<class T1>
-	t(const t<T1> &B) { move::assign(this->A, *B); }
-
-	explicit t(T &B) { move::assign(this->A, B); }
-
-	const t &operator=(const t &B) const { move::assign(this->A, *B); }
-
-	template<class T1>
-	const t &operator=(const t<T1> &B) const { move::assign(this->A, *B); }
+	const t &operator=(const t<T1> &B) const 
+	{ 
+		move::assign(this->get(), *B); 
+	}
 
 	template<class T1>
-	void assign(T &B) const { move::assign(this->A, B); }
+	void assign(const t<T1> &B) const 
+	{ 
+		move::assign(this->get(), *B); 
+	}
 
 	template<class T1>
-	void assign(const t<T1> &B) const { move::assign(this->A, *B); }
+	void assign(T1 &B) const 
+	{ 
+		move::assign(this->get(), B); 
+	}
 
-	T &get() const { return this->A; }
-	T &operator*() const { return this->A; }
-	T *operator->() const { return &this->A; }
+	using base_t::get;
 
-private:
-	mutable T A;
+	reference operator*() const 
+	{ 
+		return this->get(); 
+	}
+	pointer operator->() const 
+	{ 
+		return &this->get();
+	}
 };
 
 template<class T>
@@ -80,6 +157,12 @@ t<T> copy(const T &B)
 	t<T> C;
 	*C = B;
 	return C;
+}
+
+template<class T>
+t<T &> ref(T &B)
+{
+	return t<T &>(B);
 }
 
 }

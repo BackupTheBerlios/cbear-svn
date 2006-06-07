@@ -193,6 +193,14 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="move"
+			>
+			<File
+				RelativePath="..\move\main.test.cpp"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\main.cpp"
 			>
