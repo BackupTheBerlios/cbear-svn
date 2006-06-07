@@ -108,6 +108,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:apply-templates select="." mode="prj:converter"/>
 </xsl:template>
 
+<xsl:template match="attribution" mode="prj:converter"/>
+
+<xsl:template match="literallayout" mode="prj:converter">
+	<literallayout date="{../attribution}">
+		<xsl:apply-templates select="*|text()" mode="prj:converter"/>
+	</literallayout>
+</xsl:template>
+
+<xsl:template match="blockquote" mode="prj:converter">
+	<section name="{title}">
+		<xsl:apply-templates select="*|text()" mode="prj:converter"/>
+	</section>
+</xsl:template>
+
 <xsl:template match="section" mode="prj:converter.section">
 	<xsl:param name="filename"/>
 	<section name="{title}">

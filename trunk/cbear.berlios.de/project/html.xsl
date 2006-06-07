@@ -158,6 +158,31 @@ pre
 		<xsl:apply-templates select="." mode="prj:html.a"/>
 	</a>
 </xsl:template>
+	
+<!-- sectioninfo -->
+	
+<xsl:template match="prj:sectioninfo" mode="prj:html">
+	<xsl:apply-templates select="*" mode="prj:html"/>
+</xsl:template>
+
+<!-- literallayout -->
+
+<xsl:template match="prj:literallayout" mode="prj:html">
+	<div style="text-align: center; border: none;">
+		<table style="margin: auto auto auto auto;">
+			<tr>
+				<td>
+					<pre style="border: none; background-color: white; font-family: sans-serif; font-size: 10pt; text-align: left;">
+						<xsl:apply-templates select="*|text()" mode="prj:html"/>
+					</pre>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<p style="text-align: right;">
+		<em><xsl:value-of select="@date"/></em>
+	</p>
+</xsl:template>
 
 <!-- section -->
 
