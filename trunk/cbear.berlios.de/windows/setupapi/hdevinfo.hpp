@@ -61,7 +61,7 @@ public:
 
 	com::uuid &ClassGuid() 
 	{ 
-		return com::uuid::cpp_in_out(&this->internal().ClassGuid); 
+		return com::uuid::cpp_in_out_cast(&this->internal().ClassGuid); 
 	}
 	const com::uuid &ClassGuid() const 
 	{ 

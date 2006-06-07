@@ -72,6 +72,11 @@ public:
 		this->V.Data4[7] = D47;
 	}
 
+	bool operator==(const uuid &B) const
+	{
+		return (this->V == B.V) != 0;
+	}
+
 public:
 
 	template<class S>
@@ -130,17 +135,17 @@ public:
 		return &this->V;
 	}
 
-	static const uuid &cpp_in(c_in_t V) throw()
+	static const uuid &cpp_in_cast(c_in_t V) throw()
 	{
 		return *base::safe_reinterpret_cast<const uuid *>(V);
 	}
 
-	static uuid &cpp_out(c_out_t V) throw()
+	static uuid &cpp_out_cast(c_out_t V) throw()
 	{
 		return *base::safe_reinterpret_cast<uuid *>(V);
 	}
 
-	static uuid &cpp_in_out(c_in_out_t V) throw()
+	static uuid &cpp_in_out_cast(c_in_out_t V) throw()
 	{
 		return *base::safe_reinterpret_cast<uuid *>(V);
 	}
@@ -154,7 +159,7 @@ public:
 	public:
 		static const uuid &create() throw()
 		{
-			return cpp_in(&__uuidof(I));
+			return cpp_in_cast(&__uuidof(I));
 		}
 	};
 

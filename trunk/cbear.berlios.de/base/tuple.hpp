@@ -643,10 +643,15 @@ public:
 	// erase, erase_c
 	template<std::size_t N1, std::size_t N2 = N1 + 1>
 	class erase_c_t: public base_t::template erase_c_t<N1, N2>::type {};
-	template<std::size_t N1, std::size_t N2 = N1 + 1>
+	template<std::size_t N1, std::size_t N2>
 	typename erase_c_t<N1, N2>::type erase_c() const
 	{
 		return erase_c_t<N1, N2>::make(*this);
+	}
+	template<std::size_t N1>
+	typename erase_c_t<N1, N1 + 1>::type erase_c() const
+	{
+		return erase_c_t<N1>::make(*this);
 	}
 	template<class N1, class N2 = typename N1::next>
 	class erase_t: public erase_c_t<N1::value, N2::value> {};

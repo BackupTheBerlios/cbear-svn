@@ -261,7 +261,7 @@ namespace detail
 
 // list.
 template<class Front, class PopFront>
-class list: private list_base<Front, PopFront>
+class list: public list_base<Front, PopFront>
 {
 private:
 	typedef list_base<Front, PopFront> base;

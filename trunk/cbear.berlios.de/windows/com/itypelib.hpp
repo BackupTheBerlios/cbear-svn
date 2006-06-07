@@ -47,11 +47,11 @@ public:
 	// globally unique library ID.
 	uuid &guid() 
 	{ 
-		return uuid::cpp_in_out(&this->internal().guid); 
+		return uuid::cpp_in_out_cast(&this->internal().guid); 
 	}
 	const uuid &guid() const 
 	{ 
-		return uuid::cpp_in(&this->internal().guid); 
+		return uuid::cpp_in_cast(&this->internal().guid); 
 	}
 	// Locale of the TypeLibrary.
 	lcid_t &lcid() 

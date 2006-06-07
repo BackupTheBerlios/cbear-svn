@@ -24,6 +24,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_NEW_HPP_INCLUDED
 
 #include <cbear.berlios.de/windows/com/pointer.hpp>
+#include <cbear.berlios.de/windows/com/iunknown.hpp>
+#include <cbear.berlios.de/meta/list.hpp>
 
 namespace cbear_berlios_de
 {
@@ -34,12 +36,71 @@ namespace com
 namespace static_
 {
 
+template<class B, class I = B>
+class interface_;
+
+template<class B, class I>
+class interface_content: public interface_<B, ::IUnknown>
+{
+};
+
+template<class B>
+class interface_content<B, ::IUnknown>: public B
+{
+};
+
+template<class B, class I>
+class interface_: public interface_content<B, I>
+{
+protected:
+	iunknown::move_t query_interface(const uuid &U) throw()
+	{
+		if(uuid::of<I>()==U)
+		{
+			return move::copy(iunknown::cpp_in_cast(static_cast<I *>(this)));
+		}
+		return iunknown::move_t();
+	}
+};
+
+template<class L>
+class interface_list: 
+	public interface_<typename L::front::type>, 
+	public interface_list<typename L::pop_front::type>
+{
+protected:
+	typedef interface_<typename L::front::type> interface_t;
+	typedef interface_list<typename L::pop_front::type> pop_front_t;
+	iunknown::move_t query_interface(const uuid &U) throw()
+	{
+		iunknown::move_t R = this->interface_t::query_interface(U);
+		if(*R) 
+		{
+			return R;
+		}
+		return this->pop_front_t::query_interface(U);
+	}
+};
+
+template<>
+class interface_list<meta::list>
+{
+protected:
+	iunknown::move_t query_interface(const uuid &) throw()
+	{
+		return iunknown::move_t();
+	}
+};
+
 template<class T>
-class implementation: public T::template t<implementation<T> >
+class implementation: 
+	public T::template implementation_t<implementation<T> >,
+	public interface_list<typename T::interface_list_t>
 {
 public:
 
-	typedef typename T::template t<implementation> base_t;
+	typedef typename T::template implementation_t<implementation> base_t;
+	typedef interface_list<typename T::interface_list_t> interface_list_t;
 
 	typedef com::pointer<implementation> pointer_t;
 
@@ -58,6 +119,38 @@ public:
 		return move::copy(pointer_t::cpp_in_cast(
 			&static_cast<implementation &>(B)));
 	}
+
+// ::IUnknown
+#if 1
+
+	ulong_t __stdcall AddRef()
+	{
+		return this->Counter.increment();
+	}
+
+	ulong_t __stdcall Release()
+	{
+		ulong_t R = this->Counter.decrement();
+		if(!R)
+		{
+			delete this;
+			return 0;
+		}
+		return R;
+	}
+
+	hresult::internal_type __stdcall QueryInterface(
+		const uuid::internal_type &U, void **PP)
+	{
+		iunknown &P = iunknown::cpp_out_cast(reinterpret_cast<iunknown::c_out_t>(PP));
+		P = this->interface_list_t::query_interface(uuid::cpp_in_cast(&U));
+		return P ? hresult::s_ok: hresult::e_nointerface;
+	}
+
+#endif
+
+private:
+	atomic::wrap<ulong_t> Counter;
 };
 
 template<class T>
