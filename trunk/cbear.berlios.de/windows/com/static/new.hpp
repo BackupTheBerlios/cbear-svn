@@ -23,6 +23,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_NEW_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_NEW_HPP_INCLUDED
 
+#include <cbear.berlios.de/windows/com/pointer.hpp>
+
 namespace cbear_berlios_de
 {
 namespace windows
@@ -37,7 +39,7 @@ class implementation: public T::template t<implementation<T> >
 {
 public:
 
-	typedef T::template t<implementation<T> > base_t;
+	typedef typename T::template t<implementation> base_t;
 
 	typedef com::pointer<implementation> pointer_t;
 
@@ -45,6 +47,7 @@ public:
 	{
 	}
 
+	template<class P>
 	implementation(const P &P_): 
 		base_t(P_)
 	{
