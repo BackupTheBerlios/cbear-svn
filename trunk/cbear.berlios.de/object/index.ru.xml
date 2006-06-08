@@ -23,7 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <?xml-stylesheet type="text/xsl" href="../project/html.xsl"?>
 <section 
-	xmlns="http://cbear.berlios.de/project" name="С++ объекты">
+	xmlns="http://cbear.berlios.de/project" name="Взаимодействие C и C++">
 	<p>
 Есть необходимость создавать и работать с COM объектами (указателями на 
 интерфейсы, структурами, динамическими массивами (SAFEARRAY), строками (BSTR) 
