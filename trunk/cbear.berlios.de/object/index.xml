@@ -21,29 +21,9 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
-<?xml-stylesheet type="text/xsl" href="project/html.xsl"?>
-<section xmlns="http://cbear.berlios.de/project" name="Documentation">	
-	<section name="C++ Libraries">		
-		<p>
-Each class should implement swap and move constructor.
-		</p>
-		<section href="base/index.xml"/>
-		<section href="bit/index.xml"/>
-		<section href="policy/index.xml"/>
-		<section href="range/index.xml"/>
-		<section href="atomic/index.xml"/>
-		<section href="meta/index.xml"/>
-		<section href="object/index.xml"/>
+<?xml-stylesheet type="text/xsl" href="../project/html.xsl"?>
+<section xmlns="http://cbear.berlios.de/project" name="Objects">
+	<section name="Russian">
+		<section href="index.ru.xml"/>
 	</section>
-	<section name="XSLT Libraires">	
-		<section href="text/index.xml"/>
-		<section href="url/index.xml"/>
-		<section href="docbook/index.xml"/>
-		<section href="test/index.xml"/>
-	</section>
-	<section href="xsd/index.xml"/>
-	<section href="windows/index.xml"/>
-	<section href="cpp/index.xml"/>
-	<section href="api/index.xml"/>
-	<section href="others/index.ru.xml"/>
 </section>
