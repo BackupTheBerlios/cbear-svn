@@ -22,7 +22,8 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <?xml-stylesheet type="text/xsl" href="../project/html.xsl"?>
-<section xmlns="http://cbear.berlios.de/project" name="Objects">
+<section 
+	xmlns="http://cbear.berlios.de/project" name="Using C Libraries">
 	<section name="Russian">
 		<section href="index.ru.xml"/>
 	</section>
