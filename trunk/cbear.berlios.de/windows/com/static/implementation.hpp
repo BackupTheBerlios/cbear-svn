@@ -20,10 +20,12 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_NEW_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_NEW_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_IMPLEMENTATION_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_IMPLEMENTATION_HPP_INCLUDED
 
-#include <cbear.berlios.de/windows/com/static/interface_list.hpp>
+#include <cbear.berlios.de/windows/com/pointer.hpp>
+#include <cbear.berlios.de/windows/com/iunknown.hpp>
+#include <cbear.berlios.de/meta/list.hpp>
 
 namespace cbear_berlios_de
 {
@@ -94,22 +96,6 @@ public:
 private:
 	atomic::wrap<ulong_t> Counter;
 };
-
-template<class T>
-typename pointer<implementation<T> >::move_t new_()
-{
-	typedef implementation<T> implementation_t;
-	typedef pointer<implementation_t> pointer_t;
-	return move::copy(pointer_t::cpp_in_cast(new implementation_t()));
-}
-
-template<class T, class P>
-typename pointer<implementation<T> >::move_t new_(const P &P_)
-{
-	typedef implementation<T> implementation_t;
-	typedef pointer<implementation_t> pointer_t;
-	return move::copy(pointer_t::cpp_in_cast(new implementation_t(P_)));
-}
 
 }
 }
