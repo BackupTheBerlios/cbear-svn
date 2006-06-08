@@ -33,7 +33,7 @@ Each class should implement swap and move constructor.
 		<section href="range/index.xml"/>
 		<section href="atomic/index.xml"/>
 		<section href="meta/index.xml"/>
-		<section href="object/index.xml"/>
+		<section href="c/index.xml"/>
 	</section>
 	<section name="XSLT Libraires">	
 		<section href="text/index.xml"/>
