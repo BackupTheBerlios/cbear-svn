@@ -37,8 +37,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:param name="T:vc" select="
 	'&#34;C:\Program Files\Microsoft Visual Studio 8\VC\bin\cl.exe&#34;'"/>
 
-<xsl:param name="T:boost" select="'c:/boost/include/boost-1_33_1/'"/>
-<xsl:param name="T:cbear" select="'c:/cbear/'"/>
+<xsl:param name="T:boost" select="'c:/boost/include/boost-1_33_1'"/>
+<xsl:param name="T:cbear" select="'c:/cbear'"/>
 
 <!-- directory -->
 <xsl:template name="T:dir">
@@ -101,14 +101,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:call-template name="T:compiler">
 		<xsl:with-param name="name" select="'gcc'"/>
 		<xsl:with-param name="command" select="concat(
-			$T:gpp, ' -I', $T:cbear, ' ', $name.test.cpp)"/>
+			$T:gpp, ' -I', $T:cbear, ' -I', $T:boost, ' ', $name.test.cpp)"/>
 	</xsl:call-template>
 
 	<!-- VC -->
 	<xsl:call-template name="T:compiler">
 		<xsl:with-param name="name" select="'vc'"/>
 		<xsl:with-param name="command" select="concat(
-			$T:vc, ' -nologo ', $name.test.cpp)"/>
+			$T:vc, ' -nologo -I', $T:cbear, ' -I', $T:boost, ' ', $name.test.cpp)"/>
 	</xsl:call-template>
 
 	<xsl:text>echo ^&lt;/file^&gt;&#10;</xsl:text>

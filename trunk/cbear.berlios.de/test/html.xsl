@@ -37,6 +37,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="T:compiler">
 	<td>
+		<xsl:if test="T:error/@level!=0">
+			<xsl:attribute name="class">error</xsl:attribute>
+		</xsl:if>
 		<xsl:value-of select="T:error/@level"/>
 		<pre>
 			<xsl:value-of select="T:text"/>
@@ -64,6 +67,10 @@ td
 	border-style: solid;
 	border-width: 1px; 
 	border-color: black;
+}
+.error
+{
+	color: red;
 }
 			</style>
 		</head>

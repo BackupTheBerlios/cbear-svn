@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+/*
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.berlios.de)
@@ -20,8 +19,13 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
--->
-<main 
-	xmlns="http://cbear.berlios.de/test"
-	root="../">
-</main>
+*/
+#include <cbear.berlios.de/meta/identity.hpp>
+#include <boost/static_assert.hpp>
+#include <boost/type_traits/is_same.hpp>
+
+int main()
+{
+	namespace M = cbear_berlios_de::meta;
+	BOOST_STATIC_ASSERT((boost::is_same<M::identity<char>::type, char>::value));
+}
