@@ -1,0 +1,62 @@
+What will be in the library:
+1. Reflection for all type (need to define type structure).
+2. Run-Time reflection and Compile-Time reflection.
+3. Serialization and deserialization with reflection.
+4. Unified arguments passing form.
+
+Requirements:
+1. Minimalistic overhead.
+2. Using Compile-Time reflection the code should be close to the direct use
+
+Examples:
+
+[b]1. Reflection:[/b]
+[*] Run-Time:
+[c]
+object o;
+o.invoke("f", 1); // o.f(1);
+[/c]
+[*] Compile-Time:
+[c]
+object o;
+o.invoke<f_tag>(1); // o.f(1);
+[/c]
+[*] object - Some analogue of boost::any with reflection:
+[c]
+a x;
+object o(x);
+
+o.invoke<f_tag>(1); // x.f(1);
+
+a z = object_cast<a>(o);
+[/c]
+
+[b]2. Unified arguments passing form:[/b]
+[*] in:
+[c]
+void f(in<int> x); // <=> void f(int x);
+[/c]
+[*] out:
+[c]
+void f(out<int> x); // <=> void f(int& x);
+[/c]
+[*] inout:
+[c]
+void f(inout<int> x); // <=> void f(int& x);
+[/c]
+[*] ref:
+[c]
+void f(out<int> x) // <=> void f(int& x);
+{
+ ref<int> y(x); // int& y(x);
+}
+[/c]
+[*] cref:
+[c]
+void f(in<int> x) // <=> void f(int x);
+{
+ cref<int> y(x); // int const& y(x);
+}
+[/c]
+
+[i]Code above is only an example.[/i]
