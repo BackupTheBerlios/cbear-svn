@@ -24,8 +24,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_same.hpp>
 
+namespace M = cbear_berlios_de::meta;
+
 int main()
 {
-	namespace M = cbear_berlios_de::meta;
 	BOOST_STATIC_ASSERT((boost::is_same<M::identity<char>::type, char>::value));
 }
