@@ -24,7 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_META_LIST_HPP_INCLUDED
 
 #include <cbear.berlios.de/meta/const.hpp>
-#include <cbear.berlios.de/meta/wrap.hpp>
+#include <cbear.berlios.de/meta/identity.hpp>
 #include <cstddef>
 
 namespace cbear_berlios_de
@@ -110,8 +110,8 @@ public:
 	typedef list<Front, list<> > type;
 	typedef false_ empty;
 	typedef const_<std::size_t, 1> size;
-	typedef wrap<Front> front;
-	typedef wrap<Front> back;
+	typedef identity<Front> front;
+	typedef identity<Front> back;
 	typedef list<> pop_front;
 	typedef list<> pop_back;
 
@@ -121,10 +121,10 @@ public:
 	template<class Back1>
 	class push_back: public list<Front, list<Back1> > {};
 
-	template<std::size_t>
-	class at_c;
-	template<>
-	class at_c<0>: public wrap<Front> {};
+	template<std::size_t, class = void>
+	class at_c;	
+	template<class D>
+	class at_c<0, D>: public identity<Front> {};
 
 	template<std::size_t, class>
 	class insert_c;
@@ -170,7 +170,7 @@ public:
 	typedef false_ empty;
 	// size steps.
 	typedef typename PopFront::size::next size;
-	typedef wrap<Front> front;
+	typedef identity<Front> front;
 	// size steps.
 	typedef typename PopFront::back back;
 	typedef PopFront pop_front;
@@ -188,10 +188,10 @@ public:
 	};
 
 	// N steps.
-	template<std::size_t N>
+	template<std::size_t N, class = void>
 	class at_c: public PopFront::template at_c<N - 1> {};
-	template<>
-	class at_c<0>: public wrap<Front> {};
+	template<class D>
+	class at_c<0, D>: public identity<Front> {};
 
 	// N steps.
 	template<std::size_t N, class X>
@@ -205,19 +205,21 @@ public:
 protected:
 
 	// N2 steps.
-	template<std::size_t N1, std::size_t N2>
+	template<std::size_t N1, std::size_t N2, class = void>
 	class erase_c: 
 		public list<
 			Front, typename PopFront::template erase_c<N1 - 1, N2 - 1>::type>
 	{
 	};
 	// N2 steps.
-	template<std::size_t N2>
-	class erase_c<0, N2>: public PopFront::template erase_c<0, N2 - 1>::type {};
-	template<>
-	class erase_c<0, 0>: public type {};
-	template<>
-	class erase_c<0, 1>: public PopFront {};
+	template<std::size_t N2, class D>
+	class erase_c<0, N2, D>: public PopFront::template erase_c<0, N2 - 1>::type 
+	{
+	};
+	template<class D>
+	class erase_c<0, 0, D>: public type {};
+	template<class D>
+	class erase_c<0, 1, D>: public PopFront {};
 
 	// L::size steps.
 	template<class List>
@@ -247,7 +249,7 @@ protected:
 template<class>
 class list_cast;
 template<class Front, class PopFront>
-class list_cast<list<Front, PopFront> >: public wrap<list<Front, PopFront> >
+class list_cast<list<Front, PopFront> >: public identity<list<Front, PopFront> >
 {
 };
 
