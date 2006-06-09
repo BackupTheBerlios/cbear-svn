@@ -31,7 +31,10 @@ namespace range
 {
 
 template<class Container>
-struct pointer { typedef typename traits<Container>::pointer type; };
+struct pointer 
+{ 
+	typedef typename traits<Container>::pointer type;
+};
 
 }
 }

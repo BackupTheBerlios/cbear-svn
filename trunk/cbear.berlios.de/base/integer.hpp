@@ -241,22 +241,6 @@ public:
 		if(this->X / this->P >= Base) this->X %= this->P * Base;
 	}
 
-	/*
-	template<class Char>
-	void print(std::basic_ostream<Char> &O) const
-	{
-		T PI = this->P;
-		T XI = this->X;
-		for(;;)
-		{
-			const T S = XI / PI;
-			O << Char(S + (S < 10 ? '0': 'A' - 10));
-			if(PI==1) return;
-			XI %= PI;
-			PI /= Base;
-		}
-	}
-	*/
 
 	template<class S>
 	void write(S &s) const

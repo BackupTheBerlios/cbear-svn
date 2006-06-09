@@ -94,7 +94,7 @@ public:
 	
 	template<class Range>
 	explicit iterator_range(const Range &R): 
-		wrap_type(internal_type(iterator(range::begin(R)), iterator(range::end(R)))) 
+		wrap_type(internal_type(iterator(range::begin(R)), iterator(range::end(R))))
 	{
 	}
 

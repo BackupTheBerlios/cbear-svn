@@ -52,12 +52,21 @@ public:
 	static const ::std::size_t const_size = 
 		ZeroTerminated ? RealSize - 1 : RealSize;
 
-	array_ref(type &X): wrap_type(&X) {}
+	array_ref(type &X): 
+		wrap_type(&X) 
+	{
+	}
 
 	typedef ItemType *iterator;
 
-	iterator begin() const { return *this->internal(); }
-	iterator end() const { return *this->internal(); }
+	iterator begin() const 
+	{ 
+		return *this->internal(); 
+	}
+	iterator end() const 
+	{ 
+		return *this->internal(); 
+	}
 };
 
 template<class ValueType, ::std::size_t Size>

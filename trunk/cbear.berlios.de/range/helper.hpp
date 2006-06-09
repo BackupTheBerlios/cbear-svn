@@ -63,24 +63,46 @@ public:
 	typedef typename ::std::reverse_iterator<const_iterator> 
 		const_reverse_iterator;
 
-	helper() {}
+	helper() 
+	{
+	}
 
 	template<class T>
-	helper(const T &X): Base(X) {}
+	helper(const T &X): Base(X) 
+	{
+	}
 
 	template<class T1, class T2>
-	helper(const T1 &X1, const T2 &X2): Base(X1, X2) {}
+	helper(const T1 &X1, const T2 &X2): 
+		Base(X1, X2) 
+	{
+	}
 	
-	bool empty() const { return This().begin()==This().end(); }
+	bool empty() const 
+	{ 
+		return This().begin()==This().end(); 
+	}
 	size_type size() const 
 	{ 
 		return size_type(::std::distance(This().begin(), This().end())); 
 	}
 	
-	reference front() { return *This().begin(); }
-	const_reference front() const { return *This().begin(); }
-	reference back() { return *boost::prior(This().end()); }
-	const_reference back() const { return *boost::prior(This().end()); }
+	reference front() 
+	{ 
+		return *This().begin(); 
+	}
+	const_reference front() const 
+	{ 
+		return *This().begin(); 
+	}
+	reference back() 
+	{ 
+		return *boost::prior(This().end()); 
+	}
+	const_reference back() const 
+	{ 
+		return *boost::prior(This().end()); 
+	}
 	reference operator[](size_type I)
 	{
 		return *boost::next(This().begin(), I);

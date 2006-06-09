@@ -31,7 +31,10 @@ namespace range
 {
 
 template<class Container>
-struct iterator { typedef typename traits<Container>::iterator type; };
+struct iterator 
+{ 
+	typedef typename traits<Container>::iterator type; 
+};
 
 }
 }

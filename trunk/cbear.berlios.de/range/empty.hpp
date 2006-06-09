@@ -31,7 +31,10 @@ namespace range
 {
 
 template<class Container>
-bool empty(const Container &X) { return traits<const Container>::empty(X); }
+bool empty(const Container &X) 
+{ 
+	return traits<const Container>::empty(X); 
+}
 
 }
 }
