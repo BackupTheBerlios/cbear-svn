@@ -32,10 +32,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:output method="text"/>
 
-<xsl:param name="T:gpp" select="'c:/mingw/bin/g++'"/>
-<xsl:param name="T:boost" select="'c:/boost/include/boost-1_33_1'"/>
-<xsl:param name="T:cbear" select="'c:/cbear'"/>
+<!-- parameters -->
+<xsl:param name="T:gpp" select="'c:/mingw/bin/g++.exe'"/>
+<xsl:param name="T:boost" select="'c:/boost/include/boost-1_33_1/'"/>
+<xsl:param name="T:cbear" select="'c:/cbear/'"/>
 
+<!-- directory -->
 <xsl:template name="T:dir">
 	<xsl:param name="path"/>
 	<xsl:value-of select="concat('rem ', $path, '&#10;')"/>
@@ -45,10 +47,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:apply-templates>
 </xsl:template>
 
-<!-- unknown -->
+<!-- SVN unknown -->
 <xsl:template match="S:entry"/>
 
-<!-- directory -->
+<!-- SVN directory -->
 <xsl:template match="S:entry[@kind='dir']">
 	<xsl:param name="path"/>
 	<xsl:call-template name="T:dir">
@@ -56,10 +58,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:call-template>
 </xsl:template>
 
-<!-- current directory -->
+<!-- SVN current directory -->
 <xsl:template match="S:entry[@name='']"/>
 
-<!-- *.hpp -->
+<!-- SVN *.hpp -->
 <xsl:template match="S:entry[
 	substring(@name, string-length(@name) - 3, 4)='.hpp' and @kind='file']">
 
@@ -74,6 +76,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		$T:gpp, ' -I', $T:cbear, ' ', $name.test.cpp, '&#10;')"/>
 </xsl:template>
 
+<!-- entry point -->
 <xsl:template match="T:main">
 	<xsl:call-template name="T:dir">
 		<xsl:with-param name="path" select="@root"/>
