@@ -39,9 +39,6 @@ namespace cbear_berlios_de
 namespace windows
 {
 
-// Signed integral type for pointer precision. Use when casting a pointer to an
-// integer to perform pointer arithmetic.
-typedef INT_PTR int_ptr_t;
 // Unsigned integral type for pointer precision. Use when casting a pointer to 
 // an integer to perform pointer arithmetic.
 typedef UINT_PTR uint_ptr_t;
