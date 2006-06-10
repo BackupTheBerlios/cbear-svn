@@ -131,9 +131,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:text>echo ^&lt;?xml version="1.0"?^&gt;&#10;</xsl:text>
 	<xsl:text>echo ^&lt;?xml-stylesheet type="text/xsl" href="html.xsl"?^&gt;&#10;</xsl:text>
 	<xsl:text>echo ^&lt;report xmlns="http://cbear.berlios.de/test"^&gt;&#10;</xsl:text>
-	<!--
 	<xsl:text>call "C:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat"&#10;</xsl:text>
-	-->
 	<xsl:call-template name="T:dir">
 		<xsl:with-param name="path" select="@root"/>
 	</xsl:call-template>
