@@ -39,10 +39,6 @@ namespace cbear_berlios_de
 namespace windows
 {
 
-// Unsigned integral type for pointer precision. Use when casting a pointer to 
-// an integer to perform pointer arithmetic.
-typedef UINT_PTR uint_ptr_t;
-
 // 8-bit Windows (ANSI) character.
 typedef CHAR char_t;
 // Byte (8 bits).

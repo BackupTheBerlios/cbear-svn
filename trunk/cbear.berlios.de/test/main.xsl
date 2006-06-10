@@ -110,7 +110,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:call-template name="T:compiler">
 		<xsl:with-param name="name" select="'vc'"/>
 		<xsl:with-param name="command" select="concat(
-			$T:vc, ' -nologo -I', $T:cbear, ' -I', $T:boost, ' ', $name.test.cpp)"/>
+			$T:vc, ' -nologo -EHs -EHc -I', $T:cbear, ' -I', $T:boost, ' ', $name.test.cpp)"/>
 	</xsl:call-template>
 
 	<!-- DM -->
@@ -131,6 +131,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:text>echo ^&lt;?xml version="1.0"?^&gt;&#10;</xsl:text>
 	<xsl:text>echo ^&lt;?xml-stylesheet type="text/xsl" href="html.xsl"?^&gt;&#10;</xsl:text>
 	<xsl:text>echo ^&lt;report xmlns="http://cbear.berlios.de/test"^&gt;&#10;</xsl:text>
+	<xsl:text>call "C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\SetEnv.Cmd"&#10;</xsl:text>
 	<xsl:text>call "C:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat"&#10;</xsl:text>
 	<xsl:call-template name="T:dir">
 		<xsl:with-param name="path" select="@root"/>

@@ -37,6 +37,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/base/integer.hpp>
 // cbear_berlios_de::base::is_character
 #include <cbear.berlios.de/base/character.hpp>
+// cbear_berlios_de::meta::if
+#include <cbear.berlios.de/meta/if.hpp>
 
 namespace cbear_berlios_de
 {
@@ -125,8 +127,9 @@ struct array_traits
 	}
 };
 
-template<class Container, bool IsClass = boost::is_class<Container>::value>
-struct std_traits
+template<class Container /*, bool IsClass = boost::is_class<Container>::value*/>
+struct std_traits:
+	public meta::if_<boost::is_class<Container>, class_std_traits<Container> >
 {
 	typedef Container container;
 	typedef base::undefined iterator;
@@ -138,10 +141,12 @@ struct std_traits
 	typedef base::undefined size_type;
 };
 
+/*
 template<class Container>
 struct std_traits<Container, true>: class_std_traits<Container>
 {
 };
+*/
 
 }
 
