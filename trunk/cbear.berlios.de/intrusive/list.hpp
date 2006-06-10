@@ -109,6 +109,9 @@ public:
 		pointer P;
 	};
 
+	// Because of DMC.
+	friend class iterator;
+
 private:
 
 	pointer Prev;
@@ -171,7 +174,7 @@ public:
 
 		iterator &operator--()
 		{
-			this->base_node::iterator::operator--();
+			this->basic_node::iterator::operator--();
 			return *this;
 		}
 
@@ -214,7 +217,7 @@ public:
 	void push_back(reference R) { this->end().insert(R); }
 
 	void pop_front() { this->begin().erase(); }
-	void pop_back() { boost::prev(this->end()).erase(); }
+	void pop_back() { boost::prior(this->end()).erase(); }
 private:
 	mutable node<ValueType> Node;
 };
