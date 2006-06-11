@@ -23,5 +23,5 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <main 
 	xmlns="http://cbear.berlios.de/test"
-	root="../pp/">
+	root="../base/">
 </main>

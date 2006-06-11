@@ -20,46 +20,10 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_BASE_SELECT_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_BASE_SELECT_HPP_INCLUDED
+#include <cbear.berlios.de/base/select.hpp>
 
-// std::size_t
-#include <cstddef>
-#include <cbear.berlios.de/pp/widen.hpp>
-
-namespace cbear_berlios_de
+int main()
 {
-namespace base
-{
-
-template<class Char, class A, class W>
-struct select_traits;
-
-template<class A, class W>
-struct select_traits<char, A, W>
-{
-	typedef A type;
-	static type get(A X, W ) { return X; }
-};
-
-template<class A, class W>
-struct select_traits<wchar_t, A, W>
-{
-	typedef W type;
-	static type get(A, W X) { return X; }
-};
-
-template<class C, class A, class W>
-typename select_traits<C, const A &, const W &>::type 
-select(const A &A_, const W &W_)
-{
-	return select_traits<C, const A &, const W &>::get(A_, W_);
+	::cbear_berlios_de::base::select<char>("Hello world!", L"Hello world!");
+	//CBEAR_BERLIOS_DE_BASE_SELECT(char, "Hello world!");
 }
-
-}
-}
-
-#define CBEAR_BERLIOS_DE_BASE_SELECT(Char, X) \
-	::cbear_berlios_de::base::select<Char>(X, CBEAR_BERLIOS_DE_PP_WIDEN(X))
-
-#endif

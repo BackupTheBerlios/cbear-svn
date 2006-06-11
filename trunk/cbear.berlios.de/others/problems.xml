@@ -110,4 +110,21 @@ class B: public A<B>
 {
 };]]></pre>
 	</section>
+	<section name="Ambiguous Call">
+<pre><![CDATA[template<class C, class T1>
+void A(T1)
+{
+}
+template<class C, unsigned int S>
+void A(const char (&)[S])
+{
+}
+int main()
+{
+	A<int>("H");
+}]]></pre>
+Workaround:
+<pre><![CDATA[
+]]></pre>
+	</section>
 </section>
