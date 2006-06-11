@@ -127,4 +127,24 @@ Workaround:
 <pre><![CDATA[
 ]]></pre>
 	</section>
+	<section name="Array Reference">
+<pre><![CDATA[const char Qwerty[] = "QWERTY";
+
+template<class M>
+void T1(const M &X)
+{
+}
+
+template<class M>
+void T1(M &X)
+{
+}
+
+int main()
+{
+	T1(Qwerty); // DMC - error.
+}]]></pre>
+Workaround:
+<pre><![CDATA[]]></pre>
+	</section>
 </section>

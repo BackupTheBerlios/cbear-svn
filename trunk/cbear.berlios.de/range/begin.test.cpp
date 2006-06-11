@@ -20,34 +20,56 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_BASE_INITIALIZED_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_BASE_INITIALIZED_HPP_INCLUDED
+#include <cbear.berlios.de/range/begin.hpp>
 
-namespace cbear_berlios_de
-{
-namespace base
-{
+namespace R = cbear_berlios_de::range;
 
-template<class T>
-class initialized
+const char Qwerty[] = "QWERTY";
+char QwertyM[15] = "QWERTY";
+
+template<class M>
+void T1(const M &X)
+{
+	//X.get();
+}
+
+template<class M>
+void T1(M &X)
+{
+	//X.get();
+}
+
+template<class M, std::size_t S>
+class array_ref_t
 {
 public:
-
-	initialized(): V() {}
-
-	explicit initialized(const T &V): V(V) {}
-
-	T &get() throw() { return this->V; }
-	const T &get() const throw() { return this->V; }
-
-	T &operator*() throw() { return this->V; }
-	const T &operator*() const throw() { return this->V; }
-
+	explicit array_ref_t(M *B) throw():
+		B(B) 
+	{
+	}
 private:
-	T V;
+	M *B;
 };
 
-}
+template<std::size_t S, class M>
+array_ref_t<const M, S> const_array_ref(const M *B)
+{
+	return array_ref_t<const M, S>(B);
 }
 
-#endif
+template<std::size_t S, class M>
+array_ref_t<M, S> array_ref(M *B)
+{
+	return array_ref_t<M, S>(B);
+}
+
+#define MAKE_ARRAY_REF(X) array_ref<sizeof(X)/sizeof(*X)>(X)
+
+int main()
+{
+	T1(MAKE_ARRAY_REF("Qwerty"));
+	T1(MAKE_ARRAY_REF(Qwerty));
+	T1(MAKE_ARRAY_REF(QwertyM));
+	//T("QWERTY");
+	//R::begin(Qwerty);
+}

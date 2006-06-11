@@ -73,13 +73,15 @@ public:
 	typedef Iterator iterator;
 	typedef Iterator const_iterator;
 	
-	iterator_range(const iterator &Begin, const iterator &End): 
-		wrap_type(internal_type(Begin, End)) 
+	iterator_range(const iterator &B, const iterator &E): 
+		B(B),
+		E(E)
 	{
 	}
 
-	iterator_range(const iterator &Begin, const size_type &Size):
-		wrap_type(internal_type(Begin, Begin + Size))
+	iterator_range(const iterator &B, const size_type &Size):
+		B(B), 
+		E(B + Size)
 	{
 	}
 
@@ -91,13 +93,15 @@ public:
 
 	template<class Range>
 	explicit iterator_range(Range &R): 
-		wrap_type(internal_type(iterator(range::begin(R)), iterator(range::end(R)))) 
+		B(range::begin(R)), 
+		E(range::end(R))
 	{
 	}
 	
 	template<class Range>
 	explicit iterator_range(const Range &R): 
-		wrap_type(internal_type(iterator(range::begin(R)), iterator(range::end(R))))
+		B(range::begin(R)), 
+		E(range::end(R))
 	{
 	}
 
