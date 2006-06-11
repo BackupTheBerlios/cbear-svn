@@ -50,7 +50,10 @@ class exception:
 {
 public:
 
-	const char *what() const { return "::cbear_berlios_de::windows::exception"; }
+	const char *what() const throw() 
+	{ 
+		return "::cbear_berlios_de::windows::exception"; 
+	}
 
 	static void throw_if(dword_t X)
 	{
@@ -88,7 +91,7 @@ public:
 				(char_type *)&Buffer.internal(),
 				0,
 				0);
-		O << 
+		O <<
 			CBEAR_BERLIOS_DE_BASE_SELECT(
 				char_type, "cbear_berlios_de::windows::exception(0x") <<
 			base::hex(this->result()) << 

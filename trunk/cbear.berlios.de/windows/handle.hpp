@@ -266,7 +266,7 @@ public:
 	{
 		this->Close();
 		exception::scope_last_error ScopeLastError;
-		this->internal() = select<Char>(::FindFirstFileA, ::FindFirstFileW)(
+		this->internal() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::FindFirstFile)(
 			fileName.internal(),
 			&findFileData);
 	}
