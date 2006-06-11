@@ -23,6 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_RANGE_ITERATOR_RANGE_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_RANGE_ITERATOR_RANGE_HPP_INCLUDED
 
+#include <cbear.berlios.de/base/initialized.hpp>
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/range/traits.hpp>
 #include <cbear.berlios.de/range/helper.hpp>
@@ -34,6 +35,7 @@ namespace cbear_berlios_de
 namespace range
 {
 
+/*
 template<class Iterator>
 class iterator_range;
 
@@ -50,22 +52,23 @@ struct iterator_range_traits
 };
 
 }
+*/
 
 template<class Iterator>
 class iterator_range: 
-	public detail::iterator_range_traits<Iterator>::wrap_type,
-	public detail::iterator_range_traits<Iterator>::helper_type
+	//public detail::iterator_range_traits<Iterator>::wrap_type,
+	//public detail::iterator_range_traits<Iterator>::helper_type
+	public helper<iterator_range<Iterator>, Iterator, Iterator>
 {
 public:
-	typedef typename detail::iterator_range_traits<Iterator>::wrap_type wrap_type;
-	typedef typename wrap_type::internal_type internal_type;
-	typedef typename detail::iterator_range_traits<Iterator>::helper_type 
-		helper_type;
+	//typedef typename detail::iterator_range_traits<Iterator>::wrap_type wrap_type;
+	//typedef typename wrap_type::internal_type internal_type;
+	typedef helper<iterator_range, Iterator, Iterator> helper_type;
 	typedef typename helper_type::size_type size_type;
 	typedef typename helper_type::value_type value_type;
 	
 	iterator_range() {}
-	explicit iterator_range(const internal_type &X): wrap_type(X) {}
+	// explicit iterator_range(const internal_type &X): wrap_type(X) {}
 	
 	typedef Iterator iterator;
 	typedef Iterator const_iterator;
@@ -105,6 +108,12 @@ public:
 	{
 		S.push_back_range(*this);
 	}
+
+private:
+
+	typedef base::initialized<iterator> initialized_iterator;
+	
+	initialized_iterator B, E;
 };
 
 template<class Iterator>
