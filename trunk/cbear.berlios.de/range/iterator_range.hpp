@@ -111,14 +111,14 @@ template<class Iterator>
 iterator_range<Iterator> make_iterator_range(
 	const Iterator &B, const Iterator &E)
 {
-	return iterator_range<Iterator>::type(B, E);
+	return iterator_range<Iterator>(B, E);
 }
 
 template<class Iterator, class SizeType>
 iterator_range<Iterator> make_iterator_range(
 	const Iterator &B, const SizeType &Size)
 {
-	return iterator_range<Iterator>::type(B, Size);
+	return iterator_range<Iterator>(B, Size);
 }
 
 template<class Iterator>

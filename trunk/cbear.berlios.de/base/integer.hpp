@@ -245,12 +245,13 @@ public:
 	template<class S>
 	void write(S &s) const
 	{
+		typedef typename S::value_type value_type;
 		T PI = this->P;
 		T XI = this->X;
 		for(;;)
 		{
 			const T c = XI / PI;
-			s << S::value_type(c + (c < 10 ? '0': 'A' - 10));
+			s << value_type(c + (c < 10 ? '0': 'A' - 10));
 			if(PI==1) return;
 			XI %= PI;
 			PI /= Base;
