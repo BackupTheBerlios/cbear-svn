@@ -20,11 +20,34 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#include <cbear.berlios.de/range/iterator_range.hpp>
+#ifndef CBEAR_BERLIOS_DE_BASE_INITIALIZED_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_BASE_INITIALIZED_HPP_INCLUDED
 
-namespace R = cbear_berlios_de::range;
-
-int main()
+namespace cbear_berlios_de
 {
-	R::iterator_range<const char *> A("QWERTY");
+namespace base
+{
+
+template<class T>
+class initialized
+{
+public:
+
+	initilized(): V() {}
+
+	explicit initialized(const T &V): V(V) {}
+
+	T &get() throw() { return this->V; }
+	const T &get() const throw() { return this->V; }
+
+	T &operator*() throw() { return this->V; }
+	const T &operator*() const throw() { return this->V; }
+
+private:
+	T V;
+};
+
 }
+}
+
+#endif
