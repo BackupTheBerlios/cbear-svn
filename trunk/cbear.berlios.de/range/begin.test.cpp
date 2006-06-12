@@ -63,13 +63,13 @@ array_ref_t<M, S> array_ref(M *B)
 	return array_ref_t<M, S>(B);
 }
 
-#define MAKE_ARRAY_REF(X) array_ref<sizeof(X)/sizeof(*X)>(X)
+#define CBEAR_BERLIOS_DE_ARRAY_REF(X) array_ref<sizeof(X)/sizeof(*X)>(X)
 
 int main()
 {
-	T1(MAKE_ARRAY_REF("Qwerty"));
-	T1(MAKE_ARRAY_REF(Qwerty));
-	T1(MAKE_ARRAY_REF(QwertyM));
+	T1(CBEAR_BERLIOS_DE_ARRAY_REF("Qwerty"));
+	T1(CBEAR_BERLIOS_DE_ARRAY_REF(Qwerty));
+	T1(CBEAR_BERLIOS_DE_ARRAY_REF(QwertyM));
 	//T("QWERTY");
 	//R::begin(Qwerty);
 }
