@@ -85,11 +85,11 @@ public:
 	{
 	}
 
-	iterator &begin() { return this->internal().first; }
-	iterator &end() { return this->internal().second; }
+	iterator &begin() throw() { return *this->B; }
+	iterator &end() throw() { return *this->E; }
 
-	const iterator &begin() const { return this->internal().first; }
-	const iterator &end() const { return this->internal().second; }
+	const iterator &begin() const throw() { return *this->B; }
+	const iterator &end() const throw() { return *this->E; }
 
 	template<class Range>
 	explicit iterator_range(Range &R): 

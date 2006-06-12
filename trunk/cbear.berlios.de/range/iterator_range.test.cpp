@@ -28,4 +28,5 @@ namespace R = cbear_berlios_de::range;
 int main()
 {
 	R::iterator_range<const char *> A(CBEAR_BERLIOS_DE_ARRAY_REF("QWERTY"));
+	A.begin();
 }
