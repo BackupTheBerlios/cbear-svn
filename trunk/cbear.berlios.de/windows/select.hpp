@@ -26,7 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/base/select.hpp>
 
 #define CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, Name) \
-	::cbear_berlios_de::base::select<Char>(Name ## A, Name ## W)
+	::cbear_berlios_de::base::select<Char>(&Name ## A, &Name ## W)
 
 #define CBEAR_BERLIOS_DE_WINDOWS_TYPE(Char, Name) \
 	::cbear_berlios_de::base::select_traits<Char, Name ## A, Name ## W>::type
