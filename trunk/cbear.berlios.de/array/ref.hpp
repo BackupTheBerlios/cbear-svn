@@ -20,68 +20,73 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_RANGE_ARRAY_REF_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_RANGE_ARRAY_REF_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_ARRAY_REF_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_ARRAY_REF_HPP_INCLUDED
 
 #include <cbear.berlios.de/range/helper.hpp>
+#include <cbear.berlios.de/base/character.hpp>
 
 namespace cbear_berlios_de
 {
-namespace range
+namespace array
 {
 
-template<class ItemType, std::size_t RealSize, bool ZeroTerminated = false>
-class array_ref: 
-	public policy::wrap<
-		array_ref<ItemType, Size, ZeroTerminated>, ItemType(*)[RealSize]>,
-	public helper<ItemType[Size], ItemType *, ItemType *>
+template<class T, ::std::size_t RealSize>
+class ref: public helper<ref, T *, T *>
 { 
 public:
 
-	typedef 
-		policy::wrap<
-			array_ref<ItemType, Size, ZeroTerminated>, ItemType(*)[RealSize]>
-		wrap_type;
+	typedef typename boost::remove_const<T>::type value_type;
 
-	typedef typename wrap_type::internal_type internal_type;
-
-	typedef ItemType type[Size]
-
-	static const bool zero_terminated = ZeroTerminated;
+	static const bool zero_terminated = is_character<value_type>::value;
 
 	static const ::std::size_t const_size = 
-		ZeroTerminated ? RealSize - 1 : RealSize;
+		zero_terminated ? RealSize - 1 : RealSize;
 
-	array_ref(type &X): 
-		wrap_type(&X) 
+	typedef T *iterator;
+
+	explicit ref(iterator B): 
+		B(B) 
 	{
 	}
 
-	typedef ItemType *iterator;
-
 	iterator begin() const 
 	{ 
-		return *this->internal(); 
+		return this->B; 
 	}
 	iterator end() const 
 	{ 
-		return *this->internal(); 
+		return this->B + const_size; 
 	}
+
+private:
+	iterator B;
+	BOOST_STATIC_ASSERT(const_size > 0);
 };
 
-template<class ValueType, ::std::size_t Size>
-array_ref<const ValueType, Size> make_array_ref(const ValueType (&X)[Size])
+// Because of DMC.
+template< ::std::size_t Size, class T>
+ref_t<T, Size> ref(T *B)
 {
-	return array_range<const ValueType, Size>(X);
+	return ref_t(B);
 }
 
-template<class ValueType, ::std::size_t Size>
-array_range<ValueType, Size> make_array_ref(ValueType (&R)[Size])
+template< ::std::size_t Size, class T>
+ref_t<const T, Size> ref(const T (&X)[Size])
 {
-	return array_range<ValueType, Size>(X);
+	return ref_t<const T, Size>(X);
+}
+
+template< ::std::size_t Size, class T>
+raf_t<T, Size> ref(T (&X)[Size])
+{
+	return ref_t<T, Size>(X);
 }
 
 }
 }
+
+#define CBEAR_BERLIOS_DE_ARRAY_REF(X) \
+	::cbear_berlios_de::array::ref<sizeof(X)/sizeof(*(X))>(X)
 
 #endif
