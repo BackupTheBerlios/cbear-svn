@@ -23,10 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_SELECT_TRAITS_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_SELECT_TRAITS_HPP_INCLUDED
 
-// std::size_t
-#include <cstddef>
 #include <cbear.berlios.de/pp/widen.hpp>
-#include <cbear.berlios.de/base/select.hpp>
 #include <cbear.berlios.de/array/ref.hpp>
 
 namespace cbear_berlios_de
@@ -63,7 +60,7 @@ typename traits<C, const A &, const W &>::type get(const A &A_, const W &W_)
 #define CBEAR_BERLIOS_DE_SELECT_CHAR(Char, X) \
 	::cbear_berlios_de::select::get<Char>(X, CBEAR_BERLIOS_DE_PP_WIDEN(X))
 
-#define CBEAR_BERLIOS_DE_BASE_SELECT_STRING(Char, X) \
+#define CBEAR_BERLIOS_DE_SELECT_STRING(Char, X) \
 	::cbear_berlios_de::select::get<Char>( \
 		CBEAR_BERLIOS_DE_ARRAY_REF(X), \
 		CBEAR_BERLIOS_DE_ARRAY_REF(CBEAR_BERLIOS_DE_PP_WIDEN(X)))

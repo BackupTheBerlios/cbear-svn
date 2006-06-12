@@ -26,7 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/range/iterator_range.hpp>
 #include <cbear.berlios.de/range/begin.hpp>
 #include <cbear.berlios.de/range/size.hpp>
-#include <cbear.berlios.de/base/select.hpp>
+#include <cbear.berlios.de/select/traits.hpp>
 #include <cbear.berlios.de/meta/if.hpp>
 
 namespace cbear_berlios_de
