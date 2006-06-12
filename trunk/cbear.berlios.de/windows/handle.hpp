@@ -120,11 +120,11 @@ public:
 	creation_disposition(enum_ E): base_t(E) {}
 };
 
-class flags_and_attributes: public policy::wrap<flags_and_attributes, dword_t>
+class flags_and_attributes: public base::initialized<dword_t>
 {
 public:
 
-	typedef policy::wrap<flags_and_attributes, dword_t> wrap;
+	typedef base::initialized<dword_t> base_t;
 
 	enum enum_
 	{
@@ -158,7 +158,7 @@ public:
 	};
 
 	flags_and_attributes() {}
-	flags_and_attributes(enum_ E): wrap(E) {}
+	flags_and_attributes(enum_ E): base_t(E) {}
 };
 
 /*
@@ -253,7 +253,7 @@ public:
 			fileShare.get(),
 			securityAttributes.get(),
 			creationDisposition.get(),
-			flagsAndAttributes.internal(),
+			flagsAndAttributes.get(),
 			templateFile.internal());
 	}
 
