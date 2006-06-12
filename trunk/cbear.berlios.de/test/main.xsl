@@ -110,14 +110,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:call-template name="T:compiler">
 		<xsl:with-param name="name" select="'vc'"/>
 		<xsl:with-param name="command" select="concat(
-			$T:vc, ' -nologo -EHs -EHc -I', $T:cbear, ' -I', $T:boost, ' ', $name.test.cpp)"/>
+			$T:vc, ' -nologo -EHs -EHc -I', $T:cbear, ' -I', $T:boost, ' ', 
+			$name.test.cpp)"/>
 	</xsl:call-template>
 
 	<!-- DM -->
 	<xsl:call-template name="T:compiler">
 		<xsl:with-param name="name" select="'dm'"/>
 		<xsl:with-param name="command" select="concat(
-			$T:dm, ' -I', $T:dm.stlport, ' -I', $T:cbear, ' -I', $T:boost, ' ', 
+			$T:dm, ' -Ae -I', $T:dm.stlport, ' -I', $T:cbear, ' -I', $T:boost, ' ',
 			$name.test.cpp)"/>
 	</xsl:call-template>
 

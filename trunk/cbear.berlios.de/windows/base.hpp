@@ -26,6 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #pragma warning(push)
 #pragma warning(disable: 4311)
 #pragma warning(disable: 4312)
+#include <basetsd.h>
 #include <windows.h>
 #include <wtypes.h>
 #pragma warning(pop)

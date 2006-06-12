@@ -33,7 +33,7 @@ namespace stream
 template<class Char>
 class basic_virtual_write
 {
-protected:
+public:
 
 	class stream
 	{

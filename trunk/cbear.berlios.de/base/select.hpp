@@ -26,6 +26,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // std::size_t
 #include <cstddef>
 #include <cbear.berlios.de/pp/widen.hpp>
+#include <cbear.berlios.de/base/select.hpp>
+#include <cbear.berlios.de/array/ref.hpp>
 
 namespace cbear_berlios_de
 {
@@ -59,7 +61,11 @@ select(const A &A_, const W &W_)
 }
 }
 
-#define CBEAR_BERLIOS_DE_BASE_SELECT(Char, X) \
+#define CBEAR_BERLIOS_DE_BASE_SELECT_CHAR(Char, X) \
 	::cbear_berlios_de::base::select<Char>(X, CBEAR_BERLIOS_DE_PP_WIDEN(X))
+
+#define CBEAR_BERLIOS_DE_BASE_SELECT_STRING(Char, X) \
+	::cbear_berlios_de::base::select<Char>( \
+		X, CBEAR_BERLIOS_DE_ARRAY_REF(CBEAR_BERLIOS_DE_PP_WIDEN(X)))
 
 #endif

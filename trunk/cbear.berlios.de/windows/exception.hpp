@@ -81,14 +81,15 @@ public:
 	void write(S &O) const
 	{
 		typedef typename S::value_type char_type;
-		policy::std_wrap<char_type *, buffer_policy<char_type> > Buffer;
+		// policy::std_wrap<char_type *, buffer_policy<char_type> > Buffer;
+		buffer<char_type> Buffer;
 		const dword_t Size = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
 			char_type, ::FormatMessage)(
 				FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
 				0,
 				this->result(),
 				0,
-				(char_type *)&Buffer.internal(),
+				(char_type *)&Buffer.get(),
 				0,
 				0);
 		O <<
@@ -96,7 +97,7 @@ public:
 				char_type, "cbear_berlios_de::windows::exception(0x") <<
 			base::hex(this->result()) << 
 			CBEAR_BERLIOS_DE_BASE_SELECT(char_type, "):\n") << 
-			range::make_iterator_range(Buffer.internal(), Size);
+			range::make_iterator_range(Buffer.get(), Size);
 	}
 
 	dword_t result() const throw() { return this->Result; }
@@ -105,6 +106,7 @@ public:
 
 private:
 
+	/*
 	template<class Char>
 	class buffer_policy: private policy::standard_policy<Char *>
 	{
@@ -117,6 +119,18 @@ private:
 		static void destroy(Char * &X)
 		{
 			if(X) ::LocalFree(X);
+		}
+	};
+	*/
+
+	template<class Char>
+	class buffer: public base::initialized<Char *>
+	{
+	public:
+		~buffer()
+		{
+			if(!this->get()) return;
+			::LocalFree(this->get());
 		}
 	};
 

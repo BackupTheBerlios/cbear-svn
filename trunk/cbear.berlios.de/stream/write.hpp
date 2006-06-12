@@ -38,14 +38,6 @@ namespace detail
 
 class unknown_traits 
 {
-public:
-	/*
-	template<class S, class T>
-	static void write(S &s, const T &t)
-	{
-		BOOST_STATIC_ASSERT(false);
-	}
-	*/
 };
 
 class class_traits
@@ -63,9 +55,11 @@ public:
 	{
 		typedef typename S::value_type value_type;
 		if(t)
-			s.push_back_range(CBEAR_BERLIOS_DE_BASE_SELECT(value_type, "true"));
+			s.push_back_range(
+				CBEAR_BERLIOS_DE_BASE_SELECT_STRING(value_type, "true"));
 		else
-			s.push_back_range(CBEAR_BERLIOS_DE_BASE_SELECT(value_type, "false"));
+			s.push_back_range(
+				CBEAR_BERLIOS_DE_BASE_SELECT_STRING(value_type, "false"));
 	}
 };
 
