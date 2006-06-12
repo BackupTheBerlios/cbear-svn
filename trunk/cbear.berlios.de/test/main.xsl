@@ -125,6 +125,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 </xsl:template>
 
+<!-- SVN deleted -->
+<xsl:template match="S:entry[@deleted='true']"/>
+
 <!-- entry point -->
 <xsl:template match="T:main">
 	<xsl:text>@echo off&#10;</xsl:text>
