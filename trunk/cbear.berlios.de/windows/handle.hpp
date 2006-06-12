@@ -80,10 +80,10 @@ public:
 	desired_access(enum_ E): base_t(E) {}
 };
 
-class file_share: public policy::wrap<file_share, dword_t>
+class file_share: public base::initialized<dword_t>
 {
 public:
-	typedef policy::wrap<file_share, dword_t> wrap;
+	typedef base::initialized<dword_t> base_t;
 
 	enum enum_
 	{
@@ -92,8 +92,13 @@ public:
 		write = FILE_SHARE_WRITE,
 	};
 
-	file_share() {}
-	file_share(enum_ E): wrap(E) {}
+	file_share() 
+	{
+	}
+
+	file_share(enum_ E): base_t(E) 
+	{
+	}
 };
 
 class creation_disposition: public policy::wrap<creation_disposition, dword_t>
@@ -245,7 +250,7 @@ public:
 		this->internal() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::CreateFile)(
 			fileName.internal(),
 			desiredAccess.get(),
-			fileShare.internal(),
+			fileShare.get(),
 			securityAttributes.get(),
 			creationDisposition.internal(),
 			flagsAndAttributes.internal(),
