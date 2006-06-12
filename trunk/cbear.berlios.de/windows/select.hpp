@@ -23,12 +23,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_SELECT_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_SELECT_HPP_INCLUDED
 
-#include <cbear.berlios.de/base/select.hpp>
+#include <cbear.berlios.de/select/traits.hpp>
 
 #define CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, Name) \
-	::cbear_berlios_de::base::select<Char>(&Name ## A, &Name ## W)
+	::cbear_berlios_de::select::get<Char>(&Name ## A, &Name ## W)
 
 #define CBEAR_BERLIOS_DE_WINDOWS_TYPE(Char, Name) \
-	::cbear_berlios_de::base::select_traits<Char, Name ## A, Name ## W>::type
+	::cbear_berlios_de::select::traits<Char, Name ## A, Name ## W>::type
 
 #endif

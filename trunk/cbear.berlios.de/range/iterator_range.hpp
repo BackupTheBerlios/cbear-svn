@@ -105,6 +105,7 @@ public:
 	{
 	}
 
+	/*
 	template<class Stream>
 	typename boost::enable_if<boost::is_same<
 		value_type, typename Stream::value_type> >::type
@@ -112,6 +113,7 @@ public:
 	{
 		S.push_back_range(*this);
 	}
+	*/
 
 private:
 

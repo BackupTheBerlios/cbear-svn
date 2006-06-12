@@ -93,10 +93,10 @@ public:
 				0,
 				0);
 		O <<
-			CBEAR_BERLIOS_DE_BASE_SELECT(
+			CBEAR_BERLIOS_DE_SELECT_STRING(
 				char_type, "cbear_berlios_de::windows::exception(0x") <<
 			base::hex(this->result()) << 
-			CBEAR_BERLIOS_DE_BASE_SELECT(char_type, "):\n") << 
+			CBEAR_BERLIOS_DE_SELECT_STRING(char_type, "):\n") << 
 			range::make_iterator_range(Buffer.get(), Size);
 	}
 

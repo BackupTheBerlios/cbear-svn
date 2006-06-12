@@ -23,29 +23,33 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_OPTIONAL_REF_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_OPTIONAL_REF_HPP_INCLUDED
 
+#include <cbear.berlios.de/base/initialized.hpp>
+
 namespace cbear_berlios_de
 {
 namespace windows
 {
 
 template<class T>
-class optional_ref: public policy::wrap<optional_ref<T>, T *>
+class optional_ref: public base::initialized<T *>
 {
+private:
+
+	typedef base::initialized<T *> base_t;
+
 public:
 
-	typedef policy::wrap<optional_ref<T>, T *> wrap;
-
 	optional_ref() {}
-	optional_ref(T &X): wrap(&X) {}
+	optional_ref(T &X): base_t(&X) {}
 
-	typedef typename T::internal_type T_internal_type;
+	typedef typename T::value_t value_value_t;
 	typedef typename boost::mpl::if_<
-		boost::is_const<T>, const T_internal_type, T_internal_type>::type 
-		internal_type;
+		boost::is_const<T>, const value_value_t, value_value_t>::type 
+		value_t;
 
-	internal_type *internal() const
+	value_t *get() const
 	{
-		return this->wrap::internal() ? &this->wrap::internal()->internal(): 0;
+		return this->base_t::get() ? &this->base_t::get()->get(): 0;
 	}
 };
 

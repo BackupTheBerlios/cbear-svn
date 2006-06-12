@@ -25,13 +25,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <windows.h>
 
-/*
-extern "C"
-{
-#include <usbioctl.h>
-}
-*/
-
 #include <cbear.berlios.de/range/iterator_range.hpp>
 #include <cbear.berlios.de/windows/optional_ref.hpp>
 #include <cbear.berlios.de/windows/base.hpp>
@@ -52,10 +45,10 @@ class win32_find_data:
 {
 };
 
-class desired_access: public policy::wrap<desired_access, dword_t>
+class desired_access: public base::initialized<dword_t>
 {
 public:
-	typedef policy::wrap<desired_access, dword_t> wrap;
+	typedef base::initialized<dword_t> base_t;
 
 	enum enum_
 	{
@@ -84,7 +77,7 @@ public:
 	};
 
 	desired_access() {}
-	desired_access(enum_ E): wrap(E) {}
+	desired_access(enum_ E): base_t(E) {}
 };
 
 class file_share: public policy::wrap<file_share, dword_t>
@@ -233,7 +226,7 @@ public:
 			Out.begin(),
 			dword_t(Out.size()),
 			&BytesReturned, 
-			Overlapped.internal());
+			Overlapped.get());
 		return BytesReturned;
 	}
 
@@ -251,9 +244,9 @@ public:
 		exception::scope_last_error ScopeLastError;
 		this->internal() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::CreateFile)(
 			fileName.internal(),
-			desiredAccess.internal(),
+			desiredAccess.get(),
 			fileShare.internal(),
-			securityAttributes.internal(),
+			securityAttributes.get(),
 			creationDisposition.internal(),
 			flagsAndAttributes.internal(),
 			templateFile.internal());

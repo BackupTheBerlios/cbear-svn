@@ -33,6 +33,8 @@ class initialized
 {
 public:
 
+	typedef T value_t;
+
 	initialized(): V() {}
 
 	explicit initialized(const T &V): V(V) {}

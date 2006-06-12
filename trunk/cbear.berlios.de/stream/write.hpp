@@ -55,11 +55,9 @@ public:
 	{
 		typedef typename S::value_type value_type;
 		if(t)
-			s.push_back_range(
-				CBEAR_BERLIOS_DE_BASE_SELECT_STRING(value_type, "true"));
+			s.push_back_range(CBEAR_BERLIOS_DE_SELECT_STRING(value_type, "true"));
 		else
-			s.push_back_range(
-				CBEAR_BERLIOS_DE_BASE_SELECT_STRING(value_type, "false"));
+			s.push_back_range(CBEAR_BERLIOS_DE_SELECT_STRING(value_type, "false"));
 	}
 };
 

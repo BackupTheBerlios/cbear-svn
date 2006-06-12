@@ -33,9 +33,13 @@ namespace cbear_berlios_de
 namespace windows
 {
 
+/*
 class overlapped: public policy::wrap<overlapped, ::OVERLAPPED>
 {
 };
+*/
+
+typedef base::initialized< ::OVERLAPPED> overlapped;
 
 }
 }

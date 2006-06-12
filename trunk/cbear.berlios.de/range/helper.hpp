@@ -129,6 +129,14 @@ public:
 	{ 
 		return const_reverse_iterator(This().begin());
 	}
+
+	template<class Stream>
+	void write(Stream &S) const
+	{
+		typedef typename Stream::value_type char_t;
+		BOOST_STATIC_ASSERT((boost::is_same<char_t, value_type>::value));
+		S.push_back_range(this->This());
+	}
 	
 private:
 	container &This() 
