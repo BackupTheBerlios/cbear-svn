@@ -101,11 +101,11 @@ public:
 	}
 };
 
-class creation_disposition: public policy::wrap<creation_disposition, dword_t>
+class creation_disposition: public base::initialized<dword_t>
 {
 public:
 
-	typedef policy::wrap<creation_disposition, dword_t> wrap;
+	typedef base::initialized<dword_t> base_t;
 
 	enum enum_
 	{
@@ -117,7 +117,7 @@ public:
 	};
 
 	creation_disposition() {}
-	creation_disposition(enum_ E): wrap(E) {}
+	creation_disposition(enum_ E): base_t(E) {}
 };
 
 class flags_and_attributes: public policy::wrap<flags_and_attributes, dword_t>
@@ -252,7 +252,7 @@ public:
 			desiredAccess.get(),
 			fileShare.get(),
 			securityAttributes.get(),
-			creationDisposition.internal(),
+			creationDisposition.get(),
 			flagsAndAttributes.internal(),
 			templateFile.internal());
 	}
