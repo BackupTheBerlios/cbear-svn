@@ -25,6 +25,32 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <windows.h>
 
+// FILE_ATTRIBUTE_ENCRYPTED
+// FILE_ATTRIBUTE_NOT_CONTENT_INDEXED
+#include <winnt.h>
+
+#ifndef FILE_ATTRIBUTE_ENCRYPTED
+#define FILE_ATTRIBUTE_ENCRYPTED 0x00004000
+#endif
+
+#ifndef FILE_ATTRIBUTE_NOT_CONTENT_INDEXED
+#define FILE_ATTRIBUTE_NOT_CONTENT_INDEXED 0x00002000 
+#endif
+
+// FILE_FLAG_OPEN_NO_RECALL
+// FILE_FLAG_OPEN_REPARSE_POINT
+#include <winbase.h>
+
+#ifndef FILE_FLAG_OPEN_NO_RECALL
+#define FILE_FLAG_OPEN_NO_RECALL 0x00100000
+#endif
+
+#ifndef FILE_FLAG_OPEN_REPARSE_POINT
+#define FILE_FLAG_OPEN_REPARSE_POINT 0x00200000
+#endif
+
+//
+
 #include <cbear.berlios.de/range/iterator_range.hpp>
 #include <cbear.berlios.de/windows/optional_ref.hpp>
 #include <cbear.berlios.de/windows/base.hpp>

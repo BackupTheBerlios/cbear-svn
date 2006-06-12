@@ -34,6 +34,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- parameters -->
 <xsl:param name="T:gcc" select="'c:/mingw/bin/g++.exe'"/>
+<xsl:param name="T:psdk" select="
+	'C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\'"/>
 <xsl:param name="T:vc" select="
 	'&#34;C:\Program Files\Microsoft Visual Studio 8\VC\bin\cl.exe&#34;'"/>
 <xsl:param name="T:dm" select="'c:/dm/bin/dmc.exe'"/>
@@ -118,7 +120,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:call-template name="T:compiler">
 		<xsl:with-param name="name" select="'dm'"/>
 		<xsl:with-param name="command" select="concat(
-			$T:dm, ' -Ae -I', $T:dm.stlport, ' -I', $T:cbear, ' -I', $T:boost, ' ',
+			$T:dm, ' -Ae -I', $T:dm.stlport, ' -I', $T:cbear, ' -I', $T:boost, ' ',	
 			$name.test.cpp)"/>
 	</xsl:call-template>
 
