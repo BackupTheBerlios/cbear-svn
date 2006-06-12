@@ -37,7 +37,7 @@ typename traits<Container>::iterator begin(Container &X)
 }
 
 template<class Container>
-typename const_traits<Container>::iterator begin(const Container &X) 
+typename traits<const Container>::iterator begin(const Container &X) 
 { 
 	return traits<const Container>::begin(X);
 }

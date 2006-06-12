@@ -127,11 +127,9 @@ struct array_traits
 	}
 };
 
-template<class Container /*, bool IsClass = boost::is_class<Container>::value*/>
-struct std_traits:
-	public meta::if_<boost::is_class<Container>, class_std_traits<Container> >
+struct undefined_traits
 {
-	typedef Container container;
+	typedef base::undefined container;
 	typedef base::undefined iterator;
 	typedef base::undefined reverse_iterator;
 	typedef base::undefined reference;
@@ -141,12 +139,13 @@ struct std_traits:
 	typedef base::undefined size_type;
 };
 
-/*
 template<class Container>
-struct std_traits<Container, true>: class_std_traits<Container>
+class std_traits: public meta::if_<
+	boost::is_class<Container>, 
+	class_std_traits<Container>, 
+	undefined_traits>::type
 {
 };
-*/
 
 }
 
