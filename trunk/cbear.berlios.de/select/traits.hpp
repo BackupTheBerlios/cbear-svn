@@ -20,8 +20,8 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_BASE_SELECT_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_BASE_SELECT_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_SELECT_TRAITS_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_SELECT_TRAITS_HPP_INCLUDED
 
 // std::size_t
 #include <cstddef>
@@ -31,41 +31,41 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace cbear_berlios_de
 {
-namespace base
+namespace select
 {
 
 template<class Char, class A, class W>
-struct select_traits;
+struct traits;
 
 template<class A, class W>
-struct select_traits<char, A, W>
+struct traits<char, A, W>
 {
 	typedef A type;
 	static type get(A X, W ) { return X; }
 };
 
 template<class A, class W>
-struct select_traits<wchar_t, A, W>
+struct traits<wchar_t, A, W>
 {
 	typedef W type;
 	static type get(A, W X) { return X; }
 };
 
 template<class C, class A, class W>
-typename select_traits<C, const A &, const W &>::type 
-select(const A &A_, const W &W_)
+typename traits<C, const A &, const W &>::type get(const A &A_, const W &W_)
 {
-	return select_traits<C, const A &, const W &>::get(A_, W_);
+	return traits<C, const A &, const W &>::get(A_, W_);
 }
 
 }
 }
 
-#define CBEAR_BERLIOS_DE_BASE_SELECT_CHAR(Char, X) \
-	::cbear_berlios_de::base::select<Char>(X, CBEAR_BERLIOS_DE_PP_WIDEN(X))
+#define CBEAR_BERLIOS_DE_SELECT_CHAR(Char, X) \
+	::cbear_berlios_de::select::get<Char>(X, CBEAR_BERLIOS_DE_PP_WIDEN(X))
 
 #define CBEAR_BERLIOS_DE_BASE_SELECT_STRING(Char, X) \
-	::cbear_berlios_de::base::select<Char>( \
-		X, CBEAR_BERLIOS_DE_ARRAY_REF(CBEAR_BERLIOS_DE_PP_WIDEN(X)))
+	::cbear_berlios_de::select::get<Char>( \
+		CBEAR_BERLIOS_DE_ARRAY_REF(X), \
+		CBEAR_BERLIOS_DE_ARRAY_REF(CBEAR_BERLIOS_DE_PP_WIDEN(X)))
 
 #endif

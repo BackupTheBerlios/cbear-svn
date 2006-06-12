@@ -20,10 +20,10 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#include <cbear.berlios.de/base/select.hpp>
+#include <cbear.berlios.de/select/traits.hpp>
 
 int main()
 {
-	::cbear_berlios_de::base::select<char>("Hello world!", L"Hello world!");
-	//CBEAR_BERLIOS_DE_BASE_SELECT(char, "Hello world!");
+	::cbear_berlios_de::select::get<char>("Hello world!", L"Hello world!");
+	CBEAR_BERLIOS_DE_SELECT_STRING(char, "Hello world!");
 }
