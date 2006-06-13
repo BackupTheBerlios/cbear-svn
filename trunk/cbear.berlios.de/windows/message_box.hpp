@@ -215,7 +215,7 @@ dialog_box_id message_box(
 {
 	exception::scope_last_error ScopeLastError;
 	return dialog_box_id(CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, MessageBoxEx)(
-		Wnd.internal(),
+		Wnd.get(),
 		Text.internal(),
 		Caption.internal(),
 		Type.internal(),

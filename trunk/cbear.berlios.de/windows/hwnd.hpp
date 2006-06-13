@@ -80,9 +80,6 @@ public:
 			bytealignwindow = CS_BYTEALIGNWINDOW,
 			classdc = CS_CLASSDC,
 			dblclks = CS_DBLCLKS,
-#if(_WIN32_WINNT >= 0x0501)
-			dropshadow = CS_DROPSHADOW,
-#endif
 			globalclass = CS_GLOBALCLASS,
 			hredraw = CS_HREDRAW,
 			noclose = CS_NOCLOSE,
@@ -90,6 +87,10 @@ public:
 			parentdc = CS_PARENTDC,
 			savebits = CS_SAVEBITS,
 			vredraw = CS_VREDRAW,
+// Windows XP
+#if(_WIN32_WINNT >= 0x0501)
+			dropshadow = CS_DROPSHADOW,
+#endif
 		};
 
 		style() {}
@@ -157,12 +158,12 @@ public:
 };
 
 class hwnd: 
-	public policy::wrap<hwnd, ::HWND>,
+	public base::initialized< ::HWND>,
 	boost::noncopyable
 {
 public:
-	typedef policy::wrap<hwnd, ::HWND> wrap_type;
-	typedef wrap_type::internal_type internal_type;
+	typedef base::initialized< ::HWND> wrap_type;
+	typedef ::HWND internal_type;
 
 	hwnd() {}
 	// explicit hwnd(internal_type X): wrap_type(X) {}
@@ -171,12 +172,12 @@ public:
 
 	void Destroy()
 	{
-		if(!this->internal()) return;
+		if(!this->get()) return;
 		{
 			exception::scope_last_error ScopeLastError;
-			::DestroyWindow(this->internal());
+			::DestroyWindow(this->get());
 		}
-		this->internal() = 0;
+		this->get() = 0;
 	}
 
 	class style: public policy::wrap<style, dword_t>
@@ -293,7 +294,7 @@ public:
 		this->Destroy();
 		{
 			exception::scope_last_error ScopeLastError;
-			this->internal() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
+			this->get() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
 				Char, ::CreateWindowEx)(
 					ExStyle.internal(),
 					ClassName.internal(),
@@ -303,13 +304,13 @@ public:
 					Y,
 					Width,
 					Height,
-					Parent.internal(),
+					Parent.get(),
 					Menu,
 					Instance,
 					Param);
 		}
 		// to fix MS design bug.
-		if(!this->internal()) throw create_exception();
+		if(!this->get()) throw create_exception();
 	}
 };
 
