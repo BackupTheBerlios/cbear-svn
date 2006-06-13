@@ -180,11 +180,11 @@ public:
 		this->get() = 0;
 	}
 
-	class style: public policy::wrap<style, dword_t>
+	class style: public base::initialized<dword_t>
 	{
 	public:
 
-		typedef policy::wrap<style, dword_t> wrap;
+		typedef base::initialized<dword_t> wrap;
 
 		enum enum_
 		{
@@ -217,10 +217,10 @@ public:
 		style(enum_ E): wrap(E) {}
 	};
 
-	class ex_style: public policy::wrap<ex_style, dword_t>
+	class ex_style: public base::initialized<dword_t>
 	{
 	public:
-		typedef policy::wrap<ex_style, dword_t> wrap;
+		typedef base::initialized<dword_t> wrap;
 
 		enum enum_
 		{
@@ -296,10 +296,10 @@ public:
 			exception::scope_last_error ScopeLastError;
 			this->get() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
 				Char, ::CreateWindowEx)(
-					ExStyle.internal(),
+					ExStyle.get(),
 					ClassName.internal(),
 					WindowName.internal(),
-					Style.internal(),
+					Style.get(),
 					X,
 					Y,
 					Width,
