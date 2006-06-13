@@ -84,8 +84,8 @@ public:
 	hresult::internal_type __stdcall QueryInterface(
 		const uuid::internal_type &U, void **PP)
 	{
-		iunknown &P = iunknown::cpp_out_cast(reinterpret_cast<iunknown::c_out_t>(PP));
-		P = this->interface_list_t::query_interface(uuid::cpp_in_cast(&U));
+		iunknown &P = iunknown::cpp_out(reinterpret_cast<iunknown::c_out_t>(PP));
+		P = this->interface_list_t::query_interface(uuid::cpp_in(&U));
 		return P ? hresult::s_ok: hresult::e_nointerface;
 	}
 
@@ -100,7 +100,7 @@ typename pointer<implementation<T> >::move_t new_()
 {
 	typedef implementation<T> implementation_t;
 	typedef pointer<implementation_t> pointer_t;
-	return move::copy(pointer_t::cpp_in_cast(new implementation_t()));
+	return move::copy(pointer_t::cpp_in(new implementation_t()));
 }
 
 template<class T, class P>
@@ -108,7 +108,7 @@ typename pointer<implementation<T> >::move_t new_(const P &P_)
 {
 	typedef implementation<T> implementation_t;
 	typedef pointer<implementation_t> pointer_t;
-	return move::copy(pointer_t::cpp_in_cast(new implementation_t(P_)));
+	return move::copy(pointer_t::cpp_in(new implementation_t(P_)));
 }
 
 }

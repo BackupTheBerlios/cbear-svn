@@ -37,13 +37,8 @@ namespace static_
 template<class T>
 class implementation;
 
-template<class T, class B, class I = B>
-class interface_;
-
 template<class T, class B, class I>
-class interface_content: public interface_<T, B, ::IUnknown>
-{
-};
+class interface_content;
 
 template<class T, class B>
 class interface_content<T, B, ::IUnknown>: public B

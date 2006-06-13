@@ -61,7 +61,7 @@ public:
 	com::uuid GetGUID() const
 	{
 		com::uuid Result;
-		this->reference().GetGUID(Result.c_out_cast());
+		this->reference().GetGUID(Result.c_out());
 		return Result;
 	}
 	dword_t GetHelpContext() const
@@ -98,7 +98,7 @@ public:
 	}
 	void SetGUID(const com::uuid &X) const
 	{
-		this->reference().SetGUID(*X.c_in_cast());
+		this->reference().SetGUID(*X.c_in());
 	}
 	void SetHelpContext(dword_t X) const
 	{

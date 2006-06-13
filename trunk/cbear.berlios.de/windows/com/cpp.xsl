@@ -807,6 +807,32 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			</class>
 		</template>
 	</namespace>
+	<namespace id="static_">
+		<template>
+			<id id="T"/>
+			<id id="B"/>
+			<class>
+				<id.ref id="interface_content" type="&lt;&gt;">
+					<id.ref id="T"/>
+					<id.ref id="B"/>
+					<id.ref type="::">
+						<id.ref/>
+						<id.ref id="{@id}"/>
+					</id.ref>
+				</id.ref>
+				<access access="public">
+					<id.ref id="interface_" type="&lt;&gt;">
+						<id.ref id="T"/>
+						<id.ref id="B"/>
+						<id.ref type="::">
+							<id.ref/>
+							<id.ref id="{odl:type.ref/@id}"/>
+						</id.ref>						
+					</id.ref>
+				</access>
+			</class>
+		</template>
+	</namespace>
 	<template>
 		<class>
 			<id.ref id="library_info" type="&lt;&gt;">
@@ -901,29 +927,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 							<id.ref id="Char"/>
 							<id.ref type="value" id="{concat('&#x22;', ../odl:attribute[@id='version']/@value, '&#x22;')}"/>
 						</id.ref>
-						<!--
-						<id.ref>
-							<xsl:copy-of select="$select"/>
-							<id.ref type="()">
-								<id.ref type="value" id="{concat('&#x22;', ../@id, '&#x22;')}"/>
-								<id.ref type="value" id="{concat('L&#x22;', ../@id, '&#x22;')}"/>
-							</id.ref>
-						</id.ref>
-						<id.ref>
-							<xsl:copy-of select="$select"/>
-							<id.ref type="()">
-								<id.ref type="value" id="{concat('&#x22;', @id, '&#x22;')}"/>				
-								<id.ref type="value" id="{concat('L&#x22;', @id, '&#x22;')}"/>
-							</id.ref>
-						</id.ref>
-						<id.ref>
-							<xsl:copy-of select="$select"/>
-							<id.ref type="()">
-								<id.ref type="value" id="{concat('&#x22;', ../odl:attribute[@id='version']/@value, '&#x22;')}"/>				
-								<id.ref type="value" id="{concat('L&#x22;', ../odl:attribute[@id='version']/@value, '&#x22;')}"/>
-							</id.ref>
-						</id.ref>
-						-->
 					</id.ref>
 				</id.ref>
 			</body>
@@ -1036,6 +1039,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<include href="cbear.berlios.de/windows/com/exception.hpp"/>
 			<include href="cbear.berlios.de/windows/com/coclass.hpp"/>
 			<include href="cbear.berlios.de/windows/com/idispatch.hpp"/>
+			<include href="cbear.berlios.de/windows/com/static/interface_content.hpp"/>
+			<include href="cbear.berlios.de/windows/com/static/interface.hpp"/>
+			<include href="cbear.berlios.de/windows/com/static/idispatch.hpp"/>
 			<include href="cbear.berlios.de/windows/com/dynamic/implementation.hpp"/>
 			<include href="cbear.berlios.de/base/swap.hpp"/>
 			<namespace id="{translate(@id, '.\/', '___')}">

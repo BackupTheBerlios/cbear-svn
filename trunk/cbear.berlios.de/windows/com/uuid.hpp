@@ -120,32 +120,32 @@ public:
 	typedef c_t *c_out_t;
 	typedef c_t *c_in_out_t;
 
-	c_in_t c_in_cast() const throw()
+	c_in_t c_in() const throw()
 	{
 		return &this->V;
 	}
 
-	c_out_t c_out_cast() throw()
+	c_out_t c_out() throw()
 	{
 		return &this->V;
 	}
 
-	c_in_out_t c_in_out_cast() throw()
+	c_in_out_t c_in_out() throw()
 	{
 		return &this->V;
 	}
 
-	static const uuid &cpp_in_cast(c_in_t V) throw()
+	static const uuid &cpp_in(c_in_t V) throw()
 	{
 		return *base::safe_reinterpret_cast<const uuid *>(V);
 	}
 
-	static uuid &cpp_out_cast(c_out_t V) throw()
+	static uuid &cpp_out(c_out_t V) throw()
 	{
 		return *base::safe_reinterpret_cast<uuid *>(V);
 	}
 
-	static uuid &cpp_in_out_cast(c_in_out_t V) throw()
+	static uuid &cpp_in_out(c_in_out_t V) throw()
 	{
 		return *base::safe_reinterpret_cast<uuid *>(V);
 	}
@@ -159,7 +159,7 @@ public:
 	public:
 		static const uuid &create() throw()
 		{
-			return cpp_in_cast(&__uuidof(I));
+			return cpp_in(&__uuidof(I));
 		}
 	};
 

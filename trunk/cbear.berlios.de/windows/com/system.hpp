@@ -63,10 +63,10 @@ pointer<T> create_instance(
 {
 	pointer<T> Result;
 	exception::throw_unless(::CoCreateInstance(
-		*Uuid.c_in_cast(), 
+		*Uuid.c_in(), 
 		internal<in>(UnkOuter), 
 		internal<in>(ClsContext), 
-		*uuid::of<T>().c_in_cast(), 
+		*uuid::of<T>().c_in(), 
 		(void**)internal<out>(Result)));
 	return Result;
 }

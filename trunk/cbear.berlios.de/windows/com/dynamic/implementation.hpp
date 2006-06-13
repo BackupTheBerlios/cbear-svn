@@ -91,15 +91,15 @@ protected:
 	hresult::internal_type query_interface(
 		const uuid::c_t &Uuid, void **PP)
 	{
-		iunknown &P = iunknown::cpp_out_cast(reinterpret_cast<iunknown::c_out_t>(PP));
+		iunknown &P = iunknown::cpp_out(reinterpret_cast<iunknown::c_out_t>(PP));
 		for(
 			range::sub_range<list_type>::type R(this->List); 
 			!R.empty(); 
 			++R.begin())
 		{
-			if(*R.front().get_uuid().c_in_cast()==Uuid)
+			if(*R.front().get_uuid().c_in()==Uuid)
 			{
-				P = iunknown::cpp_in_cast(R.front().get_pointer());
+				P = iunknown::cpp_in(R.front().get_pointer());
 				return hresult::s_ok;
 			}
 		}
@@ -224,28 +224,28 @@ public:
 	template<class T>
 	typename new_result<T>::type new_()
 	{
-		return new_result<T>::type::cpp_in_cast(
+		return new_result<T>::type::cpp_in(
 			new detail::implementation_instance<T>(*this));
 	};
 
 	template<class T, class P>
 	typename new_result<T>::type new_(const P &X)
 	{
-		return new_result<T>::type::cpp_in_cast(
+		return new_result<T>::type::cpp_in(
 			new detail::implementation_instance<T>(*this, X));
 	}
 
 	template<class T, class P1, class P2>
 	typename new_result<T>::type new_(const P1 &X1, const P2 &X2)
 	{
-		return new_result<T>::type::cpp_in_cast(
+		return new_result<T>::type::cpp_in(
 			new detail::implementation_instance<T>(*this, X1, X2));
 	}
 
 	template<class T, class P1, class P2, class P3>
 	typename new_result<T>::type new_(const P1 &X1, const P2 &X2, const P3 &X3)
 	{
-		return new_result<T>::type::cpp_in_cast(
+		return new_result<T>::type::cpp_in(
 			new detail::implementation_instance<T>(*this, X1, X2, X3));
 	}
 
@@ -253,7 +253,7 @@ public:
 	typename new_result<T>::type new_(
 		const P1 &X1, const P2 &X2, const P3 &X3, const P4 &X4)
 	{
-		return new_result<T>::type::cpp_in_cast(
+		return new_result<T>::type::cpp_in(
 			new detail::implementation_instance<T>(*this, X1, X2, X3, X4));
 	}
 
@@ -261,7 +261,7 @@ public:
 	typename new_result<T>::type new_(
 		const P1 &X1, const P2 &X2, const P3 &X3, const P4 &X4, const P5 &X5)
 	{
-		return new_result<T>::type::cpp_in_cast(
+		return new_result<T>::type::cpp_in(
 			new detail::implementation_instance<T>(*this, X1, X2, X3, X4, X5));
 	}
 

@@ -45,7 +45,7 @@ public:
 		const regcls &Regcls)
 	{
 		exception::throw_unless(::CoRegisterClassObject(
-			*Uuid.c_in_cast(),
+			*Uuid.c_in(),
 			internal<in>(Unk),
 			internal<in>(Clsctx),
 			internal<in>(Regcls),

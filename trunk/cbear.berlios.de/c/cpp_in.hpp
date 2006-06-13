@@ -31,7 +31,7 @@ namespace c
 {
 
 template<class T>
-const T &cpp_in(const typename in<T>::type &X)
+const T &cpp_in(const typename in_t<T>::type &X) throw()
 {
 	return traits<T>::cpp_in(X);
 }

@@ -67,7 +67,7 @@ protected:
 	template<class I1>
 	void assign(const pointer_base<I1> &O1) throw()
 	{
-		this->assign(O1.c_in_cast());
+		this->assign(O1.c_in());
 	}
 
   pointer_base &operator=(const pointer_base &O1) throw()
@@ -100,18 +100,18 @@ public:
 	typedef I **c_out_t;
 	typedef I **c_in_out_t;
 
-	c_in_t c_in_cast() const throw()
+	c_in_t c_in() const throw()
 	{
 		return this->P;
 	}
 
-	c_out_t c_out_cast() throw()
+	c_out_t c_out() throw()
 	{
 		this->reset();
 		return &this->P;
 	}
 
-	c_in_out_t c_in_out_cast() throw()
+	c_in_out_t c_in_out() throw()
 	{
 		return &this->P;
 	}

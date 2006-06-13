@@ -47,11 +47,11 @@ public:
 	// globally unique library ID.
 	uuid &guid() 
 	{ 
-		return uuid::cpp_in_out_cast(&this->internal().guid); 
+		return uuid::cpp_in_out(&this->internal().guid); 
 	}
 	const uuid &guid() const 
 	{ 
-		return uuid::cpp_in_cast(&this->internal().guid); 
+		return uuid::cpp_in(&this->internal().guid); 
 	}
 	// Locale of the TypeLibrary.
 	lcid_t &lcid() 
@@ -110,7 +110,7 @@ public:
 	{
 		itypeinfo Result;
 		exception::throw_unless(this->reference().GetTypeInfoOfGuid(
-			*uuid::of<Interface>().c_in_cast(),
+			*uuid::of<Interface>().c_in(),
 			com::internal<out>(Result)));
 		return Result;
 	}
@@ -151,7 +151,7 @@ inline void un_register_type_lib(
 	const syskind_t &Syskind)
 {
 	com::exception::throw_unless(::UnRegisterTypeLib( 
-		*LibId.c_in_cast(),
+		*LibId.c_in(),
 		VerMajor,  
 		VerMinor,  
 		com::internal<in>(Lcid),                 

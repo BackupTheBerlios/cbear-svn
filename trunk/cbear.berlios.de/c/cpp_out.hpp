@@ -31,7 +31,7 @@ namespace c
 {
 
 template<class T>
-T &cpp_out(typename out<T>::type X)
+T &cpp_out(typename out_t<T>::type X) throw()
 {
 	return traits<T>::cpp_out(X);
 }

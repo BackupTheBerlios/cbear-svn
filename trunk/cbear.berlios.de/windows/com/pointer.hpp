@@ -91,23 +91,23 @@ public:
 	template<class I1>
 	bool operator==(const pointer<I1> &O1) const throw()
 	{
-		return this->c_in_cast() == O1.c_in_cast();
+		return this->c_in() == O1.c_in();
 	}
 
 	template<class I1>
 	bool operator!=(const pointer<I1> &O1) const throw()
 	{
-		return this->c_in_cast() != O1.c_in_cast();
+		return this->c_in() != O1.c_in();
 	}
 
 	operator bool() const throw()
 	{
-		return this->c_in_cast() != 0;
+		return this->c_in() != 0;
 	}
 
 	bool operator!() const throw()
 	{
-		return this->c_in_cast() == 0;
+		return this->c_in() == 0;
 	}
 
 public:
@@ -115,13 +115,13 @@ public:
 	template<class I1>
 	typename pointer<I1>::move_t query_interface() const throw()
 	{
-		const c_in_t P = this->c_in_cast();
+		const c_in_t P = this->c_in();
 		typename pointer<I1>::move_t R;
 		if(P)
 		{
 			P->QueryInterface(
-				*uuid::of<I1>().c_in_cast(), 
-				reinterpret_cast<void **>(R->c_out_cast()));
+				*uuid::of<I1>().c_in(), 
+				reinterpret_cast<void **>(R->c_out()));
 		}
 		return R;
 	}
@@ -137,23 +137,22 @@ public:
 	template<class O1>
 	typename O1::move_t dynamic_cast_() const throw()
 	{
-		return move::copy(O1::cpp_in_cast(dynamic_cast<O1::c_in_t>(
-			this->c_in_cast())));
+		return move::copy(O1::cpp_in(dynamic_cast<O1::c_in_t>(this->c_in())));
 	}
 
 public:
 
-	static const pointer &cpp_in_cast(const c_in_t &P) throw() 
+	static const pointer &cpp_in(const c_in_t &P) throw() 
 	{ 
 		return base::safe_reinterpret_cast<const pointer &>(P);
 	}
 
-	static pointer &cpp_in_out_cast(c_in_out_t P) throw() 
+	static pointer &cpp_in_out(c_in_out_t P) throw() 
 	{ 
 		return base::safe_reinterpret_cast<pointer &>(*P);
 	}
 
-	static pointer &cpp_out_cast(c_out_t P) throw() 
+	static pointer &cpp_out(c_out_t P) throw() 
 	{ 
 		*P = 0;
 		return base::safe_reinterpret_cast<pointer &>(*P);
@@ -183,21 +182,21 @@ public:
 
 	c_in_t internal() const throw()
 	{ 
-		return this->c_in_cast(); 
+		return this->c_in(); 
 	}
 
 	c_in_t &internal() throw()
 	{ 
-		return *this->c_in_out_cast(); 
+		return *this->c_in_out(); 
 	}
 
 	static void *extra()
 	{
-		return const_cast<uuid::c_in_out_t>(uuid::of<interface_t>().c_in_cast());
+		return const_cast<uuid::c_in_out_t>(uuid::of<interface_t>().c_in());
 	}
 
-	static const pointer &wrap_ref(const c_in_t &P) { return cpp_in_cast(P); }
-	static pointer &wrap_ref(interface_t * &P) { return cpp_in_out_cast(&P); }
+	static const pointer &wrap_ref(const c_in_t &P) { return cpp_in(P); }
+	static pointer &wrap_ref(interface_t * &P) { return cpp_in_out(&P); }
 };
 
 }

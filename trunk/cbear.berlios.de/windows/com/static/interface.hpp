@@ -34,7 +34,7 @@ namespace com
 namespace static_
 {
 
-template<class T, class B, class I>
+template<class T, class B, class I = B>
 class interface_: public interface_content<T, B, I>
 {
 protected:
@@ -42,7 +42,7 @@ protected:
 	{
 		if(uuid::of<I>()==U)
 		{
-			return move::copy(iunknown::cpp_in_cast(static_cast<I *>(this)));
+			return move::copy(iunknown::cpp_in(static_cast<I *>(this)));
 		}
 		return iunknown::move_t();
 	}

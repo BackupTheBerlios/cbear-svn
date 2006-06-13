@@ -65,7 +65,7 @@ public:
 
 	com::uuid &ClassGuid() 
 	{ 
-		return com::uuid::cpp_in_out_cast(&this->get().ClassGuid); 
+		return com::uuid::cpp_in_out(&this->get().ClassGuid); 
 	}
 	const com::uuid &ClassGuid() const 
 	{ 
@@ -201,7 +201,7 @@ public:
 		exception::scope_last_error ScopeLastError;
 		this->internal() = 
 			::SetupDiCreateDeviceInfoList(
-				ClassGuid ? ClassGuid->c_in_cast(): 0,
+				ClassGuid ? ClassGuid->c_in(): 0,
 				Parent.internal());
 	}
 
@@ -333,7 +333,7 @@ public:
 			SetupDiEnumDeviceInterfaces(
 				this->internal(),
 				const_cast< ::SP_DEVINFO_DATA *>(deviceInfoData.get()),
-				interfaceClassGuid.c_in_cast(),
+				interfaceClassGuid.c_in(),
 				memberIndex,
 				&deviceInterfaceData.internal());
 		}

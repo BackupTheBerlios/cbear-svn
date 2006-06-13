@@ -24,6 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_C_OUT_HPP_INCLUDED
 
 #include <cbear.berlios.de/c/traits.hpp>
+#include <cbear.berlios.de/meta/identity.hpp>
 
 namespace cbear_berlios_de
 {
@@ -36,7 +37,7 @@ class out_t: public meta::identity<typename traits<T>::out_t>
 };
 
 template<class T>
-typename out_t<T>::type out(T &X)
+typename out_t<T>::type out(T &X) throw()
 {
 	return traits<T>::out(X);
 }
