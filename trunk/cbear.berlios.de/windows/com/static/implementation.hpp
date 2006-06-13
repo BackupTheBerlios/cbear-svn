@@ -23,9 +23,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_IMPLEMENTATION_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_IMPLEMENTATION_HPP_INCLUDED
 
-#include <cbear.berlios.de/windows/com/pointer.hpp>
-#include <cbear.berlios.de/windows/com/iunknown.hpp>
-#include <cbear.berlios.de/meta/list.hpp>
+#include <cbear.berlios.de/windows/com/static/interface_list.hpp>
+#include <cbear.berlios.de/windows/com/static/idispatch.hpp>
 
 namespace cbear_berlios_de
 {
