@@ -187,34 +187,12 @@ public:
 	flags_and_attributes(enum_ E): base_t(E) {}
 };
 
-/*
-class ioctl: public policy::wrap<ioctl, dword_t>
+
+class ioctl: public base::initialized<dword_t>
 {
 public:
 
-	typedef policy::wrap<ioctl, dword_t> wrap;
-
-	enum enum_
-	{
-		usb_get_node_information = IOCTL_USB_GET_NODE_INFORMATION,
-		usb_get_node_connection_information = 
-			IOCTL_USB_GET_NODE_CONNECTION_INFORMATION,
-		//usb_get_node_connection_information_ex = 
-		//	IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX,
-		//
-		usb_get_node_connection_driverkey_name =
-			IOCTL_USB_GET_NODE_CONNECTION_DRIVERKEY_NAME,
-	};
-
-	ioctl(enum_ E): wrap(E) {}
-};
-*/
-
-class ioctl: public policy::wrap<ioctl, dword_t>
-{
-public:
-
-	typedef policy::wrap<ioctl, dword_t> wrap;
+	typedef base::initialized<dword_t> base_t;
 
 	template<dword_t X>
 	class const_
@@ -224,20 +202,19 @@ public:
 	};
 
 private:
-	explicit ioctl(dword_t X): wrap(X) {}
+	explicit ioctl(dword_t X): base_t(X) {}
 };
 
 // Handle to an object.
 class handle: 
-	public policy::wrap<handle, ::HANDLE>,
+	public base::initialized< ::HANDLE>,
 	boost::noncopyable
 {
 public:
-	typedef policy::wrap<handle, ::HANDLE> wrap_type;
-	typedef wrap_type::internal_type internal_type;
+	typedef base::initialized< ::HANDLE> base_t;
 
 	handle() {}
-	explicit handle(internal_type X): wrap_type(X) {}
+	explicit handle(value_t X): base_t(X) {}
 
 	~handle() { this->Close(); }
 
@@ -250,8 +227,8 @@ public:
 		dword_t BytesReturned;
 		exception::scope_last_error ScopeLastError;
 		::DeviceIoControl(
-			this->internal(),
-			IoControlCode.internal(),
+			this->get(),
+			IoControlCode.get(),
 			In.begin(),
 			dword_t(In.size()),
 			Out.begin(),
@@ -273,14 +250,14 @@ public:
 	{
 		this->Close();
 		exception::scope_last_error ScopeLastError;
-		this->internal() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::CreateFile)(
+		this->get() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::CreateFile)(
 			fileName.internal(),
 			desiredAccess.get(),
 			fileShare.get(),
 			securityAttributes.get(),
 			creationDisposition.get(),
 			flagsAndAttributes.get(),
-			templateFile.internal());
+			templateFile.get());
 	}
 
 	template<class Char>
@@ -290,15 +267,15 @@ public:
 	{
 		this->Close();
 		exception::scope_last_error ScopeLastError;
-		this->internal() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::FindFirstFile)(
+		this->get() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::FindFirstFile)(
 			fileName.internal(),
 			&findFileData);
 	}
 
 	void Close()
 	{
-		::CloseHandle(this->internal());
-		this->internal() = 0;
+		::CloseHandle(this->get());
+		this->get() = 0;
 	}
 };
 

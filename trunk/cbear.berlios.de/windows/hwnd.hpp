@@ -25,6 +25,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <windows.h>
 
+// #define CS_DBLCLKS 0x0008
+#include <winuser.h>
+
+#ifndef CS_DBLCLKS
+#define CS_DBLCLKS 0x0008
+#endif
+
 #include <cbear.berlios.de/windows/base.hpp>
 #include <cbear.berlios.de/windows/exception.hpp>
 
@@ -42,6 +49,12 @@ class basic_wndclass: public policy::wrap<
 	typename CBEAR_BERLIOS_DE_WINDOWS_TYPE(Char, ::WNDCLASS)>
 {
 public:
+
+	typedef policy::wrap<
+		basic_wndclass<Char>, 
+		typename CBEAR_BERLIOS_DE_WINDOWS_TYPE(Char, ::WNDCLASS)>
+		wrap_type;
+	typedef typename wrap_type::internal_type internal_type;
 
 	basic_wndclass()
 	{
@@ -66,8 +79,10 @@ public:
 			bytealignclient = CS_BYTEALIGNCLIENT,
 			bytealignwindow = CS_BYTEALIGNWINDOW,
 			classdc = CS_CLASSDC,
-			dblclk = CS_DBLCLK,
+			dblclks = CS_DBLCLKS,
+#if(_WIN32_WINNT >= 0x0501)
 			dropshadow = CS_DROPSHADOW,
+#endif
 			globalclass = CS_GLOBALCLASS,
 			hredraw = CS_HREDRAW,
 			noclose = CS_NOCLOSE,
@@ -78,7 +93,7 @@ public:
 		};
 
 		style() {}
-		style(enum_ E): wrap(E) {}
+		style(enum_ E): wrap_type(E) {}
 	};
 
 	style &Style() { return style::wrap_ref(this->internal().style); }
@@ -208,18 +223,17 @@ public:
 			acceptfiles = WS_EX_ACCEPTFILES,
 			appwindow = WS_EX_APPWINDOW,
 			clientedge = WS_EX_CLIENTEDGE,
-			// Windows XP
-			// composited = WS_EX_COMPOSITED,
+
 			contexthelp = WS_EX_CONTEXTHELP,
 			controlparent = WS_EX_CONTROLPARENT,
 			dlgmodalframe = WS_EX_DLGMODALFRAME,
-			layered = WS_EX_LAYERED,
+
 			layoutrtl = WS_EX_LAYOUTRTL,
 			left = WS_EX_LEFT,
 			leftscrollbar = WS_EX_LEFTSCROLLBAR,
 			ltrreading = WS_EX_LTRREADING,
 			mdichild = WS_EX_MDICHILD,
-			noactive = WS_EX_NOACTIVATE,
+
 			noinheritlayout = WS_EX_NOINHERITLAYOUT,
 			noparentnotify = WS_EX_NOPARENTNOTIFY,
 			overlappedwindow = WS_EX_OVERLAPPEDWINDOW,
@@ -231,6 +245,18 @@ public:
 			toolwindow = WS_EX_TOOLWINDOW,
 			topmost = WS_EX_TOPMOST,
 			transparent = WS_EX_TRANSPARENT,
+
+// Windows 2000
+#if(_WIN32_WINNT >= 0x0500)
+			layered = WS_EX_LAYERED,
+			noactive = WS_EX_NOACTIVATE,
+#endif
+
+// Windows XP
+#if(_WIN32_WINNT >= 0x0501)
+			composited = WS_EX_COMPOSITED,
+#endif
+
 		};
 
 		ex_style() {}

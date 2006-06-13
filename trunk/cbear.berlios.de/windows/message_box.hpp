@@ -50,8 +50,10 @@ public:
 		no = IDNO,
 		close = IDCLOSE,
 		help = IDHELP,
+#if(WINVER >= 0x0500)
 		tryagain = IDTRYAGAIN,
 		continue_ = IDCONTINUE,
+#endif
 	};
 	dialog_box_id() {}
 	dialog_box_id(enumeration_type X): wrap_type(X) {}
@@ -67,10 +69,12 @@ public:
 		// The message box contains three push buttons: Abort, Retry, and Ignore.
 		abort_retry_ignore = MB_ABORTRETRYIGNORE,
 
+#if(WINVER >= 0x0500)
 		// Microsoft® Windows® 2000/XP: The message box contains three push buttons:
 		// Cancel, Try Again, Continue. Use this message box type instead of 
 		// abortretryignore.
 		cancel_try_continue = MB_CANCELTRYCONTINUE,
+#endif
 
 		// Windows 95/98/Me, Windows NT® 4.0 and later: Adds a Help button to the 
 		// message box. When the user clicks the Help button or presses F1, the 
