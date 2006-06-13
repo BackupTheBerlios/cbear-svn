@@ -20,33 +20,21 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_THREAD_STATIC_MUTEX_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_THREAD_STATIC_MUTEX_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_C_CPP_OUT_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_C_CPP_OUT_HPP_INCLUDED
 
-// boost::noncopyable
-#include <boost/noncopyable.hpp>
-// boost::thread::yield
-#include <boost/thread/thread.hpp>
+#include <cbear.berlios.de/c/out.hpp>
 
 namespace cbear_berlios_de
 {
-namespace base
+namespace c
 {
 
 template<class T>
-class static_mutex: boost::noncopyable
+T &cpp_out(typename out<T>::type X)
 {
-public:
-	class scoped_lock: boost::noncopyable
-	{
-	public:
-		scoped_lock() { while(Lock::exchange(true)) boost::thread::yield(); }
-		~scoped_lock() { Lock::exchange(false); }
-	};
-private:
-	class Id;
-	typedef static_wrap<Id, bool> Lock; // default value is false.
-};
+	return traits<T>::cpp_out(X);
+}
 
 }
 }
