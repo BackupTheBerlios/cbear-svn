@@ -169,9 +169,11 @@ struct traits<const Item[Size]>: detail::array_traits<const Item, Size>
 {
 };
 
+/*
 // VC 7.1 must die.
 template<class T>
 struct const_traits: traits<const T> {};
+*/
 
 }
 }

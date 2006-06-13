@@ -41,7 +41,7 @@ template<class Char>
 class coclass_info
 {
 public:
-	typedef std::basic_string<Char> string_type;
+	typedef base::basic_string<Char> string_type;
 	uuid lib_id;
 	uuid id;
 	string_type vendor;
@@ -83,19 +83,20 @@ typename registry::root_list<Char> coclass_registry(
 	typedef base::basic_string<Char> string;
 	// typedef std::basic_ostringstream<Char> ostream;
 
-	static const Char Dot = CBEAR_BERLIOS_DE_BASE_SELECT(Char, '.');
-	static const Char Open = CBEAR_BERLIOS_DE_BASE_SELECT(Char, '{');
-	static const Char Close = CBEAR_BERLIOS_DE_BASE_SELECT(Char, '}');
-	static const string ClsidKey = CBEAR_BERLIOS_DE_BASE_SELECT(Char, "CLSID");
-	static const string CurVerKey = CBEAR_BERLIOS_DE_BASE_SELECT(Char, "CurVer");
+	static const Char Dot = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, '.');
+	static const Char Open = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, '{');
+	static const Char Close = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, '}');
+	static const string ClsidKey = CBEAR_BERLIOS_DE_SELECT_STRING(Char, "CLSID");
+	static const string CurVerKey = CBEAR_BERLIOS_DE_SELECT_STRING(Char, "CurVer");
 	static const string LocalServer32Key = ServerType==local_server32 ? 
-		move::copy<string>(CBEAR_BERLIOS_DE_BASE_SELECT(Char, "LocalServer32")):
-		move::copy<string>(CBEAR_BERLIOS_DE_BASE_SELECT(Char, "InProcServer32"));
+		move::copy<string>(CBEAR_BERLIOS_DE_SELECT_STRING(Char, "LocalServer32")):
+		move::copy<string>(CBEAR_BERLIOS_DE_SELECT_STRING(Char, "InProcServer32"));
 	static const string TypeLibKey = 
-		CBEAR_BERLIOS_DE_BASE_SELECT(Char, "TypeLib");
+		CBEAR_BERLIOS_DE_SELECT_STRING(Char, "TypeLib");
 	static const string ViProgIdKey = 
-		CBEAR_BERLIOS_DE_BASE_SELECT(Char, "VersionIndependentProgId");
-	static const string ProgIdKey = CBEAR_BERLIOS_DE_BASE_SELECT(Char, "ProgId");
+		CBEAR_BERLIOS_DE_SELECT_STRING(Char, "VersionIndependentProgId");
+	static const string ProgIdKey = 
+		CBEAR_BERLIOS_DE_SELECT_STRING(Char, "ProgId");
 
 	string ViProgId = Info.vendor + Dot + Info.component;
 	string ProgId = ViProgId + Dot + Info.version;

@@ -54,22 +54,26 @@ namespace windows
 namespace setupapi
 {
 
-class sp_devinfo_data: public policy::wrap<sp_devinfo_data, ::SP_DEVINFO_DATA>
+class sp_devinfo_data: public base::initialized< ::SP_DEVINFO_DATA>
 {
 public:
-	sp_devinfo_data() { this->internal().cbSize = sizeof(internal_type); }
+
+	sp_devinfo_data() 
+	{ 
+		this->get().cbSize = sizeof(value_t); 
+	}
 
 	com::uuid &ClassGuid() 
 	{ 
-		return com::uuid::cpp_in_out_cast(&this->internal().ClassGuid); 
+		return com::uuid::cpp_in_out_cast(&this->get().ClassGuid); 
 	}
 	const com::uuid &ClassGuid() const 
 	{ 
-		return com::uuid::wrap_ref(this->internal().ClassGuid); 
+		return com::uuid::wrap_ref(this->get().ClassGuid); 
 	}
 
-	dword_t &DevInst() { return this->internal().DevInst; }
-	const dword_t &DevInst() const { return this->internal().DevInst; }
+	dword_t &DevInst() { return this->get().DevInst; }
+	const dword_t &DevInst() const { return this->get().DevInst; }
 };
 
 class spdrp: public policy::wrap<spdrp, dword_t>
@@ -240,7 +244,7 @@ public:
 		{
 			exception::scope_last_error ScopeLastError;
 			::SetupDiEnumDeviceInfo(
-				this->internal(), MemberIndex, &DeviceInfoData.internal());
+				this->internal(), MemberIndex, &DeviceInfoData.get());
 		}
 		catch(const exception &E)
 		{
@@ -262,8 +266,8 @@ public:
 		CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
 			Char, ::SetupDiGetDeviceRegistryProperty)(
 				this->internal(), 
-				const_cast<sp_devinfo_data::internal_type *>(
-					&DeviceInfoData.internal()),
+				const_cast<sp_devinfo_data::value_t *>(
+					&DeviceInfoData.get()),
 				Property.internal(),
 				&PropertyRegDataType.internal(),
 				Buffer.begin(),
@@ -328,7 +332,7 @@ public:
 			exception::scope_last_error ScopeLastError;
 			SetupDiEnumDeviceInterfaces(
 				this->internal(),
-				const_cast< ::SP_DEVINFO_DATA *>(deviceInfoData.internal()),
+				const_cast< ::SP_DEVINFO_DATA *>(deviceInfoData.get()),
 				interfaceClassGuid.c_in_cast(),
 				memberIndex,
 				&deviceInterfaceData.internal());

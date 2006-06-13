@@ -86,8 +86,8 @@ public:
 		// Format:      "11111111-2222-3333-4444-444444444444"
 		typedef typename S::value_type char_type;
 		typedef range::iterator_range<const boost::uint8_t *> range_type;
-		static const char_type Zero = CBEAR_BERLIOS_DE_BASE_SELECT(char_type, '0');
-		static const char_type Minus = CBEAR_BERLIOS_DE_BASE_SELECT(char_type, '-');
+		static const char_type Zero = CBEAR_BERLIOS_DE_SELECT_CHAR(char_type, '0');
+		static const char_type Minus = CBEAR_BERLIOS_DE_SELECT_CHAR(char_type, '-');
 		O << 
 			base::hex(this->V.Data1, 8) <<
 			Minus <<

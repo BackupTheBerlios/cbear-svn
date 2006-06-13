@@ -45,7 +45,7 @@ handle create_mutex(
 {
 	exception::scope_last_error ScopeLastError;
 	return handle(CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::CreateMutex)(
-		MutexAttributes.internal(), InitialOwner.internal(), Name.internal()));
+		MutexAttributes.get(), InitialOwner.get(), Name.internal()));
 }
 
 }

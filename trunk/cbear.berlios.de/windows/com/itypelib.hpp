@@ -182,7 +182,7 @@ protected:
 		boost::filesystem::path TlbFileName = 
 			Path / locale::cast<std::string>(Name + L".tlb");
 		TypeLib = loadtypelib(
-			locale::cast<std::wstring>(TlbFileName.native_file_string()));
+			locale::cast<bstr_t>(TlbFileName.native_file_string()));
 	}
 private:
 	static itypelib TypeLib;

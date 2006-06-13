@@ -310,11 +310,13 @@ public:
 		internal_policy::push_back_range(this->internal(), c);
 	}
 
+	/*
 	template<class S>
 	void write(S &s) const
 	{
-		s.push_back_range(iterator_range(*this));
+		s.push_back_range(const_iterator_range(*this));
 	}
+	*/
 
 	template<class T>
 	bstr_t &operator<<(const T &t)

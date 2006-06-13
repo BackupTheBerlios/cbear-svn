@@ -39,8 +39,8 @@ namespace lexicographic
 template<class Range1, class Range2>
 int compare(const Range1 &R1, const Range2 &R2)
 {
-	range::sub_range<Range1>::type S1(R1);
-	range::sub_range<Range2>::type S2(R2);
+	range::sub_range<const Range1>::type S1(R1);
+	range::sub_range<const Range2>::type S2(R2);
 	for(;;)
 	{
 		if(S1.empty()) return S2.empty() ? 0: -1;

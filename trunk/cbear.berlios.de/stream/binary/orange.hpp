@@ -26,7 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/range/iterator_range.hpp>
 #include <cbear.berlios.de/stream/virtual_write.hpp>
 #include <cbear.berlios.de/stream/binary/write.hpp>
-#include <cbear.berlios.de/base/select.hpp>
+#include <cbear.berlios.de/select/traits.hpp>
 
 namespace cbear_berlios_de
 {
@@ -54,7 +54,7 @@ public:
 		{		
 			typedef typename S::value_type value_type;
 			s << 
-				CBEAR_BERLIOS_DE_BASE_SELECT(
+				CBEAR_BERLIOS_DE_SELECT_STRING(
 					value_type,
 					"::cbear_berlios_de::stream::binary::orange::exception");
 		}

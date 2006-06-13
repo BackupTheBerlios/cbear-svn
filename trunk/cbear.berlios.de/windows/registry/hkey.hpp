@@ -125,7 +125,7 @@ public:
 				//REGSAM samDesired,
 				Options.sam.internal(),
 				//LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-				Options.security_attributes.internal(),
+				Options.security_attributes.get(),
 				//PHKEY phkResult,
 				&Result.hkey.internal(),
 				//LPDWORD lpdwDisposition,
