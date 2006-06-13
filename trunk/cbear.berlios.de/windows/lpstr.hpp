@@ -33,15 +33,23 @@ namespace windows
 
 // Pointer to a null-terminated string
 template<class Char>
-class basic_lpstr: public policy::wrap<basic_lpstr<Char>, Char*>
+class basic_lpstr: public base::initialized<Char *>
 {
 public:
-	typedef policy::wrap<basic_lpstr, Char*> wrap_type;
+	typedef base::initialized<Char *> base_t;
 	typedef Char *internal_type;
-	basic_lpstr() {}
+	basic_lpstr() 
+	{
+	}
 	template<class T>
-	basic_lpstr(const T &X): wrap_type(X.c_str()) {}
-	basic_lpstr(internal_type X): wrap_type(X) {}
+	basic_lpstr(const T &X): 
+		base_t(X.c_str()) 
+	{
+	}
+	basic_lpstr(internal_type X): 
+		base_t(X) 
+	{
+	}
 };
 
 // Pointer to a null-terminated string of 8-bit Windows (ANSI) characters.
@@ -58,7 +66,10 @@ typedef basic_lpstr<wchar_t_> lpwstr_t;
 typedef basic_lpstr<const wchar_t_> lpcwstr_t;
 
 template<class Char>
-basic_lpstr<Char> make_lpstr(Char *P) { return basic_lpstr<Char>(P); }
+basic_lpstr<Char> make_lpstr(Char *P) 
+{ 
+	return basic_lpstr<Char>(P); 
+}
 
 typedef OLECHAR olechar_t;
 

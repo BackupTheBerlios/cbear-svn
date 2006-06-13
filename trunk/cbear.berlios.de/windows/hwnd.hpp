@@ -119,25 +119,28 @@ public:
 	const hinstance &Instance() const { return this->internal().hInstance; }
 };
 
-class atom: public policy::wrap<atom, ::ATOM>
+class atom: public base::initialized< ::ATOM>
 {
 public:
-	~atom() { this->Unregister(); }
+	~atom() 
+	{ 
+		this->Unregister(); 
+	}
 
 	template<class Char>
 	basic_lpstr<const Char> Id() const
 	{
-		return reinterpret_cast<const Char *>(this->internal());
+		return reinterpret_cast<const Char *>(this->get());
 	}
 
 	void Unregister()
 	{
-		if(!this->internal()) return;
+		if(!this->get()) return;
 		{
 			exception::scope_last_error ScopeLastError;
-			::UnregisterClassW(this->Id<wchar_t>().internal(), 0);
+			::UnregisterClassW(this->Id<wchar_t>().get(), 0);
 		}
-		this->internal() = 0;
+		this->get() = 0;
 	}
 
 	template<class Char>
@@ -146,9 +149,9 @@ public:
 		this->Unregister();
 		{
 			exception::scope_last_error ScopeLastError;
-			this->internal() = ::RegisterClass(&WndClass.internal());
+			this->get() = ::RegisterClass(&WndClass.get());
 			// to fix MS design bug.
-			if(this->internal()) ::SetLastError(0);
+			if(this->get()) ::SetLastError(0);
 		}
 	}
 };
