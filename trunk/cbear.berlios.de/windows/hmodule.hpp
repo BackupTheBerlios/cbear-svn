@@ -23,7 +23,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_HMODULE_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_HMODULE_HPP_INCLUDED
 
+// VC: winnt.h.
+#include <windows.h>
+// MINGW: winnt.h: CONST
+#include <windef.h>
+// MINGW: psapi.h: LPVOID
+#include <winnt.h>
+// DMC: psapi.h: SIZE_T
+#include <basetsd.h>
 #include <psapi.h>
+
+#ifndef GetProcAddressA
+#define GetProcAddressA GetProcAddress
+#endif
 
 #include <cbear.berlios.de/windows/base.hpp>
 #include <cbear.berlios.de/windows/handle.hpp>
@@ -36,11 +48,11 @@ namespace windows
 
 typedef ::FARPROC farproc;
 
-class hmodule: public policy::wrap<hmodule, ::HMODULE>
+class hmodule: public base::initialized< ::HMODULE>
 {
 public:
-	typedef policy::wrap<hmodule, ::HMODULE> wrap_type;
-	typedef wrap_type::internal_type internal_type;
+	typedef base::initialized< ::HMODULE> wrap_type;
+	typedef wrap_type::value_t internal_type;
 
 	hmodule() {}
 	explicit hmodule(internal_type X): wrap_type(X) {}
@@ -53,18 +65,26 @@ public:
 		{
 			exception::scope_last_error ScopeLastError;
 			Length = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::GetModuleFileName)(
-				this->internal(), Buffer, max_path);
+				this->get(), Buffer, max_path);
 		}
 		return std::basic_string<Char>(Buffer, Length);
 	}
 
+	farproc GetProcAddress(const lpcstr_t &ProcName)
+	{
+		exception::scope_last_error ScopeLastError;
+		return ::GetProcAddressA(this->get(), ProcName.get());
+	}
+
+	/* // Because MINGW doesn't have GetProcAddressA and GetProcAddressW.
 	template<class Char>
 	farproc GetProcAddress(const basic_lpstr<const Char> &ProcName)
 	{
 		exception::scope_last_error ScopeLastError;
-		return select<Char>(::GetProcAddressA, ::GetProcAddressW)(
+		return CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::GetProcAddress)(
 			this->internal(), ProcName.internal());
 	}
+	*/
 };
 
 }

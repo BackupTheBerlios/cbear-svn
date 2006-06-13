@@ -35,10 +35,10 @@ namespace cbear_berlios_de
 namespace windows
 {
 
-class dialog_box_id: public policy::wrap<dialog_box_id, int>
+class dialog_box_id: public base::initialized<int>
 {
 public:
-	typedef policy::wrap<dialog_box_id, int> wrap_type;
+	typedef base::initialized<int> wrap_type;
 	enum enumeration_type
 	{
 		ok = IDOK,
@@ -57,13 +57,13 @@ public:
 	};
 	dialog_box_id() {}
 	dialog_box_id(enumeration_type X): wrap_type(X) {}
-	explicit dialog_box_id(internal_type X): wrap_type(X) {}
+	explicit dialog_box_id(value_t X): wrap_type(X) {}
 };
 
-class message_box_style: public policy::wrap<message_box_style, uint_t>
+class message_box_style: public base::initialized<uint_t>
 {
 public:
-	typedef policy::wrap<message_box_style, uint_t> wrap_type;
+	typedef base::initialized<uint_t> wrap_type;
 	enum enumeration_type
 	{
 		// The message box contains three push buttons: Abort, Retry, and Ignore.
@@ -203,7 +203,7 @@ public:
 	};
 	message_box_style() {}
 	message_box_style(enumeration_type X): wrap_type(X) {}
-	explicit message_box_style(internal_type X): wrap_type(X) {}
+	explicit message_box_style(value_t X): wrap_type(X) {}
 };
 
 template<class Char>
@@ -218,7 +218,7 @@ dialog_box_id message_box(
 		Wnd.get(),
 		Text.internal(),
 		Caption.internal(),
-		Type.internal(),
+		Type.get(),
 		0));
 }
 

@@ -232,13 +232,11 @@ public:
 			controlparent = WS_EX_CONTROLPARENT,
 			dlgmodalframe = WS_EX_DLGMODALFRAME,
 
-			layoutrtl = WS_EX_LAYOUTRTL,
 			left = WS_EX_LEFT,
 			leftscrollbar = WS_EX_LEFTSCROLLBAR,
 			ltrreading = WS_EX_LTRREADING,
 			mdichild = WS_EX_MDICHILD,
 
-			noinheritlayout = WS_EX_NOINHERITLAYOUT,
 			noparentnotify = WS_EX_NOPARENTNOTIFY,
 			overlappedwindow = WS_EX_OVERLAPPEDWINDOW,
 			palettewindow = WS_EX_PALETTEWINDOW,
@@ -252,8 +250,10 @@ public:
 
 // Windows 2000
 #if(_WIN32_WINNT >= 0x0500)
+			layoutrtl = WS_EX_LAYOUTRTL,
 			layered = WS_EX_LAYERED,
 			noactive = WS_EX_NOACTIVATE,
+			noinheritlayout = WS_EX_NOINHERITLAYOUT,
 #endif
 
 // Windows XP
