@@ -32,13 +32,13 @@ namespace windows
 {
 
 // Boolean variable (should be TRUE or FALSE).
-class bool_t
+class bool_t: public base::initialized< ::BOOL>
 {
 public:
-	bool_t(): V(FALSE) {}
-	operator bool() const { return this->V != FALSE; }
-private:
-	::BOOL V;
+	operator bool() const throw()
+	{ 
+		return this->get() != FALSE; 
+	}
 };
 
 }
