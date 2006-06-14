@@ -28,6 +28,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ::boost::uint8_t, ::boost::uint16_t, ::boost::uint32_t
 #include <boost/cstdint.hpp>
 
+#include <cbear.berlios.de/windows/com/traits.hpp>
+
 namespace cbear_berlios_de
 {
 namespace windows
@@ -158,9 +160,13 @@ public:
 	{
 	public:
 		static const uuid &create() throw()
+#ifdef __uuidof
 		{
 			return cpp_in(&__uuidof(I));
 		}
+#else
+		;
+#endif
 	};
 
 	template<class I>

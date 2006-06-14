@@ -71,11 +71,11 @@ struct class_traits
 
 	static typename type::extra_result extra() { return type::extra(); }
 
-	template<io_type Io>
+	template<io_type Io, class = void>
 	struct io_traits;
 
-	template<>
-	struct io_traits<in>
+	template<class D>
+	struct io_traits<in, D>
 	{
 		typedef internal_type internal_result;
 		typedef const type &wrap_result;
@@ -90,8 +90,8 @@ struct class_traits
 		}
 	};
 
-	template<>
-	struct io_traits<in_out>
+	template<class D>
+	struct io_traits<in_out, D>
 	{
 		typedef internal_type *internal_result;
 		typedef type &wrap_result;
@@ -106,8 +106,8 @@ struct class_traits
 		}
 	};
 
-	template<>
-	struct io_traits<out>
+	template<class D>
+	struct io_traits<out, D>
 	{
 		typedef internal_type *internal_result;
 		typedef type &wrap_result;
@@ -140,11 +140,11 @@ struct default_traits
 
 	static void *extra() { return 0; }
 
-	template<io_type Io>
+	template<io_type Io, class = void>
 	struct io_traits;
 
-	template<>
-	struct io_traits<in>
+	template<class D>
+	struct io_traits<in, D>
 	{
 		typedef internal_type internal_result;
 		typedef type wrap_result;
@@ -153,8 +153,8 @@ struct default_traits
 		static wrap_result wrap(internal_result &X) { return X; }
 	};
 
-	template<>
-	struct io_traits<in_out>
+	template<class D>
+	struct io_traits<in_out, D>
 	{
 		typedef internal_type *internal_result;
 		typedef type &wrap_result;
@@ -163,8 +163,8 @@ struct default_traits
 		static wrap_result wrap(internal_result &X) { return *X; }
 	};
 
-	template<>
-	struct io_traits<out>
+	template<class D>
+	struct io_traits<out, D>
 	{
 		typedef internal_type *internal_result;
 		typedef type &wrap_result;

@@ -71,18 +71,36 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- SVN current directory -->
 <xsl:template match="S:entry[@name='']"/>
 
+<!-- Command -->
+<xsl:template name="T:command">
+	<xsl:param name="command"/>
+	<xsl:text>echo ^&lt;command^&gt;&#10;</xsl:text>
+	<xsl:text>echo ^&lt;output^&gt;^&lt;![CDATA[&#10;</xsl:text>
+	<xsl:value-of select="concat($command, '&#10;')"/>
+	<xsl:text>echo ]]^&gt;^&lt;/output^&gt;&#10;</xsl:text>
+	<xsl:text>echo ^&lt;error level=^"%ERRORLEVEL%^"/^&gt;&#10;</xsl:text>
+	<xsl:text>echo ^&lt;/command^&gt;&#10;</xsl:text>
+</xsl:template>
+
 <!-- Compiler -->
 <xsl:template name="T:compiler">
 	<xsl:param name="name"/>
 	<xsl:param name="command"/>
+	<xsl:param name="file"/>
 
 	<xsl:text>echo ^&lt;compiler name="</xsl:text>
 	<xsl:value-of select="$name"/>
-	<xsl:text>"^&gt;^&lt;text^&gt;^&lt;![CDATA[&#10;</xsl:text>
+	<xsl:text>"^&gt;&#10;</xsl:text>
 
-	<xsl:value-of select="concat($command, '&#10;')"/>
+	<xsl:call-template name="T:command">
+		<xsl:with-param name="command" select="$command"/>
+	</xsl:call-template>
 
-	<xsl:text>echo ]]^&gt;^&lt;/text^&gt;^&lt;error level=^"%ERRORLEVEL%^"/^&gt;&#10;</xsl:text>
+	<xsl:call-template name="T:command">
+		<xsl:with-param 
+			name="command" select="concat('&#34;', $file, '.', $name, '.exe&#34;')"/>
+	</xsl:call-template>
+
 	<xsl:text>echo ^&lt;/compiler^&gt;&#10;</xsl:text>
 </xsl:template>
 
@@ -114,6 +132,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			$T:gcc, ' -I', $T:cbear, ' -I', $T:boost, 
 			' -o', $test.name, '.gcc.exe ', 
 			$name.test.cpp)"/>
+		<xsl:with-param name="file" select="$name.test.cpp"/>
 	</xsl:call-template>
 
 	<!-- VC -->
@@ -123,15 +142,17 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			$T:vc, ' -nologo -EHs -EHc -I', $T:cbear, ' -I', $T:boost, ' ', 
 			' -o', $test.name, '.vc.exe ',
 			$name.test.cpp)"/>
+		<xsl:with-param name="file" select="$name.test.cpp"/>
 	</xsl:call-template>
 
 	<!-- DM -->
 	<xsl:call-template name="T:compiler">
-		<xsl:with-param name="name" select="'dm'"/>
+		<xsl:with-param name="name" select="'dmc'"/>
 		<xsl:with-param name="command" select="concat(
 			$T:dm, ' -Ae -I', $T:dm.stlport, ' -I', $T:cbear, ' -I', $T:boost, 
 			' -o', translate($test.name, '/', '\'), '.dmc.exe ',	
 			$name.test.cpp)"/>
+		<xsl:with-param name="file" select="$name.test.cpp"/>
 	</xsl:call-template>
 
 	<xsl:text>echo ^&lt;/file^&gt;&#10;</xsl:text>
