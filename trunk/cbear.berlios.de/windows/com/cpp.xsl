@@ -829,6 +829,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 							<id.ref id="{odl:type.ref/@id}"/>
 						</id.ref>						
 					</id.ref>
+					<xsl:apply-templates 
+						select="odl:method" mode="odl:cpp.implementation"/>
 				</access>
 			</class>
 		</template>

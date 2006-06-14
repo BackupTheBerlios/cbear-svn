@@ -160,7 +160,7 @@ public:
 	void delete_(const basic_lpstr<const Char> &X) const
 	{
 		exception::throw_if(CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::RegDeleteKey)(
-			this->internal(), X.internal()));
+			this->internal(), X.get()));
 	}
 
 	void flush() const
@@ -182,7 +182,7 @@ public:
 		properties_type Properties = data_type::properties(Data);
 		exception::throw_if(CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, RegSetValueEx)(
 			this->internal(), 
-			ValueName.internal(),
+			ValueName.get(),
 			0,
 			Properties.id.internal(),
 			Properties.begin,
