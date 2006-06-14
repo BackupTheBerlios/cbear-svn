@@ -100,12 +100,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:text>echo ^&lt;file name="</xsl:text>
 	<xsl:value-of select="$name"/>
 	<xsl:text>"^&gt;&#10;</xsl:text>
+
+	<xsl:variable name="test" select="concat($path, '_test/')"/>
+
+	<xsl:value-of select="concat('mkdir &#34;', $test, '&#34;&#10;')"/>
+
+	<xsl:variable name="test.name" select="concat($test, @name)"/>
 	
 	<!-- GCC -->
 	<xsl:call-template name="T:compiler">
 		<xsl:with-param name="name" select="'gcc'"/>
 		<xsl:with-param name="command" select="concat(
-			$T:gcc, ' -I', $T:cbear, ' -I', $T:boost, ' ', $name.test.cpp)"/>
+			$T:gcc, ' -I', $T:cbear, ' -I', $T:boost, 
+			' -o', $test.name, '.gcc.exe ', 
+			$name.test.cpp)"/>
 	</xsl:call-template>
 
 	<!-- VC -->
@@ -113,6 +121,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:with-param name="name" select="'vc'"/>
 		<xsl:with-param name="command" select="concat(
 			$T:vc, ' -nologo -EHs -EHc -I', $T:cbear, ' -I', $T:boost, ' ', 
+			' -o', $test.name, '.vc.exe ',
 			$name.test.cpp)"/>
 	</xsl:call-template>
 
@@ -120,7 +129,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:call-template name="T:compiler">
 		<xsl:with-param name="name" select="'dm'"/>
 		<xsl:with-param name="command" select="concat(
-			$T:dm, ' -Ae -I', $T:dm.stlport, ' -I', $T:cbear, ' -I', $T:boost, ' ',	
+			$T:dm, ' -Ae -I', $T:dm.stlport, ' -I', $T:cbear, ' -I', $T:boost, 
+			' -o', translate($test.name, '/', '\'), '.dmc.exe ',	
 			$name.test.cpp)"/>
 	</xsl:call-template>
 
