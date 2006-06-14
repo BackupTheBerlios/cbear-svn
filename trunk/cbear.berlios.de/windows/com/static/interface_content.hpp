@@ -50,6 +50,14 @@ protected:
 	{
 		return *static_cast<base_t *>(static_cast<implementation_t *>(this));
 	}
+	iunknown::move_t query_interface(const uuid &U) throw()
+	{
+		if(uuid::of< ::IUnknown>()==U)
+		{
+			return move::copy(iunknown::cpp_in(static_cast< ::IUnknown *>(this)));
+		}
+		return iunknown::move_t();
+	}
 };
 
 }

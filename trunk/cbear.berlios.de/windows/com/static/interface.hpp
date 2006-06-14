@@ -37,6 +37,8 @@ namespace static_
 template<class T, class B, class I = B>
 class interface_: public interface_content<T, B, I>
 {
+private:
+	typedef interface_content<T, B, I> base_t;
 protected:
 	iunknown::move_t query_interface(const uuid &U) throw()
 	{
@@ -44,7 +46,7 @@ protected:
 		{
 			return move::copy(iunknown::cpp_in(static_cast<I *>(this)));
 		}
-		return iunknown::move_t();
+		return base_t::query_interface(U);
 	}
 };
 
