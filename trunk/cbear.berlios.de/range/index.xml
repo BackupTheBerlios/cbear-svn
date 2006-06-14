@@ -25,13 +25,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<p>
 Namesapce <em>cbear_berlios_de::range</em>.
 	</p>
-	<p>
-Based on <a href="http://www.boost.org/libs/range/index.html">Boost, Range Library</a>.
-	</p>
-	<p>
-Don't use it with arrays of <em>char</em> or 
-<em>wchar_t</em> until the <a href="https://sourceforge.net/tracker/?func=detail&amp;aid=1272315&amp;group_id=7586&amp;atid=107586">Boost.Range Bug</a> is fixed.
-	</p>
 	<section name="Lexicographical Compare and Less">
 		
 		<p>
