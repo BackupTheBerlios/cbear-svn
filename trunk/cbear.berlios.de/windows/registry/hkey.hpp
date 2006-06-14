@@ -115,11 +115,11 @@ public:
 				//HKEY hKey,
 				this->internal(),
 				// LPCTSTR lpSubKey,
-				SubKey.internal(),
+				SubKey.get(),
 				//DWORD Reserved,
 				0,
 				//LPTSTR lpClass,
-				const_cast<Char *>(Options.class_.internal()),
+				const_cast<Char *>(Options.class_.get()),
 				//DWORD dwOptions,
 				Options.options.internal(),
 				//REGSAM samDesired,
@@ -149,7 +149,7 @@ public:
 		hkey Result;
 		exception::throw_if(CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::RegOpenKeyEx)(
 			this->internal(), 
-			SubKey.internal(), 
+			SubKey.get(), 
 			0, 
 			Sam.internal(), 
 			&Result.internal()));
@@ -206,7 +206,7 @@ public:
 	{
 		exception::throw_if(
 			CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::RegDeleteValue)(
-			this->internal(), ValueName.internal()));
+			this->internal(), ValueName.get()));
 	}
 
 	void delete_value() { this->delete_value(lpcstr_t()); }

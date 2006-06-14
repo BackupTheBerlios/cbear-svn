@@ -130,7 +130,7 @@ inline itypelib loadtypelib(const lpcwstr_t File)
 {
 	itypelib Result;
 	com::exception::throw_unless(::LoadTypeLib(
-		File.internal(), com::internal<out>(Result)));
+		File.get(), com::internal<out>(Result)));
 	return Result;
 }
 
@@ -139,8 +139,8 @@ inline void register_type_lib(
 {
 	com::exception::throw_unless(::RegisterTypeLib( 
 		com::internal<in>(TypeLib), 
-		const_cast<wchar_t *>(FullPath.internal()), 
-		const_cast<wchar_t *>(HelpDir.internal())));
+		const_cast<wchar_t *>(FullPath.get()), 
+		const_cast<wchar_t *>(HelpDir.get())));
 }
 
 inline void un_register_type_lib(

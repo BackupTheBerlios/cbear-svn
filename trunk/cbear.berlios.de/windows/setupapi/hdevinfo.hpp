@@ -202,7 +202,7 @@ public:
 		this->internal() = 
 			::SetupDiCreateDeviceInfoList(
 				ClassGuid ? ClassGuid->c_in(): 0,
-				Parent.internal());
+				Parent.get());
 	}
 
 	template<class Char>

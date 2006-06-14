@@ -94,7 +94,7 @@ public:
 	void SetDescription(lpcwstr_t X) const
 	{
 		this->reference().SetDescription(
-			const_cast<lpwstr_t::internal_type>(const_cast<wchar_t *>(X.internal())));
+			const_cast<lpwstr_t::internal_type>(const_cast<wchar_t *>(X.get())));
 	}
 	void SetGUID(const com::uuid &X) const
 	{
@@ -106,11 +106,11 @@ public:
 	}
 	void SetHelpFile(lpcwstr_t X) const
 	{
-		this->reference().SetHelpFile(const_cast<wchar_t *>(X.internal()));
+		this->reference().SetHelpFile(const_cast<wchar_t *>(X.get()));
 	}
 	void SetSource(lpcwstr_t X) const
 	{
-		this->reference().SetSource(const_cast<wchar_t *>(X.internal()));
+		this->reference().SetSource(const_cast<wchar_t *>(X.get()));
 	}
 };
 
