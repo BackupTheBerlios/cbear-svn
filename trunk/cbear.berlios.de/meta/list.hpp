@@ -27,6 +27,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/meta/identity.hpp>
 #include <cstddef>
 
+#pragma warning(disable: 4348)
+
 namespace cbear_berlios_de
 {
 namespace meta
@@ -49,7 +51,7 @@ namespace detail
 
 class none;
 
-template<class Front = none, class PopFront = none>
+template<class Front, class PopFront>
 class list;
 
 // list base.
@@ -61,7 +63,7 @@ template<>
 class list_base<none, none>
 {
 public:
-	typedef list<> type;
+	typedef list<none, none> type;
 	typedef true_ empty;
 	typedef const_<std::size_t, 0> size;
 	// no front
@@ -104,22 +106,22 @@ protected:
 
 // list base of one item.
 template<class Front>
-class list_base<Front, list<> >
+class list_base<Front, list<none, none> >
 {
 public:
-	typedef list<Front, list<> > type;
+	typedef list<Front, list<none, none> > type;
 	typedef false_ empty;
 	typedef const_<std::size_t, 1> size;
 	typedef identity<Front> front;
 	typedef identity<Front> back;
-	typedef list<> pop_front;
-	typedef list<> pop_back;
+	typedef list<none, none> pop_front;
+	typedef list<none, none> pop_back;
 
 	template<class Front1>
 	class push_front: public list<Front1, type> {};
 
 	template<class Back1>
-	class push_back: public list<Front, list<Back1> > {};
+	class push_back: public list<Front, list<Back1, list<none, none> > > {};
 
 	template<std::size_t, class = void>
 	class at_c;	
@@ -131,7 +133,7 @@ public:
 	template<class X>
 	class insert_c<0, X>: public list<X, type> {};
 	template<class X>
-	class insert_c<1, X>: public list<Front, list<X> > {};
+	class insert_c<1, X>: public list<Front, list<X, list<none, none> > > {};
 
 protected:
 
@@ -272,7 +274,7 @@ public:
 	typedef list type;
 	typedef list o; // VC 8.0
 
-	typedef list<> clear;
+	typedef list<none, none> clear;
 
 	// size steps.
 	template<class B>
@@ -366,7 +368,7 @@ public:
 // A new vector of following elements: 
 // [begin::type, n), [v::begin, v::end) [n, end).
 //
-typedef detail::list<> list;
+typedef detail::list<detail::none, detail::none> list;
 
 }
 }

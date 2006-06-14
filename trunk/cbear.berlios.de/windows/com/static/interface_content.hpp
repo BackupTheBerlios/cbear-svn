@@ -48,7 +48,7 @@ protected:
 	typedef typename T::template implementation_t<implementation_t> base_t;
 	base_t &base()
 	{
-		return *static_cast<base_t>(static_cast<implementation_t *>(this));
+		return *static_cast<base_t *>(static_cast<implementation_t *>(this));
 	}
 };
 

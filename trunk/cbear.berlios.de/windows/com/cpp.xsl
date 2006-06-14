@@ -662,9 +662,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:variable>
 	<id.ref type="-&gt;">
 		<id.ref type="this"/>
-		<id.ref id="{$id.long}" type="()">
-		<xsl:apply-templates 
-			select="odl:parameter" mode="odl:cpp.implementation.call"/>
+		<id.ref type=".">
+			<id.ref id="base" type="()"/>
+			<id.ref id="{$id.long}" type="()">
+				<xsl:apply-templates 
+					select="odl:parameter" mode="odl:cpp.implementation.call"/>
+			</id.ref>
 		</id.ref>
 	</id.ref>
 </xsl:template>
@@ -802,7 +805,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 							<id.ref id="{odl:type.ref/@id}"/>
 						</id.ref>
 					</id.ref>
-					<xsl:apply-templates select="odl:method" mode="odl:cpp.implementation"/>
+					<xsl:apply-templates 
+						select="odl:method" mode="odl:cpp.implementation"/>
 				</access>
 			</class>
 		</template>
@@ -829,8 +833,47 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 							<id.ref id="{odl:type.ref/@id}"/>
 						</id.ref>						
 					</id.ref>
-					<xsl:apply-templates 
-						select="odl:method" mode="odl:cpp.implementation"/>
+					<xsl:for-each select="odl:method">
+						<xsl:variable name="id">
+							<xsl:apply-templates select="." mode="odl:cpp.method.id"/>
+						</xsl:variable>
+
+						<method id="{$id}">
+							<id.ref type="::">
+								<id.ref id="hresult"/>
+								<id.ref id="internal_type"/>
+							</id.ref>
+							<stdcall/>
+							<xsl:apply-templates select="odl:parameter" mode="odl:cpp.implementation"/>
+							<body>
+								<try>
+									<body>
+				  					<xsl:apply-templates select="." mode="odl:cpp.implementation.assign"/>
+										<id.ref type="return">
+											<id.ref type="::">
+												<id.ref id="hresult"/>
+												<id.ref id="s_ok"/>
+											</id.ref>
+											</id.ref>
+									</body>
+									<catch>
+										<parameter><id.ref id="..."/></parameter>
+										<body>
+											<id.ref type="return">
+												<id.ref type=".">
+													<id.ref type="::">
+														<id.ref id="create_exception"/>
+														<id.ref id="catch_" type="()"/>
+													</id.ref>
+													<id.ref id="internal" type="()"/>
+												</id.ref>
+											</id.ref>
+										</body>
+									</catch>
+								</try>
+							</body>
+						</method>
+					</xsl:for-each>
 				</access>
 			</class>
 		</template>

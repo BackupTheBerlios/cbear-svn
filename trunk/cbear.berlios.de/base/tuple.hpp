@@ -99,7 +99,7 @@ public:
 	// at_c
 public:
 	template<std::size_t N>
-	class at_c_t: public base::tuple<typename List::template at_c<N>::type> {};
+	class at_c_t: public List::template at_c<N> {};
 	template<std::size_t N>
 	typename at_c_t<N>::type &at_c() 
 	{ 
@@ -151,7 +151,7 @@ public:
 
 	// erase_c
 protected:
-	template<std::size_t N1, std::size_t N2>
+	template<std::size_t N1, std::size_t N2, class = void>
 	class erase_c_t: 
 		public base::tuple<typename List::template erase_c<N1, N2>::type>
 	{
@@ -163,8 +163,8 @@ protected:
 				This.Front, This.PopFront.template erase_c<N1 - 1, N2 - 1>());
 		}
 	};
-	template<std::size_t N2>
-	class erase_c_t<0, N2>:
+	template<std::size_t N2, class D>
+	class erase_c_t<0, N2, D>:
 		public base::tuple<typename List::template erase_c<0, N2>::type>
 	{
 	public:
@@ -174,8 +174,8 @@ protected:
 			return This.PopFront.template erase_c<0, N2 - 1>();
 		}
 	};
-	template<>
-	class erase_c_t<0, 0>:
+	template<class D>
+	class erase_c_t<0, 0, D>:
 		public base::tuple<typename List::template erase_c<0, 0>::type>
 	{
 	public:
@@ -328,7 +328,7 @@ public:
 	// at_c
 public:
 	template<std::size_t N>
-	class at_c_t: public base::tuple<typename List::template at_c<N>::type> {};
+	class at_c_t: public List::template at_c<N> {};
 	template<std::size_t N>
 	typename at_c_t<N>::type &at_c();
 	template<>
@@ -369,10 +369,10 @@ public:
 
 	// erase_c
 protected:
-	template<std::size_t N1, std::size_t N2>
+	template<std::size_t N1, std::size_t N2, class = void>
 	class erase_c_t;
-	template<>
-	class erase_c_t<0, 0>:
+	template<class D>
+	class erase_c_t<0, 0, D>:
 		public base::tuple<typename List::template erase_c<0, 0>::type>
 	{
 	public:
@@ -382,8 +382,8 @@ protected:
 			return this->This();
 		}
 	};
-	template<>
-	class erase_c_t<0, 1>:
+	template<class D>
+	class erase_c_t<0, 1, D>:
 		public base::tuple<typename List::template erase_c<0, 1>::type>
 	{
 	public:
@@ -393,8 +393,8 @@ protected:
 			return result_t();
 		}
 	};
-	template<>
-	class erase_c_t<1, 1>:
+	template<class D>
+	class erase_c_t<1, 1, D>:
 		public base::tuple<typename List::template erase_c<1, 1>::type>
 	{
 	public:
@@ -612,7 +612,7 @@ public:
 
 	// []
 	template<class N>
-	class at_t: public base_t::template at_c<N::value> {};
+	class at_t: public base_t::template at_c_t<N::value> {};
 	template<class N>
 	typename at_t<N>::type &operator[](N) 
 	{ 
@@ -678,6 +678,20 @@ public:
 		public base_t::template push_back_tuple_t<typename tuple_cast<Tuple>::type>
 	{
 	};
+
+	tuple() {}
+
+	template<class F>
+	explicit tuple(const F &F_): 
+		base_t(F_) 
+	{
+	}
+
+	template<class F, class PF>
+	tuple(const F &F_, const PF &PF_):
+		base_t(F_, PF_) 
+	{
+	}
 };
 
 }
