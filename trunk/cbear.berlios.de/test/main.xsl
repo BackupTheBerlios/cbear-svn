@@ -132,6 +132,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- SVN current directory -->
 <xsl:template match="S:entry[@name='']"/>
 
+<xsl:template match="S:entry[@name='']" mode="T:count">
+	<xsl:value-of select="0"/>
+</xsl:template>
+
 <!-- Command -->
 <xsl:template name="T:command">
 	<xsl:param name="command"/>
@@ -146,7 +150,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 							<xsl:call-template name="T:line">
 								<xsl:with-param 
 									name="text" 
-									select="concat($command, '&gt;&gt;', $T:log, ' 2&gt;&amp;1')"/>
+									select="
+										concat($command, '&gt;&gt;', $T:log, ' 2&gt;&amp;1')"/>
 							</xsl:call-template>
 						</xsl:with-param>
 					</xsl:call-template>
@@ -176,12 +181,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:with-param 
 			name="attributes" select="concat('name=&#34;', $name, '&#34;')"/>
 		<xsl:with-param name="content">
+
 			<xsl:call-template name="T:message">
 				<xsl:with-param name="text" select="'compiling...'"/>
 			</xsl:call-template>
 			<xsl:call-template name="T:command">
 				<xsl:with-param name="command" select="$command"/>
 			</xsl:call-template>
+
+			<xsl:variable name="label" select="concat('&#34;', $file, '&#34;')"/>
+
+			<xsl:call-template name="T:line">
+				<xsl:with-param name="text" select="
+					concat('if not %ERRORLEVEL% == 0 goto ', $label)"/>
+			</xsl:call-template>
+
 			<xsl:call-template name="T:message">
 				<xsl:with-param name="text" select="'running...'"/>
 			</xsl:call-template>
@@ -189,6 +203,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<xsl:with-param 
 					name="command" select="concat('&#34;', $file, '.', $name, '.exe&#34;')"/>
 			</xsl:call-template>
+
+			<xsl:call-template name="T:line">
+				<xsl:with-param name="text" select="concat(':', $label)"/>
+			</xsl:call-template>
+
 		</xsl:with-param>
 	</xsl:call-template>
 </xsl:template>
