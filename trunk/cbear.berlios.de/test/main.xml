@@ -21,7 +21,15 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
-<main 
+<main
 	xmlns="http://cbear.berlios.de/test"
-	root="../base/">
+
+	root="../"
+
+	psdk="call &#34;C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\SetEnv.Cmd&#34;"
+	vcvar="call &#34;C:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat&#34;"
+
+	gcc="c:/mingw/bin/g++.exe"
+	vc="&#34;C:\Program Files\Microsoft Visual Studio 8\VC\bin\cl.exe&#34;"
+	dmc="c:/dm/bin/dmc.exe">
 </main>
