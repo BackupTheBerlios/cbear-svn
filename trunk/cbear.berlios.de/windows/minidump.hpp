@@ -60,7 +60,6 @@ public:
 private:
 	static long_t __stdcall filter(EXCEPTION_POINTERS *ExceptionPointers)
 	{
-		::MessageBoxW(0, L"Begin", L"E", 0);
 		::MINIDUMP_EXCEPTION_INFORMATION ExInfo;
 		ExInfo.ThreadId = ::GetCurrentThreadId();
 		ExInfo.ExceptionPointers = ExceptionPointers;
@@ -83,7 +82,6 @@ private:
 			0, 
 			0)) return EXCEPTION_CONTINUE_SEARCH;
 		CloseHandle(hFile);
-		::MessageBoxW(0, L"End", L"E", 0);
 		return EXCEPTION_CONTINUE_SEARCH;
 	}
 };
