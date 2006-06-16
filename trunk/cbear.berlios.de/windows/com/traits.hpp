@@ -140,7 +140,7 @@ struct default_traits
 
 	static void *extra() { return 0; }
 
-	template<io_type Io, class = void>
+	template<io_type Io, class D = void>
 	struct io_traits;
 
 	template<class D>

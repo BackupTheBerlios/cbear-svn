@@ -160,7 +160,7 @@ public:
 	{
 	public:
 		static const uuid &create() throw()
-#ifdef __uuidof
+#ifdef _MSC_VER
 		{
 			return cpp_in(&__uuidof(I));
 		}
