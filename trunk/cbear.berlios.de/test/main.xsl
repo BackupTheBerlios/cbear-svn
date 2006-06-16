@@ -33,21 +33,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:output method="text" encoding="ascii"/>
 
 <!-- parameters -->
-<!--
-<xsl:param name="T:gcc" select="'c:/mingw/bin/g++.exe'"/>
-<xsl:param name="T:psdk" select="
-	'C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\'"/>
-<xsl:param name="T:vc" select="
-	'&#34;C:\Program Files\Microsoft Visual Studio 8\VC\bin\cl.exe&#34;'"/>
-<xsl:param name="T:dm" select="'c:/dm/bin/dmc.exe'"/>
-
-<xsl:param name="T:dm.stlport" select="'c:/dm/stlport/stlport'"/>
-<xsl:param name="T:boost" select="'c:/boost/include/boost-1_33_1'"/>
-<xsl:param name="T:cbear" select="'c:/cbear'"/>
-
-<xsl:param name="T:log" select="'log.xml'"/>
--->
-
 <xsl:param name="T:root" select="/T:main/@root"/>
 
 <xsl:param name="T:psdk" select="/T:main/@psdk"/>
@@ -57,11 +42,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:param name="T:vc" select="/T:main/@vc"/>
 <xsl:param name="T:dmc" select="/T:main/@dmc"/>
 
-<xsl:param name="T:dm.stlport" select="'c:/dm/stlport/stlport'"/>
-<xsl:param name="T:boost" select="'c:/boost/include/boost-1_33_1'"/>
-<xsl:param name="T:cbear" select="'c:/cbear'"/>
+<xsl:param name="T:dmc.stlport" select="/T:main/@dmc.stlport"/>
+<xsl:param name="T:boost" select="/T:main/@boost"/>
+<xsl:param name="T:cbear" select="/T:main/@cbear"/>
 
-<xsl:param name="T:log" select="'log.xml'"/>
+<xsl:param name="T:log" select="/T:main/@log"/>
 
 <!-- T:line -->
 <xsl:template name="T:line">
@@ -154,6 +139,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:value-of select="0"/>
 </xsl:template>
 
+<!-- label -->
+<xsl:template name="T:label">
+	<xsl:param name="text"/>
+	<xsl:value-of select="concat('L', translate(
+		$text, 
+		' .:-/\+&#34;', 
+		'_0123456'))"/>
+</xsl:template>
+
 <!-- Command -->
 <xsl:template name="T:command">
 	<xsl:param name="command"/>
@@ -186,6 +180,30 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<xsl:with-param 
 					name="attributes" select="'level=^&#34;%ERRORLEVEL%^&#34;'"/>
 			</xsl:call-template>
+			<xsl:variable name="label">
+				<xsl:call-template name="T:label">
+					<xsl:with-param name="text" select="$command"/>
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:call-template name="T:line">
+				<xsl:with-param 
+					name="text" select="concat('if %ERRORLEVEL% == 0 goto ', $label, '_then')"/>
+			</xsl:call-template>
+			<xsl:call-template name="T:message">
+				<xsl:with-param name="text" select="'ok'"/>
+			</xsl:call-template>
+			<xsl:call-template name="T:line">
+				<xsl:with-param name="text" select="concat('if 0 == 0 goto ', $label, '_end')"/>
+			</xsl:call-template>
+			<xsl:call-template name="T:line">
+				<xsl:with-param name="text" select="concat(':', $label, '_then')"/>
+			</xsl:call-template>
+			<xsl:call-template name="T:message">
+				<xsl:with-param name="text" select="'failed'"/>
+			</xsl:call-template>
+			<xsl:call-template name="T:line">
+				<xsl:with-param name="text" select="concat(':', $label, '_end')"/>
+			</xsl:call-template>
 		</xsl:with-param>
 	</xsl:call-template>
 </xsl:template>
@@ -193,15 +211,17 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- EXE name -->
 <xsl:template name="T:exe">
 	<xsl:param name="compiler"/>
+	<xsl:param name="path"/>
 	<xsl:param name="file"/>
 
-	<xsl:value-of select="concat($file, '.', $compiler, '.exe')"/>
+	<xsl:value-of select="concat($path, '_test/', $file, '.', $compiler, '.exe')"/>
 </xsl:template>
 
 <!-- Compiler -->
 <xsl:template name="T:compiler">
 	<xsl:param name="compiler"/>
 	<xsl:param name="command"/>
+	<xsl:param name="path"/>
 	<xsl:param name="file"/>
 
 	<xsl:call-template name="T:message">
@@ -211,6 +231,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:variable name="exe">
 		<xsl:call-template name="T:exe">
 			<xsl:with-param name="compiler" select="$compiler"/>
+			<xsl:with-param name="path" select="$path"/>
 			<xsl:with-param name="file" select="$file"/>
 		</xsl:call-template>
 	</xsl:variable>
@@ -226,7 +247,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<xsl:with-param name="text" select="'compiling...'"/>
 			</xsl:call-template>
 
-			<xsl:variable name="label" select="concat('&#34;', $file, '&#34;')"/>
+			<xsl:variable name="label">
+				<xsl:call-template name="T:label">
+					<xsl:with-param name="text" select="concat($exe, '_skip')"/>
+				</xsl:call-template>
+			</xsl:variable>
 
 			<xsl:call-template name="T:line">
 				<xsl:with-param name="text" select="
@@ -276,6 +301,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:variable name="gcc.exe">
 				<xsl:call-template name="T:exe">
 					<xsl:with-param name="compiler" select="'gcc'"/>
+					<xsl:with-param name="path" select="$path"/>
 					<xsl:with-param name="file" select="$name.test.cpp"/>
 				</xsl:call-template>
 			</xsl:variable>
@@ -292,6 +318,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:variable name="vc.exe">
 				<xsl:call-template name="T:exe">
 					<xsl:with-param name="compiler" select="'vc'"/>
+					<xsl:with-param name="path" select="$path"/>
 					<xsl:with-param name="file" select="$name.test.cpp"/>
 				</xsl:call-template>
 			</xsl:variable>
@@ -308,6 +335,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:variable name="dmc.exe">
 				<xsl:call-template name="T:exe">
 					<xsl:with-param name="compiler" select="'dmc'"/>
+					<xsl:with-param name="path" select="$path"/>
 					<xsl:with-param name="file" select="$name.test.cpp"/>
 				</xsl:call-template>
 			</xsl:variable>
@@ -315,7 +343,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:call-template name="T:compiler">
 				<xsl:with-param name="compiler" select="'dmc'"/>
 				<xsl:with-param name="command" select="concat(
-					$T:dmc, ' -Ae -I', $T:dm.stlport, ' -I', $T:cbear, ' -I', $T:boost,
+					$T:dmc, ' -Ae -I', $T:dmc.stlport, ' -I', $T:cbear, ' -I', $T:boost,
 					' -o', translate($dmc.exe, '/', '\'), ' ', $name.test.cpp)"/>
 				<xsl:with-param name="file" select="$name.test.cpp"/>
 			</xsl:call-template>
@@ -364,6 +392,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			</xsl:call-template>
 		</xsl:with-param>
 	</xsl:call-template>
+
 </xsl:template>
 
 </xsl:stylesheet>

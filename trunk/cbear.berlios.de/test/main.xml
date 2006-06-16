@@ -31,5 +31,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 	gcc="c:/mingw/bin/g++.exe"
 	vc="&#34;C:\Program Files\Microsoft Visual Studio 8\VC\bin\cl.exe&#34;"
-	dmc="c:/dm/bin/dmc.exe">
+	dmc="c:/dm/bin/dmc.exe"
+
+	dmc.stlport="c:/dm/stlport/stlport"
+	boost="c:/boost/include/boost-1_33_1"
+	cbear="c:/cbear"
+
+	log="log.xml">
 </main>
