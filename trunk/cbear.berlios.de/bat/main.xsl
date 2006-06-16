@@ -258,7 +258,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:call-template name="B:title">
 		<xsl:with-param name="text" select="concat(
 			' ', 
-			round((100 * count(preceding::B:command)) div count(//B:command)), 
+			floor((100 * count(preceding::B:command)) div count(//B:command)), 
 			'%%')"/>
 	</xsl:call-template>
 
@@ -296,31 +296,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:call-template name="B:message">
 				<xsl:with-param name="text" select="'result = %errorlevel%'"/>
 			</xsl:call-template>
-<!--
-			<xsl:variable name="choose.end">
-				<xsl:call-template name="B:label.name"/>
-			</xsl:variable>
-			<xsl:call-template name="B:choose">
-				<xsl:with-param name="when.list">
-					<xsl:call-template name="B:when">
-						<xsl:with-param name="test" select="'%errorlevel% == 0'"/>
-						<xsl:with-param name="text">
-							<xsl:call-template name="B:message">
-								<xsl:with-param name="text" select="'ok'"/>
-							</xsl:call-template>
-						</xsl:with-param>
-						<xsl:with-param name="end" select="concat($choose.end, 'ok')"/>
-						<xsl:with-param name="choose.end" select="$choose.end"/>
-					</xsl:call-template>
-				</xsl:with-param>
-				<xsl:with-param name="otherwise">
-					<xsl:call-template name="B:message">
-						<xsl:with-param name="text" select="'failed'"/>
-					</xsl:call-template>
-				</xsl:with-param>
-				<xsl:with-param name="end" select="$choose.end"/>
-			</xsl:call-template>
--->
 
 		</xsl:with-param>
 	</xsl:call-template>
