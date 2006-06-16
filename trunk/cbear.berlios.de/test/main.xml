@@ -21,9 +21,11 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
-<main
+<config
 	xmlns="http://cbear.berlios.de/test"
 
+	name="C Bear "
+	
 	root="../"
 
 	psdk="call &#34;C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\SetEnv.Cmd&#34;"
@@ -37,5 +39,5 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	boost="c:/boost/include/boost-1_33_1"
 	cbear="c:/cbear"
 
-	log="log.xml">
-</main>
+	log="log.xml"
+	stylesheet="html.xsl"/>
