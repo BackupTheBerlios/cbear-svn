@@ -103,9 +103,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 	<T:compiler name="{$compiler}">
 		<B:command name="compiling" text="{$command}"/>		
-		<B:if test="%errorlevel% == 0">
-			<B:command name="running" text="{concat('&#34;', $target, '&#34;')}"/>
-		</B:if>
+		<B:command name="running" text="{concat('&#34;', $target, '&#34;')}"/>
 	</T:compiler>
 
 </xsl:template>
