@@ -121,7 +121,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="*">
 	<xsl:call-template name="B:tag">
 		<xsl:with-param name="name" select="local-name()"/>
-		<xsl:with-param name="xmlns" select="''"/>
+		<xsl:with-param name="xmlns" select="namespace-uri()"/>
 		<xsl:with-param name="attributes">
 			<xsl:apply-templates select="@*"/>
 		</xsl:with-param>
@@ -398,7 +398,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <!-- B:bat -->
-<xsl:template match="B:bat">
+<xsl:template match="/B:bat">
 	<xsl:call-template name="B:line">
 		<xsl:with-param name="text" select="'@echo off'"/>
 	</xsl:call-template>
@@ -414,8 +414,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			$B:stylesheet, 
 			'&#34;?^&gt;')"/>
 	</xsl:call-template>
+
 	<xsl:call-template name="B:tag">
-		<xsl:with-param name="name" select="'report'"/>
+		<xsl:with-param name="name" select="'bat'"/>
 		<xsl:with-param name="xmlns" select="$B:xmlns"/>
 		<xsl:with-param name="attributes">
 			<xsl:apply-templates select="@*"/>

@@ -57,7 +57,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template name="T:dir">
 	<xsl:param name="path"/>
 
-	<T:dir path="{$path}">
+	<B:bat name="{concat('Directory: ', $path)}">
 
 		<xsl:variable name="test.path" select="concat($path, '_test/')"/>
 
@@ -70,7 +70,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<xsl:with-param name="path" select="$path"/>
 			</xsl:apply-templates>
 
-	</T:dir>
+	</B:bat>
 
 </xsl:template>
 
@@ -101,10 +101,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 	<B:message text="{concat('Compiler: ', $compiler)}"/>
 
-	<T:compiler name="{$compiler}">
+	<B:bat name="{concat('Compiler: ', $compiler)}">
 		<B:command name="compiling" text="{$command}"/>		
 		<B:command name="running" text="{concat('&#34;', $target, '&#34;')}"/>
-	</T:compiler>
+	</B:bat>
 
 </xsl:template>
 
@@ -122,7 +122,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 	<B:message text="{concat('File: ', $name)}"/>
 
-	<T:file name="{$name}">
+	<B:bat name="{concat('File: ', $name)}">
 
 		<xsl:variable name="target" select="concat($path, '_test/', @name)"/>
 	
@@ -174,7 +174,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:with-param name="target" select="$dmc.target"/>
 		</xsl:call-template>
 
-	</T:file>
+	</B:bat>
 
 </xsl:template>
 
