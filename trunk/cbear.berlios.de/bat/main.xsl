@@ -35,11 +35,41 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:variable name="B:xmlns" select="'http://cbear.berlios.de/bat'"/>
 
+<!-- B:replace -->
+<xsl:template name="B:replace">
+	<xsl:param name="text"/>
+	<xsl:param name="from"/>
+	<xsl:param name="to"/>
+	
+	<xsl:choose>
+		<xsl:when test="contains($text, $from)">
+			<xsl:value-of select="substring-before($text, $from)"/>
+			<xsl:value-of select="$to"/>
+			<xsl:call-template name="B:replace">
+				<xsl:with-param name="text" select="substring-after($text, $from)"/>
+				<xsl:with-param name="to" select="$to"/>
+				<xsl:with-param name="from" select="$from"/>
+			</xsl:call-template>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:value-of select="$text"/>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+
 <!-- @* -->
 <xsl:template name="B:attribute">
 	<xsl:param name="name"/>
 	<xsl:param name="value"/>
-	<xsl:value-of select="concat(' ', $name, '=^&#34;', $value, '^&#34;')"/>
+
+	<xsl:variable name="value.escape">
+		<xsl:call-template name="B:replace">
+			<xsl:with-param name="text" select="$value"/>
+			<xsl:with-param name="from" select="'&#34;'"/>
+			<xsl:with-param name="to" select="'^&amp;#34;'"/>
+		</xsl:call-template>
+	</xsl:variable>
+	<xsl:value-of select="concat(' ', $name, '=^&#34;', $value.escape, '^&#34;')"/>
 </xsl:template>
 
 <xsl:template match="@*">
@@ -303,6 +333,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:call-template name="B:tag">
 		<xsl:with-param name="name" select="'command'"/>
 		<xsl:with-param name="xmlns" select="$B:xmlns"/>
+		<xsl:with-param name="attributes">
+			<xsl:apply-templates select="@*"/>
+		</xsl:with-param>
 		<xsl:with-param name="text">
 
 			<xsl:call-template name="B:tag">
@@ -323,13 +356,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:call-template name="B:tag">
 				<xsl:with-param name="name" select="'errorlevel'"/>
 				<xsl:with-param name="xmlns" select="$B:xmlns"/>
-				<xsl:with-param 
-					name="attributes" 
-					select="' value=^&#34;%errorlevel%^&#34;'"/>
+				<xsl:with-param name="attributes">
+					<xsl:call-template name="B:attribute">
+						<xsl:with-param name="name" select="'value'"/>
+						<xsl:with-param name="value" select="'%errorlevel%'"/>
+					</xsl:call-template>
+				</xsl:with-param>
 			</xsl:call-template>
 
 			<xsl:call-template name="B:message">
-				<xsl:with-param name="text" select="'result = %errorlevel%'"/>
+				<xsl:with-param name="text" select="'errorlevel = %errorlevel%'"/>
 			</xsl:call-template>
 
 		</xsl:with-param>
