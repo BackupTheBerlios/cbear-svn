@@ -39,7 +39,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template name="B:attribute">
 	<xsl:param name="name"/>
 	<xsl:param name="value"/>
-	<xsl:value-of select="concat(' ', $name, '=^&#34;', $value, '=^&#34;')"/>
+	<xsl:value-of select="concat(' ', $name, '=^&#34;', $value, '^&#34;')"/>
 </xsl:template>
 
 <xsl:template match="@*">
