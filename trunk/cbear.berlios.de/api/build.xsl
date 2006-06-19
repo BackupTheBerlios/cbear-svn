@@ -51,6 +51,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:param name="A:dnet.key" select="A:config/@dnet.key"/>
 <xsl:param name="A:dnet.dll" select="A:config/@dnet.dll"/>
 
+<xsl:param name="A:midl.options" select="A:config/@midl.options"/>
+<xsl:param name="A:tlbimp.options" select="A:config/@tlbimp.options"/>
+
 <xsl:param name="A:cbear" select="A:config/@cbear"/>
 <xsl:param name="A:nxslt" select="A:config/@nxslt"/>
 <xsl:param name="A:vc.var" select="A:config/@vc.var"/>
@@ -91,7 +94,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				'/tlb ', $A:tlb, ' ',
 				'/header ', $A:h, ' ',
 				'/iid ', $A:iid, ' ',
-				$A:odl)}"/>
+				$A:odl, ' ',
+				$A:midl.options)}"/>
 
 		<B:command
 			name="TLB to .NET DLL"
@@ -100,7 +104,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				$A:tlb, ' ',
 				'/primary ',
 				'/keyfile:', $A:dnet.key, ' ',
-				'/out:', $A:dnet.dll)}"/>
+				'/out:', $A:dnet.dll, ' ',
+				$A:tlbimp.options)}"/>
 
 		<B:command
 			name="ODL.XML to HPP.XML"
