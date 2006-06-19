@@ -48,6 +48,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:param name="A:hpp.xml" select="A:config/@hpp.xml"/>
 <xsl:param name="A:hpp" select="A:config/@hpp"/>
 
+<xsl:param name="A:html" select="A:config/@html"/>
+
 <xsl:param name="A:dnet.key" select="A:config/@dnet.key"/>
 <xsl:param name="A:dnet.dll" select="A:config/@dnet.dll"/>
 
@@ -122,6 +124,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				$A:hpp.xml, ' ',
 				$A:cbear, 'cbear.berlios.de/cpp/cpp.xsl ',
 				'-o ', $A:hpp)}"/>
+
+		<B:command
+			name="API.XML to HTL"
+			text="{concat(
+				$A:nxslt, ' ', 
+				$A:api.xml, ' ',
+				'-pi ',
+				'-o ', $A:html)}"/>
 
 	</B:bat>
 </xsl:template>
