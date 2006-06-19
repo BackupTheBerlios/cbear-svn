@@ -221,6 +221,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:call-template>
 </xsl:template>
 
+<!-- B:if.goto -->
+<xsl:template name="B:if.goto">
+	<xsl:param name="test"/>
+	<xsl:param name="label"/>
+	<xsl:call-template name="B:line">
+		<xsl:with-param name="text" select="concat('if ', $test, ' goto ', $label)"/>
+	</xsl:call-template>
+</xsl:template>
+
 <!-- B:if.not.goto -->
 <xsl:template name="B:if.not.goto">
 	<xsl:param name="test"/>
@@ -237,6 +246,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:param name="end"/>
 
 	<xsl:call-template name="B:if.not.goto">
+		<xsl:with-param name="test" select="$test"/>
+		<xsl:with-param name="label" select="$end"/>
+	</xsl:call-template>
+	<xsl:value-of select="$text"/>
+	<xsl:call-template name="B:label">	
+		<xsl:with-param name="name" select="$end"/>
+	</xsl:call-template>
+</xsl:template>
+
+<xsl:template name="B:if.not">
+	<xsl:param name="test"/>
+	<xsl:param name="text"/>
+	<xsl:param name="end"/>
+
+	<xsl:call-template name="B:if.goto">
 		<xsl:with-param name="test" select="$test"/>
 		<xsl:with-param name="label" select="$end"/>
 	</xsl:call-template>
