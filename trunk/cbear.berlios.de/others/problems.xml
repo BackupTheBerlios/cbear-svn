@@ -224,14 +224,14 @@ int main()
 
 	CR(CC);
 	// CR(MC); // error
-	CR("Hello world!");
+	// CR("Hello world!"); // incorrect size
 
 	CR(CI);
 	// CR(MI); // error
 
 	CR(CW);
 	// CR(MC); // error
-	CR(L"Hello world!");
+	// CR(L"Hello world!"); // incorrect size
 
 	/// Array Reference.
 
@@ -286,5 +286,9 @@ int main()
 	O(MW);
 	// O(L"Hello world!"); // error
 }]]></pre>
+	</section>
+	<section name="Batch File, goto">
+<pre><![CDATA[goto A123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_1234567
+:A123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_1234567]]></pre>
 	</section>
 </section>

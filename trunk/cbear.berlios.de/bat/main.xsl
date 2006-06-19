@@ -33,18 +33,31 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:param name="B:log" select="/B:bat/@log"/>
 <xsl:param name="B:stylesheet" select="/B:bat/@stylesheet"/>
 
-<xsl:variable name="B:xmlns" select="
-	'xmlns=^&#34;http://cbear.berlios.de/bat^&#34;'"/>
+<xsl:variable name="B:xmlns" select="'http://cbear.berlios.de/bat'"/>
+
+<!-- @* -->
+<xsl:template name="B:attribute">
+	<xsl:param name="name"/>
+	<xsl:param name="value"/>
+	<xsl:value-of select="concat(' ', $name, '=^&#34;', $value, '=^&#34;')"/>
+</xsl:template>
+
+<xsl:template match="@*">
+	<xsl:call-template name="B:attribute">
+		<xsl:with-param name="name" select="local-name()"/>
+		<xsl:with-param name="value" select="."/>
+	</xsl:call-template>
+</xsl:template>
 
 <!-- * -->
-<xsl:template name="B:tag">
+<xsl:template name="B:tag.simple">
 	<xsl:param name="name"/>
 	<xsl:param name="attributes"/>
 	<xsl:param name="text"/>
 
 	<xsl:call-template name="B:log.line">
 		<xsl:with-param 
-			name="text" select="concat('^&lt;', $name, ' ', $attributes, '^&gt;')"/>
+			name="text" select="concat('^&lt;', $name, $attributes, '^&gt;')"/>
 	</xsl:call-template>
 	<xsl:value-of select="$text"/>
 	<xsl:call-template name="B:log.line">
@@ -53,13 +66,34 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:call-template>
 </xsl:template>
 
+<xsl:template name="B:tag">
+	<xsl:param name="name"/>
+	<xsl:param name="xmlns"/>
+	<xsl:param name="attributes"/>
+	<xsl:param name="text"/>
+
+	<xsl:call-template name="B:tag.simple">
+		<xsl:with-param name="name" select="$name"/>
+		<xsl:with-param name="attributes">
+			<xsl:if test="$xmlns">
+				<xsl:call-template name="B:attribute">
+					<xsl:with-param name="name" select="'xmlns'"/>
+					<xsl:with-param name="value" select="$xmlns"/>
+				</xsl:call-template>
+			</xsl:if>
+			<xsl:value-of select="$attributes"/>
+		</xsl:with-param>
+		<xsl:with-param name="text" select="$text"/>
+	</xsl:call-template>
+
+</xsl:template>
+
 <xsl:template match="*">
 	<xsl:call-template name="B:tag">
 		<xsl:with-param name="name" select="local-name()"/>
+		<xsl:with-param name="xmlns" select="''"/>
 		<xsl:with-param name="attributes">
-			<xsl:for-each select="@*">
-				<xsl:value-of select="concat(' ', local-name(), '=^&#34;', ., '^&#34;')"/>
-			</xsl:for-each>
+			<xsl:apply-templates select="@*"/>
 		</xsl:with-param>
 		<xsl:with-param name="text">
 			<xsl:apply-templates select="*"/>
@@ -268,12 +302,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 	<xsl:call-template name="B:tag">
 		<xsl:with-param name="name" select="'command'"/>
-		<xsl:with-param name="attributes" select="$B:xmlns"/>
+		<xsl:with-param name="xmlns" select="$B:xmlns"/>
 		<xsl:with-param name="text">
 
 			<xsl:call-template name="B:tag">
 				<xsl:with-param name="name" select="'output'"/>				
-				<xsl:with-param name="attributes" select="$B:xmlns"/>
+				<xsl:with-param name="xmlns" select="$B:xmlns"/>
 				<xsl:with-param name="text">
 					<xsl:call-template name="B:cdata">
 						<xsl:with-param name="text">	
@@ -288,9 +322,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 			<xsl:call-template name="B:tag">
 				<xsl:with-param name="name" select="'errorlevel'"/>
+				<xsl:with-param name="xmlns" select="$B:xmlns"/>
 				<xsl:with-param 
 					name="attributes" 
-					select="concat($B:xmlns, ' value=^&#34;%errorlevel%^&#34;')"/>
+					select="' value=^&#34;%errorlevel%^&#34;'"/>
 			</xsl:call-template>
 
 			<xsl:call-template name="B:message">
@@ -321,7 +356,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:call-template>
 	<xsl:call-template name="B:tag">
 		<xsl:with-param name="name" select="'report'"/>
-		<xsl:with-param name="attributes" select="$B:xmlns"/>
+		<xsl:with-param name="xmlns" select="$B:xmlns"/>
 		<xsl:with-param name="text">
 			<xsl:apply-templates select="*"/>
 		</xsl:with-param>
