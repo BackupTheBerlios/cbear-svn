@@ -34,6 +34,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:param name="A:name" select="A:config/@name"/>
 
+<xsl:param name="A:working.dir" select="A:config/@working.dir"/>
+
 <xsl:param name="A:log" select="A:config/@log"/>
 
 <xsl:param name="A:api.xml" select="A:config/@api.xml"/>
@@ -63,6 +65,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		name="{$A:name}"
 		log="{$A:log}"
 		stylesheet="{concat('file:///', $A:cbear, 'cbear.berlios.de/bat/html.xsl')}">
+
+		<B:command
+			name="Set working directory"
+			text="{concat('cd ', $A:working.dir)}"/>
 
 		<B:command
 			name="VC enviroment variables"	
