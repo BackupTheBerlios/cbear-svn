@@ -62,7 +62,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<B:bat 
 		name="{$A:name}"
 		log="{$A:log}"
-		stylesheet="{concat($A:cbear, 'cbear.berlios.de/api/report.xsl')}">
+		stylesheet="{concat('file:///', $A:cbear, 'cbear.berlios.de/bat/html.xsl')}">
 
 		<B:command
 			name="VC enviroment variables"	

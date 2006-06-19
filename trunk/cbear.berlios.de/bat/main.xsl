@@ -393,6 +393,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:call-template name="B:tag">
 		<xsl:with-param name="name" select="'report'"/>
 		<xsl:with-param name="xmlns" select="$B:xmlns"/>
+		<xsl:with-param name="attributes">
+			<xsl:apply-templates select="@*"/>
+		</xsl:with-param>
 		<xsl:with-param name="text">
 			<xsl:apply-templates select="*"/>
 		</xsl:with-param>
