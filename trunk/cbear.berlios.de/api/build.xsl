@@ -197,7 +197,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		</xsl:call-template>
 
 		<B:command
-			name="API.XML to HTL"
+			name="API.XML to HTML"
 			text="{concat(
 				$A:nxslt, ' ', 
 				$A:api.xml, ' ',
