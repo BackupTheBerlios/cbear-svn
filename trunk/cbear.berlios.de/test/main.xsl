@@ -62,14 +62,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 		<xsl:variable name="test.path" select="concat($path, '_test/')"/>
 
-		<B:command 
-			text="{concat('mkdir &#34;', $test.path, '&#34;')}" 
-			name="{concat('make: ', $test.path)}"/>
+		<B:line text="{concat(
+			'mkdir &#34;', $test.path, '&#34;&gt;nul 2&gt;&amp;1')}"/>
 
-			<xsl:apply-templates 
-				select="document(concat($path, '_svn/entries'))/S:wc-entries/S:entry">
-				<xsl:with-param name="path" select="$path"/>
-			</xsl:apply-templates>
+		<xsl:apply-templates 
+			select="document(concat($path, '_svn/entries'))/S:wc-entries/S:entry">
+			<xsl:with-param name="path" select="$path"/>
+		</xsl:apply-templates>
 
 	</B:bat>
 
@@ -103,9 +102,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<B:message text="{concat('Compiler: ', $compiler)}"/>
 
 	<B:bat name="{concat('Compiler: ', $compiler)}">
-		<!--
-		<B:command name="compiling" text="{$command}"/>		
-		-->
 		<xsl:copy-of select="$command"/>
 		<B:command name="running" text="{concat('&#34;', $target, '&#34;')}"/>
 	</B:bat>
@@ -185,11 +181,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<B:command name="compiling" text="{concat(
 					$T:dmc, ' -Ae -c -I', $T:dmc.stlport, ' -I', $T:cbear, ' -I', $T:boost,
 					' -o', translate($obj, '/', '\'), ' ', $name.test.cpp)}"/>
-<!--
-				<B:command name="linking" text="{concat(
-					$T:dmc.link, ' -Ae -I', $T:dmc.stlport, ' -I', $T:cbear, ' -I', $T:boost,
-					' -o', translate($dmc.target, '/', '\'), ' ', translate($obj, '/', '\'))}"/>
--->
 				<B:command name="linking" text="{concat(
 					$T:dmc.link, ' ', 
 					translate($obj, '/', '\'), ',', 

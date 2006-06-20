@@ -138,7 +138,7 @@ public:
 protected:
 
 	// erase_c, EmptyList is required to avoid undefined type.
-	template<std::size_t, std::size_t, class EmptyList = list<> >
+	template<std::size_t, std::size_t, class EmptyList = list<none, none> >
 	class erase_c;
 	template<class EmptyList>
 	class erase_c<0, 0, EmptyList>: public type {};
