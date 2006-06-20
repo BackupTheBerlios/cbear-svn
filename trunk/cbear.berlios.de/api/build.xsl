@@ -50,6 +50,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:param name="A:hpp.xml" select="A:config/@hpp.xml"/>
 <xsl:param name="A:hpp" select="A:config/@hpp"/>
 
+<xsl:param name="A:cs.xml" select="A:config/@cs.xml"/>
+<xsl:param name="A:cs" select="A:config/@cs"/>
+
 <xsl:param name="A:html" select="A:config/@html"/>
 
 <xsl:param name="A:dnet.key" select="A:config/@dnet.key"/>
@@ -201,6 +204,27 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				$A:api.xml, ' ',
 				'-pi ',
 				'-o ', $A:html)}"/>
+
+		<B:command
+			name="ODL.XML to CS.XML"
+			text="{concat(
+				$A:nxslt, ' ',
+				$A:odl.xml, ' ',
+				$A:cbear, 'cbear.berlios.de/windows/com/cs.xsl ',
+				'-o ', $A:cs.xml)}"/>
+
+		<B:command
+			name="CS.XML to CS"
+			text="{concat(
+				$A:nxslt, ' ',
+				$A:cs.xml, ' ',
+				$A:cbear, 'cbear.berlios.de/cs/cs.xsl ',
+				'-o ', $A:cs)}"/>
+
+<!--
+c:\nxslt-1.6.3\bin\nxslt temp/hmonitor.odl.xml -o temp/hmonitor.odl.cs.xml c:/cbear/cbear.berlios.de/windows/com/cs.xsl odl:cs.xsl="file:///c:/cbear/cbear.berlios.de/cs/html.xsl" odl:cs.xsd="file:///c:/cbear/cbear.berlios.de/cs/main.xsd" xmlns:odl="http://cbear.berlios.de/windows/com"
+c:\nxslt-1.6.3\bin\nxslt temp/hmonitor.odl.cs.xml -o hmonitor/hmonitor.odl.cs c:/cbear/cbear.berlios.de/cs/cs.xsl
+-->
 
 	</B:bat>
 </xsl:template>
