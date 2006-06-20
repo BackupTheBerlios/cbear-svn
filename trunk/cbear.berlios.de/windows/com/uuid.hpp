@@ -139,17 +139,17 @@ public:
 
 	static const uuid &cpp_in(c_in_t V) throw()
 	{
-		return *base::safe_reinterpret_cast<const uuid *>(V);
+		return *cast::traits<const uuid *>::reinterpret(V);
 	}
 
 	static uuid &cpp_out(c_out_t V) throw()
 	{
-		return *base::safe_reinterpret_cast<uuid *>(V);
+		return *cast::traits<uuid *>::reinterpret(V);
 	}
 
 	static uuid &cpp_in_out(c_in_out_t V) throw()
 	{
-		return *base::safe_reinterpret_cast<uuid *>(V);
+		return *cast::traits<uuid *>::reinterpret(V);
 	}
 
 public:
@@ -195,7 +195,7 @@ public:
 
 	static const uuid &wrap_ref(const c_t &V)
 	{
-		return base::safe_reinterpret_cast<const uuid &>(V);
+		return cast::traits<const uuid &>::reinterpret(V);
 	}
 
 private:

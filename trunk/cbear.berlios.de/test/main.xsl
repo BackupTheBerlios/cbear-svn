@@ -39,6 +39,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:param name="T:psdk" select="/T:config/@psdk"/>
 <xsl:param name="T:vcvar" select="/T:config/@vcvar"/>
 
+<xsl:param name="T:psdk.inc" select="/T:config/@psdk.inc"/>
+
 <xsl:param name="T:gcc" select="/T:config/@gcc"/>
 <xsl:param name="T:vc" select="/T:config/@vc"/>
 <xsl:param name="T:dmc" select="/T:config/@dmc"/>
@@ -138,7 +140,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:with-param name="compiler" select="'gcc'"/>
 			<xsl:with-param name="command"> 
 				<B:command name="compiling and linking" text="{concat(
-				$T:gcc, ' -I', $T:cbear, ' -I', $T:boost, 
+				$T:gcc, ' -I', $T:cbear, ' -I', $T:boost,
 				' -o', $gcc.target, ' ', $name.test.cpp)}"/>
 			</xsl:with-param>
 			<xsl:with-param name="target" select="$gcc.target"/>

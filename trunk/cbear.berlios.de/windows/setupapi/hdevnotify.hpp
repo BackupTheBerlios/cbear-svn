@@ -25,7 +25,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <windows.h>
 #include <setupapi.h>
-#include <dbt.h>
+
+#include <cbear.berlios.de/windows/dbt.h>
+#include <cbear.berlios.de/windows/winuser.h>
 
 #include <cbear.berlios.de/windows/base.hpp>
 #include <cbear.berlios.de/windows/select.hpp>
@@ -66,7 +68,7 @@ class dev_broadcast_deviceinterface:
 	public detail::basic_dev_broadcast<
 		dev_broadcast_deviceinterface<Char>,
 		typename CBEAR_BERLIOS_DE_WINDOWS_TYPE(
-			Char, ::DEV_BROADCAST_DEVICEINTERFACE_),
+			Char, ::_DEV_BROADCAST_DEVICEINTERFACE_),
 		DBT_DEVTYP_DEVICEINTERFACE>
 {
 public:
@@ -128,7 +130,7 @@ public:
 		exception::scope_last_error ScopeLastError;
 		this->internal() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
 			Char, ::RegisterDeviceNotification)(
-				Recipient.internal(),
+				Recipient.get(),
 				&NotificationFilter.internal(),
 				Flags.internal());
 	}

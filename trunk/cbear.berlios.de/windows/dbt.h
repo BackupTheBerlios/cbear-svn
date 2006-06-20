@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+/*
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.berlios.de)
@@ -20,27 +19,42 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
--->
-<config
-	xmlns="http://cbear.berlios.de/test"
+*/
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_DBT_H
+#define CBEAR_BERLIOS_DE_WINDOWS_DBT_H
 
-	name="C Bear "
-	
-	root="../windows/setupapi/"
+#include <dbt.h>
 
-	psdk="call &#34;C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\SetEnv.Cmd&#34;"
-	vcvar="call &#34;C:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat&#34;"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-	psdk.inc="&#34;C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\Include&#34;"
+#ifndef _MSC_VER
 
-	gcc="c:/mingw/bin/g++.exe"
-	vc="&#34;C:\Program Files\Microsoft Visual Studio 8\VC\bin\cl.exe&#34;"
-	dmc="c:/dm/bin/dmc.exe"
-	dmc.link="c:\dm\bin\link"
+#define DBT_DEVTYP_DEVICEINTERFACE 0x00000005
 
-	dmc.stlport="c:/dm/stlport/stlport"
-	boost="c:/boost/include/boost-1_33_1"
-	cbear="c:/cbear"
+struct _DEV_BROADCAST_DEVICEINTERFACE_A 
+{
+	DWORD dbcc_size;
+	DWORD dbcc_devicetype;
+	DWORD dbcc_reserved;
+	GUID dbcc_classguid;
+	char dbcc_name[1];
+};
 
-	log="log.xml"
-	stylesheet="../bat/html.xsl"/>
+struct _DEV_BROADCAST_DEVICEINTERFACE_W 
+{
+	DWORD dbcc_size;
+	DWORD dbcc_devicetype;
+	DWORD dbcc_reserved;
+	GUID dbcc_classguid;
+	wchar_t dbcc_name[1];
+};
+      
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

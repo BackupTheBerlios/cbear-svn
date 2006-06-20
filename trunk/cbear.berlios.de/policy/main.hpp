@@ -39,7 +39,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // boost::remove_pointer
 #include <boost/type_traits/remove_pointer.hpp>
 
-#include <cbear.berlios.de/base/safe_reinterpret_cast.hpp>
+#include <cbear.berlios.de/cast/traits.hpp>
 
 namespace cbear_berlios_de
 {
@@ -200,12 +200,12 @@ public:
 
 	static type &wrap_ref(internal_type &X)
 	{
-		return base::safe_reinterpret_cast<type &>(X);
+		return cast::traits<type &>::reinterpret(X);
 	}
 
 	static const type &wrap_ref(const internal_type &X)
 	{
-		return base::safe_reinterpret_cast<const type &>(X);
+		return cast::traits<const type &>::reinterpret(X);
 	}
 
 protected:

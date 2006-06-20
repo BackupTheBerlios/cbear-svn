@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+/*
 The MIT License
 
 Copyright (c) 2005 C Bear (http://cbear.berlios.de)
@@ -20,27 +19,50 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
--->
-<config
-	xmlns="http://cbear.berlios.de/test"
+*/
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_WINUSER_H
+#define CBEAR_BERLIOS_DE_WINDOWS_WINUSER_H
 
-	name="C Bear "
-	
-	root="../windows/setupapi/"
+#include <winuser.h>
 
-	psdk="call &#34;C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\SetEnv.Cmd&#34;"
-	vcvar="call &#34;C:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat&#34;"
+#include <cbear.berlios.de/windows/specstrings.h>
 
-	psdk.inc="&#34;C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\Include&#34;"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-	gcc="c:/mingw/bin/g++.exe"
-	vc="&#34;C:\Program Files\Microsoft Visual Studio 8\VC\bin\cl.exe&#34;"
-	dmc="c:/dm/bin/dmc.exe"
-	dmc.link="c:\dm\bin\link"
+#ifndef _MSC_VER
 
-	dmc.stlport="c:/dm/stlport/stlport"
-	boost="c:/boost/include/boost-1_33_1"
-	cbear="c:/cbear"
+#ifndef __GNUC__
+typedef PVOID HDEVNOTIFY;
+#endif
 
-	log="log.xml"
-	stylesheet="../bat/html.xsl"/>
+#if !defined(_USER32_)
+#define WINUSERAPI DECLSPEC_IMPORT
+#else
+#define WINUSERAPI
+#endif
+
+#define DEVICE_NOTIFY_WINDOW_HANDLE 0x00000000
+#define DEVICE_NOTIFY_SERVICE_HANDLE 0x00000001
+      
+WINUSERAPI HDEVNOTIFY WINAPI RegisterDeviceNotificationA(
+	CBEAR_BERLIOS_DE_WINDOWS_IN HANDLE hRecipient,
+	CBEAR_BERLIOS_DE_WINDOWS_IN LPVOID NotificationFilter,
+	CBEAR_BERLIOS_DE_WINDOWS_IN DWORD Flags);
+
+WINUSERAPI HDEVNOTIFY WINAPI RegisterDeviceNotificationW(
+	CBEAR_BERLIOS_DE_WINDOWS_IN HANDLE hRecipient,
+	CBEAR_BERLIOS_DE_WINDOWS_IN LPVOID NotificationFilter,
+	CBEAR_BERLIOS_DE_WINDOWS_IN DWORD Flags);
+
+WINUSERAPI BOOL WINAPI UnregisterDeviceNotification(
+	CBEAR_BERLIOS_DE_WINDOWS_IN HDEVNOTIFY Handle);
+
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
