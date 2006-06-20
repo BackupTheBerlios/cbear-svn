@@ -63,7 +63,34 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:param name="A:vc.var" select="A:config/@vc.var"/>
 <xsl:param name="A:tlbimp" select="A:config/@tlbimp"/>
 
-<!-- templates -->
+<!-- a directory for the given file -->
+<xsl:template name="A:file.dir">
+	<xsl:param name="file"/>
+	<xsl:variable name="file.norm" select="translate($file, '\', '/')"/>
+	<xsl:if test="contains($file.norm, '/')">
+		<xsl:value-of select="concat(substring-before($file.norm, '/'), '/')"/>
+		<xsl:call-template name="A:file.dir">
+			<xsl:with-param name="file" select="substring-after($file.norm, '/')"/>
+		</xsl:call-template>
+	</xsl:if>
+</xsl:template>
+
+<!-- make a directory for the given file -->
+<xsl:template name="A:make.file.dir">
+	<xsl:param name="file"/>
+	<xsl:variable name="dir">
+		<xsl:call-template name="A:file.dir">
+			<xsl:with-param name="file" select="$file"/>
+		</xsl:call-template>
+	</xsl:variable>
+	<xsl:if test="$dir">
+		<B:command 
+			name="{concat('Making the directory: ', $dir)}"
+			text="{concat('md &#34;', $dir, '&#34;')}"/>
+	</xsl:if>
+</xsl:template>
+
+<!-- entry point -->
 
 <xsl:template match="A:config">
 	<B:bat 
@@ -79,6 +106,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			name="VC enviroment variables"	
 			text="{$A:vc.var}"/>
 
+		<xsl:call-template name="A:make.file.dir">
+			<xsl:with-param name="file" select="$A:odl.xml"/>
+		</xsl:call-template>
+
 		<B:command 
 			name="API.XML to ODL.XML"
 			text="{concat(
@@ -87,6 +118,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				$A:cbear, 'cbear.berlios.de/api/com.odl.xsl ', 
 				'-o ', $A:odl.xml)}"/>
 
+		<xsl:call-template name="A:make.file.dir">
+			<xsl:with-param name="file" select="$A:odl"/>
+		</xsl:call-template>
+
 		<B:command
 			name="ODL.XML to ODL"
 			text="{concat(
@@ -94,6 +129,18 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				$A:odl.xml, ' ',
 				$A:cbear, 'cbear.berlios.de/windows/com/odl.xsl ',
 				'-o ', $A:odl)}"/>
+
+		<xsl:call-template name="A:make.file.dir">
+			<xsl:with-param name="file" select="$A:tlb"/>
+		</xsl:call-template>
+
+		<xsl:call-template name="A:make.file.dir">
+			<xsl:with-param name="file" select="$A:h"/>
+		</xsl:call-template>
+
+		<xsl:call-template name="A:make.file.dir">
+			<xsl:with-param name="file" select="$A:iid"/>
+		</xsl:call-template>
 
 		<B:command
 			name="MIDL: ODL to TLB, H, IID"
@@ -105,6 +152,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				$A:odl, ' ',
 				$A:midl.options)}"/>
 
+		<xsl:call-template name="A:make.file.dir">
+			<xsl:with-param name="file" select="$A:dnet.dll"/>
+		</xsl:call-template>
+
 		<B:command
 			name="TLB to .NET DLL"
 			text="{concat(
@@ -115,6 +166,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				'/out:', $A:dnet.dll, ' ',
 				$A:tlbimp.options)}"/>
 
+		<xsl:call-template name="A:make.file.dir">
+			<xsl:with-param name="file" select="$A:hpp.xml"/>
+		</xsl:call-template>
+
 		<B:command
 			name="ODL.XML to HPP.XML"
 			text="{concat(
@@ -123,6 +178,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				$A:cbear, 'cbear.berlios.de/windows/com/cpp.xsl ',
 				'-o ', $A:hpp.xml)}"/>
 
+		<xsl:call-template name="A:make.file.dir">
+			<xsl:with-param name="file" select="$A:hpp"/>
+		</xsl:call-template>
+
 		<B:command
 			name="HPP.XML to HPP"
 			text="{concat(
@@ -130,6 +189,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				$A:hpp.xml, ' ',
 				$A:cbear, 'cbear.berlios.de/cpp/cpp.xsl ',
 				'-o ', $A:hpp)}"/>
+
+		<xsl:call-template name="A:make.file.dir">
+			<xsl:with-param name="file" select="$A:html"/>
+		</xsl:call-template>
 
 		<B:command
 			name="API.XML to HTL"
