@@ -102,7 +102,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<B:message text="{concat('Compiler: ', $compiler)}"/>
 
 	<B:bat name="{concat('Compiler: ', $compiler)}">
+		<!--
 		<B:command name="compiling" text="{$command}"/>		
+		-->
+		<xsl:copy-of select="$command"/>
 		<B:command name="running" text="{concat('&#34;', $target, '&#34;')}"/>
 	</B:bat>
 
@@ -136,9 +139,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 		<xsl:call-template name="T:compiler">
 			<xsl:with-param name="compiler" select="'gcc'"/>
-			<xsl:with-param name="command" select="concat(
+			<xsl:with-param name="command"> 
+				<B:command name="compiling and linking" text="{concat(
 				$T:gcc, ' -I', $T:cbear, ' -I', $T:boost, 
-				' -o', $gcc.target, ' ', $name.test.cpp)"/>
+				' -o', $gcc.target, ' ', $name.test.cpp)}"/>
+			</xsl:with-param>
 			<xsl:with-param name="target" select="$gcc.target"/>
 		</xsl:call-template>
 
@@ -152,9 +157,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 		<xsl:call-template name="T:compiler">
 			<xsl:with-param name="compiler" select="'vc'"/>
-			<xsl:with-param name="command" select="concat(
-				$T:vc, ' -nologo -EHs -EHc -I', $T:cbear, ' -I', $T:boost, ' ', 
-				' -o', $vc.target, ' ', $name.test.cpp)"/>
+			<xsl:with-param name="command">
+				<xsl:variable name="obj" select="concat($vc.target, '.obj')"/>
+				<B:command name="compiling and linking" text="{concat(
+				$T:vc, ' -nologo -EHs -EHc -I', $T:cbear, ' -I', $T:boost, 
+				' -Fe', $vc.target, 
+				' -Fo', $obj,
+				' ', 	$name.test.cpp)}"/>
+			</xsl:with-param>
 			<xsl:with-param name="target" select="$vc.target"/>
 		</xsl:call-template>
 
@@ -162,15 +172,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:variable name="dmc.target">
 			<xsl:call-template name="T:target">
 				<xsl:with-param name="compiler" select="'dmc'"/>
-				<xsl:with-param name="target" select="$target"/>
+				<xsl:with-param name="file" select="$target"/>
 			</xsl:call-template>
 		</xsl:variable>
 
 		<xsl:call-template name="T:compiler">
 			<xsl:with-param name="compiler" select="'dmc'"/>
-			<xsl:with-param name="command" select="concat(
-				$T:dmc, ' -Ae -I', $T:dmc.stlport, ' -I', $T:cbear, ' -I', $T:boost,
-				' -o', translate($dmc.target, '/', '\'), ' ', $name.test.cpp)"/>
+			<xsl:with-param name="command">
+				<xsl:variable name="obj" select="concat($dmc.target, '.obj')"/>
+				<B:command name="compiling" text="{concat(
+					$T:dmc, ' -Ae -c -I', $T:dmc.stlport, ' -I', $T:cbear, ' -I', $T:boost,
+					' -o', translate($obj, '/', '\'), ' ', $name.test.cpp)}"/>
+				<B:command name="linking" text="{concat(
+					$T:dmc, ' -Ae -I', $T:dmc.stlport, ' -I', $T:cbear, ' -I', $T:boost,
+					' -o', translate($dmc.target, '/', '\'), ' ', $obj)}"/>
+			</xsl:with-param>
 			<xsl:with-param name="target" select="$dmc.target"/>
 		</xsl:call-template>
 
