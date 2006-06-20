@@ -184,7 +184,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					$T:dmc, ' -Ae -c -I', $T:dmc.stlport, ' -I', $T:cbear, ' -I', $T:boost,
 					' -o', translate($obj, '/', '\'), ' ', $name.test.cpp)}"/>
 				<B:command name="linking" text="{concat(
-					$T:dmc, ' -Ae -I', $T:dmc.stlport, ' -I', $T:cbear, ' -I', $T:boost,
+					$T:dmc, ' -LNOMAP -Ae -I', $T:dmc.stlport, ' -I', $T:cbear, ' -I', $T:boost,
 					' -o', translate($dmc.target, '/', '\'), ' ', $obj)}"/>
 			</xsl:with-param>
 			<xsl:with-param name="target" select="$dmc.target"/>
