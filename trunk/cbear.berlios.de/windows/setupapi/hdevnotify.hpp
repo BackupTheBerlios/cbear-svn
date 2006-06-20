@@ -34,6 +34,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/windows/handle.hpp>
 #include <cbear.berlios.de/windows/com/uuid.hpp>
 
+#include <boost/static_warning.hpp>
+
 namespace cbear_berlios_de
 {
 namespace windows
@@ -83,19 +85,19 @@ public:
 };
 
 class hdevnotify: 
-	public policy::wrap<hdevnotify, ::HDEVNOTIFY>,
+	public base::initialized< ::HDEVNOTIFY>,
 	boost::noncopyable
 {
 public:
 
-	typedef policy::wrap<hdevnotify, ::HDEVNOTIFY> wrap;
+	typedef base::initialized< ::HDEVNOTIFY> wrap;
 
 
-	class flag: public policy::wrap<flag, dword_t>
+	class flag: public base::initialized<dword_t>
 	{
 	public:
 
-		typedef policy::wrap<flag, dword_t> wrap;
+		typedef base::initialized<dword_t> wrap;
 
 		enum enum_
 		{
@@ -112,12 +114,12 @@ public:
 
 	void Unregister()
 	{
-		if(!this->internal()) return;
+		if(!this->get()) return;
 		{
 			exception::scope_last_error ScopeLastError;
-			::UnregisterDeviceNotification(this->internal());
+			::UnregisterDeviceNotification(this->get());
 		}
-		this->internal() = 0;
+		this->get() = 0;
 	}
 
 	template<class Char>
@@ -128,11 +130,11 @@ public:
 	{
 		this->Unregister();
 		exception::scope_last_error ScopeLastError;
-		this->internal() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
+		this->get() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
 			Char, ::RegisterDeviceNotification)(
 				Recipient.get(),
 				&NotificationFilter.internal(),
-				Flags.internal());
+				Flags.get());
 	}
 };
 
