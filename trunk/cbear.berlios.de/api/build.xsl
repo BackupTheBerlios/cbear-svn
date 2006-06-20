@@ -87,9 +87,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		</xsl:call-template>
 	</xsl:variable>
 	<xsl:if test="$dir">
-		<B:command 
-			name="{concat('Making the directory: ', $dir)}"
-			text="{concat('md &#34;', $dir, '&#34;')}"/>
+		<B:line
+			text="{concat('md &#34;', $dir, '&#34;&gt;nul 2&gt;&amp;1')}"/>
 	</xsl:if>
 </xsl:template>
 
@@ -220,11 +219,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				$A:cs.xml, ' ',
 				$A:cbear, 'cbear.berlios.de/cs/cs.xsl ',
 				'-o ', $A:cs)}"/>
-
-<!--
-c:\nxslt-1.6.3\bin\nxslt temp/hmonitor.odl.xml -o temp/hmonitor.odl.cs.xml c:/cbear/cbear.berlios.de/windows/com/cs.xsl odl:cs.xsl="file:///c:/cbear/cbear.berlios.de/cs/html.xsl" odl:cs.xsd="file:///c:/cbear/cbear.berlios.de/cs/main.xsd" xmlns:odl="http://cbear.berlios.de/windows/com"
-c:\nxslt-1.6.3\bin\nxslt temp/hmonitor.odl.cs.xml -o hmonitor/hmonitor.odl.cs c:/cbear/cbear.berlios.de/cs/cs.xsl
--->
 
 	</B:bat>
 </xsl:template>
