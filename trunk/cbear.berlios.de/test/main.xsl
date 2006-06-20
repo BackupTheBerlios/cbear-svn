@@ -42,6 +42,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:param name="T:gcc" select="/T:config/@gcc"/>
 <xsl:param name="T:vc" select="/T:config/@vc"/>
 <xsl:param name="T:dmc" select="/T:config/@dmc"/>
+<xsl:param name="T:dmc.link" select="/T:config/@dmc.link"/>
 
 <xsl:param name="T:dmc.stlport" select="/T:config/@dmc.stlport"/>
 <xsl:param name="T:boost" select="/T:config/@boost"/>
@@ -160,10 +161,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:with-param name="command">
 				<xsl:variable name="obj" select="concat($vc.target, '.obj')"/>
 				<B:command name="compiling and linking" text="{concat(
-				$T:vc, ' -nologo -EHs -EHc -I', $T:cbear, ' -I', $T:boost, 
-				' -Fe', $vc.target, 
-				' -Fo', $obj,
-				' ', 	$name.test.cpp)}"/>
+					$T:vc, ' -nologo -EHs -EHc -I', $T:cbear, ' -I', $T:boost, 
+					' -Fe', $vc.target, 
+					' -Fo', $obj,
+					' ', 	$name.test.cpp)}"/>
 			</xsl:with-param>
 			<xsl:with-param name="target" select="$vc.target"/>
 		</xsl:call-template>
@@ -180,12 +181,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:with-param name="compiler" select="'dmc'"/>
 			<xsl:with-param name="command">
 				<xsl:variable name="obj" select="concat($dmc.target, '.obj')"/>
+				<xsl:variable name="map" select="concat($dmc.target, '.map')"/>
 				<B:command name="compiling" text="{concat(
 					$T:dmc, ' -Ae -c -I', $T:dmc.stlport, ' -I', $T:cbear, ' -I', $T:boost,
 					' -o', translate($obj, '/', '\'), ' ', $name.test.cpp)}"/>
+<!--
 				<B:command name="linking" text="{concat(
-					$T:dmc, ' -LNOMAP -Ae -I', $T:dmc.stlport, ' -I', $T:cbear, ' -I', $T:boost,
-					' -o', translate($dmc.target, '/', '\'), ' ', $obj)}"/>
+					$T:dmc.link, ' -Ae -I', $T:dmc.stlport, ' -I', $T:cbear, ' -I', $T:boost,
+					' -o', translate($dmc.target, '/', '\'), ' ', translate($obj, '/', '\'))}"/>
+-->
+				<B:command name="linking" text="{concat(
+					$T:dmc.link, ' ', 
+					translate($obj, '/', '\'), ',', 
+					translate($dmc.target, '/', '\'), ',',
+					translate($map, '/', '\'))}"/>
 			</xsl:with-param>
 			<xsl:with-param name="target" select="$dmc.target"/>
 		</xsl:call-template>

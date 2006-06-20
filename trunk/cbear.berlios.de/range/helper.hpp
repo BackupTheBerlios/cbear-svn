@@ -28,6 +28,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 // boost::prior, boost::next
 #include <boost/utility.hpp>
+// boost::is_same
+#include <boost/type_traits/is_same.hpp>
 
 #include <cbear.berlios.de/base/empty.hpp>
 #include <cbear.berlios.de/base/integer.hpp>

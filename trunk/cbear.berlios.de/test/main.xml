@@ -26,7 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 	name="C Bear "
 	
-	root="../windows/com/"
+	root="../select/"
 
 	psdk="call &#34;C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\SetEnv.Cmd&#34;"
 	vcvar="call &#34;C:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat&#34;"
@@ -34,6 +34,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	gcc="c:/mingw/bin/g++.exe"
 	vc="&#34;C:\Program Files\Microsoft Visual Studio 8\VC\bin\cl.exe&#34;"
 	dmc="c:/dm/bin/dmc.exe"
+	dmc.link="c:\dm\bin\link"
 
 	dmc.stlport="c:/dm/stlport/stlport"
 	boost="c:/boost/include/boost-1_33_1"
