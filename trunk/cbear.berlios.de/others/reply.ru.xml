@@ -24,6 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <?xml-stylesheet type="text/xsl" href="../project/html.xsl"?>
 <section 
 	xmlns="http://cbear.berlios.de/project" name="Build">
+	<section name="1">
 	<p>
 <i>у меня вопрос по cbear в целом. около года юзал kafe 0.3 - сэкономил тучу 
 begin()/end() - сенкс. Вижу что развитие пошло в cbear. скачал 
@@ -97,4 +98,49 @@ c:\nxslt-1.6.4\bin\nxslt.exe. Иногда использовал
 Вот Expressа вполне достаточно. 7.1 у меня на машине домашней нет, был ToolKit, 
 но после появления VC 8.0 Express больше им не пользуюсь.
 	</p>
+	</section>
+	<section name="2">
+		<p>
+<i>насчет svn я пока не разберусь со структурой проекта лучше трогать не буду. </i>
+		</p>
+		<p>
+Проект можно не трогать, а для тестов начал использовать такое правило: каждому 
+hpp файлу должен соответствовать файл с таким же именем и расширением .test.cpp 
+и лежать в том же каталоге. Например: для файла <a href=
+"http://svn.berlios.de/viewcvs/cbear/trunk/cbear.berlios.de/policy/main.hpp?view=markup"
+>policy/main.hpp</a>, файл теста будет <a href=
+"http://svn.berlios.de/viewcvs/cbear/trunk/cbear.berlios.de/policy/main.hpp.test.cpp?view=markup"
+>policy/main.test.cpp</a>.
+		</p>
+		<p>
+<i>начал писать тест под policy/main.hpp</i>
+		</p>
+		<p>
+Кстати, policy::wrap я стараюсь избегать. По моему, не очень удачная 
+конструктция. Для связи с C библиотеками теперь предпочитаю использовать <a href=
+"http://cbear.berlios.de/c/index.ru.html">cbear_berlios_de::c</a>. <a href=
+"http://svn.berlios.de/viewcvs/cbear/trunk/cbear.berlios.de/c/">Детали</a>.
+		</p>
+		<p>
+<i>минимальная программа которая не работает: 
+==кут старт== #include "cbear.berlios.de/policy/main.hpp" ==кут конец== ошибка в
+... Объяснение: ключевое слово "or" зарезервировано по стандарту98 см пункт 
+2.11.2 рад помочь чем могу. сообщи как нибудь когда можно будет продолжить 
+</i>
+		</p>
+		<p>
+Спасибо. Исправленно.			
+		</p>
+		<p>
+<i>(исправишь и можно будет скачать исправленое).</i>
+		</p>
+		<p>
+<a href=
+"http://sourceforge.net/project/showfiles.php?group_id=147280&amp;package_id=162283"
+>0.6</a> специально для тебя положил :-) Но лучше, все таки, использовать SVN, для 
+начала, хотя бы на чтение (svn://svn.berlios.de/cbear/trunk или 
+http://svn.berlios.de/svnroot/repos/cbear/trunk). Так как релизы каждый день 
+класть не могу, а исправлений много, практически каждый день.
+		</p>
+	</section>
 </section>

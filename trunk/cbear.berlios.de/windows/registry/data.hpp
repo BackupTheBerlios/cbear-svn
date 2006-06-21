@@ -23,17 +23,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_DATA_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_REGISTRY_DATA_HPP_INCLUDED
 
-#pragma warning(push)
-#pragma warning(disable: 4512)
-#pragma warning(disable: 4100)
-// behavior change: an object of POD type constructed with an initializer of the
-// form () will be default-initialized
-#pragma warning(disable: 4345)
-// unreachable code
-#pragma warning(disable: 4702)
 #include <boost/variant.hpp>
-#pragma warning(pop)
 
+#include <cbear.berlios.de/windows/winnt.h>
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/windows/base.hpp>
 #include <cbear.berlios.de/base/string.hpp>
@@ -61,9 +53,9 @@ public:
 
 }
 
-class data_id_type: public policy::wrap<data_id_type, dword_t>
+class data_id_type: public base::initialized<dword_t>
 {
-	typedef policy::wrap<data_id_type, dword_t> wrap_type;
+	typedef base::initialized<dword_t> wrap_type;
 public:
 	enum enumeration_type
 	{
@@ -96,6 +88,16 @@ public:
 	};
 	data_id_type() {}
 	data_id_type(enumeration_type X): wrap_type(X) {}
+
+	bool operator==(const data_id_type &B) const
+	{
+		return this->get() == B.get();
+	}
+
+	bool operator!=(const data_id_type &B) const
+	{
+		return this->get() != B.get();
+	}
 };
 
 // Data.

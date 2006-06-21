@@ -269,7 +269,7 @@ public:
 				const_cast<sp_devinfo_data::value_t *>(
 					&DeviceInfoData.get()),
 				Property.internal(),
-				&PropertyRegDataType.internal(),
+				&PropertyRegDataType.get(),
 				Buffer.begin(),
 				(dword_t)Buffer.size(),
 				&RequiredSize);

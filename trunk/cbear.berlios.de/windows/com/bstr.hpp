@@ -193,19 +193,14 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 		push_back_range(This, make_sub_range(Source));
 	}
 
-	typedef standard_policy_type::value_type value_type;
-	typedef standard_policy_type::reference reference;
-	typedef standard_policy_type::pointer pointer;
-
 	//using standard_policy_type::output;
 
-	/* // use windows::cout instead.
-	static void output(::std::basic_ostream<wchar_t> &S, const type &This)
-	{
-		if(!This) return;
-		S << This;
-	}
-	*/
+	// // use windows::cout instead.
+	//static void output(::std::basic_ostream<wchar_t> &S, const type &This)
+	//{
+	//	if(!This) return;
+	//	S << This;
+	//}
 };
 
 typedef policy::wrap<bstr_t, ::BSTR, bstr_policy> bstr_wrap;
@@ -316,13 +311,11 @@ public:
 		internal_policy::push_back_range(this->internal(), c);
 	}
 
-	/*
-	template<class S>
-	void write(S &s) const
-	{
-		s.push_back_range(const_iterator_range(*this));
-	}
-	*/
+	//template<class S>
+	//void write(S &s) const
+	//{
+	//	s.push_back_range(const_iterator_range(*this));
+	//}
 
 	template<class T>
 	bstr_t &operator<<(const T &t)
