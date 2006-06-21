@@ -198,6 +198,8 @@ public:
 		return cast::traits<const uuid &>::reinterpret(V);
 	}
 
+	typedef c_t value_t;
+
 private:
 
 	c_t V;

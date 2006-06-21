@@ -218,9 +218,9 @@ public:
 		exception::scope_last_error ScopeLastError;
 		this->internal() = 
 			CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::SetupDiGetClassDevsEx)(
-				ClassGuid.internal(),
+				ClassGuid.get(),
 				Enumerator.internal(),
-				Parent.internal(),
+				Parent.get(),
 				Flags.internal(),
 				DeviceInfoSet.internal(),
 				MachineName.internal(),
@@ -362,7 +362,7 @@ public:
 					0,
 					0,
 					&requiredSize,
-					deviceInfoData.internal());
+					deviceInfoData.get());
 		}
 		catch(const windows::exception &E)
 		{
@@ -380,7 +380,7 @@ public:
 					&deviceInterfaceDetailData.internal(),
 					requiredSize,
 					0,
-					deviceInfoData.internal());
+					deviceInfoData.get());
 		}
 		return deviceInterfaceDetailData;
 	}
