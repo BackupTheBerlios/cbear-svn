@@ -24,7 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_POINTER_HPP_INCLUDED
 
 // ::cbear_berlios_de::base::safe_reinterpret_cast
-#include <cbear.berlios.de/base/safe_reinterpret_cast.hpp>
+#include <cbear.berlios.de/cast/traits.hpp>
 // ::cbear_berlios_de::windows::com::pointer_content
 #include <cbear.berlios.de/windows/com/pointer_content.hpp>
 // ::cbear_berlios_de::windows::com::uuid
