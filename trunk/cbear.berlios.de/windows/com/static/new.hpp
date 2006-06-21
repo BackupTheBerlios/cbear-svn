@@ -33,7 +33,7 @@ namespace com
 {
 namespace static_
 {
-
+/*
 template<class T>
 class implementation: 
 	public T::template implementation_t<implementation<T> >,
@@ -94,6 +94,7 @@ public:
 private:
 	atomic::wrap<ulong_t> Counter;
 };
+*/
 
 template<class T>
 typename pointer<implementation<T> >::move_t new_()

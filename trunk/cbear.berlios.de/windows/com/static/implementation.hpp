@@ -25,6 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/windows/com/static/interface_list.hpp>
 #include <cbear.berlios.de/windows/com/static/idispatch.hpp>
+#include <cbear.berlios.de/windows/com/static/isupporterrorinfo.hpp>
 
 namespace cbear_berlios_de
 {
@@ -35,15 +36,34 @@ namespace com
 namespace static_
 {
 
+namespace detail
+{
+
+template<class T>
+class implementation_traits
+{
+public:
+	typedef typename T::template implementation_t<implementation<T> > base_t;
+	typedef typename T::interface_list_t base_interface_list_t;
+	typedef typename base_interface_list_t::template push_back< 
+		::ISupportErrorInfo>
+		huy_t;
+	typedef typename huy_t::type base_extension_interface_list_t;
+	typedef interface_list<T, base_extension_interface_list_t> interface_list_t;
+};
+
+}
+
 template<class T>
 class implementation: 
-	public T::template implementation_t<implementation<T> >,
-	public interface_list<T, typename T::interface_list_t>
+	public detail::implementation_traits<T>::base_t,
+	public detail::implementation_traits<T>::interface_list_t
 {
 public:
 
-	typedef typename T::template implementation_t<implementation> base_t;
-	typedef interface_list<T, typename T::interface_list_t> interface_list_t;
+	typedef detail::implementation_traits<T> tratis_t;
+	typedef typename tratis_t::base_t base_t;
+	typedef typename tratis_t::interface_list_t interface_list_t;
 
 	typedef com::pointer<implementation> pointer_t;
 
@@ -85,8 +105,8 @@ public:
 	hresult::internal_type __stdcall QueryInterface(
 		const uuid::internal_type &U, void **PP)
 	{
-		iunknown &P = iunknown::cpp_out_cast(reinterpret_cast<iunknown::c_out_t>(PP));
-		P = this->interface_list_t::query_interface(uuid::cpp_in_cast(&U));
+		iunknown &P = iunknown::cpp_out(reinterpret_cast<iunknown::c_out_t>(PP));
+		P = this->interface_list_t::query_interface(uuid::cpp_in(&U));
 		return P ? hresult::s_ok: hresult::e_nointerface;
 	}
 
