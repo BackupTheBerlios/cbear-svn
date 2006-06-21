@@ -78,13 +78,17 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 
 	//
 
+	class bad_alloc: public std::bad_alloc
+	{
+	};
+
 	static void alloc(
 		type &This, const_iterator Begin, const std::size_t &Size)
 	{
 		if(Size)
 		{
 			This = ::SysAllocStringLen(Begin, uint_t(Size));
-			if(!This) throw std::bad_alloc("BSTR allocation");
+			if(!This) throw bad_alloc();
 		}
 		else
 		{
@@ -115,7 +119,7 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 		type &This, const iterator &SourceBegin, std::size_t SourceSize)
 	{
 		if(!::SysReAllocStringLen(&This, SourceBegin, uint_t(SourceSize)))
-			throw std::bad_alloc("BSTR reallocation");
+			throw bad_alloc();
 	}
 
 	// "This" must not be 0!
@@ -195,11 +199,13 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 
 	//using standard_policy_type::output;
 
+	/* // use windows::cout instead.
 	static void output(::std::basic_ostream<wchar_t> &S, const type &This)
 	{
 		if(!This) return;
 		S << This;
 	}
+	*/
 };
 
 typedef policy::wrap<bstr_t, ::BSTR, bstr_policy> bstr_wrap;

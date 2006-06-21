@@ -32,6 +32,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/range/begin.hpp>
 #include <cbear.berlios.de/range/end.hpp>
 #include <cbear.berlios.de/base/swap.hpp>
+#include <cbear.berlios.de/move/main.hpp>
 
 namespace cbear_berlios_de
 {
@@ -163,28 +164,28 @@ public:
 	}
 
 	template<class Container>
-	size_type find_first_of(const basic_string& str, size_type pos = 0) const
+	size_type find_first_of(const basic_string& C, size_type P = 0) const
 	{
 		return this->base_type::find_first_of(
 			container::begin(C), container::size(C), P);
 	}
 
 	template<class Container>
-	size_type find_last_of(const basic_string& str, size_type pos = 0) const
+	size_type find_last_of(const basic_string& C, size_type P = 0) const
 	{
 		return this->base_type::find_last_of(
 			container::begin(C), container::size(C), P);
 	}
 
 	template<class Container>
-	size_type find_first_not_of(const basic_string& str, size_type pos = 0) const
+	size_type find_first_not_of(const basic_string& C, size_type P = 0) const
 	{
 		return this->base_type::find_first_not_of(
 			container::begin(C), container::size(C), P);
 	}
 
 	template<class Container>
-	size_type find_last_not_of(const basic_string& str, size_type pos = 0) const
+	size_type find_last_not_of(const basic_string& C, size_type P = 0) const
 	{
 		return this->base_type::find_last_not_of(
 			container::begin(C), container::size(C), P);
@@ -195,7 +196,8 @@ public:
 		size_type Size = this->size();
 		if(pos >= Size) return basic_string();
 		const_iterator B = this->begin() + pos;
-		return basic_string(range::iterator_range(B, B + std::min(n, Size - pos)));
+		return basic_string(range::make_iterator_range(
+			B, B + std::min(n, Size - pos)));
 	}
 
 	template<class Container>

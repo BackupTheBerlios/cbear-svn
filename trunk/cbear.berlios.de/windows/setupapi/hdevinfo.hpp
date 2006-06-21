@@ -43,7 +43,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <vector>
 
-#include <setupapi.h>
+#include <cbear.berlios.de/windows/setupapi.h>
 
 #pragma comment(lib, "setupapi.lib")
 

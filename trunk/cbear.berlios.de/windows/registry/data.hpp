@@ -36,6 +36,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/windows/base.hpp>
+#include <cbear.berlios.de/base/string.hpp>
 
 namespace cbear_berlios_de
 {
@@ -132,7 +133,7 @@ public:
 		}
 	};
 
-	template<class Type>
+	template<class Type, class = void>
 	class traits;
 
 	template<class Type, id_type::enumeration_type TypeId>
@@ -143,60 +144,60 @@ public:
 		static properties_type properties(const Type &X)
 		{
 			return properties_type(
-				id, reinterpret_cast<properties_type::pointer_type>(&X), sizeof(Type));
+				id, reinterpret_cast<typename properties_type::pointer_type>(&X), sizeof(Type));
 		}
 	};
 
-	template<>
-	class traits<none_type>: public traits_helper<none_type, id_type::none>
+	template<class D>
+	class traits<none_type, D>: public traits_helper<none_type, id_type::none>
 	{
 	public:
 		static properties_type properties(const none_type &)
 		{
-			return properties_type(id, 0, 0);
+			return properties_type(id_type::none, 0, 0);
 		}
 	};
 
-	template<>
-	class traits<dword_t>: public traits_helper<dword_t, id_type::dword> {};
+	template<class D>
+	class traits<dword_t, D>: public traits_helper<dword_t, id_type::dword> {};
 
-	template<>
-	class traits<ulonglong_t>: public traits_helper<ulonglong_t, id_type::qword>
+	template<class D>
+	class traits<ulonglong_t, D>: public traits_helper<ulonglong_t, id_type::qword>
 	{
 	};
 
 	typedef base::basic_string<char_type> string_type;
 
-	template<>
-	class traits<string_type>: public traits_helper<string_type, id_type::sz>
+	template<class D>
+	class traits<string_type, D>: public traits_helper<string_type, id_type::sz>
 	{
 	public:
 		static properties_type properties(const string_type &X)
 		{ 
 			typedef typename properties_type::size_type size_type;
 			return properties_type(
-				id, 
-				reinterpret_cast<properties_type::pointer_type>(X.c_str()),
+				id_type::sz, 
+				reinterpret_cast<typename properties_type::pointer_type>(X.c_str()),
 				size_type((X.size() + 1) * sizeof(Char)));
 		}
 	};
 
-	template<std::size_t Size>
-	class traits<char_type[Size]>: 
+	template<std::size_t Size, class D>
+	class traits<char_type[Size], D>: 
 		public traits_helper<char_type[Size], id_type::sz>
 	{
 	public:
 		static properties_type properties(const char_type(&X)[Size])
 		{ 
 			return properties_type(
-				id,
-				reinterpret_cast<properties_pointer::data_type>(X),
+				id_type::sz,
+				reinterpret_cast<typename properties_type::data_type>(X),
 				Size * sizeof(char_type));
 		}
 	};
 
-	template<>
-	class traits<data>
+	template<class D>
+	class traits<data, D>
 	{
 	private:
 		class properties_visitor: public boost::static_visitor<properties_type>
