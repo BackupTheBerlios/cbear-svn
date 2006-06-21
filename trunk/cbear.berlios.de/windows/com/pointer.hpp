@@ -144,18 +144,18 @@ public:
 
 	static const pointer &cpp_in(const c_in_t &P) throw() 
 	{ 
-		return base::safe_reinterpret_cast<const pointer &>(P);
+		return cast::traits<const pointer &>::reinterpret(P);
 	}
 
 	static pointer &cpp_in_out(c_in_out_t P) throw() 
 	{ 
-		return base::safe_reinterpret_cast<pointer &>(*P);
+		return cast::traits<pointer &>::reinterpret(*P);
 	}
 
 	static pointer &cpp_out(c_out_t P) throw() 
 	{ 
 		*P = 0;
-		return base::safe_reinterpret_cast<pointer &>(*P);
+		return cast::traits<pointer &>::reinterpret(*P);
 	}
 
 // deprecated

@@ -36,7 +36,7 @@ class traits
 {
 public:
 	template<class From>
-	static To reinterpret(From F) throw()
+	static To reinterpret(const From &F) throw()
 	{
 		BOOST_STATIC_ASSERT(sizeof(To)==sizeof(From));
 		return reinterpret_cast<To>(F);
@@ -78,7 +78,7 @@ public:
 		return reinterpret_cast<To *>(F);
 	}
 	template<class From>
-	static To *do_(From F) throw()
+	static To *reinterpret(const From &F) throw()
 	{
 		BOOST_STATIC_ASSERT(sizeof(To *)==sizeof(From));
 		return reinterpret_cast<To *>(F);

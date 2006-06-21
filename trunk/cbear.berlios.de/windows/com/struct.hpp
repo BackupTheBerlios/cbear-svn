@@ -77,18 +77,18 @@ public:
 
 	ValueType &internal()
 	{
-		return *base::safe_reinterpret_cast<ValueType *>(static_cast<Type *>(this));
+		return *cast::traits<ValueType *>::reinterpret(static_cast<Type *>(this));
 	}
 
 	const ValueType &internal() const
 	{
-		return *base::safe_reinterpret_cast<const ValueType *>(
+		return *cast::traits<const ValueType *>::reinterpret(
 			static_cast<const Type *>(this));
 	}
 
 	static Type &wrap_ref(ValueType &X)
 	{
-		return *base::safe_reinterpret_cast<Type *>(static_cast<ValueType *>(&X));
+		return *cast::traits<Type *>::reinterpret(static_cast<ValueType *>(&X));
 	}
 
 protected:
