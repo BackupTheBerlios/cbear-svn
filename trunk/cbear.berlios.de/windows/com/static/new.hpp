@@ -33,68 +33,9 @@ namespace com
 {
 namespace static_
 {
-/*
+
 template<class T>
-class implementation: 
-	public T::template implementation_t<implementation<T> >,
-	public interface_list<T, typename T::interface_list_t>
-{
-public:
-
-	typedef typename T::template implementation_t<implementation> base_t;
-	typedef interface_list<T, typename T::interface_list_t> interface_list_t;
-
-	typedef com::pointer<implementation> pointer_t;
-
-	implementation() 
-	{
-	}
-
-	template<class P>
-	implementation(const P &P_): 
-		base_t(P_)
-	{
-	}		
-
-	static typename pointer_t::move_t this_pointer(base_t &B)
-	{
-		return move::copy(pointer_t::cpp_in_cast(
-			&static_cast<implementation &>(B)));
-	}
-
-// ::IUnknown
-#if 1
-
-	ulong_t __stdcall AddRef()
-	{
-		return this->Counter.increment();
-	}
-
-	ulong_t __stdcall Release()
-	{
-		ulong_t R = this->Counter.decrement();
-		if(!R)
-		{
-			delete this;
-			return 0;
-		}
-		return R;
-	}
-
-	hresult::internal_type __stdcall QueryInterface(
-		const uuid::internal_type &U, void **PP)
-	{
-		iunknown &P = iunknown::cpp_out(reinterpret_cast<iunknown::c_out_t>(PP));
-		P = this->interface_list_t::query_interface(uuid::cpp_in(&U));
-		return P ? hresult::s_ok: hresult::e_nointerface;
-	}
-
-#endif
-
-private:
-	atomic::wrap<ulong_t> Counter;
-};
-*/
+class pointer_t: public meta::identity<com::pointer<implementation<T> > > {};
 
 template<class T>
 typename pointer<implementation<T> >::move_t new_()
