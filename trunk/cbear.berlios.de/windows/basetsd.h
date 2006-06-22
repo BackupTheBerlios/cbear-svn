@@ -20,21 +20,25 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_WINDOWS_INT_PTR_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_WINDOWS_INT_PTR_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_BASETSD_H_INCLUDED
+#define CBEAR_BERLIOS_DE_WINDOWS_BASETSD_H_INCLUDED
 
-#include <cbear.berlios.de/windows/basetsd.h>
+#include <basetsd.h>
 
-namespace cbear_berlios_de
-{
-namespace windows
-{
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-// Signed integral type for pointer precision. Use when casting a pointer to an
-// integer to perform pointer arithmetic.
-typedef INT_PTR int_ptr_t;
+#ifndef _MSC_VER
 
+#ifndef __GNUC__
+
+typedef int INT_PTR;
+
+#endif
+
+#ifdef __cplusplus
 }
-}
+#endif
 
 #endif

@@ -26,7 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 	name="C Bear "
 	
-	root="../"
+	root="../windows/"
 
 	psdk="call &#34;C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\SetEnv.Cmd&#34;"
 	vcvar="call &#34;C:\Program Files\Microsoft Visual Studio 8\VC\vcvarsall.bat&#34;"
