@@ -184,7 +184,7 @@ public:
 			this->internal(), 
 			ValueName.get(),
 			0,
-			Properties.id.internal(),
+			Properties.id.get(),
 			Properties.begin,
 			Properties.size));
 	}
