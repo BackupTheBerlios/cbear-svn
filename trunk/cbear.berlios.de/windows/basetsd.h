@@ -37,6 +37,8 @@ typedef int INT_PTR;
 
 #endif
 
+#endif
+
 #ifdef __cplusplus
 }
 #endif
