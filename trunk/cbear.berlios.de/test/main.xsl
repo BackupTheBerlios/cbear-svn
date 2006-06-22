@@ -49,6 +49,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:param name="T:dmc.stlport" select="/T:config/@dmc.stlport"/>
 <xsl:param name="T:boost" select="/T:config/@boost"/>
 <xsl:param name="T:cbear" select="/T:config/@cbear"/>
+<xsl:param name="T:cpp.object" select="/T:config/@cpp.object"/>
 
 <xsl:param name="T:log" select="/T:config/@log"/>
 
@@ -140,8 +141,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:with-param name="compiler" select="'gcc'"/>
 			<xsl:with-param name="command"> 
 				<B:command name="compiling and linking" text="{concat(
-				$T:gcc, ' -I', $T:cbear, ' -I', $T:boost,
-				' -o', $gcc.target, ' ', $name.test.cpp)}"/>
+				$T:gcc, 
+				' -I', $T:cbear, 
+				' -I', $T:boost,
+				' -I', $T:cpp.object,
+				' -o', $gcc.target, 
+				' ', $name.test.cpp)}"/>
 			</xsl:with-param>
 			<xsl:with-param name="target" select="$gcc.target"/>
 		</xsl:call-template>
@@ -159,7 +164,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:with-param name="command">
 				<xsl:variable name="obj" select="concat($vc.target, '.obj')"/>
 				<B:command name="compiling and linking" text="{concat(
-					$T:vc, ' -nologo -EHs -EHc -I', $T:cbear, ' -I', $T:boost, 
+					$T:vc, 
+					' -nologo -EHs -EHc',
+					' -I', $T:cbear, 
+					' -I', $T:boost, 
+					' -I', $T:cpp.object,
 					' -Fe', $vc.target, 
 					' -Fo', $obj,
 					' ', 	$name.test.cpp)}"/>
@@ -181,8 +190,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<xsl:variable name="obj" select="concat($dmc.target, '.obj')"/>
 				<xsl:variable name="map" select="concat($dmc.target, '.map')"/>
 				<B:command name="compiling" text="{concat(
-					$T:dmc, ' -Ae -c -I', $T:dmc.stlport, ' -I', $T:cbear, ' -I', $T:boost,
-					' -o', translate($obj, '/', '\'), ' ', $name.test.cpp)}"/>
+					$T:dmc, 
+					' -Ae -c', 
+					' -I', $T:dmc.stlport, 
+					' -I', $T:cbear, 
+					' -I', $T:boost,
+					' -I', $T:cpp.object,
+					' -o', translate($obj, '/', '\'), 
+					' ', $name.test.cpp)}"/>
 				<B:command name="linking" text="{concat(
 					$T:dmc.link, ' ', 
 					translate($obj, '/', '\'), ',', 
