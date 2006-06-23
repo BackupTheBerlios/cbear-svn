@@ -134,9 +134,9 @@ public:
 	}
 protected:
 	// useless...
-	implementation<Base, Interface> &base()
+	implementation<Base, Interface> *base()
 	{
-		return *static_cast<implementation<Base, Interface> *>(this);
+		return static_cast<implementation<Base, Interface> *>(this);
 	}
 private:
 	iunknown::c_in_t get_pointer() 

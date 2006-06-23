@@ -46,9 +46,9 @@ class interface_content<T, B, ::IUnknown>: public B
 protected:
 	typedef implementation<T> implementation_t;
 	typedef typename T::template implementation_t<implementation_t> base_t;
-	base_t &base()
+	base_t *base()
 	{
-		return *static_cast<base_t *>(static_cast<implementation_t *>(this));
+		return static_cast<base_t *>(static_cast<implementation_t *>(this));
 	}
 	iunknown::move_t query_interface(const uuid &U) throw()
 	{

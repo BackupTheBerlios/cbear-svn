@@ -662,7 +662,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:variable>
 	<id.ref type="-&gt;">
 		<id.ref type="this"/>
-		<id.ref type=".">
+		<id.ref type="-&gt;">
 			<id.ref id="base" type="()"/>
 			<id.ref id="{$id.long}" type="()">
 				<xsl:apply-templates 
