@@ -657,9 +657,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <xsl:template match="odl:method" mode="odl:cpp.implementation.call">
+	
+	<xsl:param name="P"/>
+
 	<xsl:variable name="id.long">
 		<xsl:apply-templates select="." mode="odl:cpp.method.id.long"/>
 	</xsl:variable>
+
+	<id.ref type="-&gt;">
+		<id.ref id="{$P}"/>
+		<id.ref id="{$id.long}" type="()">
+			<xsl:apply-templates 
+				select="odl:parameter" mode="odl:cpp.implementation.call"/>
+		</id.ref>
+	</id.ref>
+<!--
 	<id.ref type="-&gt;">
 		<id.ref type="this"/>
 		<id.ref type="-&gt;">
@@ -670,20 +682,27 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			</id.ref>
 		</id.ref>
 	</id.ref>
+-->
 </xsl:template>
 
 <xsl:template match="odl:method" mode="odl:cpp.implementation.assign">
-	<xsl:apply-templates select="." mode="odl:cpp.implementation.call"/>
+	<xsl:param name="P"/>
+	<xsl:apply-templates select="." mode="odl:cpp.implementation.call">
+		<xsl:with-param name="P" select="$P"/>
+	</xsl:apply-templates>
 </xsl:template>
 
 <xsl:template 
 	match="odl:method[odl:parameter/odl:attribute/@id='retval']" 
 	mode="odl:cpp.implementation.assign">
+	<xsl:param name="P"/>
 	<id.ref type="=">
 		<xsl:apply-templates 
 			select="odl:parameter[odl:attribute/@id='retval']" 
 			mode="odl:cpp.implementation.call.parameter"/>
-		<xsl:apply-templates select="." mode="odl:cpp.implementation.call"/>
+		<xsl:apply-templates select="." mode="odl:cpp.implementation.call">
+			<xsl:with-param name="P" select="$P"/>
+		</xsl:apply-templates>
 	</id.ref>
 </xsl:template>
 
@@ -713,7 +732,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<body>
 			<try>
 				<body>
-				  <xsl:apply-templates select="." mode="odl:cpp.implementation.assign"/>
+				  <xsl:apply-templates select="." mode="odl:cpp.implementation.assign">
+						<xsl:with-param name="P" select="'this->base()'"/>
+					</xsl:apply-templates>
 					<id.ref type="return">
 						<id.ref type="::">
 							<id.ref id="hresult"/>
@@ -848,7 +869,18 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 							<body>
 								<try>
 									<body>
-				  					<xsl:apply-templates select="." mode="odl:cpp.implementation.assign"/>
+										<id.ref type="declare" id="P">
+											<id.ref type="const">
+												<id.ref id="pointer_t"/>
+											</id.ref>
+											<id.ref type="-&gt;">
+												<id.ref type="this"/>
+												<id.ref id="base" type="()"/>
+											</id.ref>
+										</id.ref>
+				  					<xsl:apply-templates select="." mode="odl:cpp.implementation.assign">
+											<xsl:with-param name="P" select="'P'"/>
+										</xsl:apply-templates>
 										<id.ref type="return">
 											<id.ref type="::">
 												<id.ref id="hresult"/>

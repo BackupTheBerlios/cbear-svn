@@ -20,10 +20,9 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_INTERFACE_CONTENT_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_INTERFACE_CONTENT_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_POINTER_LOCK_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_POINTER_LOCK_HPP_INCLUDED
 
-#include <cbear.berlios.de/windows/com/iunknown.hpp>
 
 namespace cbear_berlios_de
 {
@@ -35,30 +34,25 @@ namespace static_
 {
 
 template<class T>
-class implementation;
-
-template<class T, class B, class I>
-class interface_content;
-
-template<class T, class B>
-class interface_content<T, B, ::IUnknown>: public B
+class pointer_lock: public T::scoped_lock
 {
-protected:
-	typedef implementation<T> implementation_t;
-	typedef typename T::template implementation_t<implementation_t> base_t;
-	typedef typename base_t::pointer_t pointer_t;
-	base_t *base()
+public:
+
+	typedef T::scoped_lock scoped_lock_t;
+
+	pointer_lock(T *P):
+		scoped_lock(P->mutex),
+		P(P)
 	{
-		return static_cast<base_t *>(static_cast<implementation_t *>(this));
 	}
-	iunknown::move_t query_interface(const uuid &U) throw()
+
+	T *operator->() const throw()
 	{
-		if(uuid::of< ::IUnknown>()==U)
-		{
-			return move::copy(iunknown::cpp_in(static_cast< ::IUnknown *>(this)));
-		}
-		return iunknown::move_t();
+		return this->P;
 	}
+
+private:
+	T *P;
 };
 
 }
