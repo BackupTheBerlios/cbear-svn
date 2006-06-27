@@ -34,14 +34,14 @@ namespace static_
 {
 
 template<class T>
-class pointer_lock: public T::mutex_t::scoped_lock
+class pointer_lock: public T::scoped_lock
 {
 public:
 
-	typedef typename T::mutex_t::scoped_lock scoped_lock_t;
+	typedef typename T::scoped_lock scoped_lock_t;
 
 	pointer_lock(T *P):
-		scoped_lock_t(P->mutex()),
+		scoped_lock_t(*P),
 		P(P)
 	{
 	}
