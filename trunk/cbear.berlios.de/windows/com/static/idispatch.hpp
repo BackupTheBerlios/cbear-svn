@@ -28,6 +28,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <cbear.berlios.de/c/out.hpp>
 #include <cbear.berlios.de/c/cpp_out.hpp>
 #include <cbear.berlios.de/windows/com/static/interface_content.hpp>
+#include <cbear.berlios.de/windows/com/lcid.hpp>
+#include <cbear.berlios.de/windows/com/idispatch.hpp>
+#include <cbear.berlios.de/windows/com/itypeinfo.hpp>
 
 namespace cbear_berlios_de
 {
