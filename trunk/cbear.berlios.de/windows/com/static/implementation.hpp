@@ -76,10 +76,9 @@ public:
 	{
 	}		
 
-	static typename pointer_t::move_t this_pointer(base_t &B)
+	static typename pointer_t::move_t this_pointer(base_t *B)
 	{
-		return move::copy(pointer_t::cpp_in_cast(
-			&static_cast<implementation &>(B)));
+		return move::copy(pointer_t::cpp_in(static_cast<implementation *>(B)));
 	}
 
 // ::IUnknown
