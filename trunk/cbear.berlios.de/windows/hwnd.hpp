@@ -105,7 +105,7 @@ public:
 
 	lpcstr &ClassName() 
 	{ 
-		return lpcstr::wrap_ref(this->internal().lpszClassName); 
+		return lpcstr::cpp_in_out(this->internal().lpszClassName); 
 	}
 
 	const lpcstr &ClassName() const
@@ -150,7 +150,7 @@ public:
 		this->Unregister();
 		{
 			exception::scope_last_error ScopeLastError;
-			this->get() = ::RegisterClass(&WndClass.get());
+			this->get() = ::RegisterClass(&WndClass.internal());
 			// to fix MS design bug.
 			if(this->get()) ::SetLastError(0);
 		}
@@ -297,8 +297,8 @@ public:
 			this->get() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
 				Char, ::CreateWindowEx)(
 					ExStyle.get(),
-					ClassName.internal(),
-					WindowName.internal(),
+					ClassName.get(),
+					WindowName.get(),
 					Style.get(),
 					X,
 					Y,

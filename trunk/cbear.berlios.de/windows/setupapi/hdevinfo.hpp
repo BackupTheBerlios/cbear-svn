@@ -219,11 +219,11 @@ public:
 		this->internal() = 
 			CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::SetupDiGetClassDevsEx)(
 				ClassGuid.get(),
-				Enumerator.internal(),
+				Enumerator.get(),
 				Parent.get(),
 				Flags.internal(),
 				DeviceInfoSet.internal(),
-				MachineName.internal(),
+				MachineName.get(),
 				0);
 	}
 

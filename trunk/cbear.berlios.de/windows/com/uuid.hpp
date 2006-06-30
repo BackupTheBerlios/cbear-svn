@@ -200,6 +200,16 @@ public:
 
 	typedef c_t value_t;
 
+	::UUID &get()
+	{
+		return this->V;
+	}
+
+	const ::UUID &get() const
+	{
+		return this->V;
+	}
+
 private:
 
 	c_t V;

@@ -50,6 +50,10 @@ public:
 		base_t(X) 
 	{
 	}
+	static basic_lpstr &cpp_in_out(Char * &X)
+	{
+		return cast::traits<basic_lpstr &>::reinterpret(X);
+	}
 };
 
 // Pointer to a null-terminated string of 8-bit Windows (ANSI) characters.

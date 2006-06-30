@@ -58,6 +58,11 @@ public:
 	dialog_box_id() {}
 	dialog_box_id(enumeration_type X): wrap_type(X) {}
 	explicit dialog_box_id(value_t X): wrap_type(X) {}
+
+	bool operator==(const dialog_box_id &X) const
+	{
+		return this->get()==X.get();
+	}
 };
 
 class message_box_style: public base::initialized<uint_t>

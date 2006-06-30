@@ -125,6 +125,19 @@ public:
 	file_share(enum_ E): base_t(E) 
 	{
 	}
+
+	file_share &operator|=(const file_share &X)
+	{
+		this->get() |= X.get();
+		return *this;
+	}
+
+	file_share operator|(const file_share &X) const
+	{
+		file_share R(*this);
+		R |= X;
+		return R;
+	}
 };
 
 class creation_disposition: public base::initialized<dword_t>
@@ -251,7 +264,7 @@ public:
 		this->Close();
 		exception::scope_last_error ScopeLastError;
 		this->get() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::CreateFile)(
-			fileName.internal(),
+			fileName.get(),
 			desiredAccess.get(),
 			fileShare.get(),
 			securityAttributes.get(),

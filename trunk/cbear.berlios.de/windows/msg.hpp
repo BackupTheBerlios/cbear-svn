@@ -52,7 +52,7 @@ public:
 	{
 		exception::scope_last_error ScopeLastError;
 		return bool_t(CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::GetMessage)(
-			&this->internal(), Wnd.internal(), FilterMin, FilterMax));
+			&this->internal(), Wnd.get(), FilterMin, FilterMax));
 	}
 
 	bool_t translate() const

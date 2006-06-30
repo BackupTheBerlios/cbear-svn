@@ -76,7 +76,7 @@ class dev_broadcast_deviceinterface:
 public:
 	com::uuid &classguid() 
 	{ 
-		return com::uuid::wrap_ref(this->internal().dbcc_classguid); 
+		return com::uuid::cpp_in_out(&this->internal().dbcc_classguid); 
 	}
 	const com::uuid &classguid() const
 	{ 
