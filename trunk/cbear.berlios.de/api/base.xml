@@ -42,6 +42,12 @@ See <html:a href="http://cbear.berlios.de/api"
 	<com.idl:alias id="STDOLE2"/>
 </pragma>
 
+<type id="uuid">
+	<pragma>
+		<com.idl:alias id="REFIID"/>
+	</pragma>
+</type>
+
 <type id="int">
 	<pragma>
 		<com.idl:alias id="INT"/>

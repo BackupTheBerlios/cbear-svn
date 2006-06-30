@@ -216,6 +216,8 @@ private:
 
 };
 
+typedef uuid refiid_t;
+
 }
 }
 }
