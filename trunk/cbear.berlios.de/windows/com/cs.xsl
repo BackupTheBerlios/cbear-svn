@@ -453,7 +453,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- importlib -->
 
-<xsl:template match="odl:importlib[@href='STDOLE2.tlb']" mode="odl:cs"/>
+<xsl:template match="odl:importlib[@href='stdole2.tlb']" mode="odl:cs"/>
 
 <xsl:template match="odl:importlib" mode="odl:cs">
 	<using id="{substring(@href, 1, string-length(@href)-4)}"/>

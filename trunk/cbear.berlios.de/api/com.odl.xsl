@@ -129,7 +129,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<xsl:value-of select="$library"/>
 			</xsl:attribute>
 		</xsl:if>
-		<xsl:apply-templates select="@id" mode="api:body"/>	
+		<xsl:apply-templates select="@id" mode="api:body"/>
 		<xsl:copy-of select="$content"/>
 	</type.ref>
 </xsl:template>
@@ -412,25 +412,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <!-- using -->
-
-<!--
-<xsl:template match="odl:importlib" mode="api:body"/>
-
-<xsl:template match="odl:importlib[@id]" mode="api:body">
-	<importlib href="{concat(@id, '.tlb')}"/>
-</xsl:template>
-
-<xsl:template match="api:using" mode="api:body">
-	<xsl:variable name="importlib">
-		<importlib>
-			<xsl:apply-templates 
-				select="document(@href)/api:library/@id" mode="api:body"/>
-		</importlib>
-	</xsl:variable>
-	<xsl:apply-templates 
-		select="exsl:node-set($importlib)/odl:importlib" mode="api:body"/>
-</xsl:template>
--->
 
 <xsl:template match="api:library" mode="api:body.filename">
 	<xsl:value-of select="concat(@id, '.tlb')"/>
