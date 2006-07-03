@@ -214,6 +214,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- type.ref -->
 
 <xsl:template match="odl:type.ref" mode="odl:color.type.ref.header">
+	<xsl:if test="@library">
+		<span style="{$odl:color.id}"><xsl:value-of select="@library"/></span>
+		<xsl:text>.</xsl:text>
+	</xsl:if>
 	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 </xsl:template>
 

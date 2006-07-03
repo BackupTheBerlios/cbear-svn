@@ -122,6 +122,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="*" mode="api:body.type.ref">
 	<xsl:param name="content"/>
+	<xsl:param name="library"/>
+	<type.ref>
+		<xsl:if test="$library">
+			<xsl:attribute name="library">
+				<xsl:value-of select="$library"/>
+			</xsl:attribute>
+		</xsl:if>
+		<xsl:apply-templates select="@id" mode="api:body"/>	
+		<xsl:copy-of select="$content"/>
+	</type.ref>
+</xsl:template>
+
+<xsl:template match="api:type" mode="api:body.type.ref">
+	<xsl:param name="content"/>
+	<xsl:param name="library"/>
 	<type.ref>
 		<xsl:apply-templates select="@id" mode="api:body"/>	
 		<xsl:copy-of select="$content"/>
@@ -129,18 +144,36 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <xsl:template match="api:interface" mode="api:body.type.ref">
+	<xsl:param name="library"/>
 	<type.ref id="*">
 		<type.ref>
+			<xsl:if test="$library">
+				<xsl:attribute name="library">
+					<xsl:value-of select="$library"/>
+				</xsl:attribute>
+			</xsl:if>
 			<xsl:apply-templates select="@id" mode="api:body"/>
 		</type.ref>
 	</type.ref>
 </xsl:template>
 
+<xsl:template match="/api:library" mode="api:body.type.ref.library">
+	<xsl:value-of select="@id"/>	
+</xsl:template>
+
+<xsl:template 
+	match="/api:library[api:pragma/odl:alias/@id]" 
+	mode="api:body.type.ref.library">
+	<xsl:value-of select="api:pragma/odl:alias/@id"/>	
+</xsl:template>
+
 <xsl:template match="/api:library" mode="api:body.type.ref">
 	<xsl:param name="id"/>
 	<xsl:param name="content"/>
+	<xsl:param name="library"/>
 	<xsl:apply-templates select="*[@id=$id]" mode="api:body.type.ref">
 		<xsl:with-param name="content" select="$content"/>
+		<xsl:with-param name="library" select="$library"/>
 	</xsl:apply-templates>
 </xsl:template>
 
@@ -156,12 +189,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="api:type.ref[@library]" mode="api:body.type.ref">
 	<xsl:variable name="library" select="@library"/>
 	<xsl:apply-templates 
-		select="document(/api:library/api:using[@id=$library]/@href)/
-			api:library"
+		select="document(/api:library/api:using[@id=$library]/@href)/api:library"
 		mode="api:body.type.ref">
 		<xsl:with-param name="id" select="@id"/>
 		<xsl:with-param name="content">
 			<xsl:apply-templates select="*" mode="api:body"/>
+		</xsl:with-param>
+		<xsl:with-param name="library">
+			<xsl:apply-templates 
+				select="document(/api:library/api:using[@id=$library]/@href)/api:library" 
+				mode="api:body.type.ref.library"/>
 		</xsl:with-param>
 	</xsl:apply-templates>
 </xsl:template>
@@ -376,6 +413,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- using -->
 
+<!--
 <xsl:template match="odl:importlib" mode="api:body"/>
 
 <xsl:template match="odl:importlib[@id]" mode="api:body">
@@ -391,6 +429,24 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:variable>
 	<xsl:apply-templates 
 		select="exsl:node-set($importlib)/odl:importlib" mode="api:body"/>
+</xsl:template>
+-->
+
+<xsl:template match="api:library" mode="api:body.filename">
+	<xsl:value-of select="concat(@id, '.tlb')"/>
+</xsl:template>
+
+<xsl:template 
+	match="api:library[api:pragma/odl:alias/@filename]" mode="api:body.filename">
+	<xsl:value-of select="api:pragma/odl:alias/@filename"/>
+</xsl:template>
+
+<xsl:template match="api:using" mode="api:body">
+	<xsl:variable name="file">
+		<xsl:apply-templates 
+			select="document(@href)/api:library" mode="api:body.filename"/>
+	</xsl:variable>
+	<importlib href="{$file}"/>
 </xsl:template>
 
 <!-- library -->
