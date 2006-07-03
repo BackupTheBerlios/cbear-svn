@@ -23,7 +23,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_MINIDUMP_MAIN_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_MINIDUMP_MAIN_HPP_INCLUDED
 
+// _X86_
+#include <windows.h>
+// CONST
+#include <windef.h>
+// PSTR
+#include <winnt.h>
 #include <dbghelp.h>
+
+#include <string>
 
 #include <cbear.berlios.de/windows/hmodule.hpp>
 
