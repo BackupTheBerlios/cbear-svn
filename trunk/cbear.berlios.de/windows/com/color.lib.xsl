@@ -147,9 +147,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="odl:importlib" mode="odl:color">
 	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
-			<span class="keyword">importlib</span>
+			<span style="{$odl:color.keyword}">importlib</span>
 			<xsl:text>(</xsl:text>
-			<span class="const">
+			<span style="{$odl:color.const}">
 				<xsl:value-of select="concat('&#x22;', @href,'&#x22;')"/>
 			</span>
 			<xsl:text>);</xsl:text>

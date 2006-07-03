@@ -118,7 +118,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				$A:nxslt, ' ', 
 				$A:api.xml, ' ', 
 				$A:cbear, 'cbear.berlios.de/api/com.odl.xsl ', 
-				'-o ', $A:odl.xml)}"/>
+				'-o ', $A:odl.xml, ' ',
+				'xmlns:api=http://cbear.berlios.de/api ',
+				'api:com.odl.xsl=file:///', $A:cbear, 'cbear.berlios.de/windows/com/color.xsl')}"/>
 
 		<xsl:call-template name="A:make.file.dir">
 			<xsl:with-param name="file" select="$A:odl"/>

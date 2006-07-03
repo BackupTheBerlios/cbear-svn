@@ -349,7 +349,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:apply-templates select="api:pragma" mode="api:body.pragma"/>
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:if test="not(api:type.ref)">
-			<type.ref id="IUnknown"/>
+			<type.ref library="stdole" id="IUnknown"/>
 		</xsl:if>
 		<xsl:apply-templates select="*" mode="api:body"/>
 	</interface>
