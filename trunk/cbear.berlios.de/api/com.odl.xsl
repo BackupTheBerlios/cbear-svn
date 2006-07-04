@@ -75,7 +75,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="@id" mode="api:body">
 	<xsl:param name="prefix"/>
 	<xsl:attribute name="id">
-		<xsl:value-of select="$prefix"/>
+		<xsl:value-of select="translate($prefix, './', '__')"/>
 		<xsl:apply-templates select="." mode="api:com.odl.id"/>
 	</xsl:attribute>
 </xsl:template>
