@@ -39,7 +39,11 @@ See <html:a href="http://cbear.berlios.de/api"
 </comment>
 
 <pragma>
-	<com.idl:alias filename="stdole2.tlb" id="stdole"/>
+	<com.idl:alias 
+		filename="stdole2.tlb" 
+		id="stdole" 
+		strong.filename="stdole2.tlb"
+		strong.prefix=""/>
 </pragma>
 
 <type id="uuid">

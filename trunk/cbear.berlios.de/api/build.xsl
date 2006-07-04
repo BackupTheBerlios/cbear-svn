@@ -42,8 +42,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:param name="A:odl.xml" select="A:config/@odl.xml"/>
 <xsl:param name="A:odl" select="A:config/@odl"/>
-
 <xsl:param name="A:tlb" select="A:config/@tlb"/>
+
+<xsl:param name="A:strong.odl.xml" select="A:config/@strong.odl.xml"/>
+<xsl:param name="A:strong.odl" select="A:config/@strong.odl"/>
+<xsl:param name="A:strong.tlb" select="A:config/@strong.tlb"/>
+
 <xsl:param name="A:h" select="A:config/@h"/>
 <xsl:param name="A:iid" select="A:config/@iid"/>
 
@@ -92,6 +96,44 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:if>
 </xsl:template>
 
+<!-- ODL -->
+
+<xsl:template name="A:odl">
+	<xsl:param name="name.odl.xml"/>
+	<xsl:param name="name.odl"/>
+	<xsl:param name="odl.xml"/>
+	<xsl:param name="odl"/>
+	<xsl:param name="param.odl.xml"/>
+
+	<xsl:call-template name="A:make.file.dir">
+		<xsl:with-param name="file" select="$odl.xml"/>
+	</xsl:call-template>
+
+	<B:command 
+		name="{$name.odl.xml}"
+		text="{concat(
+			$A:nxslt, ' ', 
+			$A:api.xml, ' ', 
+			$A:cbear, 'cbear.berlios.de/api/com.odl.xsl ', 
+			'-o ', $odl.xml, ' ',
+			'xmlns:api=http://cbear.berlios.de/api ',
+			'api:com.odl.xsl=file:///', $A:cbear, 'cbear.berlios.de/windows/com/color.xsl ',
+			$param.odl.xml)}"/>
+
+	<xsl:call-template name="A:make.file.dir">
+		<xsl:with-param name="file" select="$odl"/>
+	</xsl:call-template>
+
+	<B:command
+		name="{$name.odl}"
+		text="{concat(
+			$A:nxslt, ' ', 
+			$odl.xml, ' ',
+			$A:cbear, 'cbear.berlios.de/windows/com/odl.xsl ',
+			'-o ', $odl)}"/>
+
+</xsl:template>
+
 <!-- entry point -->
 
 <xsl:template match="A:config">
@@ -108,35 +150,32 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			name="VC enviroment variables"	
 			text="{$A:vc.var}"/>
 
-		<xsl:call-template name="A:make.file.dir">
-			<xsl:with-param name="file" select="$A:odl.xml"/>
+		<xsl:call-template name="A:odl">
+			<xsl:with-param name="name.odl.xml" select="'API.XML to ODL.XML'"/>
+			<xsl:with-param name="odl.xml" select="$A:odl.xml"/>
+			<xsl:with-param name="name.odl" select="'ODL.XML to ODL'"/>
+			<xsl:with-param name="odl" select="$A:odl"/>
 		</xsl:call-template>
 
-		<B:command 
-			name="API.XML to ODL.XML"
-			text="{concat(
-				$A:nxslt, ' ', 
-				$A:api.xml, ' ', 
-				$A:cbear, 'cbear.berlios.de/api/com.odl.xsl ', 
-				'-o ', $A:odl.xml, ' ',
-				'xmlns:api=http://cbear.berlios.de/api ',
-				'api:com.odl.xsl=file:///', $A:cbear, 'cbear.berlios.de/windows/com/color.xsl')}"/>
-
-		<xsl:call-template name="A:make.file.dir">
-			<xsl:with-param name="file" select="$A:odl"/>
+		<xsl:call-template name="A:odl">
+			<xsl:with-param name="name.odl.xml" select="'API.XML to STRONG.ODL.XML'"/>
+			<xsl:with-param name="odl.xml" select="$A:strong.odl.xml"/>
+			<xsl:with-param name="param.odl.xml" select="'api:com.odl.prefix=yes'"/>
+			<xsl:with-param name="name.odl" select="'ODL.XML to STRONG.ODL'"/>
+			<xsl:with-param name="odl" select="$A:strong.odl"/>
 		</xsl:call-template>
-
-		<B:command
-			name="ODL.XML to ODL"
-			text="{concat(
-				$A:nxslt, ' ', 
-				$A:odl.xml, ' ',
-				$A:cbear, 'cbear.berlios.de/windows/com/odl.xsl ',
-				'-o ', $A:odl)}"/>
 
 		<xsl:call-template name="A:make.file.dir">
 			<xsl:with-param name="file" select="$A:tlb"/>
 		</xsl:call-template>
+
+		<B:command
+			name="MIDL: ODL to TLB"
+			text="{concat(
+				'midl /W4 /robust /error all /nologo /env win32 ', 
+				'/tlb ', $A:tlb, ' ',
+				$A:odl, ' ',
+				$A:midl.options)}"/>
 
 		<xsl:call-template name="A:make.file.dir">
 			<xsl:with-param name="file" select="$A:h"/>
@@ -147,13 +186,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		</xsl:call-template>
 
 		<B:command
-			name="MIDL: ODL to TLB, H, IID"
+			name="MIDL: STRONG.ODL to STRONG.TLB, H, IID"
 			text="{concat(
 				'midl /W4 /robust /error all /nologo /env win32 ', 
-				'/tlb ', $A:tlb, ' ',
+				'/tlb ', $A:strong.tlb, ' ',
 				'/header ', $A:h, ' ',
 				'/iid ', $A:iid, ' ',
-				$A:odl, ' ',
+				$A:strong.odl, ' ',
 				$A:midl.options)}"/>
 
 		<xsl:call-template name="A:make.file.dir">

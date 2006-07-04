@@ -259,7 +259,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
 			<xsl:apply-templates select="." mode="odl:color.attribute.list.line"/>
-			<span style="{$odl:color.id}">interface</span>
+			<span style="{$odl:color.keyword}">interface</span>
 			<xsl:value-of select="' '"/>
 			<xsl:apply-templates select="." mode="odl:color.type.ref"/>
 			<xsl:text>;</xsl:text>

@@ -51,6 +51,22 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:message>
 </xsl:template>
 
+<!-- internal name -->
+
+<xsl:template match="odl:*" mode="odl:internal">
+	<id.ref type="::">
+		<id.ref/>
+		<id.ref id="{concat(/odl:library/@id, '_', @id)}"/>
+	</id.ref>
+</xsl:template>
+
+<xsl:template match="odl:type.ref[@library]" mode="odl:internal">
+	<id.ref type="::">
+		<id.ref/>
+		<id.ref id="{concat(@library, '_', @id)}"/>
+	</id.ref>
+</xsl:template>
+
 <!-- attribute -->
 
 <xsl:template match="odl:attribute" mode="odl:cpp"/>
@@ -72,7 +88,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<id.ref id="{@id}"/>
 	</xsl:variable>
 	<xsl:variable name="internal">
-		<id.ref type="::"><id.ref/><xsl:copy-of select="$name"/></id.ref>
+		<xsl:apply-templates select="." mode="odl:internal"/>
 	</xsl:variable>
 	<xsl:variable name="base">
 		<id.ref type="::">
@@ -116,9 +132,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					<id.ref>
 						<xsl:copy-of select="$base"/>
 						<id.ref type="()">
-							<id.ref type="::">
-								<id.ref/>
-								<id.ref type="()" id="{@id}">
+							<id.ref>
+								<xsl:copy-of select="$internal"/>
+								<id.ref type="()">
 									<id.ref id="X"/>
 								</id.ref>
 							</id.ref>
@@ -167,10 +183,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<id.ref id="{@id}"/>
 	</xsl:variable>
 	<xsl:variable name="internal">
+		<xsl:apply-templates select="." mode="odl:internal"/>
+<!--
 		<id.ref type="::">
 			<id.ref/>
 			<xsl:copy-of select="$name"/>
 		</id.ref>
+-->
 	</xsl:variable>
 	<xsl:variable name="base">
 		<id.ref type="::">
@@ -771,10 +790,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<id.ref id="windows"/>
 			<id.ref id="com"/>
 			<id.ref id="pointer" type="&lt;&gt;">				
+				<xsl:apply-templates select="." mode="odl:internal"/>
+<!--
 				<id.ref type="::">
 					<id.ref/>
 					<id.ref id="{@id}"/>
 				</id.ref>
+-->
 			</id.ref>
 		</id.ref>
 	</typedef>
@@ -786,18 +808,24 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<class>
 			<id.ref id="pointer_content" type="&lt;&gt;">
 				<id.ref id="Base"/>
+				<xsl:apply-templates select="." mode="odl:internal"/>
+<!--
 				<id.ref type="::">
 					<id.ref/>
 					<id.ref id="{@id}"/>
 				</id.ref>
+-->
 			</id.ref>
 			<access access="public">
 				<id.ref id="pointer_content" type="&lt;&gt;">
 					<id.ref id="Base"/>
+					<xsl:apply-templates select="odl:type.ref" mode="odl:internal"/>
+<!--
 					<id.ref type="::">
 						<id.ref/>
 						<id.ref id="{odl:type.ref/@id}"/>
 					</id.ref>
+-->
 				</id.ref>
 				<xsl:apply-templates select="odl:method" mode="odl:cpp"/>
 			</access>
@@ -809,22 +837,31 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<class>
 				<id.ref id="implementation" type="&lt;&gt;">
 					<id.ref id="Base"/>
+					<xsl:apply-templates select="." mode="odl:internal"/>
+<!--
 					<id.ref type="::">
 						<id.ref/>
 						<id.ref id="{@id}"/>
 					</id.ref>
+-->
 				</id.ref>
 				<access access="public">
 					<id.ref id="implementation_base" type="&lt;&gt;">
 						<id.ref id="Base"/>
+						<xsl:apply-templates select="." mode="odl:internal"/>
+<!--
 						<id.ref type="::">
 							<id.ref/>
 							<id.ref id="{@id}"/>
 						</id.ref>
+-->
+						<xsl:apply-templates select="odl:type.ref" mode="odl:internal"/>
+<!--
 						<id.ref type="::">
 							<id.ref/>
 							<id.ref id="{odl:type.ref/@id}"/>
 						</id.ref>
+-->
 					</id.ref>
 					<xsl:apply-templates 
 						select="odl:method" mode="odl:cpp.implementation"/>
@@ -840,19 +877,25 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<id.ref id="interface_content" type="&lt;&gt;">
 					<id.ref id="T"/>
 					<id.ref id="B"/>
+					<xsl:apply-templates select="." mode="odl:internal"/>
+<!--
 					<id.ref type="::">
 						<id.ref/>
 						<id.ref id="{@id}"/>
 					</id.ref>
+-->
 				</id.ref>
 				<access access="public">
 					<id.ref id="interface_" type="&lt;&gt;">
 						<id.ref id="T"/>
 						<id.ref id="B"/>
+						<xsl:apply-templates select="odl:type.ref" mode="odl:internal"/>
+<!--
 						<id.ref type="::">
 							<id.ref/>
 							<id.ref id="{odl:type.ref/@id}"/>
 						</id.ref>						
+-->
 					</id.ref>
 					<xsl:for-each select="odl:method">
 						<xsl:variable name="id">
@@ -913,10 +956,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<template>
 		<class>
 			<id.ref id="library_info" type="&lt;&gt;">
+				<xsl:apply-templates select="." mode="odl:internal"/>
+<!--
 				<id.ref type="::">
 					<id.ref/>
 					<id.ref id="{@id}"/>
 				</id.ref>
+-->
 			</id.ref>
 			<access access="public">
 				<typedef id="type">
@@ -988,7 +1034,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 							<id.ref type="()">
 								<id.ref type="::">
 									<id.ref/>
-									<id.ref id="{concat('CLSID_', @id)}"/>
+									<id.ref id="{concat('CLSID_', /odl:library/@id, '_', @id)}"/>
 								</id.ref>
 							</id.ref>
 						</id.ref>
@@ -1019,10 +1065,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<id.ref type="::">
 				<id.ref id="uuid"/>
 				<id.ref type="&lt;&gt;" id="of_type">
+					<xsl:apply-templates select="." mode="odl:internal"/>
+<!--
 					<id.ref type="::">
 						<id.ref/>
 						<id.ref id="{@id}"/>
 					</id.ref>
+-->
 				</id.ref>
 			</id.ref>
 			<access access="public">
@@ -1154,10 +1203,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 								<id.ref id="windows"/>
 								<id.ref id="com"/>
 								<id.ref type="&lt;&gt;" id="scoped_type_info">
+									<xsl:apply-templates select="." mode="odl:internal"/>
+<!--
 									<id.ref type="::">
 										<id.ref/>
 										<id.ref id="{@id}"/>
 									</id.ref>
+-->
 								</id.ref>
 							</id.ref>
 						</xsl:for-each>

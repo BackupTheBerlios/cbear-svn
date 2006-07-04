@@ -23,6 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_IDISPATCH_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_IDISPATCH_HPP_INCLUDED
 
+#include <cbear.berlios.de/windows/oaidl.h>
 #include <cbear.berlios.de/windows/com/dynamic/implementation.hpp>
 #include <cbear.berlios.de/windows/com/lcid.hpp>
 

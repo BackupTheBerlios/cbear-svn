@@ -51,7 +51,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:element 
 		namespace="http://cbear.berlios.de/windows/com"
 		name="{local-name()}">
-		<xsl:apply-templates select="@id" mode="api:body"/>
+		<xsl:apply-templates select="@id" mode="api:body.local"/>
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:apply-templates select="*" mode="api:body"/>
@@ -72,8 +72,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:value-of select="translate(., './', '__')"/>
 </xsl:template>
 
-<xsl:template match="@id" mode="api:body">	
+<xsl:template match="@id" mode="api:body">
+	<xsl:param name="prefix"/>
 	<xsl:attribute name="id">
+		<xsl:value-of select="$prefix"/>
 		<xsl:apply-templates select="." mode="api:com.odl.id"/>
 	</xsl:attribute>
 </xsl:template>
@@ -81,9 +83,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="@id[../api:pragma/odl:alias]" mode="api:body"/>
 
 <xsl:template match="@id[../api:pragma/odl:alias/@id]" mode="api:body">
+	<xsl:param name="prefix"/>
 	<xsl:attribute name="id">
+		<xsl:value-of select="$prefix"/>
 		<xsl:value-of select="../api:pragma/odl:alias/@id"/>
 	</xsl:attribute>
+</xsl:template>
+
+<xsl:template match="@id" mode="api:body.local">
+	<xsl:apply-templates select="." mode="api:body">
+		<xsl:with-param name="prefix">
+			<xsl:call-template name="api:prefix"/>
+		</xsl:with-param>
+	</xsl:apply-templates>
 </xsl:template>
 
 <!-- @brief -->
@@ -118,6 +130,25 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<const value="{@value}"/>
 </xsl:template>
 
+<!-- prefix -->
+
+<xsl:template match="/api:library" mode="api:body.library.prefix">
+	<xsl:apply-templates select="/api:library" mode="api:body.type.ref.library"/>
+	<xsl:text>_</xsl:text>
+</xsl:template>
+
+<xsl:template 
+	match="/api:library[api:pragma/odl:alias/@strong.prefix]" 
+	mode="api:body.library.prefix">
+	<xsl:value-of select="api:pragma/odl:alias/@strong.prefix"/>
+</xsl:template>
+
+<xsl:template name="api:prefix">
+	<xsl:if test="$api:com.odl.prefix">
+		<xsl:apply-templates select="/api:library" mode="api:body.library.prefix"/>
+	</xsl:if>
+</xsl:template>
+
 <!-- type.ref -->
 
 <xsl:template match="*" mode="api:body.type.ref">
@@ -129,16 +160,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<xsl:value-of select="$library"/>
 			</xsl:attribute>
 		</xsl:if>
-		<xsl:apply-templates select="@id" mode="api:body"/>
+		<xsl:apply-templates select="@id" mode="api:body.local"/>
 		<xsl:copy-of select="$content"/>
 	</type.ref>
 </xsl:template>
 
 <xsl:template match="api:type" mode="api:body.type.ref">
 	<xsl:param name="content"/>
-	<xsl:param name="library"/>
 	<type.ref>
-		<xsl:apply-templates select="@id" mode="api:body"/>	
+		<xsl:apply-templates select="@id" mode="api:body.local"/>	
 		<xsl:copy-of select="$content"/>
 	</type.ref>
 </xsl:template>
@@ -152,19 +182,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					<xsl:value-of select="$library"/>
 				</xsl:attribute>
 			</xsl:if>
-			<xsl:apply-templates select="@id" mode="api:body"/>
+			<xsl:apply-templates select="@id" mode="api:body.local"/>
 		</type.ref>
 	</type.ref>
-</xsl:template>
-
-<xsl:template match="/api:library" mode="api:body.type.ref.library">
-	<xsl:value-of select="@id"/>	
-</xsl:template>
-
-<xsl:template 
-	match="/api:library[api:pragma/odl:alias/@id]" 
-	mode="api:body.type.ref.library">
-	<xsl:value-of select="api:pragma/odl:alias/@id"/>	
 </xsl:template>
 
 <xsl:template match="/api:library" mode="api:body.type.ref">
@@ -177,6 +197,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:apply-templates>
 </xsl:template>
 
+<xsl:template match="/api:library" mode="api:body.type.ref.library">
+	<xsl:value-of select="@id"/>	
+</xsl:template>
+
+<xsl:template 
+	match="/api:library[api:pragma/odl:alias/@id]" 
+	mode="api:body.type.ref.library">
+	<xsl:value-of select="api:pragma/odl:alias/@id"/>	
+</xsl:template>
+
 <xsl:template match="api:type.ref" mode="api:body.type.ref">
 	<xsl:apply-templates select="/api:library" mode="api:body.type.ref">
 		<xsl:with-param name="id" select="@id"/>
@@ -186,19 +216,26 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:apply-templates>
 </xsl:template>
 
+<xsl:template match="api:library" mode="api:body.external">
+	<xsl:param name="id"/>
+	<xsl:param name="content"/>
+	<xsl:apply-templates select="." mode="api:body.type.ref">
+		<xsl:with-param name="id" select="$id"/>
+		<xsl:with-param name="content" select="$content"/>
+		<xsl:with-param name="library">
+			<xsl:apply-templates select="." mode="api:body.type.ref.library"/>
+		</xsl:with-param>
+	</xsl:apply-templates>
+</xsl:template>
+
 <xsl:template match="api:type.ref[@library]" mode="api:body.type.ref">
 	<xsl:variable name="library" select="@library"/>
 	<xsl:apply-templates 
 		select="document(/api:library/api:using[@id=$library]/@href)/api:library"
-		mode="api:body.type.ref">
+		mode="api:body.external">
 		<xsl:with-param name="id" select="@id"/>
 		<xsl:with-param name="content">
 			<xsl:apply-templates select="*" mode="api:body"/>
-		</xsl:with-param>
-		<xsl:with-param name="library">
-			<xsl:apply-templates 
-				select="document(/api:library/api:using[@id=$library]/@href)/api:library" 
-				mode="api:body.type.ref.library"/>
 		</xsl:with-param>
 	</xsl:apply-templates>
 </xsl:template>
@@ -341,7 +378,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="api:interface" mode="api:body">
 	<interface>
-		<xsl:apply-templates select="@id" mode="api:body"/>
+		<xsl:apply-templates select="@id" mode="api:body.local"/>
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
 		<xsl:apply-templates select="." mode="api:body.dual"/>
@@ -361,7 +398,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="api:struct" mode="api:body.typedef">
 	<struct>
-		<xsl:apply-templates select="@id" mode="api:body"/>
+		<xsl:apply-templates select="@id" mode="api:body.local"/>
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
@@ -371,7 +408,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="api:enum" mode="api:body.typedef">
 	<enum>
-		<xsl:apply-templates select="@id" mode="api:body"/>
+		<xsl:apply-templates select="@id" mode="api:body.local"/>
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
@@ -381,7 +418,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="api:struct|api:enum" mode="api:body">
 	<typedef>
-		<xsl:apply-templates select="@id" mode="api:body"/>
+		<xsl:apply-templates select="@id" mode="api:body.local"/>
 		<xsl:apply-templates select="." mode="api:body.typedef"/>
 	</typedef>
 </xsl:template>
@@ -394,9 +431,18 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- object -->
 
+<xsl:template match="api:struct/api:object" mode="api:body">
+	<object>
+		<xsl:apply-templates select="@id" mode="api:body"/>
+		<xsl:apply-templates select="@brief" mode="api:body"/>
+		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
+		<xsl:apply-templates select="*" mode="api:body"/>
+	</object>
+</xsl:template>
+
 <xsl:template match="api:library/api:object" mode="api:body">
 	<coclass>
-		<xsl:apply-templates select="@id" mode="api:body"/>
+		<xsl:apply-templates select="@id" mode="api:body.local"/>
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
 		<attribute id="appobject"/>
@@ -422,10 +468,28 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:value-of select="api:pragma/odl:alias/@filename"/>
 </xsl:template>
 
+<xsl:template match="api:library" mode="api:body.strong.filename">
+	<xsl:value-of select="concat(@id, '.strong.tlb')"/>
+</xsl:template>
+
+<xsl:template 
+	match="api:library[api:pragma/odl:alias/@strong.filename]" 
+	mode="api:body.strong.filename">
+	<xsl:value-of select="api:pragma/odl:alias/@strong.filename"/>
+</xsl:template>
+
 <xsl:template match="api:using" mode="api:body">
 	<xsl:variable name="file">
-		<xsl:apply-templates 
-			select="document(@href)/api:library" mode="api:body.filename"/>
+		<xsl:choose>
+			<xsl:when test="$api:com.odl.prefix">
+				<xsl:apply-templates 
+					select="document(@href)/api:library" mode="api:body.strong.filename"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates 
+					select="document(@href)/api:library" mode="api:body.filename"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:variable>
 	<importlib href="{$file}"/>
 </xsl:template>
