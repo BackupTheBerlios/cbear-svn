@@ -181,8 +181,7 @@ public:
 	class internal_policy
 	{
 	public:
-		typedef uuid type;
-		typedef c_t internal_type;
+		typedef c_t type;
 	};
 
 	typedef uuid move_type;
@@ -216,7 +215,7 @@ private:
 
 };
 
-typedef uuid refiid_t;
+typedef uuid iid_t;
 
 }
 }

@@ -48,7 +48,7 @@ See <html:a href="http://cbear.berlios.de/api"
 
 <type id="uuid">
 	<pragma>
-		<com.idl:alias id="REFIID"/>
+		<com.idl:alias id="IID"/>
 	</pragma>
 </type>
 
