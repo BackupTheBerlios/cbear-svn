@@ -19,5 +19,5 @@
 @rem LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 @rem FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 @rem DEALINGS IN THE SOFTWARE.
-@rem c:\nxslt-1.6.3\bin\nxslt index.xml docbook/list.cbear.xsl -xi -mo url=cbear.berlios.de
 c:\nxslt-1.6.4\bin\nxslt index.xml project/cbear.xsl -xi -mo
+

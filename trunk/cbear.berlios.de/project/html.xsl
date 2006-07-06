@@ -43,7 +43,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:param name="prj:html.style">
 body
 {
-  background-color: #CCCCCC;
+  /*background-color: #CCCCCC;*/
+	background-color: white;
 
 	font-family: sans-serif;
 	font-size: 10pt;
@@ -117,7 +118,8 @@ pre
 {
 	margin: 0 0 0 0;
 	border: 0;
-	background-color: #CCCCCC;
+	/*background-color: #CCCCCC;*/
+	background-color: white;
 }
 </xsl:param>
 
@@ -165,25 +167,6 @@ pre
 	<xsl:apply-templates select="*" mode="prj:html"/>
 </xsl:template>
 
-<!-- literallayout -->
-
-<xsl:template match="prj:literallayout" mode="prj:html">
-	<div style="text-align: center; border: none;">
-		<table style="margin: auto auto auto auto;">
-			<tr>
-				<td>
-					<pre style="border: none; background-color: white; font-family: sans-serif; font-size: 10pt; text-align: left;">
-						<xsl:apply-templates select="*|text()" mode="prj:html"/>
-					</pre>
-				</td>
-			</tr>
-		</table>
-	</div>
-	<p style="text-align: right;">
-		<em><xsl:value-of select="@date"/></em>
-	</p>
-</xsl:template>
-
 <!-- section -->
 
 <xsl:template match="prj:section" mode="prj:html.link.href">
@@ -196,8 +179,7 @@ pre
 		<xsl:attribute name="href">
 			<xsl:apply-templates select="." mode="prj:html.link.href"/>
 		</xsl:attribute>
-		<xsl:value-of select="document(@href, .)/prj:section/
-			@name"/>
+		<xsl:value-of select="document(@href, .)/prj:section/@name"/>
 	</a>
 </xsl:template>
 
@@ -330,6 +312,31 @@ pre
 	<div id="{$id}">
 		<h2><xsl:value-of select="@name"/></h2>
 		<xsl:apply-templates mode="prj:html"/>
+	</div>
+</xsl:template>
+
+<xsl:template match="prj:section[@class='poetry']" mode="prj:html">
+	<xsl:variable name="id">
+		<xsl:apply-templates select="." mode="prj:html.id"/>
+	</xsl:variable>
+	<div id="{$id}">
+		<h2 style="text-align: center;"><xsl:value-of select="@name"/></h2>
+		<div style="text-align: center; border: none;">
+			<table style="margin: 0 auto 0 auto;">
+				<tr>
+					<td>
+						<pre style="border: none; background-color: white; font-family: sans-serif; font-size: 10pt; text-align: left;">
+							<xsl:apply-templates select="*|text()" mode="prj:html"/>
+						</pre>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<p style="text-align: right;">
+			<em>
+				<xsl:value-of select="@date"/>
+			</em>
+		</p>
 	</div>
 </xsl:template>
 

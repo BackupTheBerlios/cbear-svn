@@ -111,14 +111,18 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="attribution" mode="prj:converter"/>
 
 <xsl:template match="literallayout" mode="prj:converter">
+	<!--
 	<literallayout date="{../attribution}">
-		<xsl:apply-templates select="*|text()" mode="prj:converter"/>
+	-->
+	<xsl:apply-templates select="*|text()" mode="prj:converter"/>
+	<!--
 	</literallayout>
+	-->
 </xsl:template>
 
 <xsl:template match="blockquote" mode="prj:converter">
-	<section name="{title}">
-		<xsl:apply-templates select="*|text()" mode="prj:converter"/>
+	<section name="{title}" class="poetry" date="{attribution}">
+		<xsl:apply-templates select="literallayout" mode="prj:converter"/>
 	</section>
 </xsl:template>
 
