@@ -107,10 +107,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<span style="{$odl:color.keyword}"><xsl:value-of select="@id"/></span>
 </xsl:template>
 
-<xsl:template match="odl:attribute[@value]" mode="odl:color.attribute.body">
+<xsl:template match="odl:attribute[odl:value]" mode="odl:color.attribute.body">
 	<span style="{$odl:color.keyword}"><xsl:value-of select="@id"/></span>
 	<xsl:text>(</xsl:text>
-	<span style="{$odl:color.const}"><xsl:value-of select="@value"/></span>
+	<xsl:for-each select="odl:value">
+		<xsl:if test="position()!=1"><xsl:text>, </xsl:text></xsl:if>
+		<span style="{$odl:color.const}"><xsl:value-of select="."/></span>
+	</xsl:for-each>
 	<xsl:text>)</xsl:text>
 </xsl:template>
 

@@ -66,7 +66,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:call-template name="odl:cs.reflection"/>
 			<id.ref id="AssemblyVersion"/>
 		</id.ref>
-		<id.ref value="{concat('&quot;', @value, '&quot;')}"/>
+		<id.ref value="{concat('&quot;', odl:value, '&quot;')}"/>
 	</id.ref>
 </xsl:template>
 
@@ -77,7 +77,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<id.ref id="ComponentModel"/>
 			<id.ref id="Description"/>
 		</id.ref>
-		<id.ref value="{@value}"/>
+		<id.ref value="{odl:value}"/>
 	</id.ref>
 </xsl:template>
 
@@ -88,7 +88,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:call-template name="odl:cs.reflection"/>
 			<id.ref id="AssemblyDescription"/>
 		</id.ref>
-		<id.ref value="{@value}"/>
+		<id.ref value="{odl:value}"/>
 	</id.ref>
 </xsl:template>
 
@@ -104,7 +104,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:call-template name="odl:cs.interop-services"/>
 			<id.ref id="Guid"/>
 		</id.ref>
-		<id.ref value="{concat('&quot;', @value, '&quot;')}"/>
+		<id.ref value="{concat('&quot;', odl:value, '&quot;')}"/>
 	</id.ref>
 </xsl:template>
 
@@ -114,7 +114,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<xsl:call-template name="odl:cs.interop-services"/>
 			<id.ref id="DispId"/>
 		</id.ref>
-		<id.ref value="{@value}"/>
+		<id.ref value="{odl:value}"/>
 	</id.ref>
 </xsl:template>
 
@@ -129,6 +129,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:template match="odl:attribute[@id='oleautomation']" mode="odl:cs"/>
 <xsl:template match="odl:attribute[@id='propget']" mode="odl:cs"/>
 <xsl:template match="odl:attribute[@id='propput']" mode="odl:cs"/>
+<xsl:template match="odl:attribute[@id='custom']" mode="odl:cs"/>
 
 <xsl:template match="odl:attribute" mode="odl:cs.assembly">
 	<attribute id="assembly">
@@ -329,12 +330,34 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<xsl:apply-templates select="." mode="odl:cs.property"/>
 </xsl:template>
 
+<!-- @id -->
+
+<xsl:template name="odl:cs.namespace">
+	<xsl:param name="id"/>
+	<xsl:value-of select="substring-before($id, '.')"/>
+	<xsl:variable name="new.id" select="substring-after($id, '.')"/>
+	<xsl:if test="contains($new.id, '.')">
+		<xsl:text>.</xsl:text>
+		<xsl:call-template name="odl:cs.namespace">
+			<xsl:with-param name="id" select="$new.id"/>
+		</xsl:call-template>
+	</xsl:if>
+</xsl:template>
+
+<xsl:template match="odl:*" mode="odl:cs.namespace">
+	<xsl:call-template name="odl:cs.namespace">
+		<xsl:with-param 
+			name="id" 
+			select="substring-after(odl:attribute[@id='custom']/odl:value[2], '&#34;')"/>
+	</xsl:call-template>
+</xsl:template>
+
 <!-- interface -->
 
 <xsl:template match="odl:interface" mode="odl:cs.interface.methods">
 	<xsl:variable name="id" select="odl:type.ref/@id"/>
 	<xsl:apply-templates 
-		select="/odl:library/odl:interface[@id=$id]" 
+		select="/odl:library/odl:interface[@id=$id]"
 		mode="odl:cs.interface.methods"/>
 	<xsl:apply-templates select="odl:method" mode="odl:cs.method"/>
 </xsl:template>
@@ -380,22 +403,27 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </xsl:template>
 
 <xsl:template match="odl:interface" mode="odl:cs">
-	<interface id="{@id}" access="public">
-		<xsl:apply-templates select="." mode="odl:cs.interface.type"/>
-		<attribute>
-			<id.ref type="()">
-				<id.ref type=".">
-					<xsl:call-template name="odl:cs.interop-services"/>
-					<id.ref id="TypeLibType"/>
+	<xsl:variable name="namespace">
+		<xsl:apply-templates select="." mode="odl:cs.namespace"/>
+	</xsl:variable>
+	<namespace id="{$namespace}">
+		<interface id="{@id}" access="public">
+			<xsl:apply-templates select="." mode="odl:cs.interface.type"/>
+			<attribute>
+				<id.ref type="()">
+					<id.ref type=".">
+						<xsl:call-template name="odl:cs.interop-services"/>
+						<id.ref id="TypeLibType"/>
+					</id.ref>
+					<id.ref type="|">
+						<xsl:apply-templates select="odl:attribute" mode="odl:cs.type"/>
+					</id.ref>
 				</id.ref>
-				<id.ref type="|">
-					<xsl:apply-templates select="odl:attribute" mode="odl:cs.type"/>
-				</id.ref>
-			</id.ref>
-		</attribute>
-		<xsl:apply-templates select="*" mode="odl:cs"/>
-		<xsl:apply-templates select="." mode="odl:cs.interface.methods"/>
-	</interface>
+			</attribute>
+			<xsl:apply-templates select="*" mode="odl:cs"/>
+			<xsl:apply-templates select="." mode="odl:cs.interface.methods"/>
+		</interface>
+	</namespace>
 </xsl:template>
 
 <!-- item -->
@@ -421,43 +449,50 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- coclass -->
 
 <xsl:template match="odl:coclass" mode="odl:cs">
-	<class id="{@id}" access="public">
-		<attribute>
-			<id.ref type="()">
-				<id.ref type=".">
-					<xsl:call-template name="odl:cs.interop-services"/>
-					<id.ref id="ClassInterface"/>
+	<xsl:variable name="namespace">
+		<xsl:apply-templates select="." mode="odl:cs.namespace"/>
+	</xsl:variable>
+	<namespace id="{$namespace}">
+		<class id="{@id}" access="public">
+			<attribute>
+				<id.ref type="()">
+					<id.ref type=".">
+						<xsl:call-template name="odl:cs.interop-services"/>
+						<id.ref id="ClassInterface"/>
+					</id.ref>
+					<id.ref type=".">
+						<xsl:call-template name="odl:cs.interop-services"/>
+						<id.ref id="ClassInterfaceType"/>
+						<id.ref id="None"/>
+					</id.ref>
 				</id.ref>
-				<id.ref type=".">
-					<xsl:call-template name="odl:cs.interop-services"/>
-					<id.ref id="ClassInterfaceType"/>
-					<id.ref id="None"/>
+			</attribute>
+			<attribute>
+				<id.ref type="()">
+					<id.ref type=".">
+						<xsl:call-template name="odl:cs.interop-services"/>
+						<id.ref id="TypeLibType"/>
+					</id.ref>
+					<id.ref type="|">
+						<xsl:apply-templates select="odl:attribute" mode="odl:cs.type"/>
+					</id.ref>
 				</id.ref>
-			</id.ref>
-		</attribute>
-		<attribute>
-			<id.ref type="()">
-				<id.ref type=".">
-					<xsl:call-template name="odl:cs.interop-services"/>
-					<id.ref id="TypeLibType"/>
-				</id.ref>
-				<id.ref type="|">
-					<xsl:apply-templates select="odl:attribute" mode="odl:cs.type"/>
-				</id.ref>
-			</id.ref>
-		</attribute>
-		<id.ref id="Implementation"/>
-		<xsl:apply-templates select="*" mode="odl:cs"/>
-	</class>
+			</attribute>
+			<id.ref id="Implementation"/>
+			<xsl:apply-templates select="*" mode="odl:cs"/>
+		</class>
+	</namespace>
 </xsl:template>
 
 <!-- importlib -->
 
+<!--
 <xsl:template match="odl:importlib[@href='stdole2.tlb']" mode="odl:cs"/>
 
 <xsl:template match="odl:importlib" mode="odl:cs">
 	<using id="{substring(@href, 1, string-length(@href)-4)}"/>
 </xsl:template>
+-->
 
 <!-- libray -->
 
@@ -473,12 +508,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			'http://cbear.berlios.de/cs ', $odl:cs.xsd)}"
 		id="{$path}">
 		<xsl:apply-templates select="odl:attribute" mode="odl:cs.assembly"/>
+<!--
 		<namespace id="{@id}">
-			<xsl:apply-templates select="odl:importlib" mode="odl:cs"/>
-			<xsl:apply-templates select="odl:typedef" mode="odl:cs"/>
-			<xsl:apply-templates select="odl:interface" mode="odl:cs"/>
-			<xsl:apply-templates select="odl:coclass" mode="odl:cs"/>
+		<xsl:apply-templates select="odl:importlib" mode="odl:cs"/>
+-->
+		<xsl:apply-templates select="odl:typedef" mode="odl:cs"/>
+		<xsl:apply-templates select="odl:interface" mode="odl:cs"/>
+		<xsl:apply-templates select="odl:coclass" mode="odl:cs"/>
+<!--
 		</namespace>
+-->
 	</unit>
 </xsl:template>
 

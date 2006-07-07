@@ -69,7 +69,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- @id -->
 
 <xsl:template match="@id" mode="api:com.odl.id">
-	<xsl:value-of select="translate(., './', '__')"/>
+	<xsl:value-of select="translate(., '.', '_')"/>
 </xsl:template>
 
 <xsl:template match="@id" mode="api:body">
@@ -101,19 +101,25 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!-- @brief -->
 
 <xsl:template match="@brief" mode="api:body">
-	<attribute id="helpstring" value="{concat('&#x22;', ., '&#x22;')}"/>
+	<attribute id="helpstring">
+		<value><xsl:value-of select="concat('&#x22;', ., '&#x22;')"/></value>
+	</attribute>
 </xsl:template>
 
 <!-- @uuid -->
 
 <xsl:template match="@uuid" mode="api:body">
-	<attribute id="uuid" value="{.}"/>
+	<attribute id="uuid">
+		<value><xsl:value-of select="."/></value>
+	</attribute>
 </xsl:template>
 
 <!-- @version -->
 
 <xsl:template match="@version" mode="api:body">
-	<attribute id="version" value="{.}"/>
+	<attribute id="version">
+		<value><xsl:value-of select="."/></value>
+	</attribute>
 </xsl:template>
 
 <!-- pragma -->
@@ -128,6 +134,22 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="api:const" mode="api:body">
 	<const value="{@value}"/>
+</xsl:template>
+
+<!-- custom -->
+
+<xsl:template name="api:body.custom">
+	<xsl:param name="id"/>
+	<attribute id="custom">
+		<value>0F21F359-AB84-41E8-9A78-36D110E6D2F9</value>
+		<value><xsl:value-of select="concat('&#34;', $id, '&#34;')"/></value>
+	</attribute>
+</xsl:template>
+
+<xsl:template match="api:*" mode="api:body.custom">
+	<xsl:call-template name="api:body.custom">
+		<xsl:with-param name="id" select="concat(/api:library/@id, '.',	@id)"/>
+	</xsl:call-template>
 </xsl:template>
 
 <!-- prefix -->
@@ -294,7 +316,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:template match="api:property[api:parameter]" mode="api:body.property.item">
 	<xsl:if test="not(api:pragma/odl:attribute[@id='id'])">
-		<attribute id="id" value="0"/>
+		<attribute id="id">
+			<value>0</value>
+		</attribute>
 	</xsl:if>
 </xsl:template>
 
@@ -382,6 +406,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
 		<xsl:apply-templates select="." mode="api:body.dual"/>
+		<xsl:apply-templates select="." mode="api:body.custom"/>
 		<attribute id="oleautomation"/>
 		<xsl:apply-templates select="api:pragma" mode="api:body.pragma"/>
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
@@ -445,6 +470,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:apply-templates select="@id" mode="api:body.local"/>
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
+		<xsl:apply-templates select="." mode="api:body.custom"/>
 		<attribute id="appobject"/>
 		<xsl:apply-templates select="api:pragma" mode="api:body.pragma"/>
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
@@ -509,6 +535,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
 		<xsl:apply-templates select="@version" mode="api:body"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
+		<xsl:call-template name="api:body.custom">
+			<xsl:with-param name="id" select="@id"/>
+		</xsl:call-template>
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:apply-templates select="api:using" mode="api:body"/>
 		<xsl:apply-templates select="api:enum" mode="api:body"/>

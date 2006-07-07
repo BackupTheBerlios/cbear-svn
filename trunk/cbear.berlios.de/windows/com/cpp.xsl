@@ -1048,7 +1048,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 						</id.ref>
 						<id.ref type="()" id="CBEAR_BERLIOS_DE_SELECT_STRING">
 							<id.ref id="Char"/>
-							<id.ref type="value" id="{concat('&#x22;', ../odl:attribute[@id='version']/@value, '&#x22;')}"/>
+							<id.ref 
+								type="value" 
+								id="{concat(
+									'&#x22;', 
+									../odl:attribute[@id='version']/odl:value, 
+									'&#x22;')}"/>
 						</id.ref>
 					</id.ref>
 				</id.ref>
@@ -1094,7 +1099,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 							</id.ref>
 							<id.ref type="{'{}'}">				
 								<xsl:variable 
-									name="uuid" select="odl:attribute[@id='uuid']/@value"/>
+									name="uuid" select="odl:attribute[@id='uuid']/odl:value"/>
 								<id.ref id="{concat('0x', substring($uuid, 1, 8))}"/>
 								<id.ref id="{concat('0x', substring($uuid, 10, 4))}"/>
 								<id.ref id="{concat('0x', substring($uuid, 15, 4))}"/>
@@ -1134,7 +1139,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:value-of select="$odl:cpp.xsl"/>
 		<xsl:text>"</xsl:text>
 	</xsl:processing-instruction>
-	<xsl:variable name="path" select="concat($odl:cpp.path, @id)"/>
+	<xsl:variable name="path" select="concat(
+		$odl:cpp.path, 
+		substring-before(substring-after(
+			odl:attribute[@id='custom']/odl:value[2], '&#34;'), '&#34;'))"/>
 	<unit
 		xsi:schemaLocation="{concat(
 			'http://cbear.berlios.de/cpp ', $odl:cpp.xsd)}"
