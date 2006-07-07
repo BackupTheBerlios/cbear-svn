@@ -137,6 +137,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</attribute>
 </xsl:template>
 
+<xsl:template match="odl:attribute[@id='custom']" mode="odl:cs.assembly"/>
+
 <xsl:template match="odl:attribute" mode="odl:cs.type"/>
 
 <xsl:template name="odl:cs.type-lib-type-flags">
