@@ -182,6 +182,9 @@ public:
 	{
 	public:
 		typedef c_t type;
+		static void construct(type &) 
+		{
+		}
 	};
 
 	typedef uuid move_type;
@@ -195,6 +198,11 @@ public:
 	static const uuid &wrap_ref(const c_t &V)
 	{
 		return cast::traits<const uuid &>::reinterpret(V);
+	}
+
+	static uuid &wrap_ref(c_t &V)
+	{
+		return cast::traits<uuid &>::reinterpret(V);
 	}
 
 	typedef c_t value_t;
