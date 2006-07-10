@@ -184,12 +184,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</xsl:variable>
 	<xsl:variable name="internal">
 		<xsl:apply-templates select="." mode="odl:internal"/>
-<!--
-		<id.ref type="::">
-			<id.ref/>
-			<xsl:copy-of select="$name"/>
-		</id.ref>
--->
 	</xsl:variable>
 	<xsl:variable name="base">
 		<id.ref type="::">
@@ -478,10 +472,30 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</id.ref>		
 </xsl:template>
 
+<xsl:template match="odl:library" mode="odl:cpp.id.ref">
+	<xsl:param name="id">
+		<xsl:apply-templates select="." mode="odl:cpp.id"/>
+	</xsl:param>
+	<xsl:choose>
+		<xsl:when test="contains($id, '.')">
+			<id.ref id="{substring-before($id, '.')}"/>
+			<xsl:apply-templates select="." mode="odl:cpp.id.ref">
+				<xsl:with-param name="id" select="substring-after($id, '.')"/>
+			</xsl:apply-templates>
+		</xsl:when>
+		<xsl:otherwise>
+			<id.ref id="{$id}"/>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+
 <xsl:template 
 	match="odl:type.ref[/odl:library/odl:*/@id=@id]" mode="odl:cpp">
 	<id.ref type="::">
+<!--
 		<id.ref id="{/odl:library/@id}"/>
+-->
+		<xsl:apply-templates select="/odl:library" mode="odl:cpp.id.ref"/>
 		<id.ref id="{@id}"/>
 	</id.ref>
 </xsl:template>
@@ -809,23 +823,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<id.ref id="pointer_content" type="&lt;&gt;">
 				<id.ref id="Base"/>
 				<xsl:apply-templates select="." mode="odl:internal"/>
-<!--
-				<id.ref type="::">
-					<id.ref/>
-					<id.ref id="{@id}"/>
-				</id.ref>
--->
 			</id.ref>
 			<access access="public">
 				<id.ref id="pointer_content" type="&lt;&gt;">
 					<id.ref id="Base"/>
 					<xsl:apply-templates select="odl:type.ref" mode="odl:internal"/>
-<!--
-					<id.ref type="::">
-						<id.ref/>
-						<id.ref id="{odl:type.ref/@id}"/>
-					</id.ref>
--->
 				</id.ref>
 				<xsl:apply-templates select="odl:method" mode="odl:cpp"/>
 			</access>
@@ -838,30 +840,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<id.ref id="implementation" type="&lt;&gt;">
 					<id.ref id="Base"/>
 					<xsl:apply-templates select="." mode="odl:internal"/>
-<!--
-					<id.ref type="::">
-						<id.ref/>
-						<id.ref id="{@id}"/>
-					</id.ref>
--->
 				</id.ref>
 				<access access="public">
 					<id.ref id="implementation_base" type="&lt;&gt;">
 						<id.ref id="Base"/>
 						<xsl:apply-templates select="." mode="odl:internal"/>
-<!--
-						<id.ref type="::">
-							<id.ref/>
-							<id.ref id="{@id}"/>
-						</id.ref>
--->
 						<xsl:apply-templates select="odl:type.ref" mode="odl:internal"/>
-<!--
-						<id.ref type="::">
-							<id.ref/>
-							<id.ref id="{odl:type.ref/@id}"/>
-						</id.ref>
--->
 					</id.ref>
 					<xsl:apply-templates 
 						select="odl:method" mode="odl:cpp.implementation"/>
@@ -878,24 +862,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					<id.ref id="T"/>
 					<id.ref id="B"/>
 					<xsl:apply-templates select="." mode="odl:internal"/>
-<!--
-					<id.ref type="::">
-						<id.ref/>
-						<id.ref id="{@id}"/>
-					</id.ref>
--->
 				</id.ref>
 				<access access="public">
 					<id.ref id="interface_" type="&lt;&gt;">
 						<id.ref id="T"/>
 						<id.ref id="B"/>
 						<xsl:apply-templates select="odl:type.ref" mode="odl:internal"/>
-<!--
-						<id.ref type="::">
-							<id.ref/>
-							<id.ref id="{odl:type.ref/@id}"/>
-						</id.ref>						
--->
 					</id.ref>
 					<xsl:for-each select="odl:method">
 						<xsl:variable name="id">
@@ -957,18 +929,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<class>
 			<id.ref id="library_info" type="&lt;&gt;">
 				<xsl:apply-templates select="." mode="odl:internal"/>
-<!--
-				<id.ref type="::">
-					<id.ref/>
-					<id.ref id="{@id}"/>
-				</id.ref>
--->
 			</id.ref>
 			<access access="public">
 				<typedef id="type">
 					<id.ref type="::">
 						<id.ref/>
-						<id.ref id="{/odl:library/@id}"/>
+						<xsl:apply-templates select="/odl:library" mode="odl:cpp.id.ref"/>
 						<id.ref id="info"/>
 					</id.ref>
 				</typedef>
@@ -1071,12 +1037,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<id.ref id="uuid"/>
 				<id.ref type="&lt;&gt;" id="of_type">
 					<xsl:apply-templates select="." mode="odl:internal"/>
-<!--
-					<id.ref type="::">
-						<id.ref/>
-						<id.ref id="{@id}"/>
-					</id.ref>
--->
 				</id.ref>
 			</id.ref>
 			<access access="public">
@@ -1131,54 +1091,34 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	</template>
 </xsl:template>
 
-<!-- libray -->
+<!-- odl:library, id -->
 
-<xsl:template match="odl:library" mode="odl:cpp">
-	<xsl:processing-instruction name="xml-stylesheet">
-		<xsl:text>type="text/xsl" href="</xsl:text>
-		<xsl:value-of select="$odl:cpp.xsl"/>
-		<xsl:text>"</xsl:text>
-	</xsl:processing-instruction>
-	<xsl:variable name="path" select="concat(
-		$odl:cpp.path, 
-		substring-before(substring-after(
-			odl:attribute[@id='custom']/odl:value[2], '&#34;'), '&#34;'))"/>
-	<unit
-		xsi:schemaLocation="{concat(
-			'http://cbear.berlios.de/cpp ', $odl:cpp.xsd)}"
-		id="{$path}">
-		<header>
-			<include href="cbear.berlios.de/windows/base.hpp"/>
-			<include href="{concat($path, '.h')}"/>
-			<include href="cbear.berlios.de/windows/com/int.hpp"/>
-			<include href="cbear.berlios.de/windows/com/uint.hpp"/>
-			<include href="cbear.berlios.de/windows/com/char.hpp"/>
-			<include href="cbear.berlios.de/windows/com/byte.hpp"/>
-			<include href="cbear.berlios.de/windows/com/short.hpp"/>
-			<include href="cbear.berlios.de/windows/com/ushort.hpp"/>
-			<include href="cbear.berlios.de/windows/com/long.hpp"/>
-			<include href="cbear.berlios.de/windows/com/ulong.hpp"/>
-			<include href="cbear.berlios.de/windows/com/longlong.hpp"/>
-			<include href="cbear.berlios.de/windows/com/ulonglong.hpp"/>
-			<include href="cbear.berlios.de/windows/com/float.hpp"/>
-			<include href="cbear.berlios.de/windows/com/double.hpp"/>
-			<include href="cbear.berlios.de/windows/com/enum.hpp"/>
-			<include href="cbear.berlios.de/windows/com/array.hpp"/>
-			<include href="cbear.berlios.de/windows/com/struct.hpp"/>			
-			<include href="cbear.berlios.de/windows/com/variant_bool.hpp"/>
-			<include href="cbear.berlios.de/windows/com/bstr.hpp"/>
-			<include href="cbear.berlios.de/windows/com/date.hpp"/>
-			<include href="cbear.berlios.de/windows/com/safearray.hpp"/>
-			<include href="cbear.berlios.de/windows/com/pointer.hpp"/>
-			<include href="cbear.berlios.de/windows/com/exception.hpp"/>
-			<include href="cbear.berlios.de/windows/com/coclass.hpp"/>
-			<include href="cbear.berlios.de/windows/com/idispatch.hpp"/>
-			<include href="cbear.berlios.de/windows/com/static/interface_content.hpp"/>
-			<include href="cbear.berlios.de/windows/com/static/interface.hpp"/>
-			<include href="cbear.berlios.de/windows/com/static/idispatch.hpp"/>
-			<include href="cbear.berlios.de/windows/com/dynamic/implementation.hpp"/>
-			<include href="cbear.berlios.de/base/swap.hpp"/>
-			<namespace id="{translate(@id, '.\/', '___')}">
+<xsl:template match="odl:library" mode="odl:cpp.id">
+	<xsl:value-of select="
+		substring-before(
+			substring-after(
+				/odl:library/odl:attribute[@id='custom']/odl:value[2], 
+				'&#34;'), 
+			'&#34;')"/>
+</xsl:template>
+
+<!-- odl:library, namespace -->
+
+<xsl:template match="odl:library" mode="odl:cpp.namespace">
+	<xsl:param name="id"/>
+	<xsl:choose>
+		<xsl:when test="contains($id, '.')">
+			<namespace id="{substring-before($id, '.')}">
+				<xsl:apply-templates select="." mode="odl:cpp.namespace">
+					<xsl:with-param name="id" select="substring-after($id, '.')"/>
+				</xsl:apply-templates>
+			</namespace>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:variable name="full.id">
+				<xsl:apply-templates select="." mode="odl:cpp.id"/>
+			</xsl:variable>
+			<namespace id="{$id}">
 				<class>
 					<id.ref id="info"/>
 				</class>
@@ -1232,7 +1172,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 										<id.ref 
 											type="value" 
 											id="{concat(
-												'L&#x22;', $path, '&#x22;')}"/>
+												'L&#x22;', $full.id, '&#x22;')}"/>
 										<id.ref id="Hmodule"/>										
 									</id.ref>
 								</id.ref>
@@ -1242,6 +1182,65 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					</access>
 				</class>
 			</namespace>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+
+<!-- libray -->
+
+<xsl:template match="odl:library" mode="odl:cpp">
+	<xsl:processing-instruction name="xml-stylesheet">
+		<xsl:text>type="text/xsl" href="</xsl:text>
+		<xsl:value-of select="$odl:cpp.xsl"/>
+		<xsl:text>"</xsl:text>
+	</xsl:processing-instruction>
+<!--
+	<xsl:variable name="path" select="concat(
+		$odl:cpp.path, 
+		substring-before(substring-after(
+			odl:attribute[@id='custom']/odl:value[2], '&#34;'), '&#34;'))"/>
+-->
+	<xsl:variable name="path">
+		<xsl:apply-templates select="." mode="odl:cpp.id"/>
+	</xsl:variable>
+	<unit
+		xsi:schemaLocation="{concat(
+			'http://cbear.berlios.de/cpp ', $odl:cpp.xsd)}"
+		id="{$path}">
+		<header>
+			<include href="cbear.berlios.de/windows/base.hpp"/>
+			<include href="{concat($path, '.h')}"/>
+			<include href="cbear.berlios.de/windows/com/int.hpp"/>
+			<include href="cbear.berlios.de/windows/com/uint.hpp"/>
+			<include href="cbear.berlios.de/windows/com/char.hpp"/>
+			<include href="cbear.berlios.de/windows/com/byte.hpp"/>
+			<include href="cbear.berlios.de/windows/com/short.hpp"/>
+			<include href="cbear.berlios.de/windows/com/ushort.hpp"/>
+			<include href="cbear.berlios.de/windows/com/long.hpp"/>
+			<include href="cbear.berlios.de/windows/com/ulong.hpp"/>
+			<include href="cbear.berlios.de/windows/com/longlong.hpp"/>
+			<include href="cbear.berlios.de/windows/com/ulonglong.hpp"/>
+			<include href="cbear.berlios.de/windows/com/float.hpp"/>
+			<include href="cbear.berlios.de/windows/com/double.hpp"/>
+			<include href="cbear.berlios.de/windows/com/enum.hpp"/>
+			<include href="cbear.berlios.de/windows/com/array.hpp"/>
+			<include href="cbear.berlios.de/windows/com/struct.hpp"/>			
+			<include href="cbear.berlios.de/windows/com/variant_bool.hpp"/>
+			<include href="cbear.berlios.de/windows/com/bstr.hpp"/>
+			<include href="cbear.berlios.de/windows/com/date.hpp"/>
+			<include href="cbear.berlios.de/windows/com/safearray.hpp"/>
+			<include href="cbear.berlios.de/windows/com/pointer.hpp"/>
+			<include href="cbear.berlios.de/windows/com/exception.hpp"/>
+			<include href="cbear.berlios.de/windows/com/coclass.hpp"/>
+			<include href="cbear.berlios.de/windows/com/idispatch.hpp"/>
+			<include href="cbear.berlios.de/windows/com/static/interface_content.hpp"/>
+			<include href="cbear.berlios.de/windows/com/static/interface.hpp"/>
+			<include href="cbear.berlios.de/windows/com/static/idispatch.hpp"/>
+			<include href="cbear.berlios.de/windows/com/dynamic/implementation.hpp"/>
+			<include href="cbear.berlios.de/base/swap.hpp"/>
+			<xsl:apply-templates select="." mode="odl:cpp.namespace">
+				<xsl:with-param name="id" select="$path"/>
+			</xsl:apply-templates>
 			<namespace id="cbear_berlios_de">
 				<namespace id="windows">
 					<namespace id="com">						
