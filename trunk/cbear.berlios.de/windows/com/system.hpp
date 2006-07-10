@@ -47,13 +47,28 @@ public:
 
 	enum coinit_type
 	{
-		multithreaded = COINIT_MULTITHREADED,
 		apartmentthreaded = COINIT_APARTMENTTHREADED,
+
+#if (_WIN32_WINNT >= 0x0400 ) || defined(_WIN32_DCOM) // DCOM
+		multithreaded = COINIT_MULTITHREADED,
 		disable_ole1dde = COINIT_DISABLE_OLE1DDE,
 		speed_over_memory = COINIT_SPEED_OVER_MEMORY,
+#endif
+
 	};
 
-	system(coinit_type C) { exception::throw_unless(::CoInitializeEx(0, C)); }
+	system()
+	{
+		exception::throw_unless(::CoInitialize(0));
+	}
+
+#if (_WIN32_WINNT >= 0x0400 ) || defined(_WIN32_DCOM) // DCOM
+	system(coinit_type C) 
+	{ 
+		exception::throw_unless(::CoInitializeEx(0, C)); 
+	}
+#endif
+
 	~system() { ::CoUninitialize(); }
 };
 
