@@ -1212,12 +1212,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 								<id.ref id="com"/>
 								<id.ref type="&lt;&gt;" id="scoped_type_info">
 									<xsl:apply-templates select="." mode="odl:internal"/>
-<!--
-									<id.ref type="::">
-										<id.ref/>
-										<id.ref id="{@id}"/>
-									</id.ref>
--->
 								</id.ref>
 							</id.ref>
 						</xsl:for-each>
@@ -1238,7 +1232,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 										<id.ref 
 											type="value" 
 											id="{concat(
-												'L&#x22;', @id, '&#x22;')}"/>
+												'L&#x22;', $path, '&#x22;')}"/>
 										<id.ref id="Hmodule"/>										
 									</id.ref>
 								</id.ref>
