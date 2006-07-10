@@ -69,7 +69,10 @@ public:
 	}
 #endif
 
-	~system() { ::CoUninitialize(); }
+	~system() 
+	{ 
+		::CoUninitialize(); 
+	}
 };
 
 template<class T>
