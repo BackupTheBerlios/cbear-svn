@@ -833,6 +833,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			</access>
 		</class>
 	</template>
+<!--
 	<namespace id="dynamic">
 		<template>
 			<id id="Base"/>
@@ -853,6 +854,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			</class>
 		</template>
 	</namespace>
+-->
 	<namespace id="static_">
 		<template>
 			<id id="T"/>
@@ -1194,12 +1196,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<xsl:value-of select="$odl:cpp.xsl"/>
 		<xsl:text>"</xsl:text>
 	</xsl:processing-instruction>
-<!--
-	<xsl:variable name="path" select="concat(
-		$odl:cpp.path, 
-		substring-before(substring-after(
-			odl:attribute[@id='custom']/odl:value[2], '&#34;'), '&#34;'))"/>
--->
 	<xsl:variable name="path">
 		<xsl:apply-templates select="." mode="odl:cpp.id"/>
 	</xsl:variable>
@@ -1236,7 +1232,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<include href="cbear.berlios.de/windows/com/static/interface_content.hpp"/>
 			<include href="cbear.berlios.de/windows/com/static/interface.hpp"/>
 			<include href="cbear.berlios.de/windows/com/static/idispatch.hpp"/>
+<!--
 			<include href="cbear.berlios.de/windows/com/dynamic/implementation.hpp"/>
+-->
 			<include href="cbear.berlios.de/base/swap.hpp"/>
 			<xsl:apply-templates select="." mode="odl:cpp.namespace">
 				<xsl:with-param name="id" select="$path"/>
