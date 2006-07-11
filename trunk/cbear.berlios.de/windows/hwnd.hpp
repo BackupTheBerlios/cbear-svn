@@ -34,6 +34,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <cbear.berlios.de/windows/base.hpp>
 #include <cbear.berlios.de/windows/exception.hpp>
+#include <cbear.berlios.de/windows/long_ptr.hpp>
 
 namespace cbear_berlios_de
 {
@@ -166,9 +167,15 @@ public:
 	typedef ::HWND internal_type;
 
 	hwnd() {}
-	// explicit hwnd(internal_type X): wrap_type(X) {}
+	~hwnd() 
+	{ 
+		this->Destroy(); 
+	}
 
-	~hwnd() { this->Destroy(); }
+	static const hwnd &cpp_in(const internal_type &X)
+	{
+		return cast::traits<const hwnd &>::reinterpret(X);
+	}
 
 	void Destroy()
 	{
@@ -311,6 +318,30 @@ public:
 		}
 		// to fix MS design bug.
 		if(!this->get()) throw create_exception();
+	}
+
+	template<class Char>
+	long_ptr_t SetWindowLongPtr(long_ptr_t L) const
+	{
+		BOOST_STATIC_ASSERT(sizeof(long_t)==sizeof(long_ptr_t));
+		exception::scope_last_error ScopeLastError;
+		return CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::SetWindowLongPtr)(
+			this->get(), GWL_USERDATA, static_cast<long_t>(L));
+	}
+
+	template<class Char>
+	long_ptr_t GetWindowLongPtr() const
+	{
+		BOOST_STATIC_ASSERT(sizeof(long_t)==sizeof(long_ptr_t));
+		exception::scope_last_error ScopeLastError;
+		return CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::GetWindowLongPtr)(
+			this->get(), GWL_USERDATA);
+	}
+
+	void PostQuitMessage(int ExitCode)
+	{
+		exception::scope_last_error ScopedLastError;
+		::PostQuitMessage(ExitCode);
 	}
 };
 

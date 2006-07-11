@@ -174,11 +174,15 @@ public:
 
 	typedef move::t<safearray_t> move_type;
 
+	typedef ValueType value_type;
 	typedef typename helper_type::size_type size_type;
 	typedef typename helper_type::iterator iterator;
 	typedef typename helper_type::const_iterator const_iterator;
 
 	typedef typename helper_type::const_reference const_reference;
+
+	typedef range::iterator_range<iterator> iterator_range_t;
+	typedef range::iterator_range<const_iterator> const_iterator_range_t;
 
 	static const vartype_t value_type_vt = traits<ValueType>::vt;
 	static const vartype_t vt = VT_ARRAY | value_type_vt;
@@ -253,11 +257,31 @@ public:
 		internal_policy::clear(this->internal());
 	}
 
-	void push_back(const_reference R)
+	void push_back(const value_type &R)
 	{
 		const std::size_t I = this->size();
 		this->resize(I + 1);
 		this->begin()[I] = R;
+	}
+
+	void pop_back()
+	{
+		BOOST_ASSERT(!this->empty());
+		this->resize(boost::prior(this->size()));
+	}
+
+	void erase(iterator I)
+	{
+		const iterator E = this->end();
+		BOOST_ASSERT((this->begin()<=I) && (I<=E));
+		if(I!=E) 
+		{
+			for(iterator N = boost::next(I); N!=E; I = N++)
+			{
+				move::assign(*I, *N);
+			}
+			this->pop_back();
+		}
 	}
 };
 
