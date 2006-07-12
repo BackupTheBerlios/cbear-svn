@@ -348,7 +348,7 @@ public:
 	template<class Char>
 	sp_device_interface_detail_data<Char> GetDeviceInterfaceDetail(
 		const sp_device_interface_data &deviceInterfaceData,
-		const optional_ref<sp_devinfo_data> &deviceInfoData) const
+		const optional_ref<const sp_devinfo_data> &deviceInfoData) const
 	{
 		dword_t requiredSize = 0;
 		try
@@ -362,7 +362,7 @@ public:
 					0,
 					0,
 					&requiredSize,
-					deviceInfoData.get());
+					const_cast< ::SP_DEVINFO_DATA *>(deviceInfoData.get()));
 		}
 		catch(const windows::exception &E)
 		{
@@ -380,7 +380,7 @@ public:
 					&deviceInterfaceDetailData.internal(),
 					requiredSize,
 					0,
-					deviceInfoData.get());
+					const_cast< ::SP_DEVINFO_DATA *>(deviceInfoData.get()));
 		}
 		return deviceInterfaceDetailData;
 	}
