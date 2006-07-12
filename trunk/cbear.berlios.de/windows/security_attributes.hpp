@@ -31,18 +31,6 @@ namespace cbear_berlios_de
 namespace windows
 {
 
-/*
-// Security descriptor.
-class security_attributes: 
-	public policy::wrap<security_attributes, ::SECURITY_ATTRIBUTES *>
-{
-public:
-	typedef policy::wrap<security_attributes, ::SECURITY_ATTRIBUTES *> wrap_type;
-	security_attributes() {}
-	explicit security_attributes(internal_type X): wrap_type(X) {}
-};
-*/
-
 // Security descriptor.
 class security_attributes: 
 	public base::initialized< ::SECURITY_ATTRIBUTES *>

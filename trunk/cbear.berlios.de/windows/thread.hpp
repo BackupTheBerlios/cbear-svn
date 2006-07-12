@@ -23,6 +23,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_THREAD_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_THREAD_HPP_INCLUDED
 
+#include <cbear.berlios.de/windows/base.hpp>
+#include <cbear.berlios.de/windows/security_attributes.hpp>
+#include <cbear.berlios.de/windows/exception.hpp>
+#include <cbear.berlios.de/windows/optional_ref.hpp>
+
 namespace cbear_berlios_de
 {
 namespace windows
@@ -49,26 +54,28 @@ public:
 			return;
 		}
 		{
-			scope_last_error S();
+			exception::scope_last_error S;
 			::WaitForSingleObject(this->H, INFINITE);
 		}
 		{
-			scope_last_error S();
-			::CloseHanle(this->H);
+			exception::scope_last_error S;
+			::CloseHandle(this->H);
 		}
 		this->H = internal_t();
 	}
 
 	template<class T>
 	dword_t create(
-		const security_attributtes_t &Attributtes, 
+		const security_attributes &Attributes,
 		size_t StackSize,
 		T &P,
-		dword_t Flag,)
+		dword_t Flags)
 	{
 		this->close();
-		dword_t Id;	
-		::CreateThread(A.get(), StackSize, traits<T>::func, &P, &Id);
+		exception::scope_last_error S;
+		dword_t Id;
+		this->H = ::CreateThread(
+			Attributes.get(), StackSize, traits<T>::func, &P, Flags, &Id);
 		return Id;
 	}
 
@@ -83,6 +90,7 @@ private:
 		static DWORD WINAPI func(LPVOID lpParameter)
 		{
 			(*reinterpret_cast<T *>(lpParameter))();
+			return 0;
 		}
 	};
 };

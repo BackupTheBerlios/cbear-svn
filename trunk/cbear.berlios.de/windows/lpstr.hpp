@@ -46,8 +46,14 @@ public:
 		base_t(X.c_str()) 
 	{
 	}
-	basic_lpstr(internal_type X): 
-		base_t(X) 
+	template<class Char1>
+	basic_lpstr(Char1 *X):
+		base_t(X)
+	{
+	}
+	template<class Char1>
+	basic_lpstr(const Char1 *X):
+		base_t(X)
 	{
 	}
 	static basic_lpstr &cpp_in_out(Char * &X)
