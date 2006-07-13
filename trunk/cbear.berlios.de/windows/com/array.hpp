@@ -56,6 +56,12 @@ public:
 		return this->parent::operator[](I); 
 	}
 
+	array_t operator=(const ValueType (&S)[Size])
+	{
+		range::copy(S, this->begin());
+		return *this;
+	}
+
 	/*
 	template<class ArchiveT>
 	void serialize(ArchiveT &Archive, const unsigned int Version)
