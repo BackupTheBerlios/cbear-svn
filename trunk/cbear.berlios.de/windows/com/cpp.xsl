@@ -162,6 +162,42 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<body>
 				</body>
 			</method>
+			<template>
+				<id id="T"/>
+				<method id="operator=">
+					<id.ref type="&amp;">
+						<id.ref id="{@id}"/>
+					</id.ref>
+					<parameter id="t">
+						<id.ref type="&amp;">
+							<id.ref type="const">
+								<id.ref id="T"/>
+							</id.ref>
+						</id.ref>
+					</parameter>
+					<body>
+						<id.ref type="=">
+							<id.ref type="-&gt;">
+								<id.ref type="this"/>
+								<id.ref id="internal" type="()"/>
+							</id.ref>
+							<id.ref>
+								<id.ref id="static_cast" type="&lt;&gt;">
+									<xsl:copy-of select="$internal"/>
+								</id.ref>
+								<id.ref type="()">
+									<id.ref id="t"/>
+								</id.ref>
+							</id.ref>
+						</id.ref>
+						<id.ref type="return">
+							<id.ref type="*">
+								<id.ref id="this"/>
+							</id.ref>
+						</id.ref>
+					</body>
+				</method>
+			</template>
 		</access>
 	</class>
 </xsl:template>
@@ -217,9 +253,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 						</id.ref>
 					</id.ref>
 				</parameter>
-				<!--
-				<xsl:apply-templates select="odl:object" mode="odl:cpp.ctor"/>
-				-->
 				<body>
 					<id.ref type="-&gt;">
 						<id.ref type="this"/>
@@ -343,44 +376,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					</id.ref>
 				</body>
 			</method>
-			<!-- Serialization
-			<template>
-				<id id="ArchiveType"/>
-				<method id="serialize">
-					<id.ref id="void"/>
-					<parameter id="Archive">
-						<id.ref type="&amp;">
-							<id.ref id="ArchiveType"/>
-						</id.ref>
-					</parameter>
-					<parameter id="Version">
-						<id.ref type="const">
-							<id.ref id="unsigned int"/>
-						</id.ref>
-					</parameter>
-					<body>
-						<xsl:for-each select="odl:object">
-							<id.ref type="&amp;">
-								<id.ref id="Archive"/>
-								<id.ref type="::">
-									<id.ref/>
-									<id.ref id="boost"/>
-									<id.ref id="serialization"/>
-									<id.ref id="make_nvp" type="()">
-										<id.ref 
-											type="value" id="{concat('&#x22;', @id, '&#x22;')}"/>
-										<id.ref type="-&gt;">
-											<id.ref id="this"/>
-											<id.ref id="{@id}"/>
-										</id.ref>
-									</id.ref>
-								</id.ref>
-							</id.ref>
-						</xsl:for-each>
-					</body>
-				</method>
-			</template>
-			-->
 			<template>
 				<id id="StreamType"/>
 				<method id="binary_read">
@@ -435,6 +430,40 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 								</id.ref>
 							</id.ref>
 						</xsl:for-each>
+					</body>
+				</method>
+			</template>
+			<template>
+				<id id="T"/>
+				<method id="operator=">
+					<id.ref type="&amp;">
+						<id.ref id="{@id}"/>
+					</id.ref>
+					<parameter id="t">
+						<id.ref type="&amp;">
+							<id.ref type="const">
+								<id.ref id="T"/>
+							</id.ref>
+						</id.ref>
+					</parameter>
+					<body>
+						<xsl:for-each select="odl:object">
+							<id.ref type="=">
+								<id.ref type="-&gt;">
+									<id.ref type="this"/>
+									<id.ref id="{@id}"/>
+								</id.ref>
+								<id.ref type=".">
+									<id.ref id="t"/>
+									<id.ref id="{@id}"/>
+								</id.ref>
+							</id.ref>
+						</xsl:for-each>	
+						<id.ref type="return">
+							<id.ref type="*">
+								<id.ref id="this"/>
+							</id.ref>
+						</id.ref>
 					</body>
 				</method>
 			</template>

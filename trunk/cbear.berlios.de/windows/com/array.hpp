@@ -62,17 +62,6 @@ public:
 		return *this;
 	}
 
-	/*
-	template<class ArchiveT>
-	void serialize(ArchiveT &Archive, const unsigned int Version)
-	{
-		for(iterator It = this->begin(); It!=this->end(); ++It)
-		{
-			Archive & boost::serialization::make_nvp("item", *It);
-		}
-	}
-	*/
-
 	template<class StreamType>
 	void binary_read(StreamType &S)
 	{
