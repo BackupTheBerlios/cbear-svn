@@ -318,6 +318,33 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					</xsl:for-each>
 				</body>
 			</method>
+			<method id="operator=">
+				<id.ref type="&amp;">
+					<id.ref id="{@id}"/>
+				</id.ref>
+				<parameter id="t">
+					<id.ref type="&amp;">
+						<id.ref type="const">
+							<id.ref id="move_type"/>
+						</id.ref>
+					</id.ref>
+				</parameter>
+				<body>
+					<id.ref type="-&gt;">
+						<id.ref id="this"/>
+						<id.ref id="move_assign" type="()">
+							<id.ref type="*">
+								<id.ref id="t"/>
+							</id.ref>
+						</id.ref>
+					</id.ref>
+					<id.ref type="return">
+						<id.ref type="*">
+							<id.ref id="this"/>
+						</id.ref>
+					</id.ref>
+				</body>
+			</method>
 			<method id="operator==">
 				<id.ref id="bool"/>
 				<parameter id="X">
