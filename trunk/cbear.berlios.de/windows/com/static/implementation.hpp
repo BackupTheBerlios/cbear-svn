@@ -55,7 +55,7 @@ public:
 
 template<class T>
 class implementation: 
-	public detail::implementation_traits<T>::base_t,
+	private detail::implementation_traits<T>::base_t,
 	public detail::implementation_traits<T>::interface_list_t
 {
 public:
@@ -65,6 +65,15 @@ public:
 	typedef typename tratis_t::interface_list_t interface_list_t;
 
 	typedef com::pointer<implementation> pointer_t;
+
+	class access_t: public base_t::access_t
+	{
+	public:
+		access_t(implementation *This):
+			base_t::access_t(static_cast<base_t *>(This))
+		{
+		}
+	};
 
 	implementation() 
 	{

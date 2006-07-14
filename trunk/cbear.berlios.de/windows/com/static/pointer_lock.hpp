@@ -51,6 +51,11 @@ public:
 		return this->P;
 	}
 
+	T &operator*() const throw()
+	{
+		return *this->P;
+	}
+
 private:
 	T *P;
 };

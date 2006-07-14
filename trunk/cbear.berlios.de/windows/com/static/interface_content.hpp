@@ -45,12 +45,14 @@ class interface_content<T, B, ::IUnknown>: public B
 {
 protected:
 	typedef implementation<T> implementation_t;
-	typedef typename T::template implementation_t<implementation_t> base_t;
-	typedef typename base_t::pointer_t pointer_t;
-	base_t *base()
+	class access_t: public implementation_t::access_t
 	{
-		return static_cast<base_t *>(static_cast<implementation_t *>(this));
-	}
+	public:
+		access_t(interface_content *This):
+			implementation_t::access_t(static_cast<implementation_t *>(This))
+		{
+		}
+	};
 	iunknown::move_t query_interface(const uuid &U) throw()
 	{
 		if(uuid::of< ::IUnknown>()==U)

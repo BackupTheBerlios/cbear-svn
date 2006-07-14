@@ -180,6 +180,12 @@ t<T> make(const T &B)
 }
 
 template<class T>
+t<T> make(T &B)
+{
+	return t<T>(B);
+}
+
+template<class T>
 t<T> copy(const T &B) 
 { 
 	t<T> C;

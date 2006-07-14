@@ -822,7 +822,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<try>
 				<body>
 				  <xsl:apply-templates select="." mode="odl:cpp.implementation.assign">
-						<xsl:with-param name="P" select="'this->base()'"/>
+						<xsl:with-param name="P" select="'this->access()'"/>
 					</xsl:apply-templates>
 					<id.ref type="return">
 						<id.ref type="::">
@@ -889,28 +889,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			</access>
 		</class>
 	</template>
-<!--
-	<namespace id="dynamic">
-		<template>
-			<id id="Base"/>
-			<class>
-				<id.ref id="implementation" type="&lt;&gt;">
-					<id.ref id="Base"/>
-					<xsl:apply-templates select="." mode="odl:internal"/>
-				</id.ref>
-				<access access="public">
-					<id.ref id="implementation_base" type="&lt;&gt;">
-						<id.ref id="Base"/>
-						<xsl:apply-templates select="." mode="odl:internal"/>
-						<xsl:apply-templates select="odl:type.ref" mode="odl:internal"/>
-					</id.ref>
-					<xsl:apply-templates 
-						select="odl:method" mode="odl:cpp.implementation"/>
-				</access>
-			</class>
-		</template>
-	</namespace>
--->
 	<namespace id="static_">
 		<template>
 			<id id="T"/>
@@ -944,12 +922,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 									<body>
 										<id.ref type="declare" id="P">
 											<id.ref type="const">
-												<id.ref id="pointer_t"/>
+												<id.ref id="access_t"/>
 											</id.ref>
-											<id.ref type="-&gt;">
-												<id.ref type="this"/>
-												<id.ref id="base" type="()"/>
-											</id.ref>
+											<id.ref type="this"/>
 										</id.ref>
 				  					<xsl:apply-templates select="." mode="odl:cpp.implementation.assign">
 											<xsl:with-param name="P" select="'P'"/>

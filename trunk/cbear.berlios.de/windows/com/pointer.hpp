@@ -52,6 +52,15 @@ public:
 
 	typedef move::t<pointer> move_t;
 
+	class access_t: public interface_t::access_t
+	{
+	public:
+		access_t(const pointer &This):
+			interface_t::access_t(This.c_in())
+		{
+		}
+	};
+
 	pointer() throw() 
 	{
 	}
