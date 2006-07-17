@@ -217,6 +217,16 @@ public:
 		return this->V;
 	}
 
+	const internal_type &internal() const
+	{
+		return this->V;
+	}
+
+	internal_type &internal()
+	{
+		return this->V;
+	}
+
 private:
 
 	c_t V;

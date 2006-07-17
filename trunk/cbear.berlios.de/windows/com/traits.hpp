@@ -114,8 +114,9 @@ struct class_traits
 
 		static internal_result internal(wrap_result X) 
 		{
-			type Temp;
-			Temp.swap(X);
+			//type Temp;
+			//Temp.swap(X);
+			X = type();
 			return &X.internal(); 
 		}
 		static wrap_result wrap(internal_result &X) 

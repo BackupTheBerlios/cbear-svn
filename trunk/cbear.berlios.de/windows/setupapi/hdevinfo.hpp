@@ -151,27 +151,14 @@ public:
 		this->internal().cbSize = sizeof(internal_type);
 	}
 
-	range::iterator_range<wchar_t *> DevicePath()
+	range::iterator_range<const wchar_t *> DevicePath()
 	{
 		static const int remainder_size = 
 			sizeof(internal_type) - sizeof(this->internal().DevicePath);
-		return range::iterator_range<wchar_t *>(
+		return range::iterator_range<const wchar_t *>(
 			this->internal().DevicePath, 
 			(this->wrap::size() - remainder_size) / sizeof(wchar_t) - 1);
 	}
-
-	/*
-	std::size_t DevicePathSize() const 
-	{ 
-		static const int remainder_size = 
-			sizeof(internal_type) - sizeof(this->internal().DevicePath);
-		return (this->wrap::size() - remainder_size) / sizeof(wchar_t) - 1;
-	}
-
-	const Char *DevicePath() const { return this->internal().DevicePath; }
-
-	Char *DevicePath() { return this->internal().DevicePath; }
-	*/
 };
 
 class digcf: public policy::wrap<digcf, dword_t>
