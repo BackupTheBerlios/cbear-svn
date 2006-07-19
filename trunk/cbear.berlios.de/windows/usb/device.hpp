@@ -148,7 +148,7 @@ public:
 	explicit descriptor_request(
 		ulong_t ConnectionIndex, byte_t Index, word_t LanguageId = 0)
 	{
-		range::fill(this->range(), 0);
+		range::fill(base::const_ref(this->range()), 0);
 		c_in_out_t C = this->c_in_out();
 		C->ConnectionIndex = ConnectionIndex;
 		C->SetupPacket.wValue = (Type << 8) | Index;
