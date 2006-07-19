@@ -24,6 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CBEAR_BERLIOS_DE_WINDOWS_USB_DEVICE_HPP_INCLUDED
 
 #include <cbear.berlios.de/windows/dynamic.hpp>
+#include <boost/array.hpp>
 
 extern "C"
 {
@@ -117,6 +118,81 @@ public:
 			this->internal().DriverKeyName,
 			(this->wrap::size() - remainder_size) / sizeof(wchar_t) - 
 				1 + magic_size_correction);
+	}
+};
+
+typedef ioctl::const_<IOCTL_USB_GET_DESCRIPTOR_FROM_NODE_CONNECTION>
+	get_descriptor_from_node_connection;
+
+/*
+class descriptor_request:
+	public dynamic< ::USB_DESCRIPTOR_REQUEST>
+{
+public:
+
+	typedef dynamic< ::USB_DESCRIPTOR_REQUEST> wrap;
+};
+*/
+
+template<int Type, std::size_t Length>
+class descriptor_request:
+	private boost::array<byte_t, sizeof(::USB_DESCRIPTOR_REQUEST) + Length>
+{
+public:
+	typedef boost::array<byte_t, sizeof(::USB_DESCRIPTOR_REQUEST) + Length> 
+		array_t;
+	typedef ::USB_DESCRIPTOR_REQUEST c_t;
+	typedef const c_t c_in_t;
+	typedef c_t *c_in_out_t;
+	typedef range::iterator_range<byte_t *> range_t;
+	explicit descriptor_request(
+		ulong_t ConnectionIndex, byte_t Index, word_t LanguageId = 0)
+	{
+		range::fill(this->range(), 0);
+		c_in_out_t C = this->c_in_out();
+		C->ConnectionIndex = ConnectionIndex;
+		C->SetupPacket.wValue = (Type << 8) | Index;
+		C->SetupPacket.wLength = Length;
+		C->SetupPacket.wIndex = LanguageId;
+	}
+	range_t range()
+	{
+		return range_t(static_cast<array_t &>(*this));
+	}
+	c_in_t &c_in() const
+	{
+		return *reinterpret_cast<c_in_t *>(this->array_t::begin());
+	}
+	c_in_out_t c_in_out()
+	{
+		return reinterpret_cast<c_in_out_t>(this->array_t::begin());
+	}
+	byte_t *buffer_begin()
+	{
+		return this->array_t::begin() + (sizeof(::USB_DESCRIPTOR_REQUEST));
+	}
+};
+
+namespace detail
+{
+typedef descriptor_request<
+	USB_STRING_DESCRIPTOR_TYPE, MAXIMUM_USB_STRING_LENGTH>
+	string_descriptor_request_base;
+}
+
+typedef ::USB_STRING_DESCRIPTOR string_descriptor;
+
+class string_descriptor_request: public detail::string_descriptor_request_base
+{
+public:
+	explicit string_descriptor_request(
+		ulong_t ConnectionIndex, byte_t Index, word_t LanguageId = 0):
+		detail::string_descriptor_request_base(ConnectionIndex, Index, LanguageId)
+	{
+	}
+	string_descriptor &descriptor()
+	{
+		return *reinterpret_cast<string_descriptor *>(this->buffer_begin());
 	}
 };
 
