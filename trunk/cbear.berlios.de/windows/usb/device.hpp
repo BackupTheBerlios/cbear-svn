@@ -180,7 +180,18 @@ typedef descriptor_request<
 	string_descriptor_request_base;
 }
 
-typedef ::USB_STRING_DESCRIPTOR string_descriptor;
+class string_descriptor: private ::USB_STRING_DESCRIPTOR
+{
+public:
+	typedef ::USB_STRING_DESCRIPTOR c_t;
+	typedef range::iterator_range<wchar_t *> string_t;
+	string_t bString()
+	{
+		return string_t(
+			this->c_t::bString,
+			(sizeof(c_t::bString) + (this->bLength - sizeof(c_t))) / sizeof(wchar_t));
+	}
+};
 
 class string_descriptor_request: public detail::string_descriptor_request_base
 {
