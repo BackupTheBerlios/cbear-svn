@@ -20,37 +20,32 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CBEAR_BERLIOS_DE_RANGE_EQUAL_HPP_INCLUDED
-#define CBEAR_BERLIOS_DE_RANGE_EQUAL_HPP_INCLUDED
+#ifndef CBEAR_BERLIOS_DE_BASE_CASE_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_BASE_CASE_HPP_INCLUDED
 
-// std::equal
-#include <algorithm>
-
-#include <cbear.berlios.de/range/begin.hpp>
-#include <cbear.berlios.de/range/end.hpp>
-#include <cbear.berlios.de/range/size.hpp>
+#include <cbear.berlios.de/base/character.hpp>
+#include <cbear.berlios.de/select/traits.hpp>
 
 namespace cbear_berlios_de
 {
-namespace range
+namespace base
 {
 
-template<class Range1, class Range2>
-bool equal(const Range1 &A, const Range2 &B)
+template<class Char>
+Char to_lower(Char c)
 {
-	return 
-		range::size(A)==range::size(B) && 
-		::std::equal(
-			range::begin(A), range::end(A), range::begin(B));
+	static const Char A = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, 'A');
+	static const Char Z = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, 'Z');
+	static const Char a = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, 'a');
+	static const Char z = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, 'z');
+	static const Char dif = A - a;
+	return a <= c && c <= z ? c + dif: c;
 }
 
-template<class Range1, class Range2, class Pred>
-bool equal(const Range1 &A, const Range2 &B, Pred P)
+template<class Char>
+bool latin_case_insensetive_equal(Char c1, Char c2)
 {
-	return 
-		range::size(A)==range::size(B) && 
-		::std::equal(
-			range::begin(A), range::end(A), range::begin(B), P);
+	return to_lower(c1) == to_lower(c2);
 }
 
 }
