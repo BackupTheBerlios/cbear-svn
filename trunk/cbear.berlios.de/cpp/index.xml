@@ -185,5 +185,30 @@ public:
 };
 </pre>
 		</section>
+		<section name="Exceptions">
+			<ul>
+				<li>
+<pre><![CDATA[void A() throw(B)
+{
+	if(D())
+	{
+	  throw B();
+	}
+}
+
+void C()
+{
+  try
+	{
+		A()
+	}
+	catch<T>(T &t)
+	{
+		throw t;
+	}
+}]]></pre>
+				</li>
+			</ul>
+		</section>
 	</section>
 </section>

@@ -32,96 +32,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <xsl:import href="list.xsl"/>
 
-<!--
-<xsl:template match="prj:section" mode="prj:html.top">
-	<div class="background">
-		<img border="0" src="http://cbear.berlios.de/mainlogo.png"/>
-	</div>
-</xsl:template>
-
-<xsl:template match="prj:section" mode="prj:html.bottom">
-	<div class="background" style="position: fixed; left: 0; top: 0;">
-		<table style="margin: 0 auto 0 auto;">
-			<tr>
-				<td>
-<!- - SiteSearch Google - ->
-<form method="get" action="http://www.google.com/custom" target="_top">
-<table border="0" bgcolor="#cccccc">
-<tr><td nowrap="nowrap" valign="top" align="left" height="32">
-<a href="http://www.google.com/">
-<img src="http://www.google.com/logos/Logo_25gry.gif"
-border="0" alt="Google"></img></a>
-</td>
-<td nowrap="nowrap">
-<input type="hidden" name="domains" value="cbear.berlios.de"></input>
-<input type="text" name="q" size="31" maxlength="255" value=""></input>
-<input type="submit" name="sa" value="Search"></input>
-</td></tr>
-<tr>
-<td> </td>
-<td nowrap="nowrap">
-<table>
-<tr>
-<td>
-<input type="radio" name="sitesearch" value="" checked="checked"></input>
-<font size="-1" color="#000000">Web</font>
-</td>
-<td>
-<input type="radio" name="sitesearch" value="cbear.berlios.de"></input>
-<font size="-1" color="#000000">cbear.berlios.de</font>
-</td>
-</tr>
-</table>
-<input type="hidden" name="client" value="pub-3298900216650066"></input>
-<input type="hidden" name="forid" value="1"></input>
-<input type="hidden" name="channel" value="7219731056"></input>
-<input type="hidden" name="ie" value="UTF-8"></input>
-<input type="hidden" name="oe" value="UTF-8"></input>
-<input type="hidden" name="cof" value="GALT:#008000;GL:1;DIV:#336699;VLC:663399;AH:center;BGC:FFFFFF;LBGC:336699;ALC:0000FF;LC:0000FF;T:000000;GFNT:0000FF;GIMP:0000FF;FORID:1;"></input>
-<input type="hidden" name="hl" value="en"></input>
-
-</td></tr></table>
-</form>
-<!- - SiteSearch Google - ->
-				</td>
-			</tr>
-		</table>
-		<table style="margin: 0 auto 0 auto;">
-			<tr>
-				<td>
-<script type="text/javascript">
-google_ad_client = "pub-3298900216650066";
-google_ad_width = 728;
-google_ad_height = 90;
-google_ad_format = "728x90_as";
-google_ad_type = "text_image";
-google_ad_channel ="5882639306";
-google_color_border = "003366";
-google_color_bg = "003366";
-google_color_link = "FF6600";
-google_color_url = "99CCFF";
-google_color_text = "FFFFFF";
-</script>
-<script type="text/javascript"
-  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
-				</td>
-			</tr>
-		</table>
-	</div>
-</xsl:template>
--->
-
 <xsl:template match="prj:section" mode="prj:html.body">
 	<table style="margin: 0 auto 0 auto;">
 		<tr>
 			<td style="vertical-align: top; width: 100%;">
-				<div class="background">
+				<div style="text-align: center; border: none;">
+					<!--
 					<img border="0" src="http://cbear.berlios.de/mainlogo.png"/>
+					-->
+					<img border="0" src="mainlogo.png"/>
 				</div>
 				<xsl:apply-imports/>
 			</td>
-			<xsl:copy-of select="document('cbear.xml')"/>
+			<xsl:copy-of select="document('cbear.xml')"/>			
 		</tr>
 	</table>
 </xsl:template>
