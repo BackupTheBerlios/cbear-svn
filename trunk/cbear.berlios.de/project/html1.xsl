@@ -33,36 +33,88 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:param name="P:extension" select="'xml'"/>
 <xsl:param name="P:svn" select="'_svn/entries'"/>
 <xsl:param name="P:language" select="/P:section/@xml:lang"/>
+<xsl:param name="P:style">
+body
+{
+	font-family: sans-serif;
+}
+a 
+{ 
+	color: blue;
+	text-decoration: none; 
+}
+a:hover 
+{ 
+	text-decoration: underline; 
+}
+ul
+{
+	list-style: disc;
+}
+.p-menu
+{
+	list-style: none;
+	background-color: navy;
+	color: white;
+}
+.p-menu-disable
+{
+	color: grey;
+}
+div.p-menu
+{
+	padding: 0px 10px 0px 10px;
+}
+</xsl:param>
+
+<xsl:variable name="P:index">
+	<xsl:call-template name="P:index"/>	
+</xsl:variable>
+
+<!-- P:index -->
+
+<xsl:template name="P:index">
+	<xsl:param name="language" select="$P:language"/>
+	<xsl:variable name="extension">
+		<xsl:if test="$language!=''">
+			<xsl:value-of select="concat('.', $language)"/>
+		</xsl:if>
+	</xsl:variable>	
+	<xsl:value-of select="concat('index', $extension)"/>
+</xsl:template>
 
 <!-- P:global.content.table -->
 
 <xsl:template match="/S:wc-entries" mode="P:global.content.table">
 	<xsl:param name="path"/>
-	<xsl:if test="S:entry[@kind='dir' and @name!='']">
-		<ul>
-			<xsl:for-each select="S:entry[@kind='dir' and @name!='']">
-				<li>
-					<xsl:variable
-						name="file" select="concat('../', @name, '/index.xml')"/>
-					<xsl:choose>
-						<xsl:when test="document($file, .)/P:section">
-							<a href="{concat($path, @name, '/index.', $P:extension)}">
-								<xsl:value-of select="document($file, .)/P:section/@name"/>
-							</a>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="@name"/>
-						</xsl:otherwise>
-					</xsl:choose>
-					<xsl:apply-templates 
-						select="document(concat('../', @name, '/', $P:svn), .)/*"
-						mode="P:global.content.table">
-						<xsl:with-param name="path" select="concat($path, @name, '/')"/>
-					</xsl:apply-templates>
-				</li>
-			</xsl:for-each>
-		</ul>
-	</xsl:if>
+	<xsl:for-each select="S:entry[@kind='dir' and @name!='']">
+		<xsl:sort select="@name"/>
+		<div class="p-menu">
+			<xsl:variable
+				name="file" select="concat('../', @name, '/', $P:index, '.xml')"/>
+			<xsl:choose>
+				<xsl:when test="document($file, .)/P:section">
+					<a 
+						href="{concat($path, @name, '/', $P:index, '.', $P:extension)}"
+						class="p-menu">
+						<xsl:value-of select="document($file, .)/P:section/@name"/>
+					</a>
+				</xsl:when>
+				<xsl:otherwise>
+					<span class="p-menu-disable">
+						<xsl:value-of select="@name"/>
+					</span>
+				</xsl:otherwise>
+			</xsl:choose>
+<!--
+			<xsl:apply-templates
+				select="document(concat('../', @name, '/', $P:svn), .)/*"
+				mode="P:global.content.table">
+				<xsl:with-param name="path" select="concat($path, @name, '/')"/>
+			</xsl:apply-templates>
+-->
+		</div>
+	</xsl:for-each>
 </xsl:template>
 
 <!-- -->
@@ -73,20 +125,54 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<title>
 				<xsl:value-of select="@name"/>
 			</title>
+			<style type="text/css"><xsl:value-of select="$P:style"/></style>
 		</head>
 		<body>
 			<!-- P:title -->
 			<h1><xsl:value-of select="@name"/></h1>
-			<!-- P:language -->
-			<xsl:for-each select="document('lang.xml')/languages/language">
-			</xsl:for-each>
-			<!-- P:local.content.table -->
-			<!-- P:full.content.table -->
-			<xsl:apply-templates 
-				select="document($P:svn, .)/*" mode="P:global.content.table"/>
+			<table>
+				<tr>
+					<td>
+						<!-- P:language -->
+						<xsl:for-each select="document('languages.xml')/P:languages">
+							<xsl:for-each select="P:language">
+								<div class="p-menu">
+									<xsl:variable name="index">
+										<xsl:call-template name="P:index">
+											<xsl:with-param name="language" select="@id"/>
+										</xsl:call-template>
+									</xsl:variable>
+									<xsl:choose>
+										<xsl:when test="string(@id)=string($P:language)">
+											<span class="p-menu-disable">
+												<xsl:value-of select="@name"/>
+											</span>
+										</xsl:when>
+										<xsl:otherwise>
+											<a 
+												href="{concat($index, '.', $P:extension)}"
+												class="p-menu">
+												<xsl:value-of select="@name"/>
+											</a>				
+										</xsl:otherwise>
+									</xsl:choose>
+								</div>
+							</xsl:for-each>
+						</xsl:for-each>
+					</td>
+				</tr>
+				<!-- P:local.content.table -->
+				<!-- P:full.content.table -->
+				<tr>
+					<td>
+						<xsl:apply-templates 
+							select="document($P:svn, .)/*" mode="P:global.content.table"/>
+					</td>
+				</tr>
+			</table>
 			<!-- P:revision -->
 			<xsl:for-each select="document($P:svn, .)/S:wc-entries/S:entry[@name='']">
-				<div>
+				<div class="p-revision">
 					<xsl:value-of select="concat('Revision: ', @revision)"/>
 				</div>
 			</xsl:for-each>

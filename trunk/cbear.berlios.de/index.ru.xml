@@ -22,7 +22,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <?xml-stylesheet type="text/xsl" href="project/html1.xsl"?>
-<section xmlns="http://cbear.berlios.de/project" name="C Bear">
+<section xmlns="http://cbear.berlios.de/project" name="C Bear" xml:lang="ru">
 The <em>C Bear</em> framework is a set of libraries and common utilities for 
 different programming languages and platforms.
 	<section name="License">
