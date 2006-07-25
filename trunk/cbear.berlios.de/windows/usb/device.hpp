@@ -134,25 +134,47 @@ public:
 };
 */
 
-template<int Type, std::size_t Length>
-class descriptor_request:
-	private boost::array<byte_t, sizeof(::USB_DESCRIPTOR_REQUEST) + Length>
+namespace detail
+{
+
+static const std::size_t descriptor_request_length = MAXIMUM_USB_STRING_LENGTH;
+
+typedef boost::array<
+	byte_t, sizeof(::USB_DESCRIPTOR_REQUEST) + descriptor_request_length>
+	descriptor_request_array;
+
+template<class Char>
+class descriptor_request: private descriptor_request_array
 {
 public:
-	typedef boost::array<byte_t, sizeof(::USB_DESCRIPTOR_REQUEST) + Length> 
-		array_t;
+	static const int type = USB_STRING_DESCRIPTOR_TYPE;
+	typedef descriptor_request_array array_t;
 	typedef ::USB_DESCRIPTOR_REQUEST c_t;
 	typedef const c_t c_in_t;
 	typedef c_t *c_in_out_t;
 	typedef range::iterator_range<byte_t *> range_t;
+
+	class descriptor_t: private ::USB_STRING_DESCRIPTOR
+	{
+	public:
+		typedef ::USB_STRING_DESCRIPTOR c_t;
+		typedef range::iterator_range<Char *> range_t;
+		range_t bString()
+		{
+			return range_t(
+				cast::traits<Char *>::reinterpret(this->c_t::bString),
+				(sizeof(c_t::bString) + (this->bLength - sizeof(c_t))) / sizeof(Char));
+		}
+	};
+
 	explicit descriptor_request(
 		ulong_t ConnectionIndex, byte_t Index, word_t LanguageId = 0)
 	{
 		range::fill(base::const_ref(this->range()), 0);
 		c_in_out_t C = this->c_in_out();
 		C->ConnectionIndex = ConnectionIndex;
-		C->SetupPacket.wValue = (Type << 8) | Index;
-		C->SetupPacket.wLength = Length;
+		C->SetupPacket.wValue = (type << 8) | Index;
+		C->SetupPacket.wLength = descriptor_request_length;
 		C->SetupPacket.wIndex = LanguageId;
 	}
 	range_t range()
@@ -171,39 +193,32 @@ public:
 	{
 		return this->array_t::begin() + (sizeof(::USB_DESCRIPTOR_REQUEST));
 	}
-};
 
-namespace detail
-{
-typedef descriptor_request<
-	USB_STRING_DESCRIPTOR_TYPE, MAXIMUM_USB_STRING_LENGTH>
-	string_descriptor_request_base;
-}
-
-class string_descriptor: private ::USB_STRING_DESCRIPTOR
-{
-public:
-	typedef ::USB_STRING_DESCRIPTOR c_t;
-	typedef range::iterator_range<wchar_t *> string_t;
-	string_t bString()
+	descriptor_t &descriptor()
 	{
-		return string_t(
-			this->c_t::bString,
-			(sizeof(c_t::bString) + (this->bLength - sizeof(c_t))) / sizeof(wchar_t));
+		return *reinterpret_cast<descriptor_t *>(this->buffer_begin());
 	}
 };
 
-class string_descriptor_request: public detail::string_descriptor_request_base
+}
+
+class language_list_descriptor_request: 
+	public detail::descriptor_request<ushort_t>
+{
+public:
+	explicit language_list_descriptor_request(ulong_t ConnectionIndex):
+		detail::descriptor_request<ushort_t>(ConnectionIndex, 0, 0)
+	{
+	}
+};
+
+class string_descriptor_request: public detail::descriptor_request<wchar_t>
 {
 public:
 	explicit string_descriptor_request(
-		ulong_t ConnectionIndex, byte_t Index, word_t LanguageId = 0):
-		detail::string_descriptor_request_base(ConnectionIndex, Index, LanguageId)
+		ulong_t ConnectionIndex, byte_t Index, word_t LanguageId):
+		detail::descriptor_request<wchar_t>(ConnectionIndex, Index, LanguageId)
 	{
-	}
-	string_descriptor &descriptor()
-	{
-		return *reinterpret_cast<string_descriptor *>(this->buffer_begin());
 	}
 };
 

@@ -222,6 +222,13 @@ public:
 		return *this;
 	}
 
+	safearray_t &operator=(const const_iterator_range_t &R)
+	{
+		this->resize(R.size());
+		range::copy(R, this->begin());
+		return *this;
+	}
+
 	void move_assign(safearray_t &F) throw()
 	{
 		this->swap(F);
