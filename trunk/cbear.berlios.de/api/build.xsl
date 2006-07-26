@@ -32,43 +32,33 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- parameters -->
 
-<xsl:param name="A:name" select="A:config/@name"/>
+<xsl:param name="A:api.xml" select="/A:library/A:config/A:api.xml"/>
+<xsl:param name="A:output" select="/A:library/A:config/A:output"/>
+<xsl:param name="A:cbear" select="/A:library/A:config/A:cbear"/>
+<xsl:param name="A:nxslt" select="/A:library/A:config/A:nxslt"/>
+<xsl:param name="A:vc.var" select="/A:library/A:config/A:vc.var"/>
+<xsl:param name="A:tlbimp" select="/A:library/A:config/A:tlbimp"/>
+<xsl:param name="A:dotnet.key" select="/A:library/A:config/A:dotnet.key"/>
 
-<xsl:param name="A:dir" select="A:config/@dir"/>
+<!-- variables -->
 
-<xsl:param name="A:log" select="A:config/@log"/>
-
-<xsl:param name="A:api.xml" select="A:config/@api.xml"/>
-
-<xsl:param name="A:odl.xml" select="A:config/@odl.xml"/>
-<xsl:param name="A:odl" select="A:config/@odl"/>
-<xsl:param name="A:tlb" select="A:config/@tlb"/>
-
-<xsl:param name="A:strong.odl.xml" select="A:config/@strong.odl.xml"/>
-<xsl:param name="A:strong.odl" select="A:config/@strong.odl"/>
-<xsl:param name="A:strong.tlb" select="A:config/@strong.tlb"/>
-
-<xsl:param name="A:h" select="A:config/@h"/>
-<xsl:param name="A:iid" select="A:config/@iid"/>
-
-<xsl:param name="A:hpp.xml" select="A:config/@hpp.xml"/>
-<xsl:param name="A:hpp" select="A:config/@hpp"/>
-
-<xsl:param name="A:cs.xml" select="A:config/@cs.xml"/>
-<xsl:param name="A:cs" select="A:config/@cs"/>
-
-<xsl:param name="A:html" select="A:config/@html"/>
-
-<xsl:param name="A:dnet.key" select="A:config/@dnet.key"/>
-<xsl:param name="A:dnet.dll" select="A:config/@dnet.dll"/>
-
-<xsl:param name="A:midl.options" select="A:config/@midl.options"/>
-<xsl:param name="A:tlbimp.options" select="A:config/@tlbimp.options"/>
-
-<xsl:param name="A:cbear" select="A:config/@cbear"/>
-<xsl:param name="A:nxslt" select="A:config/@nxslt"/>
-<xsl:param name="A:vc.var" select="A:config/@vc.var"/>
-<xsl:param name="A:tlbimp" select="A:config/@tlbimp"/>
+<xsl:variable name="A:name" select="/A:library/@id"/>
+<xsl:variable name="A:output.file" select="concat($A:output, $A:name)"/>
+<xsl:variable name="A:log" select="concat($A:output.file, '.log.xml')"/>
+<xsl:variable name="A:odl.xml" select="concat($A:output.file, '.odl.xml')"/>
+<xsl:variable name="A:odl" select="concat($A:output.file, '.odl')"/>
+<xsl:variable name="A:strong.odl.xml" select="concat($A:output.file, '.strong.odl.xml')"/>
+<xsl:variable name="A:strong.odl" select="concat($A:output.file, '.strong.odl')"/>
+<xsl:variable name="A:tlb" select="concat($A:output.file, '.tlb')"/>
+<xsl:variable name="A:h" select="concat($A:output.file, '.h')"/>
+<xsl:variable name="A:iid" select="concat($A:output.file, '.iid.c')"/>
+<xsl:variable name="A:strong.tlb" select="concat($A:output.file, '.strong.tlb')"/>
+<xsl:variable name="A:dotnet.dll" select="concat($A:output.file, '.dotnet.dll')"/>
+<xsl:variable name="A:hpp.xml" select="concat($A:output.file, '.hpp.xml')"/>
+<xsl:variable name="A:hpp" select="concat($A:output.file, '.hpp')"/>
+<xsl:variable name="A:html" select="concat($A:output.file, '.html')"/>
+<xsl:variable name="A:cs.xml" select="concat($A:output.file, '.cs.xml')"/>
+<xsl:variable name="A:cs" select="concat($A:output.file, '.cs')"/>
 
 <!-- a directory for the given file -->
 <xsl:template name="A:file.dir">
@@ -136,19 +126,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 <!-- entry point -->
 
-<xsl:template match="A:config">
+<xsl:template match="A:library">
 	<B:bat 
 		name="{$A:name}"
 		log="{$A:log}"
 		stylesheet="{concat('file:///', $A:cbear, 'cbear.berlios.de/bat/html.xsl')}">
 
 		<B:command
-			name="Set a working directory"
-			text="{concat('cd ', $A:dir)}"/>
-
-		<B:command
 			name="VC enviroment variables"	
 			text="{$A:vc.var}"/>
+
+		<B:command
+			name="Make output dir"
+			text="{concat('mkdir &#34;', $A:output, '&#34;')}"/>
 
 		<xsl:call-template name="A:odl">
 			<xsl:with-param name="name.odl.xml" select="'API.XML to ODL.XML'"/>
@@ -173,9 +163,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			name="MIDL: ODL to TLB"
 			text="{concat(
 				'midl /W4 /robust /error all /nologo /env win32 ', 
+				'/I ', $A:output, ' ',
 				'/tlb ', $A:tlb, ' ',
-				$A:odl, ' ',
-				$A:midl.options)}"/>
+				$A:odl)}"/>
 
 		<xsl:call-template name="A:make.file.dir">
 			<xsl:with-param name="file" select="$A:h"/>
@@ -189,25 +179,34 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			name="MIDL: STRONG.ODL to STRONG.TLB, H, IID"
 			text="{concat(
 				'midl /W4 /robust /error all /nologo /env win32 ', 
+				'/I ', $A:output, ' ',
 				'/tlb ', $A:strong.tlb, ' ',
 				'/header ', $A:h, ' ',
 				'/iid ', $A:iid, ' ',
-				$A:strong.odl, ' ',
-				$A:midl.options)}"/>
+				$A:strong.odl)}"/>
 
 		<xsl:call-template name="A:make.file.dir">
-			<xsl:with-param name="file" select="$A:dnet.dll"/>
+			<xsl:with-param name="file" select="$A:dotnet.dll"/>
 		</xsl:call-template>
 
-		<B:command
-			name="TLB to .NET DLL"
-			text="{concat(
+		<xsl:variable name="tlb2dotnet.dll">
+			<xsl:value-of select="concat(
 				$A:tlbimp, ' ',
 				$A:tlb, ' ',
 				'/primary ',
-				'/keyfile:', $A:dnet.key, ' ',
-				'/out:', $A:dnet.dll, ' ',
-				$A:tlbimp.options)}"/>
+				'/keyfile:', $A:dotnet.key, ' ',
+				'/out:', $A:dotnet.dll, ' ')"/>
+			<xsl:for-each select="A:using">
+				<xsl:for-each 
+					select="document(@href, .)/A:library[@id!='cbear_berlios_de.api.base']">
+					<xsl:value-of select="concat('/reference:', $A:output, @id, '.dotnet.dll ')"/>
+				</xsl:for-each>
+			</xsl:for-each>
+		</xsl:variable>
+
+		<B:command
+			name="TLB to .NET DLL"
+			text="{$tlb2dotnet.dll}"/>
 
 		<xsl:call-template name="A:make.file.dir">
 			<xsl:with-param name="file" select="$A:hpp.xml"/>
