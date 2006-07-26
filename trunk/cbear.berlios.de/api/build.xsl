@@ -57,8 +57,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <xsl:variable name="A:hpp.xml" select="concat($A:output.file, '.hpp.xml')"/>
 <xsl:variable name="A:hpp" select="concat($A:output.file, '.hpp')"/>
 <xsl:variable name="A:html" select="concat($A:output.file, '.html')"/>
-<xsl:variable name="A:cs.xml" select="concat($A:output.file, '.cs.xml')"/>
-<xsl:variable name="A:cs" select="concat($A:output.file, '.cs')"/>
+<xsl:variable name="A:odl.cs.xml" select="concat($A:output.file, '.odl.cs.xml')"/>
+<xsl:variable name="A:odl.cs" select="concat($A:output.file, '.odl.cs')"/>
 
 <!-- a directory for the given file -->
 <xsl:template name="A:file.dir">
@@ -245,20 +245,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				'-o ', $A:html)}"/>
 
 		<B:command
-			name="ODL.XML to CS.XML"
+			name="ODL.XML to ODL.CS.XML"
 			text="{concat(
 				$A:nxslt, ' ',
 				$A:odl.xml, ' ',
 				$A:cbear, 'cbear.berlios.de/windows/com/cs.xsl ',
-				'-o ', $A:cs.xml)}"/>
+				'-o ', $A:odl.cs.xml)}"/>
 
 		<B:command
 			name="CS.XML to CS"
 			text="{concat(
 				$A:nxslt, ' ',
-				$A:cs.xml, ' ',
+				$A:odl.cs.xml, ' ',
 				$A:cbear, 'cbear.berlios.de/cs/cs.xsl ',
-				'-o ', $A:cs)}"/>
+				'-o ', $A:odl.cs)}"/>
 
 	</B:bat>
 </xsl:template>
