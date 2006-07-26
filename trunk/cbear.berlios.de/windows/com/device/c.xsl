@@ -50,7 +50,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			</C:parameter>
 			<C:parameter id="_out">
 				<C:id.ref type="_*">
-					<C:id.ref id="char"/>
+					<C:id.ref id="char"/>					
 				</C:id.ref>
 			</C:parameter>
 			<xsl:copy-of select="$body"/>
@@ -75,6 +75,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				<C:body>
 					<C:switch>
 						<C:id.ref type="*_">
+							<C:id.ref type="()">
+								<C:id.ref type="_*">
+									<C:id.ref id="uint16"/>
+								</C:id.ref>
+							</C:id.ref>
 							<C:id.ref id="_in"/>
 						</C:id.ref>
 						<C:body>
@@ -82,6 +87,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 								<C:id.ref type="const" value="0"/>
 							</C:case>
 							<C:break/>
+							<C:case>
+								<C:id.ref type="const" value="1"/>
+							</C:case>
+							<C:break/>							
 						</C:body>
 					</C:switch>
 				</C:body>

@@ -66,6 +66,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		</span>		
 	</xsl:template>
 
+	<xsl:template match="C:id.ref[@type='()']">
+		<xsl:text>(</xsl:text>
+		<xsl:apply-templates select="*"/>
+		<xsl:text>)</xsl:text>
+	</xsl:template>
+
 	<xsl:template match="C:id.ref[@type='const']">
 		<span style="{$C:style.const}">
 			<xsl:value-of select="@value"/>

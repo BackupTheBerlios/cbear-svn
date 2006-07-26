@@ -161,24 +161,19 @@ using RPCNAME agreements.
 	<section name="Device RPC, version 1.0">
 		<section name="Interfaces And Function Identifiers">
 One module has only one class which can contain multiple interfaces. An 
-interface pointer is a one byte. A function identifier is one byte that is a 
-sum of its interface pointer and a function offset.
+interface pointer is an unsigned integer 16 bits (uint16). A function 
+identifier is uint16 that is a sum of its interface pointer and a function 
+offset.
 		</section>
 		<section name="Service functions">
 			<section name="Function # 0">
-<pre><![CDATA[void Function0([out] uint8 Number);]]></pre>
+<pre><![CDATA[void Function0([out] uint16 Number);]]></pre>
 It returns a number of interfaces.
 			</section>
 			<section name="Function # 1">
-<pre><![CDATA[struct InterfaceDescriptor
-{
-	uint8 uuid[16];
-	uint8 pointer;
-};
-void Function1([in] uint8 Number, [out]interface_descriptor Descriptor);]]></pre>
-It returns an interface descriptor. <em>number</em> is an interface number.
-The interface decriptor contains UUID and an interface pointer. The descriptor 
-size is 17 bytes (UUID - 16 bytes, pointer - 1 byte).
+<pre><![CDATA[void Function1([in] uint16 Number, [out] uuid Descriptor, [out] uint16 pointer);]]></pre>
+It returns an interface descriptor. <em>Number</em> is an interface number.
+The interface decriptor contains UUID (16 bytes) and an interface pointer (2 bytes).
 			</section>
 		</section>
 		<section name="IUnknown">
