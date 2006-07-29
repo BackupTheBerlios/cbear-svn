@@ -23,7 +23,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <?xml-stylesheet type="text/xsl" href="../project/html.xsl"?>
 <section 
-	xmlns="http://cbear.berlios.de/project" name="Взаимодействие C и C++">
+	xmlns="http://cbear.berlios.de/project" 
+	xml:lang="ru"
+	name="Взаимодействие C и C++">
 	<p>
 Есть необходимость создавать и работать с COM объектами (указателями на 
 интерфейсы, структурами, динамическими массивами (SAFEARRAY), строками (BSTR) 
@@ -217,7 +219,7 @@ HRESULT R = Function(c_in(P), c_in_out(P));]]></pre>
 	</section>
 	<section name="Самодостаточность объектов">
 Для облегчения специализации функций преобразования, будем считать что, по 
-умолчанию, объект сам реализуюет все свои функции преобразования. Например 
+умолчанию, объект сам реализует все свои функции преобразования. Например 
 указатель:
 <pre><![CDATA[template<class Interface>
 class pointer

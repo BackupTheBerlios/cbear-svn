@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../../project/html.xsl"?>
 <!--
 The MIT License
 
@@ -22,8 +21,11 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
+<?xml-stylesheet type="text/xsl" href="../../project/html.xsl"?>
 <section 
-	xmlns="http://cbear.berlios.de/project" name="Component Object Model, COM">	
+	xmlns="http://cbear.berlios.de/project" 
+	name="COM" 
+	title="Component Object Model">	
 	<p>
 Namespace <em>cbear_berlios_de::windows::com</em>.
 	</p>
@@ -42,18 +44,22 @@ class traits
 		<section name="Target">
 		</section>
 	</section>
+<!--
 	<section href="system.xml"/>
 	<section href="uuid.xml"/>
 	<section href="hresult.xml"/>
 	<section href="object.xml"/>
 	<section href="dynamic/index.xml"/>
 	<section href="odl.xml"/>
+-->
 	<section name="Tasks">
 		<section name="Scoped Library Initialization"/>
 		<section name="Separated Fabrics"/>
 		<section name="Garbage Collection"/>
 	</section>
 	<section name="Articles (Russian)">
+<!--
 		<section href="manager.ru.xml"/>
+-->
 	</section>
 </section>
