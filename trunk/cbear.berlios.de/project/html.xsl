@@ -11,9 +11,21 @@
 	<xsl:param name="P:extension" select="'xml'"/>
 	<xsl:param name="P:svn" select="'_svn/entries'"/>
 	<xsl:param name="P:style">
-		body
+		body, table
 		{
 			font-family: sans-serif;
+			font-size: 10pt;
+		}
+		h1, h2, div.menu
+		{
+			border-top: solid 1px #00007F;
+		}
+		h1, h2
+		{
+			background-color: #F0F0FF;
+			color: #00003F;
+			margin: 0 0 0 0;
+			padding: 1px 1px 1px 1px;
 		}
 		a
 		{
@@ -30,8 +42,47 @@
 		}
 		pre
 		{
-			
 			border: solid 1px lightgray;
+		}
+		td.name
+		{
+			padding: 0 0 0 0;
+		}
+		td.menu, td.content
+		{
+			vertical-align: top;
+		}
+		td.content
+		{
+			width: 100%; 			
+		}
+		div.content-section, div.content-table
+		{
+			margin-left: 10px;
+		}
+		div.menu
+		{
+			padding-top: 5px;
+			padding-bottom: 5px;
+			margin-left: 5px;
+		}
+		div.menu-item
+		{
+			color: gray;
+		}
+		div.content-section
+		{
+			margin-top: 5px;
+			margin-borrom: 5px;
+		}
+		div.content-section-content
+		{
+			padding: 0 0 0 0;
+			margin: 5px 0 5px 0;
+		}
+		tr.tr
+		{
+			height: 100%;
 		}
 	</xsl:param>
 
@@ -97,54 +148,61 @@
 	<!-- Menu -->
 
 	<xsl:template match="/P:section" mode="P:menu">
-		<xsl:for-each 
-			select="
-				document($P:svn, .)/
-				S:wc-entries/
-				S:entry[@kind='dir' and @name!='']">
-			<xsl:sort select="@name"/>
-			<xsl:variable 
-				name="index.xml" 
-				select="concat('../', @name, '/', $P:index.xml)"/>
-			<div style="border: solid 1px lightgray; margin: 1px 1px 1px 1px; padding: 1px 1px 1px 1px;">
-				<xsl:choose>
-					<xsl:when test="document($index.xml, .)/P:section/@name">
-						<xsl:variable
-							name="index.link"
-							select="concat(@name, '/', $P:index.link)"/>
-						<xsl:for-each 
-							select="document($index.xml, .)/P:section">
-							<a 
-								href="{$index.link}"
-								title="{@title}">
-								<xsl:value-of 
-									select="translate(@name, ' ', '&#160;')"/>
-							</a>
-						</xsl:for-each>
-					</xsl:when>
-					<xsl:otherwise>
-						<span style="color: gray;">
+		<xsl:variable name="menu">
+			<xsl:for-each 
+				select="
+					document($P:svn, .)/
+					S:wc-entries/
+					S:entry[@kind='dir' and @name!='']">
+				<xsl:sort select="@name"/>
+				<xsl:variable 
+					name="index.xml" 
+					select="concat('../', @name, '/', $P:index.xml)"/>
+				<div class="menu-item">
+					<xsl:choose>
+						<xsl:when test="document($index.xml, .)/P:section/@name">
+							<xsl:variable
+								name="index.link"
+								select="concat(@name, '/', $P:index.link)"/>
+							<xsl:for-each 
+								select="document($index.xml, .)/P:section">
+								<a 
+									href="{$index.link}"
+									title="{@title}">
+									<xsl:value-of 
+										select="translate(@name, ' ', '&#160;')"/>
+								</a>
+							</xsl:for-each>
+						</xsl:when>
+						<xsl:otherwise>
 							<xsl:value-of select="@name"/>
-						</span>
-					</xsl:otherwise>
-				</xsl:choose>
+						</xsl:otherwise>
+					</xsl:choose>
+				</div>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:if test="string($menu)!=''">
+			<div class="menu">
+				<xsl:copy-of select="$menu"/>
 			</div>
-		</xsl:for-each>
+		</xsl:if>
 	</xsl:template>
 
 	<!-- Content -->
 
 	<xsl:template match="P:section" mode="P:content.table">
+		<div class="content-table">
+			<a href="{concat('#', @name)}" title="{@title}">
+				<xsl:value-of select="@name"/>
+			</a>
+			<xsl:apply-templates select="P:section" mode="P:content.table"/>
+		</div>
+	</xsl:template>
+
+	<xsl:template match="/P:section" mode="P:content.table">
 		<xsl:if test="P:section">
-			<div style="border: solid 1px lightgray; margin: 1px 1px 1px 1px; padding: 1px 1px 1px 1px;">
-				<xsl:for-each select="P:section">
-					<div style="border: solid 1px lightgray; margin: 1px 1px 1px 1px; padding: 1px 1px 1px 1px;">
-						<a href="{concat('#', @name)}" title="{@title}">
-							<xsl:value-of select="@name"/>
-						</a>
-						<xsl:apply-templates select="." mode="P:content.table"/>
-					</div>
-				</xsl:for-each>
+			<div class="menu">
+				<xsl:apply-templates select="P:section" mode="P:content.table"/>
 			</div>
 		</xsl:if>
 	</xsl:template>
@@ -181,24 +239,30 @@
 
 	<xsl:template match="P:section" mode="P:content">
 		<div 
-			style="border: solid 1px lightgray; margin: 1px 1px 1px 1px; padding: 1px 1px 1px 1px;"
+			class="content-section"
 			id="{@name}">
 			<h2><xsl:value-of select="@name"/></h2>
-			<xsl:apply-templates select="@title" mode="P:content.content"/>
-			<xsl:apply-templates select="." mode="P:content.content"/>
+			<div class="content-section-content">
+				<xsl:apply-templates select="@title" mode="P:content.content"/>
+				<xsl:apply-templates select="." mode="P:content.content"/>
+			</div>
 		</div>
 	</xsl:template>
 
 	<xsl:template match="/P:section" mode="P:content">
 		<xsl:apply-templates select="." mode="P:content.table"/>
-		<xsl:apply-templates select="@title" mode="P:content.content"/>
-		<xsl:apply-templates select="." mode="P:content.content"/>
+		<div class="menu">
+			<div class="content-section-content">
+				<xsl:apply-templates select="@title" mode="P:content.content"/>
+				<xsl:apply-templates select="." mode="P:content.content"/>
+			</div>
+		</div>
 	</xsl:template>
 
 	<!-- Language -->
 
 	<xsl:template match="P:language" mode="P:language">
-		<div style="border: solid 1px lightgray; margin: 1px 1px 1px 1px; padding: 1px 1px 1px 1px;">
+		<div class="menu-item">
 			<xsl:variable name="id">
 				<xsl:call-template name="P:language">
 					<xsl:with-param name="language" select="@id"/>
@@ -239,10 +303,6 @@
 	<xsl:variable name="P:td">
 		border: lightgray solid 1px;
 	</xsl:variable>
-
-	<xsl:variable name="P:tr">
-		height: 100%;
-	</xsl:variable>
 	
 	<xsl:template match="/P:section">
 		<html>
@@ -255,10 +315,10 @@
 				</style>
 			</head>
 			<body>
-				<table style="margin: 0 auto 0 auto; padding: 0 0 0 0;">
+				<table>
 					<!-- Header -->
 					<tr>
-						<td colspan="2" style="{$P:td}">
+						<td colspan="2" class="name">
 							<xsl:apply-templates select="." mode="P:header"/>
 						</td>
 					</tr>
@@ -274,26 +334,22 @@
 						</tr>
 					</xsl:if>
 					<!-- -->
-					<tr style="{$P:tr}">
-						<!-- Menu -->
-						<td style="{$P:td}">
+					<tr class="tr">
+						<td class="menu">
+							<!-- Menu -->
 							<xsl:apply-templates select="." mode="P:menu"/>
+							<!-- Language -->
+							<div class="menu">
+								<xsl:apply-templates select="." mode="P:language"/>
+							</div>
+							<!-- Revision -->
+							<div class="menu">
+								<xsl:apply-templates select="." mode="P:revision"/>
+							</div>
 						</td>
 						<!-- Content -->
-						<td rowspan="3" style="width: 100%; vertical-align: top;">
+						<td class="content">
 							<xsl:apply-templates select="." mode="P:content"/>
-						</td>
-					</tr>
-					<tr style="{$P:tr}">
-						<!-- Language -->
-						<td style="{$P:td}">
-							<xsl:apply-templates select="." mode="P:language"/>
-						</td>
-					</tr>
-					<tr style="vertical-align: top;">
-						<!-- Revision -->
-						<td style="{$P:td}">
-							<xsl:apply-templates select="." mode="P:revision"/>
 						</td>
 					</tr>
 				</table>
