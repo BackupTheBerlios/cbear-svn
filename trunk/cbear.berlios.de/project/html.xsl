@@ -22,7 +22,7 @@
 		}
 		h1, h2
 		{
-			background-color: #F0F0FF;
+			background-color: #E0F0FF;
 			color: #00003F;
 			margin: 0 0 0 0;
 			padding: 1px 1px 1px 1px;
@@ -42,7 +42,9 @@
 		}
 		pre
 		{
-			border: solid 1px lightgray;
+			border-left: solid 1px #00007F;
+			padding-left: 5px;
+			background-color: #F0F7FF;
 		}
 		td.name
 		{
@@ -60,11 +62,14 @@
 		{
 			margin-left: 10px;
 		}
+		div.menu, h1
+		{
+			margin-left: 5px;
+		}
 		div.menu
 		{
 			padding-top: 5px;
-			padding-bottom: 5px;
-			margin-left: 5px;
+			padding-bottom: 5px;			
 		}
 		div.menu-item
 		{
@@ -83,6 +88,10 @@
 		tr.tr
 		{
 			height: 100%;
+		}
+		span.path
+		{
+			padding-right: 20px;
 		}
 	</xsl:param>
 
@@ -130,7 +139,7 @@
 				<xsl:with-param name="path" select="concat('../', $path)"/>
 			</xsl:apply-templates>
 		</xsl:for-each>
-		<span style="border: solid 1px lightgray; margin: 1px 1px 1px 1px; padding: 1px 1px 1px 1px;">
+		<span class="path">
 			<a href="{concat($path, $P:index.link)}" title="{@title}">
 				<xsl:value-of select="@name"/>
 			</a>
@@ -138,11 +147,9 @@
 	</xsl:template>
 
 	<xsl:template match="/P:section" mode="P:path">
-		<div style="padding: 1px 1px 1px 1px; margin: 1px 1px 1px 1px;">
-			<xsl:for-each select="document($P:path.prior, .)/P:section">
-				<xsl:apply-templates select="." mode="P:path.prior"/>
-			</xsl:for-each>
-		</div>
+		<xsl:for-each select="document($P:path.prior, .)/P:section">
+			<xsl:apply-templates select="." mode="P:path.prior"/>
+		</xsl:for-each>
 	</xsl:template>
 
 	<!-- Menu -->
@@ -318,7 +325,7 @@
 				<table>
 					<!-- Header -->
 					<tr>
-						<td colspan="2" class="name">
+						<td colspan="2" class="menu">
 							<xsl:apply-templates select="." mode="P:header"/>
 						</td>
 					</tr>
@@ -328,8 +335,10 @@
 					</xsl:variable>
 					<xsl:if test="string($path)!=''">
 						<tr>
-							<td colspan="2" style="{$P:td}">
-								<xsl:copy-of select="$path"/>
+							<td colspan="2" class="menu">
+								<div class="menu">
+									<xsl:copy-of select="$path"/>
+								</div>
 							</td>
 						</tr>
 					</xsl:if>
