@@ -272,6 +272,10 @@
 <xsl:template match="odl:method" mode="odl:color.header">
 	<xsl:apply-templates select="odl:type.ref" mode="odl:color.type.ref"/>
 	<xsl:value-of select="' '"/>
+	<xsl:if test="odl:cdecl">
+		<span style="{$odl:color.keyword}">__cdecl</span>
+		<xsl:value-of select="' '"/>
+	</xsl:if>
 	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
 	<xsl:text>(</xsl:text>
 	<xsl:apply-templates select="odl:parameter" mode="odl:color"/>

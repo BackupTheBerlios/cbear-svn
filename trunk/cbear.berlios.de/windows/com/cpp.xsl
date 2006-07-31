@@ -738,18 +738,6 @@
 				select="odl:parameter" mode="odl:cpp.implementation.call"/>
 		</id.ref>
 	</id.ref>
-<!--
-	<id.ref type="-&gt;">
-		<id.ref type="this"/>
-		<id.ref type="-&gt;">
-			<id.ref id="base" type="()"/>
-			<id.ref id="{$id.long}" type="()">
-				<xsl:apply-templates 
-					select="odl:parameter" mode="odl:cpp.implementation.call"/>
-			</id.ref>
-		</id.ref>
-	</id.ref>
--->
 </xsl:template>
 
 <xsl:template match="odl:method" mode="odl:cpp.implementation.assign">
@@ -773,61 +761,6 @@
 	</id.ref>
 </xsl:template>
 
-<xsl:template match="odl:method" mode="odl:cpp.implementation">
-	<xsl:variable name="id.short">
-		<xsl:apply-templates select="." mode="odl:cpp.method.id.short"/>
-	</xsl:variable>
-	<xsl:variable name="id">
-		<xsl:apply-templates select="." mode="odl:cpp.method.id"/>
-	</xsl:variable>
-	<xsl:variable name="id.long">
-		<xsl:apply-templates select="." mode="odl:cpp.method.id.long"/>
-	</xsl:variable>
-	<method id="{$id.long}">
-		<virtual/>
-		<xsl:apply-templates select="." mode="odl:cpp.method.id.ref"/>
-		<xsl:apply-templates select="odl:parameter" mode="odl:cpp"/>
-		<abstract/>
-	</method>
-	<method id="{$id}">
-		<id.ref type="::">
-			<id.ref id="hresult"/>
-			<id.ref id="internal_type"/>
-		</id.ref>
-		<stdcall/>
-		<xsl:apply-templates select="odl:parameter" mode="odl:cpp.implementation"/>
-		<body>
-			<try>
-				<body>
-				  <xsl:apply-templates select="." mode="odl:cpp.implementation.assign">
-						<xsl:with-param name="P" select="'this->access()'"/>
-					</xsl:apply-templates>
-					<id.ref type="return">
-						<id.ref type="::">
-							<id.ref id="hresult"/>
-							<id.ref id="s_ok"/>
-						</id.ref>
-					</id.ref>
-				</body>
-				<catch>
-					<parameter><id.ref id="..."/></parameter>
-					<body>
-						<id.ref type="return">
-							<id.ref type=".">
-								<id.ref type="::">
-									<id.ref id="create_exception"/>
-									<id.ref id="catch_" type="()"/>
-								</id.ref>
-								<id.ref id="internal" type="()"/>
-							</id.ref>
-						</id.ref>
-					</body>
-				</catch>
-			</try>
-		</body>
-	</method>
-</xsl:template>
-
 <!-- interface -->
 
 <xsl:template match="odl:interface" mode="odl:cpp">
@@ -839,12 +772,6 @@
 			<id.ref id="com"/>
 			<id.ref id="pointer" type="&lt;&gt;">				
 				<xsl:apply-templates select="." mode="odl:internal"/>
-<!--
-				<id.ref type="::">
-					<id.ref/>
-					<id.ref id="{@id}"/>
-				</id.ref>
--->
 			</id.ref>
 		</id.ref>
 	</typedef>
@@ -893,7 +820,14 @@
 								<id.ref id="hresult"/>
 								<id.ref id="internal_type"/>
 							</id.ref>
-							<stdcall/>
+							<xsl:choose>
+								<xsl:when test="odl:cdecl">
+									<cdecl/>
+								</xsl:when>
+								<xsl:otherwise>
+									<stdcall/>
+								</xsl:otherwise>
+							</xsl:choose>
 							<xsl:apply-templates select="odl:parameter" mode="odl:cpp.implementation"/>
 							<body>
 								<try>
@@ -1241,9 +1175,6 @@
 			<include href="cbear.berlios.de/windows/com/static/interface_content.hpp"/>
 			<include href="cbear.berlios.de/windows/com/static/interface.hpp"/>
 			<include href="cbear.berlios.de/windows/com/static/idispatch.hpp"/>
-<!--
-			<include href="cbear.berlios.de/windows/com/dynamic/implementation.hpp"/>
--->
 			<include href="cbear.berlios.de/base/swap.hpp"/>
 			<xsl:apply-templates select="." mode="odl:cpp.namespace">
 				<xsl:with-param name="id" select="$path"/>

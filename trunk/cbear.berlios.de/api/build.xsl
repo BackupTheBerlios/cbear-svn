@@ -197,7 +197,9 @@
 				$A:nxslt, ' ',
 				$A:odl.xml, ' ',
 				$A:cbear, 'cbear.berlios.de/windows/com/cpp.xsl ',
-				'-o ', $A:hpp.xml)}"/>
+				'-o ', $A:hpp.xml, ' ',
+				'xmlns:O=http://cbear.berlios.de/windows/com ',
+				'O:cpp.xsl=file://', $A:cbear, 'cbear.berlios.de/cpp/html.xsl')}"/>
 
 		<xsl:call-template name="A:make.file.dir">
 			<xsl:with-param name="file" select="$A:hpp"/>

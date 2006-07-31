@@ -105,7 +105,7 @@
 <xsl:template match="api:pragma" mode="api:body"/>
 
 <xsl:template match="api:pragma" mode="api:body.pragma">
-	<xsl:copy-of select="odl:attribute"/>
+	<xsl:copy-of select="odl:attribute|odl:cdecl"/>
 </xsl:template>
 
 <!-- const -->

@@ -409,6 +409,13 @@
 	<xsl:value-of select="' '"/>
 </xsl:template>
 
+<!-- cdecl -->
+
+<xsl:template match="cpp:cdecl" mode="cpp:html">
+	<span style="{$cpp:html.keyword}">__cdecl</span>
+	<xsl:value-of select="' '"/>
+</xsl:template>
+
 <!-- parameter -->
 
 <xsl:template name="cpp:html.parameter">
@@ -515,7 +522,7 @@
 			<xsl:apply-templates select="cpp:static" mode="cpp:html"/>
 			<xsl:apply-templates select="cpp:virtual" mode="cpp:html"/>
 			<xsl:apply-templates select="cpp:id.ref" mode="cpp:html"/>		
-			<xsl:apply-templates select="cpp:stdcall" mode="cpp:html"/>
+			<xsl:apply-templates select="cpp:stdcall|cpp:cdecl" mode="cpp:html"/>
 			<xsl:apply-templates select="." mode="cpp:html.method.id"/>
 			<xsl:text>(</xsl:text>
 			<xsl:apply-templates select="cpp:parameter" mode="cpp:html"/>
