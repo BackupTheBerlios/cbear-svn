@@ -99,6 +99,12 @@
 	<div class="comment"><xsl:copy-of select="*|text()"/></div>
 </xsl:template>
 
+<!-- config -->
+
+<xsl:template match="api:config" mode="api:html.table"/>
+
+<xsl:template match="api:config" mode="api:html"/>	
+
 <!-- type.ref -->
 	
 <xsl:template match="api:type.ref" mode="api:html.link.id">
