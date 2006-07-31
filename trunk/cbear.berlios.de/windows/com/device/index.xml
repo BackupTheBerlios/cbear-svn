@@ -145,11 +145,11 @@ offset.
 		</section>
 		<section name="Service functions">
 			<section name="Function # 0">
-<pre><![CDATA[void Function0([out] uint16 Number);]]></pre>
+<pre><![CDATA[void function0([out] uint16 number);]]></pre>
 It returns a number of interfaces.
 			</section>
 			<section name="Function # 1">
-<pre><![CDATA[void Function1([in] uint16 Number, [out] uuid Descriptor, [out] uint16 pointer);]]></pre>
+<pre><![CDATA[void function1([in] uint16 number, [out] uuid descriptor, [out] uint16 pointer);]]></pre>
 It returns an interface descriptor. <em>Number</em> is an interface number.
 The interface decriptor contains UUID (16 bytes) and an interface pointer (2 bytes).
 			</section>
@@ -163,9 +163,16 @@ No [IN, OUT] parameters. A parameter can be [IN] or [OUT] only.
 		<section name="Exceptions">
 No exceptions.
 		</section>
+		<section name="Header">
+<pre><![CDATA[struct header
+{
+	uint16 in_size; // A size of all [IN] parameters.
+	uint16 out_size; // A size of all [OUT] parameters.
+	uint16 command; // Command.
+};]]></pre>
+		</section>
 		<section name="Primitive Types">
-Serialized in big <a href="http://en.wikipedia.org/wiki/Little_endian"
->endian</a>.
+Serialized in <a href="http://en.wikipedia.org/wiki/Big_endian">big endian</a>.
 			<ul>
 				<li>
 					<b>uint8</b> - an 8-bits unsigned integer.
