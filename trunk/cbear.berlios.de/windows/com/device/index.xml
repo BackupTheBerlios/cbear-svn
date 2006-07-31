@@ -157,6 +157,9 @@ The interface decriptor contains UUID (16 bytes) and an interface pointer (2 byt
 		<section name="IUnknown">
 No AddRef, no Release, no QueryInterface.
 		</section>
+		<section name="Functions">
+All functions and properties have to use the <em>__cdecl</em> call convertion.
+		</section>
 		<section name="Function Parameters">
 No [IN, OUT] parameters. A parameter can be [IN] or [OUT] only.
 		</section>
