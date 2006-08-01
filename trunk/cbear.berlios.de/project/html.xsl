@@ -22,7 +22,7 @@
 		}
 		h1, h2
 		{
-			background-color: #E0F0FF;
+			background-color: #E0E8FF;
 			color: #00003F;
 			margin: 0 0 0 0;
 			padding: 1px 1px 1px 1px;
