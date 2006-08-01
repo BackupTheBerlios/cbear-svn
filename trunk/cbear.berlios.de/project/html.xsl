@@ -9,7 +9,20 @@
 	exclude-result-prefixes="P S">
 
 	<xsl:param name="P:extension" select="'xml'"/>
-	<xsl:param name="P:svn" select="'_svn/entries'"/>
+	<xsl:variable name="P:svn1" select="'_svn/entries'"/>
+	<xsl:variable name="P:svn2" select="'.svn/entries'"/>
+
+	<xsl:param name="P:svn">
+		<xsl:choose>
+			<xsl:when test="document($P:svn1, .)/*">
+				<xsl:value-of select="$P:svn1"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$P:svn2"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:param>
+
 	<xsl:param name="P:style">
 		body, table
 		{
