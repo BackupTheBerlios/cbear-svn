@@ -35,7 +35,10 @@
 <xsl:variable name="A:hpp.xml" select="concat($A:output.file, '.hpp.xml')"/>
 <xsl:variable name="A:hpp" select="concat($A:output.file, '.hpp')"/>
 <xsl:variable name="A:html" select="concat($A:output.file, '.html')"/>
+<xsl:variable name="A:device.xml" select="concat($A:output.file, '.device.xml')"/>
+<!--
 <xsl:variable name="A:device.c.xml" select="concat($A:output.file, '.device.c.xml')"/>
+-->
 <xsl:variable name="A:odl.cs.xml" select="concat($A:output.file, '.odl.cs.xml')"/>
 <xsl:variable name="A:odl.cs" select="concat($A:output.file, '.odl.cs')"/>
 
@@ -226,12 +229,12 @@
 				'-o ', $A:html)}"/>
 
 		<B:command
-			name="ODL.XML to DEVICE.C.XML"
+			name="ODL.XML to DEVICE.XML"
 			text="{concat(
 				$A:nxslt, ' ',
 				$A:odl.xml, ' ',
-				$A:cbear, 'cbear.berlios.de/windows/com/device/c.xsl ',
-				'-o ', $A:device.c.xml, ' ',
+				$A:cbear, 'cbear.berlios.de/windows/com/device/device.xsl ',
+				'-o ', $A:device.xml, ' ',
 				'xmlns:D=http://cbear.berlios.de/windows/com/device ',
 				'D:cbear=', $A:cbear)}"/>
 

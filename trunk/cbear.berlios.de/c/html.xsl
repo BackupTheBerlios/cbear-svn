@@ -56,6 +56,18 @@
 		</span>
 	</xsl:template>
 
+	<xsl:template match="C:id.ref[@type='=']">
+		<xsl:apply-templates select="*[1]"/>
+		<xsl:text> = </xsl:text>
+		<xsl:apply-templates select="*[2]"/>
+	</xsl:template>
+
+	<!-- exp -->
+	<xsl:template match="C:exp">
+		<xsl:apply-templates select="*"/>
+		<xsl:text>;&#10;</xsl:text>
+	</xsl:template>
+
 	<!-- break -->
 	<xsl:template match="C:break">
 		<span style="{$C:style.key}">break</span>

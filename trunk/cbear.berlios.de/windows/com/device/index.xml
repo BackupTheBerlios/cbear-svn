@@ -139,19 +139,19 @@ using RPCNAME agreements.
 	<section name="Device RPC, version 1.0">
 		<section name="Interfaces And Function Identifiers">
 One module has only one class which can contain multiple interfaces. An 
-interface pointer is an unsigned integer 16 bits (uint16). A function 
-identifier is uint16 that is a sum of its interface pointer and a function 
+interface pointer is an unsigned integer 8 bits (uint8). A function 
+identifier is uint8 that is a sum of its interface pointer and a function 
 offset.
 		</section>
 		<section name="Service functions">
 			<section name="Function # 0">
-<pre><![CDATA[void function0([out] uint16 number);]]></pre>
+<pre><![CDATA[void function0([out] uint8 number);]]></pre>
 It returns a number of interfaces.
 			</section>
 			<section name="Function # 1">
-<pre><![CDATA[void function1([in] uint16 number, [out] uuid descriptor, [out] uint16 pointer);]]></pre>
+<pre><![CDATA[void function1([in] uint8 number, [out] uuid descriptor, [out] uint8 pointer);]]></pre>
 It returns an interface descriptor. <em>Number</em> is an interface number.
-The interface decriptor contains UUID (16 bytes) and an interface pointer (2 bytes).
+The interface decriptor contains UUID (16 bytes) and an interface pointer (1 byte).
 			</section>
 		</section>
 		<section name="IUnknown">
@@ -169,9 +169,12 @@ No exceptions.
 		<section name="Header">
 <pre><![CDATA[struct header
 {
-	uint16 in_size; // A size of all [IN] parameters.
-	uint16 out_size; // A size of all [OUT] parameters.
-	uint16 command; // Command.
+	uint8 in_size_hi; 
+	uint8 out_size; // A size of all [IN] parameters.
+	uint8 out_size_hi; 
+	uint8 out_size; // A size of all [OUT] parameters.
+	uint8 command_hi;
+	uint8 command; // Command.
 };]]></pre>
 		</section>
 		<section name="Primitive Types">

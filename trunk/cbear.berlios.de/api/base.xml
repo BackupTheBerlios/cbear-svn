@@ -125,6 +125,9 @@ See <html:a href="http://cbear.berlios.de/api"
 </type>
 
 <type id="array">
+	<pragma>
+		<com.idl:alias id="[]"/>
+	</pragma>	
 	<type.parameter id="type"/>
 	<type.parameter id="size"/>
 </type>

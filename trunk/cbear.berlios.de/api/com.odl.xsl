@@ -426,12 +426,6 @@
 	</typedef>
 </xsl:template>
 
-<!--
-<xsl:template match="api:struct" mode="api:body">
-	<xsl:apply-templates select="." mode="api:body.typedef"/>
-</xsl:template>
--->
-
 <!-- object -->
 
 <xsl:template match="api:struct/api:object" mode="api:body">
@@ -452,12 +446,12 @@
 		<attribute id="appobject"/>
 		<xsl:apply-templates select="api:pragma" mode="api:body.pragma"/>
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
-		<xsl:variable name="type.ref">
-			<xsl:apply-templates select="api:type.ref" mode="api:body.type.ref"/>
-		</xsl:variable>
-		<type.ref id="{exsl:node-set($type.ref)/odl:type.ref/odl:type.ref/@id}">
-			<attribute id="default"/>
-		</type.ref>
+		<xsl:for-each select="api:type.ref">
+			<xsl:variable name="type.ref">
+				<xsl:apply-templates select="." mode="api:body.type.ref"/>
+			</xsl:variable>
+			<type.ref id="{exsl:node-set($type.ref)/odl:type.ref/odl:type.ref/@id}"/>
+		</xsl:for-each>
 	</coclass>
 </xsl:template>
 

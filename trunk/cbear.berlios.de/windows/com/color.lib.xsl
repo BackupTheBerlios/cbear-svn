@@ -161,7 +161,7 @@
 			<xsl:apply-templates select="odl:type.ref" mode="odl:color"/>
 			<xsl:value-of select="' '"/>
 			<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
-			<xsl:for-each select="odl:type.ref[@id='array']">
+			<xsl:for-each select="odl:type.ref[@id='[]']">
 				<xsl:text>[</xsl:text>
 				<span style="{$odl:color.id}">
 					<xsl:value-of select="odl:const/@value"/>
@@ -218,15 +218,17 @@
 	<xsl:text>*</xsl:text>
 </xsl:template>
 
-<xsl:template match="odl:type.ref[@id='array']" mode="odl:color.type.ref">
+<xsl:template match="odl:type.ref[@id='[]']" mode="odl:color.type.ref">
 	<xsl:apply-templates select="odl:type.ref" mode="odl:color.type.ref"/>
 </xsl:template>
 
+<!--
 <xsl:template match="odl:type.ref[@id='struct']" mode="odl:color.type.ref">
 	<span style="{$odl:color.keyword}">struct</span>
 	<xsl:value-of select="' '"/>
 	<xsl:apply-templates select="odl:type.ref" mode="odl:color.type.ref"/>
 </xsl:template>
+-->
 
 <xsl:template match="odl:type.ref" mode="odl:color">
 	<xsl:apply-templates select="." mode="odl:color.type.ref"/>
