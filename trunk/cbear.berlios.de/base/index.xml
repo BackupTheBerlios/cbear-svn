@@ -113,5 +113,27 @@ template&lt;class Half&gt;
 typename compose_result&lt;Half&gt;::type compose(const Half &amp;High, const Half &amp;Low);</pre>
 		</section>
 	</section>
-	<section href="singleton.xml"/>
+	<section name="Singleton">
+		<p>
+Namespace <em>cbear_berlios_de::base</em>.
+		</p>
+		<p>
+<a href="singleton.hpp"/>.
+		</p>
+		<section name="Requirements">		
+			<ul>
+				<li>
+					<p>
+Thread safe =&gt; use <em>thread::static_mutex</em> or 
+<em>atomic::static_wrap</em>.
+					</p>
+				</li>
+				<li>
+					<p>
+Even two different static variables in a function body are not thread safe.
+					</p>
+				</li>
+			</ul>
+		</section>
+	</section>
 </section>

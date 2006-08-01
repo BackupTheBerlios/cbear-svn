@@ -58,7 +58,7 @@
 		{
 			width: 100%; 			
 		}
-		div.content-section, div.content-table
+		/*div.content-section,*/ div.content-table
 		{
 			margin-left: 10px;
 		}
@@ -197,10 +197,20 @@
 
 	<!-- Content -->
 
+	<xsl:template match="P:section" mode="P:content.number">		
+		<xsl:if test="..!=.">
+			<xsl:apply-templates select=".." mode="P:content.number"/>
+			<xsl:value-of select="concat(count(preceding-sibling::P:section) + 1, '.')"/>
+		</xsl:if>
+	</xsl:template>
+
 	<xsl:template match="P:section" mode="P:content.table">
+		<xsl:variable name="number">
+			<xsl:apply-templates select="." mode="P:content.number"/>
+		</xsl:variable>
 		<div class="content-table">
-			<a href="{concat('#', @name)}" title="{@title}">
-				<xsl:value-of select="@name"/>
+			<a href="{concat('#', $number)}" title="{@title}">
+				<xsl:value-of select="concat($number, ' ', @name)"/>
 			</a>
 			<xsl:apply-templates select="P:section" mode="P:content.table"/>
 		</div>
@@ -245,10 +255,13 @@
 	</xsl:template>
 
 	<xsl:template match="P:section" mode="P:content">
+		<xsl:variable name="number">
+			<xsl:apply-templates select="." mode="P:content.number"/>
+		</xsl:variable>
 		<div 
 			class="content-section"
-			id="{@name}">
-			<h2><xsl:value-of select="@name"/></h2>
+			id="{$number}">
+			<h2><xsl:value-of select="concat($number, ' ', @name)"/></h2>
 			<div class="content-section-content">
 				<xsl:apply-templates select="@title" mode="P:content.content"/>
 				<xsl:apply-templates select="." mode="P:content.content"/>
