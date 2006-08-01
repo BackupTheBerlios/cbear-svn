@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<?xml-stylesheet type="text/xsl" href="../html.xsl"?>
-<section>
-	<title>Error Example</title>
-	<unknowntag>A<unknowntag>B</unknowntag>C</unknowntag>
-</section>
