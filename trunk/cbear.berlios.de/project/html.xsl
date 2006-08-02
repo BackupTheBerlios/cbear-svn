@@ -68,7 +68,7 @@
 		{
 			text-decoration: underline;
 		}
-		li
+		ul li
 		{
 			list-style: disc;
 		}
