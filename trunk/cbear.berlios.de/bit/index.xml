@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../project/html.xsl"?>
+<?xml-stylesheet type="text/xsl" href="../cms/html.xsl"?>
 <section 
-	xmlns="http://cbear.berlios.de/project" name="Integer Bit Mask Operations">
+	xmlns="http://cbear.berlios.de/cms" name="Integer Bit Mask Operations">
 	
 	<p>
 Namespace <em>cbear_berlios_de::bit</em>.

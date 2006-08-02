@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../project/html.xsl"?>
+<?xml-stylesheet type="text/xsl" href="../cms/html.xsl"?>
 <section 
-	xmlns="http://cbear.berlios.de/project" name="C Language Structure">
+	xmlns="http://cbear.berlios.de/cms" name="C Language Structure">
 </section>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../project/html.xsl"?>
+<?xml-stylesheet type="text/xsl" href="../cms/html.xsl"?>
 <section 
-	xmlns="http://cbear.berlios.de/project" name="Build">
+	xmlns="http://cbear.berlios.de/cms" name="Build">
 	<section name="1">
 	<p>
 <i>у меня вопрос по cbear в целом. около года юзал kafe 0.3 - сэкономил тучу 

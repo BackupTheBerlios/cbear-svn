@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../project/html.xsl"?>
-<section xmlns="http://cbear.berlios.de/project" name="C++ Language Structure">
+<?xml-stylesheet type="text/xsl" href="../cms/html.xsl"?>
+<section xmlns="http://cbear.berlios.de/cms" name="C++ Language Structure">
 	
 	<p>
 XML Schema <a href="main.xsd"/>. Default HTML generator 

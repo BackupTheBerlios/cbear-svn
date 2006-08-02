@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../../project/html.xsl"?>
-<section xmlns="http://cbear.berlios.de/project" name="Object">
+<?xml-stylesheet type="text/xsl" href="../../cms/html.xsl"?>
+<section xmlns="http://cbear.berlios.de/cms" name="Object">
 	
 	<p>
 Header <a href="object.hpp"/>. Test program 

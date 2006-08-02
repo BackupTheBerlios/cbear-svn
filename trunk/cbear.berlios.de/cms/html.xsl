@@ -4,29 +4,29 @@
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:P="http://cbear.berlios.de/cms"
+	xmlns:C="http://cbear.berlios.de/cms"
 	xmlns:S="svn:"
-	exclude-result-prefixes="P S">
+	exclude-result-prefixes="C S">
 
-	<xsl:param name="P:extension" select="'xml'"/>
-	<xsl:param name="P:languages" select="'languages.xml'"/>
+	<xsl:param name="C:extension" select="'xml'"/>
+	<xsl:param name="C:languages" select="'languages.xml'"/>
 
 
-	<xsl:variable name="P:svn1" select="'_svn/entries'"/>
-	<xsl:variable name="P:svn2" select="'.svn/entries'"/>
+	<xsl:variable name="C:svn1" select="'_svn/entries'"/>
+	<xsl:variable name="C:svn2" select="'.svn/entries'"/>
 
-	<xsl:param name="P:svn">
+	<xsl:param name="C:svn">
 		<xsl:choose>
-			<xsl:when test="document($P:svn1, .)/*">
-				<xsl:value-of select="$P:svn1"/>
+			<xsl:when test="document($C:svn1, .)/*">
+				<xsl:value-of select="$C:svn1"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="$P:svn2"/>
+				<xsl:value-of select="$C:svn2"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:param>
 
-	<xsl:param name="P:style">
+	<xsl:param name="C:style">
 		body, table
 		{
 			font-family: sans-serif;
@@ -137,82 +137,82 @@
 
 	<!-- Language -->
 
-	<xsl:template name="P:language">
-		<xsl:param name="language" select="/P:section/@xml:lang"/>
+	<xsl:template name="C:language">
+		<xsl:param name="language" select="/C:section/@xml:lang"/>
 		<xsl:if test="$language!=''">
 			<xsl:value-of select="concat('.', $language)"/>
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:variable name="P:language">
-		<xsl:call-template name="P:language"/>
+	<xsl:variable name="C:language">
+		<xsl:call-template name="C:language"/>
 	</xsl:variable>
 
 	<!-- Header -->
 
-	<xsl:template match="/P:section" mode="P:header">
+	<xsl:template match="/C:section" mode="C:header">
 		<h1><xsl:value-of select="@name"/></h1>
 	</xsl:template>
 
 	<!-- Path -->
 
 	<xsl:variable 
-		name="P:index" 
-		select="concat('index', $P:language)"/>
+		name="C:index" 
+		select="concat('index', $C:language)"/>
 
 	<xsl:variable 
-		name="P:index.xml" 
-		select="concat($P:index, '.xml')"/>
+		name="C:index.xml" 
+		select="concat($C:index, '.xml')"/>
 
 	<xsl:variable
-		name="P:index.link"
-		select="concat($P:index, '.', $P:extension)"/>
+		name="C:index.link"
+		select="concat($C:index, '.', $C:extension)"/>
 
 	<xsl:variable 
-		name="P:path.prior" 
-		select="concat('../', $P:index.xml)"/>
+		name="C:path.prior" 
+		select="concat('../', $C:index.xml)"/>
 
-	<xsl:template match="/P:section" mode="P:path.prior">
+	<xsl:template match="/C:section" mode="C:path.prior">
 		<xsl:param name="path" select="'../'"/>
-		<xsl:for-each select="document($P:path.prior, .)/P:section">
-			<xsl:apply-templates select="." mode="P:path.prior">
+		<xsl:for-each select="document($C:path.prior, .)/C:section">
+			<xsl:apply-templates select="." mode="C:path.prior">
 				<xsl:with-param name="path" select="concat('../', $path)"/>
 			</xsl:apply-templates>
 		</xsl:for-each>
 		<span class="path">
-			<a href="{concat($path, $P:index.link)}" title="{@title}">
+			<a href="{concat($path, $C:index.link)}" title="{@title}">
 				<xsl:value-of select="@name"/>
 			</a>
 		</span>
 	</xsl:template>
 
-	<xsl:template match="/P:section" mode="P:path">
-		<xsl:for-each select="document($P:path.prior, .)/P:section">
-			<xsl:apply-templates select="." mode="P:path.prior"/>
+	<xsl:template match="/C:section" mode="C:path">
+		<xsl:for-each select="document($C:path.prior, .)/C:section">
+			<xsl:apply-templates select="." mode="C:path.prior"/>
 		</xsl:for-each>
 	</xsl:template>
 
 	<!-- Menu -->
 
-	<xsl:template match="/P:section" mode="P:menu">
+	<xsl:template match="/C:section" mode="C:menu">
 		<xsl:variable name="menu">
 			<xsl:for-each 
 				select="
-					document($P:svn, .)/
+					document($C:svn, .)/
 					S:wc-entries/
 					S:entry[@kind='dir' and @name!='']">
 				<xsl:sort select="@name"/>
 				<xsl:variable 
 					name="index.xml" 
-					select="concat('../', @name, '/', $P:index.xml)"/>
+					select="concat('../', @name, '/', $C:index.xml)"/>
 				<div class="menu-item">
 					<xsl:choose>
-						<xsl:when test="document($index.xml, .)/P:section/@name">
+						<xsl:when test="document($index.xml, .)/C:section/@name">
 							<xsl:variable
 								name="index.link"
-								select="concat(@name, '/', $P:index.link)"/>
+								select="concat(@name, '/', $C:index.link)"/>
 							<xsl:for-each 
-								select="document($index.xml, .)/P:section">
+								select="document($index.xml, .)/C:section">
 								<a 
 									href="{$index.link}"
 									title="{@title}">
@@ -237,105 +237,105 @@
 
 	<!-- Content -->
 
-	<xsl:template match="P:section" mode="P:content.number">		
+	<xsl:template match="C:section" mode="C:content.number">		
 		<xsl:if test="..!=.">
-			<xsl:apply-templates select=".." mode="P:content.number"/>
-			<xsl:value-of select="concat(count(preceding-sibling::P:section) + 1, '.')"/>
+			<xsl:apply-templates select=".." mode="C:content.number"/>
+			<xsl:value-of select="concat(count(preceding-sibling::C:section) + 1, '.')"/>
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="P:section" mode="P:content.table">
+	<xsl:template match="C:section" mode="C:content.table">
 		<xsl:variable name="number">
-			<xsl:apply-templates select="." mode="P:content.number"/>
+			<xsl:apply-templates select="." mode="C:content.number"/>
 		</xsl:variable>
 		<div class="content-table">
 			<a href="{concat('#', $number)}" title="{@title}">
 				<xsl:value-of select="concat($number, ' ', @name)"/>
 			</a>
-			<xsl:apply-templates select="P:section" mode="P:content.table"/>
+			<xsl:apply-templates select="C:section" mode="C:content.table"/>
 		</div>
 	</xsl:template>
 
-	<xsl:template match="/P:section" mode="P:content.table">
-		<xsl:if test="P:section">
+	<xsl:template match="/C:section" mode="C:content.table">
+		<xsl:if test="C:section">
 			<div class="menu">
-				<xsl:apply-templates select="P:section" mode="P:content.table"/>
+				<xsl:apply-templates select="C:section" mode="C:content.table"/>
 			</div>
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="*" mode="P:content.content">
-		<xsl:apply-templates select="*|text()|comment()" mode="P:content"/>
+	<xsl:template match="*" mode="C:content.content">
+		<xsl:apply-templates select="*|text()|comment()" mode="C:content"/>
 	</xsl:template>
 
-	<xsl:template match="@title" mode="P:content.content">
+	<xsl:template match="@title" mode="C:content.content">
 		<div class="title">
 			<xsl:value-of select="."/>
 		</div>
 	</xsl:template>
 
-	<xsl:template match="text()" mode="P:content">
+	<xsl:template match="text()" mode="C:content">
 		<xsl:value-of select="."/>
 	</xsl:template>
 
-	<xsl:template match="comment()" mode="P:content">
+	<xsl:template match="comment()" mode="C:content">
 		<xsl:copy-of select="."/>
 	</xsl:template>
 
-	<xsl:template match="*" mode="P:content">
+	<xsl:template match="*" mode="C:content">
 		<xsl:element name="{local-name()}">
 			<xsl:copy-of select="@*"/>
-			<xsl:apply-templates select="." mode="P:content.content"/>
+			<xsl:apply-templates select="." mode="C:content.content"/>
 		</xsl:element>
 	</xsl:template>
 
-	<xsl:template match="P:a[not(*|text())]" mode="P:content">
+	<xsl:template match="C:a[not(*|text())]" mode="C:content">
 		<a>
 			<xsl:copy-of select="@*"/>
 			<xsl:value-of select="@href"/>
 		</a>
 	</xsl:template>
 
-	<xsl:template match="P:section" mode="P:content">
+	<xsl:template match="C:section" mode="C:content">
 		<xsl:variable name="number">
-			<xsl:apply-templates select="." mode="P:content.number"/>
+			<xsl:apply-templates select="." mode="C:content.number"/>
 		</xsl:variable>
 		<div 
 			class="content-section"
 			id="{$number}">
 			<h2><xsl:value-of select="concat($number, ' ', @name)"/></h2>
 			<div class="content-section-content">
-				<xsl:apply-templates select="@title" mode="P:content.content"/>
-				<xsl:apply-templates select="." mode="P:content.content"/>
+				<xsl:apply-templates select="@title" mode="C:content.content"/>
+				<xsl:apply-templates select="." mode="C:content.content"/>
 			</div>
 		</div>
 	</xsl:template>
 
-	<xsl:template match="/P:section" mode="P:content">
-		<xsl:apply-templates select="." mode="P:content.table"/>
+	<xsl:template match="/C:section" mode="C:content">
+		<xsl:apply-templates select="." mode="C:content.table"/>
 		<div class="menu">
 			<div class="content-section-content">
-				<xsl:apply-templates select="@title" mode="P:content.content"/>
-				<xsl:apply-templates select="." mode="P:content.content"/>
+				<xsl:apply-templates select="@title" mode="C:content.content"/>
+				<xsl:apply-templates select="." mode="C:content.content"/>
 			</div>
 		</div>
 	</xsl:template>
 
 	<!-- Language -->
 
-	<xsl:template match="P:language" mode="P:language">
+	<xsl:template match="C:language" mode="C:language">
 		<div class="menu-item">
 			<xsl:variable name="id">
-				<xsl:call-template name="P:language">
+				<xsl:call-template name="C:language">
 					<xsl:with-param name="language" select="@id"/>
 				</xsl:call-template>
 			</xsl:variable>
 			<xsl:choose>
-				<xsl:when test="$id=$P:language">
+				<xsl:when test="$id=$C:language">
 					<xsl:value-of select="@name"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<a href="{concat('index', $id, '.', $P:extension)}">
+					<a href="{concat('index', $id, '.', $C:extension)}">
 						<xsl:value-of select="@name"/>
 					</a>
 				</xsl:otherwise>
@@ -343,37 +343,37 @@
 		</div>
 	</xsl:template>
 
-	<xsl:template match="/P:section" mode="P:language">		
+	<xsl:template match="/C:section" mode="C:language">		
 		<xsl:apply-templates 
-			select="document($P:languages)/P:languages/P:language"
-			mode="P:language"/>
+			select="document($C:languages)/C:languages/C:language"
+			mode="C:language"/>
 	</xsl:template>
 
 	<!-- Revision -->
 
-	<xsl:template match="/P:section" mode="P:revision">
+	<xsl:template match="/C:section" mode="C:revision">
 		<xsl:value-of 
 			select="
 				concat(
 					'Revision:&#160;',
-					document($P:svn, .)/
+					document($C:svn, .)/
 						S:wc-entries/S:entry[@name='']/@revision)"/>
 	</xsl:template>
 
 	<!-- -->
 
-	<xsl:variable name="P:td">
+	<xsl:variable name="C:td">
 		border: lightgray solid 1px;
 	</xsl:variable>
 	
-	<xsl:template match="/P:section">
+	<xsl:template match="/C:section">
 		<html>
 			<head>
 				<title>
 					<xsl:value-of select="@name"/>
 				</title>
 				<style type="text/css">
-					<xsl:value-of select="normalize-space($P:style)"/>
+					<xsl:value-of select="normalize-space($C:style)"/>
 				</style>
 			</head>
 			<body>
@@ -381,12 +381,12 @@
 					<!-- Header -->
 					<tr>
 						<td colspan="2" class="menu">
-							<xsl:apply-templates select="." mode="P:header"/>
+							<xsl:apply-templates select="." mode="C:header"/>
 						</td>
 					</tr>
 					<!-- Path -->
 					<xsl:variable name="path">
-						<xsl:apply-templates select="." mode="P:path"/>
+						<xsl:apply-templates select="." mode="C:path"/>
 					</xsl:variable>
 					<xsl:if test="string($path)!=''">
 						<tr>
@@ -401,11 +401,11 @@
 					<tr class="tr">
 						<td class="menu">
 							<!-- Menu -->
-							<xsl:apply-templates select="." mode="P:menu"/>
+							<xsl:apply-templates select="." mode="C:menu"/>
 							<!-- Language -->
 							<xsl:variable name="languages">
 								<div class="menu">
-									<xsl:apply-templates select="." mode="P:language"/>
+									<xsl:apply-templates select="." mode="C:language"/>
 								</div>
 							</xsl:variable>
 							<xsl:if test="string($languages)!=''">
@@ -413,12 +413,12 @@
 							</xsl:if>
 							<!-- Revision -->
 							<div class="menu">
-								<xsl:apply-templates select="." mode="P:revision"/>
+								<xsl:apply-templates select="." mode="C:revision"/>
 							</div>
 						</td>
 						<!-- Content -->
 						<td class="content">
-							<xsl:apply-templates select="." mode="P:content"/>
+							<xsl:apply-templates select="." mode="C:content"/>
 						</td>
 					</tr>
 				</table>

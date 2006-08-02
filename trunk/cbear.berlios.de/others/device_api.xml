@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../project/html.xsl"?>
-<section xmlns="http://cbear.berlios.de/project" name="Device API">
+<?xml-stylesheet type="text/xsl" href="../cms/html.xsl"?>
+<section xmlns="http://cbear.berlios.de/cms" name="Device API">
 	<section name="Main Target">
 The system should allow the user to create a programming interface of a 
 particular device type for high level programming languages such as Java, C#, 

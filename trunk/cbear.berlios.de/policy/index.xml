@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../project/html.xsl"?>
-<section xmlns="http://cbear.berlios.de/project" name="Type Policies">
+<?xml-stylesheet type="text/xsl" href="../cms/html.xsl"?>
+<section xmlns="http://cbear.berlios.de/cms" name="Type Policies">
 	
 	<p>
 Namespace <em>cbear_berlios_de::policy</em>.

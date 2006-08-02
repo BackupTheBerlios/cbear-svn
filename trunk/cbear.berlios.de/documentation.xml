@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="project/html.xsl"?>
-<section xmlns="http://cbear.berlios.de/project" name="Documentation">	
+<?xml-stylesheet type="text/xsl" href="cms/html.xsl"?>
+<section xmlns="http://cbear.berlios.de/cms" name="Documentation">	
 	<section name="C++ Libraries">		
 Each class should implement swap and move constructor.
 		<section href="base/index.xml"/>
