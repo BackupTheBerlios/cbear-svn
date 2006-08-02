@@ -107,6 +107,10 @@
 			padding-top: 5px;
 			padding-bottom: 5px;			
 		}
+		div.title
+		{
+			font-style: italic;
+		}
 		div.menu-item
 		{
 			color: gray;
@@ -265,7 +269,9 @@
 	</xsl:template>
 
 	<xsl:template match="@title" mode="P:content.content">
-		<xsl:value-of select="."/>
+		<div class="title">
+			<xsl:value-of select="."/>
+		</div>
 	</xsl:template>
 
 	<xsl:template match="text()" mode="P:content">
