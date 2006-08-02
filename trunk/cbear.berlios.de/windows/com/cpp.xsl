@@ -490,20 +490,25 @@
 
 <!-- type.ref -->
 
-<xsl:template match="odl:type.ref" mode="odl:cpp">
+<xsl:template match="odl:type.ref" mode="odl:cpp.type">
+	<xsl:param name="id" select="concat(
+		translate(@id, $txt:main.uppercase, $txt:main.lowercase), '_t')"/>
 	<id.ref type="::">
 		<id.ref/>
 		<id.ref id="cbear_berlios_de"/>
 		<id.ref id="windows"/>
 		<id.ref id="com"/>		
-		<id.ref id="{concat(
-		translate(@id, $txt:main.uppercase, $txt:main.lowercase), '_t')}">
+		<id.ref id="{$id}">
 			<xsl:if test="*">
 				<xsl:attribute name="type">&lt;&gt;</xsl:attribute>
 				<xsl:apply-templates select="odl:type.ref|odl:const" mode="odl:cpp"/>
 			</xsl:if>
 		</id.ref>
 	</id.ref>		
+</xsl:template>
+
+<xsl:template match="odl:type.ref" mode="odl:cpp">
+	<xsl:apply-templates select="." mode="odl:cpp.type"/>
 </xsl:template>
 
 <xsl:template match="odl:library" mode="odl:cpp.id.ref">
@@ -526,9 +531,6 @@
 <xsl:template 
 	match="odl:type.ref[/odl:library/odl:*/@id=@id]" mode="odl:cpp">
 	<id.ref type="::">
-<!--
-		<id.ref id="{/odl:library/@id}"/>
--->
 		<xsl:apply-templates select="/odl:library" mode="odl:cpp.id.ref"/>
 		<id.ref id="{@id}"/>
 	</id.ref>
@@ -536,6 +538,12 @@
 
 <xsl:template match="odl:type.ref[@id='*']" mode="odl:cpp">
 	<xsl:apply-templates select="odl:type.ref" mode="odl:cpp"/>
+</xsl:template>
+
+<xsl:template match="odl:type.ref[@id='[]']" mode="odl:cpp">
+	<xsl:apply-templates select="." mode="odl:cpp.type">
+		<xsl:with-param name="id" select="'array_t'"/>	
+	</xsl:apply-templates>
 </xsl:template>
 
 <!-- parameter -->
