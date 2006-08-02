@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="html.xsl"?>
+<section 
+	xmlns="http://cbear.berlios.de/cms" 
+	name="CMS"
+	title="Content Management System.">
+Benefits:
+	<ol>
+		<li>
+<a href="http://en.wikipedia.org/wiki/XML">XML</a>/<a 
+href="http://en.wikipedia.org/wiki/XHTML">XHTML</a> based syntax.
+		</li>
+		<li>
+<a href="http://en.wikipedia.org/wiki/SVN">SVN</a> based.
+		</li>
+		<li>
+Multilanguage support.
+		</li>
+	</ol>
+</section>
