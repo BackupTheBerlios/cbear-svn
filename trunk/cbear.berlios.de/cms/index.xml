@@ -7,11 +7,10 @@
 Benefits:
 	<ol>
 		<li>
-<a href="http://en.wikipedia.org/wiki/XML">XML</a>/<a 
-href="http://en.wikipedia.org/wiki/XHTML">XHTML</a> based syntax.
+<a href="XML" type="wikipedia"/>/<a href="XHTML" type="wikipedia"/> based syntax.
 		</li>
 		<li>
-<a href="http://en.wikipedia.org/wiki/SVN">SVN</a> based.
+<a href="SVN" type="wikipedia"/> based.
 		</li>
 		<li>
 Multilanguage support.

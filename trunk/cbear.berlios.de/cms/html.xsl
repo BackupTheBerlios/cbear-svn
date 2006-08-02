@@ -289,11 +289,53 @@
 		</xsl:element>
 	</xsl:template>
 
-	<xsl:template match="C:a[not(*|text())]" mode="C:content">
-		<a>
-			<xsl:copy-of select="@*"/>
-			<xsl:value-of select="@href"/>
+	<xsl:template match="C:a" mode="C:content.a">
+		<xsl:param name="href" select="@href"/>
+		<a href="{$href}" title="{@title}">
+			<xsl:choose>
+				<xsl:when test="not(*|text())">
+					<xsl:value-of select="@href"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:apply-templates select="*|text()" mode="C:content"/>
+				</xsl:otherwise>
+			</xsl:choose>
 		</a>
+	</xsl:template>
+
+	<xsl:template match="C:a" mode="C:content">
+		<xsl:apply-templates select="." mode="C:content.a"/>
+	</xsl:template>
+
+	<xsl:template match="C:a[@type]" mode="C:content">
+		<xsl:apply-templates select="." mode="C:content.a">
+			<xsl:with-param name="href" select="concat(@type, ':', @href)"/>
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<xsl:template match="C:a[@type='http']" mode="C:content">
+		<xsl:apply-templates select="." mode="C:content.a">
+			<xsl:with-param name="href" select="concat('http://', @href)"/>
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<xsl:template match="C:a[@type='file']" mode="C:content">
+		<xsl:apply-templates select="." mode="C:content.a">
+			<xsl:with-param name="href" select="concat('file:///', @href)"/>
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<xsl:template match="C:a[@type='wikipedia']" mode="C:content">
+		<xsl:variable name="language">
+			<xsl:for-each select="/C:section/@xml:lang">
+				<xsl:value-of select="concat(., '.')"/>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:apply-templates select="." mode="C:content.a">
+			<xsl:with-param 
+				name="href" 
+				select="concat('http://', $language, 'wikipedia.org/wiki/', @href)"/>
+		</xsl:apply-templates>
 	</xsl:template>
 
 	<xsl:template match="C:section" mode="C:content">

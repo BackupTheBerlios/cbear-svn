@@ -8,19 +8,19 @@ It supports different programming languages and platforms.
 	<ul>
 		<li>
 <b>Programming languages:</b> 
-<a href="http://en.wikipedia.org/wiki/C%2B%2B">C++</a>, 
-<a href="http://en.wikipedia.org/wiki/C_programming_language">C</a>, 
-<a href="http://en.wikipedia.org/wiki/Csharp">C#</a>, 
-<a href="http://en.wikipedia.org/wiki/Interface_description_language">IDL</a>, 
-<a href="http://en.wikipedia.org/wiki/Xml">XML</a>, 
-<a href="http://en.wikipedia.org/wiki/Xslt">XSLT</a>, 
-<a href="http://en.wikipedia.org/wiki/Html">HTML</a>.
+<a href="C++" type="wikipedia"/>, 
+<a href="C programming language" type="wikipedia">C</a>, 
+<a href="C Sharp" type="wikipedia">C#</a>, 
+<a href="Interface_description_language" type="wikipedia">IDL</a>, 
+<a href="XML" type="wikipedia"/>, 
+<a href="XSLT" type="wikipedia"/>, 
+<a href="HTML" type="wikipedia"/>.
 		</li>
 		<li>
 <b>Compilers:</b> 
-<a href="http://en.wikipedia.org/wiki/Visual_C%2B%2B">Visual C++ 2005</a>, 
-<a href="http://en.wikipedia.org/wiki/Digital_Mars">Digital Mars C++</a>, 
-<a href="http://en.wikipedia.org/wiki/GNU_Compiler_Collection">GCC</a>.
+<a href="Visual C++" type="wikipedia"/>, 
+<a href="Digital Mars" type="wikipedia"/>, 
+<a href="GCC" type="wikipedia"/>.
 		</li>
 	</ul>
 	<section name="License" title="C Bear's license.">
