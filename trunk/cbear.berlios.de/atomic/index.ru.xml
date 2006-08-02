@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../cms/html.xsl"?>
+<section 
+	xmlns="http://cbear.berlios.de/cms" 
+	xml:lang="ru" 
+	name="Атомарный доступ">
+	<p>
+		Пространство имен <em>cbear_berlios_de::atomic</em>.
+	</p>
+	<p>
+		Заголовочный файл <a href="main.hpp"/>.
+	</p>
+	<section name="Functions">
+		<p>
+			Данные функции предотвращают использование одной и той же переменной
+			в нескольких потоках одновременно.
+		</p>
+		<section name="exchange">
+			<p>
+				Атомарный обмен значений.
+			</p>
+			<pre>
+				template&lt;class T, class E&gt;
+				T exchange(volatile T &amp;This, E Exchange);
+			</pre>
+		</section>
+		<section name="compare_exchange">
+			<p>
+				Атомарное сравнение и обмен значениями.
+			</p>
+			<pre>
+				template&lt;class T, class E, class C&gt;
+				T compare_exchange(volatile T &amp;This, E Exchange, C Comperand);
+			</pre>
+		</section>
+		<section name="exchange_add">
+			<p>
+				Атомарное увеличение значения переменной.
+			</p>
+			<pre>
+				template&lt;class T, class V&gt;
+				T exchange_add(volatile T &amp;This, V Value);
+			</pre>
+		</section>
+		<section name="decrement">
+			<p>
+				Атомарное уменьшение значения переменной на единицу.
+			</p>
+			<pre>
+				template&lt;class T&gt;
+				T decrement(volatile T &amp;This);
+			</pre>
+		</section>
+		<section name="increment">
+			<p>
+				Атомарное увеличение значения переменной на единицу.
+			</p>
+			<pre>
+				template&lt;class T&gt;
+				T increment(volatile T &amp;This);
+			</pre>
+		</section>
+		<section name="read">
+			<p>
+				Атомарное чтение.
+			</p>
+			<pre>
+				template&lt;class T&gt;
+				T read(volatile T &amp;);
+			</pre>
+		</section>
+	</section>
+	<section name="Оболочка">
+		<pre>
+			template&lt;class T&gt;
+			class wrap
+			{
+			public:
+			T exchange(T Exchange);
+			T compare_exchange(T Exchange, T Comperand);
+			T exchange_add(T Value);
+			T decrement();
+			T increment();
+			T read();
+			};
+		</pre>
+	</section>
+	<section name="Статическая оболочка">
+		<pre>
+			template&lt;class Id, class T&gt;
+			class static_wrap
+			{
+			public:
+			static T exchange(T Exchange);
+			static T compare_exchange(T Exchange, T Comperand);
+			static T exchange_add(T Value);
+			static T decrement();
+			static T increment();
+			static T read();
+			};
+		</pre>
+		<p>
+			Вместо
+		</p>
+		<pre>
+			static wrap&lt;int&gt; A;
+			...
+			A.exchange(N);
+		</pre>
+		<p>
+			используйте
+		</p>
+		<pre>
+			class AId;
+			typedef static_wrap&lt;AId, int&gt; A;
+			...
+			A::exchange(N);
+		</pre>
+	</section>
+</section>

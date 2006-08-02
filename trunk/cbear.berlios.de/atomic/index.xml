@@ -9,46 +9,40 @@ Namespace <em>cbear_berlios_de::atomic</em>.
 	<p>
 Header <a href="main.hpp"/>.
 	</p>
-	<section name="Functions">
-		
+	<section name="Functions">		
 		<p>
 The functions prevent more than one thread from using the same variable 
 simultaneously.
 		</p>
-		<section name="exchange">
-			
+		<section name="exchange">			
 			<p>
 Performs an atomic exchange a pair of the values.
 			</p>
 <pre>template&lt;class T, class E&gt;
 T exchange(volatile T &amp;This, E Exchange);</pre>
 		</section>
-		<section name="compare_exchange">
-			
+		<section name="compare_exchange">			
 			<p>
 Performs an atomic comparison of the values and exchanges them.
 			</p>
 <pre>template&lt;class T, class E, class C&gt;
 T compare_exchange(volatile T &amp;This, E Exchange, C Comperand);</pre>
 		</section>
-		<section name="exchange_add">
-			
+		<section name="exchange_add">			
 			<p>
 Performs an atomic addition of an increment value to an added value.
 			</p>
 <pre>template&lt;class T, class V&gt;
 T exchange_add(volatile T &amp;This, V Value);</pre>
 		</section>
-		<section name="decrement">
-			
+		<section name="decrement">			
 			<p>
 Decrease by one the value and checks the resulting value.
 			</p>
 <pre>template&lt;class T&gt;
 T decrement(volatile T &amp;This);</pre>
 		</section>
-		<section name="increment">
-			
+		<section name="increment">			
 			<p>
 Increase by one the value and checks the resulting value.
 			</p>
@@ -56,7 +50,6 @@ Increase by one the value and checks the resulting value.
 T increment(volatile T &amp;This);</pre>
 		</section>
 		<section name="read">
-			
 			<p>
 Reads the value.
 			</p>
@@ -64,8 +57,7 @@ Reads the value.
 T read(volatile T &amp;);</pre>
 		</section>
 	</section>
-	<section name="Wrap">
-		
+	<section name="Wrap">		
 <pre>template&lt;class T&gt;
 class wrap
 {
@@ -78,8 +70,7 @@ public:
 	T read();
 };</pre>
 	</section>
-	<section name="Static Wrap">
-		
+	<section name="Static Wrap">		
 <pre>template&lt;class Id, class T&gt;
 class static_wrap
 {
