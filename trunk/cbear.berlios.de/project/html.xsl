@@ -9,6 +9,9 @@
 	exclude-result-prefixes="P S">
 
 	<xsl:param name="P:extension" select="'xml'"/>
+	<xsl:param name="P:languages" select="'languages.xml'"/>
+
+
 	<xsl:variable name="P:svn1" select="'_svn/entries'"/>
 	<xsl:variable name="P:svn2" select="'.svn/entries'"/>
 
@@ -28,6 +31,22 @@
 		{
 			font-family: sans-serif;
 			font-size: 10pt;
+		}
+		table
+		{ 
+			border: none; border-spacing: 1px; background-color: gray; 
+		}
+		th, td 
+		{ 
+			padding: 1px 5px 1px 5px; margin: 0 0 0 0; 
+		}
+		th 
+		{ 
+			background-color: #E0E8FF; 
+		}
+		td 
+		{ 
+			background-color: white; 
 		}
 		h1, h2, div.menu
 		{
@@ -59,6 +78,10 @@
 			padding-left: 5px;
 			background-color: #F0F7FF;
 		}
+		table.main
+		{
+			background-color: white;
+		}
 		td.name
 		{
 			padding: 0 0 0 0;
@@ -71,7 +94,7 @@
 		{
 			width: 100%; 			
 		}
-		/*div.content-section,*/ div.content-table
+		div.content-table
 		{
 			margin-left: 10px;
 		}
@@ -314,9 +337,9 @@
 		</div>
 	</xsl:template>
 
-	<xsl:template match="/P:section" mode="P:language">
+	<xsl:template match="/P:section" mode="P:language">		
 		<xsl:apply-templates 
-			select="document('languages.xml')/P:languages/P:language"
+			select="document($P:languages)/P:languages/P:language"
 			mode="P:language"/>
 	</xsl:template>
 
@@ -348,7 +371,7 @@
 				</style>
 			</head>
 			<body>
-				<table>
+				<table class="main">
 					<!-- Header -->
 					<tr>
 						<td colspan="2" class="menu">
@@ -374,9 +397,14 @@
 							<!-- Menu -->
 							<xsl:apply-templates select="." mode="P:menu"/>
 							<!-- Language -->
-							<div class="menu">
-								<xsl:apply-templates select="." mode="P:language"/>
-							</div>
+							<xsl:variable name="languages">
+								<div class="menu">
+									<xsl:apply-templates select="." mode="P:language"/>
+								</div>
+							</xsl:variable>
+							<xsl:if test="string($languages)!=''">
+								<xsl:copy-of select="$languages"/>
+							</xsl:if>
 							<!-- Revision -->
 							<div class="menu">
 								<xsl:apply-templates select="." mode="P:revision"/>
