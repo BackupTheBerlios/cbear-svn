@@ -47,6 +47,8 @@
 					<xsl:apply-templates select=".">
 						<xsl:with-param name="body">
 							<C:body>
+								<C:switch>
+								</C:switch>
 							</C:body>
 						</xsl:with-param>
 					</xsl:apply-templates>
