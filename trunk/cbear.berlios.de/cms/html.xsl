@@ -4,7 +4,7 @@
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:P="http://cbear.berlios.de/project"
+	xmlns:P="http://cbear.berlios.de/cms"
 	xmlns:S="svn:"
 	exclude-result-prefixes="P S">
 
