@@ -3,6 +3,7 @@
 	version="1.0" 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:rc="http://cbear.berlios.de/windows/resource"
+	xmlns:C="http://cbear.berlios.de/cms"
 	xmlns:svn="svn:">
 	
 <xsl:import href="../../text/main.xsl"/>
@@ -14,7 +15,7 @@
 
 <xsl:variable name="rc:line" select="'&#10;'"/>
 
-<xsl:template match="section">
+<xsl:template match="C:section">
 
 	<xsl:variable name="company">
 		<xsl:value-of select="document($rc:setup)/setup/company"/>
