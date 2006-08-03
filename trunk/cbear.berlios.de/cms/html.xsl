@@ -92,7 +92,7 @@
 		}
 		td.content
 		{
-			width: 100%; 			
+			width: 100%;
 		}
 		div.content-table
 		{
@@ -503,12 +503,6 @@
 					<tr>
 						<td colspan="2" class="menu">
 							<xsl:apply-templates select="." mode="C:header"/>
-							<div class="menu">
-								<span class="id">
-									<xsl:value-of select="'Id: '"/>
-									<xsl:apply-templates select="." mode="C:id"/>
-								</span>
-							</div>
 						</td>
 					</tr>
 					<!-- Path -->
@@ -527,6 +521,18 @@
 					<!-- -->
 					<tr class="tr">
 						<td class="menu">
+							<!-- Id -->
+							<div class="menu">
+								<div class="menu-item">
+									<xsl:value-of select="'Id:&#160;'"/>
+									<xsl:apply-templates select="." mode="C:id"/>
+								</div>
+								<div class="menu-item">
+									<xsl:apply-templates select="." mode="C:revision"/>
+								</div>
+							</div>
+							<!-- Menu -->
+							<xsl:apply-templates select="." mode="C:menu"/>
 							<!-- Language -->
 							<xsl:variable name="languages">
 								<div class="menu">
@@ -536,16 +542,10 @@
 							<xsl:if test="string($languages)!=''">
 								<xsl:copy-of select="$languages"/>
 							</xsl:if>
-							<!-- Menu -->
-							<xsl:apply-templates select="." mode="C:menu"/>
 							<!-- Files -->
 							<xsl:apply-templates select="." mode="C:files"/>
-							<!-- Revision -->
-							<div class="menu">
-								<xsl:apply-templates select="." mode="C:revision"/>
-							</div>
 						</td>
-						<td class="content">
+						<td class="content" colspan="2">
 							<!-- Content -->
 							<xsl:apply-templates select="." mode="C:content"/>
 						</td>
