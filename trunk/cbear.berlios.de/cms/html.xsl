@@ -222,7 +222,9 @@
 							</xsl:for-each>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="@name"/>
+							<a href="{@name}" style="color: gray">
+								<xsl:value-of select="concat('\', @name)"/>
+							</a>
 						</xsl:otherwise>
 					</xsl:choose>
 				</div>
@@ -233,6 +235,19 @@
 				<xsl:copy-of select="$menu"/>
 			</div>
 		</xsl:if>
+	</xsl:template>
+
+	<!-- Files -->
+
+	<xsl:template match="/C:section" mode="C:files">
+		<div class="menu">
+			<xsl:for-each select="document($C:svn, .)/S:wc-entries/S:entry[@kind='file']">				
+				<xsl:sort select="@name"/>
+				<div class="menu-item">
+					<a href="{@name}"><xsl:value-of select="@name"/></a>
+				</div>
+			</xsl:for-each>
+		</div>
 	</xsl:template>
 
 	<!-- Content -->
@@ -461,6 +476,8 @@
 						<td class="menu">
 							<!-- Menu -->
 							<xsl:apply-templates select="." mode="C:menu"/>
+							<!-- Files -->
+							<xsl:apply-templates select="." mode="C:files"/>
 							<!-- Language -->
 							<xsl:variable name="languages">
 								<div class="menu">
@@ -475,8 +492,8 @@
 								<xsl:apply-templates select="." mode="C:revision"/>
 							</div>
 						</td>
-						<!-- Content -->
 						<td class="content">
+							<!-- Content -->
 							<xsl:apply-templates select="." mode="C:content"/>
 						</td>
 					</tr>
