@@ -3,6 +3,7 @@
 <section 
 	xmlns="http://cbear.berlios.de/cms" 
 	xml:lang="ru"
+	version="0.7"
 	id="cbear_berlios_de"
 	name="C Bear">
 <em>C Bear</em> - набор библиотек и утилит для разных языков программирования и платформ.

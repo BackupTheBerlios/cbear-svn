@@ -232,6 +232,16 @@
 		<xsl:value-of select="@id"/>
 	</xsl:template>
 
+	<!-- Version -->
+
+	<xsl:template match="/C:section" mode="C:version">
+		<xsl:apply-templates select="document($C:path.prior, .)/*" mode="C:version"/>
+	</xsl:template>
+
+	<xsl:template match="/C:section[@version]" mode="C:version">
+		<xsl:value-of select="@version"/>
+	</xsl:template>
+
 	<!-- Menu -->
 
 	<xsl:template match="/C:section" mode="C:menu">
@@ -473,12 +483,8 @@
 	<!-- Revision -->
 
 	<xsl:template match="/C:section" mode="C:revision">
-		<xsl:value-of 
-			select="
-				concat(
-					'Revision:&#160;',
-					document($C:svn, .)/
-						S:wc-entries/S:entry[@name='']/@revision)"/>
+		<xsl:value-of select="
+			document($C:svn, .)/S:wc-entries/S:entry[@name='']/@revision"/>
 	</xsl:template>
 
 	<!-- -->
@@ -528,6 +534,11 @@
 									<xsl:apply-templates select="." mode="C:id"/>
 								</div>
 								<div class="menu-item">
+									<xsl:value-of select="'Version:&#160;'"/>
+									<xsl:apply-templates select="." mode="C:version"/>
+								</div>
+								<div class="menu-item">
+									<xsl:value-of select="'Revision:&#160;'"/>
 									<xsl:apply-templates select="." mode="C:revision"/>
 								</div>
 							</div>
