@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="../cms/html.xsl"?>
 <section xmlns="http://cbear.berlios.de/cms" name="Remote API">
-	<section name="Main Target">
 The system should allow the user to create a programming interface of a 
 particular device type for high level programming languages such as Java, C#, 
 C++. This also should provide a safe way to communicate with the devices by using 
 the defined interfaces. The comunication is actually a Remote Procedure Call 
-(<a href="http://en.wikipedia.org/wiki/Remote_procedure_call">RPC</a>).
-	</section>
+(<a href="Remote procedure call" type="wikipedia">RPC</a>).
 	<section name="Platforms">
 Different operation systems and platforms have different ways to define 
 programming interfaces.
 		<section name="Windows">
 The main program communication system on Windows is <a href=
-"http://en.wikipedia.org/wiki/Component_Object_Model">COM</a> and its 
+"Component Object Model" type="wikipedia">COM</a> and its 
 descendants such as COM+, DCOM, ActiveX. Also <a href=
 "http://en.wikipedia.org/wiki/.NET_Framework">.NET</a> can easily interface to 
 COM interfaces. Most programming languges and systems on Windows can use COM.
 			<section name="Interface Definition Language (IDL)">
-COM has its own <a href=
-"http://en.wikipedia.org/wiki/Interface_definition_language">IDL</a> to define 
-interfaces. It is based on DCE IDL but has a lot of Microsoft specific features. 
-The language is hard to use. Other names are MIDL (Microsoft IDL) and ODL (more 
-strict subset).
+COM has its own <a href="Interface definition language" type="wikipedia">IDL</a> 
+to define interfaces. It is based on DCE IDL but has a lot of Microsoft specific 
+features. The language is hard to use. Other names are MIDL (Microsoft IDL) and 
+ODL (more strict subset).
 			</section>
 			<section name="Binary Representation">
 TLB is a binary representation of COM interfaces.
@@ -35,15 +32,14 @@ supported properly any more because the main priority of Microsoft is .NET.
 			</section>
 		</section>
 		<section name="UNIX, LINUX, Free BSD and MacOS X">
-<a href="http://en.wikipedia.org/wiki/DCE/RPC">DCE/RPC</a> and 
-<a href="http://en.wikipedia.org/wiki/CORBA">CORBA</a>.
+<a href="DCE/RPC" type="wikipedia"/> and <a href="CORBA" type="wikipedia"/>.
 			<section name="Interface Definition Language">
 The CORBA also has its own IDL. However, it is not COM IDL and not DCE IDL.
 			</section>
 		</section>
 		<section name=".NET">
-.NET has its own Run Time Type Information (<a href=
-"http://en.wikipedia.org/wiki/RTTI">RTTI</a>). Since RTTI contains full 
+.NET has its own Run Time Type Information (<a href="RTTI" type="wikipedia"/>). 
+Since RTTI contains full 
 information about types, it contains interface definitions as well. However, 
 .NET can easy understand COM TLB files and use COM servers and DLL libraries.
 		</section>		
@@ -52,7 +48,7 @@ Can use CORBA, COM (on Windows) and also its own systems since Java has its own
 RTTI such as JavaIDL.
 		</section>
 		<section name="XPCOM">
-<a href="http://en.wikipedia.org/wiki/XPCOM">XPCOM</a> is Cross Platform COM 
+<a href="XPCOM" type="XPCOM"/> is Cross Platform COM 
 used in Mozilla browsers. They have their own IDL (XPIDL) which is close to 
 CORBA IDL. The main problem with that, it has GPL like license.
 		</section>
@@ -110,8 +106,8 @@ C# COM server. C# COM clients must use COM TLB. <b>CS</b> is a C# file.
 	<section name="Required Work">
 Firstly, the main requirement is to define an RPC. This defines how high level
 function calls will be serialized. There are a lot of different RPC standards 
-such as DCE RPC, <a href="http://en.wikipedia.org/wiki/MSRPC">MSRPC</a>, 
-<a href="http://en.wikipedia.org/wiki/XML_RPC">XML RPC</a> and others. Because 
+such as DCE RPC, <a href="MSRPC" type="wikipedia"/>, 
+<a href="XML RPC" type="wikipedia"/> and others. Because 
 our devices have limited resources, we can define our own RPC, and not only one. 
 It can also depends on a particular device type and its resources. Different 
 generators are required for different RPC.
@@ -170,7 +166,7 @@ No exceptions.
 };]]></pre>
 		</section>
 		<section name="Primitive Types">
-Serialized in <a href="http://en.wikipedia.org/wiki/Big_endian">big endian</a>.
+Serialized in <a href="big endian" type="wikipedia"/>.
 			<ul>
 				<li>
 					<b>uint8</b> - an 8-bits unsigned integer.
