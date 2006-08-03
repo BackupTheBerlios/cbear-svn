@@ -537,6 +537,45 @@
 		</xsl:if>
 	</xsl:template>
 
+	<xsl:template match="/C:section" mode="C:properties">
+		<div class="menu">
+			<xsl:call-template name="C:property">
+				<xsl:with-param name="name" select="'Id'"/>
+				<xsl:with-param name="value">
+					<xsl:apply-templates select="." mode="C:id"/>
+				</xsl:with-param>
+			</xsl:call-template>
+			<xsl:call-template name="C:property">
+				<xsl:with-param name="name" select="'Type'"/>
+				<xsl:with-param name="value">
+					<xsl:apply-templates select="." mode="C:type"/>
+				</xsl:with-param>
+			</xsl:call-template>
+			<div class="menu-item">
+				<xsl:variable name="date">
+					<xsl:apply-templates select="." mode="C:date"/>
+				</xsl:variable>
+				<xsl:variable name="company">
+					<xsl:apply-templates select="." mode="C:company"/>
+				</xsl:variable>
+				<xsl:value-of select="translate(
+					concat(
+						'Copyright &#169; ', 
+							substring($date, 1, 4), 
+						' ', 
+						$company),
+					' ', 
+					'&#160;')"/>
+			</div>
+			<xsl:call-template name="C:property">
+				<xsl:with-param name="name" select="'Version'"/>
+				<xsl:with-param name="value">
+					<xsl:apply-templates select="." mode="C:version"/>
+				</xsl:with-param>
+			</xsl:call-template>
+		</div>
+	</xsl:template>
+
 	<!-- -->
 	
 	<xsl:template match="/C:section">
@@ -573,43 +612,8 @@
 					<!-- -->
 					<tr class="tr">
 						<td class="menu">
-							<!-- Id -->
-							<div class="menu">
-								<xsl:call-template name="C:property">
-									<xsl:with-param name="name" select="'Id'"/>
-									<xsl:with-param name="value">
-										<xsl:apply-templates select="." mode="C:id"/>
-									</xsl:with-param>
-								</xsl:call-template>
-								<xsl:call-template name="C:property">
-									<xsl:with-param name="name" select="'Type'"/>
-									<xsl:with-param name="value">
-										<xsl:apply-templates select="." mode="C:type"/>
-									</xsl:with-param>
-								</xsl:call-template>
-								<div class="menu-item">
-									<xsl:variable name="date">
-										<xsl:apply-templates select="." mode="C:date"/>
-									</xsl:variable>
-									<xsl:variable name="company">
-										<xsl:apply-templates select="." mode="C:company"/>
-									</xsl:variable>
-									<xsl:value-of select="translate(
-										concat(
-											'Copyright &#169; ', 
-											substring($date, 1, 4), 
-											' ', 
-											$company),
-										' ', 
-										'&#160;')"/>
-								</div>
-								<xsl:call-template name="C:property">
-									<xsl:with-param name="name" select="'Version'"/>
-									<xsl:with-param name="value">
-										<xsl:apply-templates select="." mode="C:version"/>
-									</xsl:with-param>
-								</xsl:call-template>
-							</div>
+							<!-- Properties -->
+							<xsl:apply-templates select="." mode="C:properties"/>
 							<!-- Menu -->
 							<xsl:apply-templates select="." mode="C:menu"/>
 							<!-- Language -->
@@ -624,7 +628,7 @@
 							<!-- Files -->
 							<xsl:apply-templates select="." mode="C:files"/>
 						</td>
-						<td class="content" colspan="2">
+						<td class="content">
 							<!-- Content -->
 							<xsl:apply-templates select="." mode="C:content"/>
 						</td>
