@@ -2,18 +2,18 @@
 <xsl:stylesheet 
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:D="http://cbear.berlios.de/windows/com/device" 
+	xmlns:R="http://cbear.berlios.de/remote"
 	xmlns:C="http://cbear.berlios.de/c">
 
 	<xsl:output method="xml"/>
 
-	<xsl:param name="D:cbear"/>
+	<xsl:param name="R:cbear"/>
 
 	<!-- coclass -->
 
-	<xsl:template match="D:coclass">
+	<xsl:template match="R:coclass">
 		<xsl:param name="body"/>
-		<C:function id="{concat(/D:library/@id, '_device_', @id)}">
+		<C:function id="{concat(/R:library/@id, '_device_', @id)}">
 			<C:id.ref id="void"/>
 			<C:parameter id="_in">
 				<C:id.ref type="_*">
@@ -31,19 +31,19 @@
 
 	<!-- library -->
 
-	<xsl:template match="/D:library">
+	<xsl:template match="/R:library">
 		<xsl:processing-instruction name="xml-stylesheet">
 			<xsl:value-of select="concat(
 				'href=&#34;file:///', 
-				$D:cbear, 
+				$R:cbear, 
 				'cbear.berlios.de/c/html.xsl&#34; type=&#34;text/xsl&#34;')"/>
 		</xsl:processing-instruction>
 		<C:unit id="{concat(@id, '.device')}">
 			<C:h>
-				<xsl:apply-templates select="D:*"/>
+				<xsl:apply-templates select="R:*"/>
 			</C:h>
 			<C:c>
-				<xsl:for-each select="D:coclass">
+				<xsl:for-each select="R:coclass">
 					<xsl:apply-templates select=".">
 						<xsl:with-param name="body">
 							<C:body>
