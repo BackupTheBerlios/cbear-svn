@@ -582,12 +582,20 @@
 									<xsl:apply-templates select="." mode="C:type"/>
 								</div>
 								<div class="menu-item">
-									<xsl:value-of select="'Copyright&#160;&#169;&#160;'"/>
 									<xsl:variable name="date">
 										<xsl:apply-templates select="." mode="C:date"/>
 									</xsl:variable>
-									<xsl:value-of select="concat(substring($date, 1, 4), '&#160;')"/>
-									<xsl:apply-templates select="." mode="C:company"/>
+									<xsl:variable name="company">
+										<xsl:apply-templates select="." mode="C:company"/>
+									</xsl:variable>
+									<xsl:value-of select="translate(
+										concat(
+											'Copyright &#169; ', 
+											substring($date, 1, 4), 
+											' ', 
+											$company),
+										' ', 
+										'&#160;')"/>
 								</div>
 							</div>
 							<!-- Menu -->

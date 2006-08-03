@@ -8,33 +8,37 @@
 	
 <xsl:import href="../../text/main.xsl"/>
 
+<xsl:import href="../../cms/html.xsl"/>
+
 <xsl:output method="text" encoding="urf-8"/>
 
+<!--
 <xsl:param name="rc:root"/>
 <xsl:param name="rc:setup"/>
+-->
 
 <xsl:template match="C:section">
 
 	<xsl:variable name="line" select="'&#10;'"/>	
 
 	<xsl:variable name="company">
-		<xsl:value-of select="document($rc:setup)/setup/company"/>
+		<xsl:apply-templates select="." mode="C:company"/>
 	</xsl:variable>
 
 	<xsl:variable name="product">
-		<xsl:value-of select="document($rc:setup)/setup/name"/>
+		<xsl:value-of select='@name'/>
+	</xsl:variable>
+
+	<xsl:variable name="description">
+		<xsl:value-of select="@title"/>
 	</xsl:variable>
 
 	<xsl:variable name="date">
-		<xsl:value-of select="document(concat($rc:root, '/.svn/entries'))/
-			svn:wc-entries/svn:entry[@name='']/@committed-date"/>
+		<xsl:apply-templates select="." mode="C:date"/>
 	</xsl:variable>
 
 	<xsl:variable name="version">
-		<xsl:value-of select="document($rc:setup)/setup/version/number"/>
-		<xsl:value-of select="'.'"/>
-		<xsl:value-of select="document(concat($rc:root, '/.svn/entries'))/
-			svn:wc-entries/svn:entry[@name='']/@committed-rev"/>
+		<xsl:apply-templates select="." mode="C:version"/>
 	</xsl:variable>
 
 	<xsl:value-of select="concat(
@@ -48,7 +52,7 @@
 			$version, '&#x22;)]', $line,
 		'[assembly: System.Reflection.AssemblyProduct(&#x22;', $product, '&#x22;)]', 
 			$line,
-		'[assembly: System.Reflection.AssemblyTitle(&#x22;', @name, '&#x22;)]', 
+		'[assembly: System.Reflection.AssemblyTitle(&#x22;', $description, '&#x22;)]',
 			$line,
 		'[assembly: System.Reflection.AssemblyVersion(&#x22;', $version, 
 			'&#x22;)]', $line)"/>
