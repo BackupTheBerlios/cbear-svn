@@ -254,6 +254,33 @@
 			document($C:svn, .)/S:wc-entries/S:entry[@name='']/@revision"/>
 	</xsl:template>
 
+	<!-- Date -->
+
+	<xsl:template match="/C:section" mode="C:date">
+		<xsl:variable name="prior">
+			<xsl:apply-templates select="document($C:path.prior, .)/*" mode="C:date"/>
+		</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="string($prior)">
+				<xsl:value-of select="$prior"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="
+					document($C:svn, .)/S:wc-entries/S:entry[@name='']/@committed-date"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<!-- Company -->
+
+	<xsl:template match="/C:section" mode="C:company">
+		<xsl:apply-templates select="document($C:path.prior, .)/*" mode="C:date"/>
+	</xsl:template>
+
+	<xsl:template match="/C:section[@company]" mode="C:company">
+		<xsl:value-of select="@company"/>
+	</xsl:template>
+
 	<!-- Type -->
 
 	<xsl:template match="/C:section" mode="C:type">
@@ -551,6 +578,14 @@
 								<div class="menu-item">
 									<xsl:value-of select="'Type:&#160;'"/>					 		
 									<xsl:apply-templates select="." mode="C:type"/>
+								</div>
+								<div class="menu-item">
+									<xsl:value-of select="'Copyright&#160;&#169;&#160;'"/>
+									<xsl:variable name="date">
+										<xsl:apply-templates select="." mode="C:date"/>
+									</xsl:variable>
+									<xsl:value-of select="concat(substring($date, 1, 4), '&#160;')"/>
+									<xsl:apply-templates select="." mode="C:company"/>
 								</div>
 							</div>
 							<!-- Menu -->

@@ -4,6 +4,7 @@
 	xmlns="http://cbear.berlios.de/cms" 
 	id="cbear_berlios_de"
 	version="0.7"
+	company="C Bear"
 	name="C Bear"
 	title="The C Bear framework is a set of libraries and common utilities.">
 It supports different programming languages and platforms.

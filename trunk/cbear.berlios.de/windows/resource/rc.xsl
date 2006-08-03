@@ -22,16 +22,19 @@
 <xsl:template match="C:section">
 
 	<xsl:variable name="company">
-		<xsl:value-of select="document($rc:setup)/setup/company"/>
+		<xsl:apply-templates select="." mode="C:company"/>
 	</xsl:variable>
 
 	<xsl:variable name="product">
-		<xsl:value-of select="document($rc:setup)/setup/name"/>
+		<xsl:value-of select='@name'/>
+	</xsl:variable>
+
+	<xsl:variable name="description">
+		<xsl:value-of select="@title"/>
 	</xsl:variable>
 
 	<xsl:variable name="date">
-		<xsl:value-of select="document(concat($rc:root, '/.svn/entries'))/
-			svn:wc-entries/svn:entry[@name='']/@committed-date"/>
+		<xsl:apply-templates select="." mode="C:date"/>
 	</xsl:variable>
 
 	<xsl:variable name="version">
@@ -71,7 +74,7 @@
 		'BLOCK &#x22;000004B0&#x22;', $rc:line,
 		'BEGIN', $rc:line,
 		'VALUE &#x22;CompanyName&#x22;, &#x22;', $company, '&#x22;', $rc:line,
-		'VALUE &#x22;FileDescription&#x22;, &#x22;', @name, '&#x22;', $rc:line,
+		'VALUE &#x22;FileDescription&#x22;, &#x22;', $description, '&#x22;', $rc:line,
 		'VALUE &#x22;FileVersion&#x22;, &#x22;', $version, '&#x22;', $rc:line,
 		'VALUE &#x22;InternalName&#x22;, &#x22;', $id, '&#x22;', $rc:line,
 		'VALUE &#x22;LegalCopyright&#x22;, &#x22;\xA9 ', 
