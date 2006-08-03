@@ -8,10 +8,14 @@
 	
 <xsl:import href="../../text/main.xsl"/>
 
+<xsl:import href="../../cms/html.xsl"/>
+
 <xsl:output method="text" encoding="ascii"/>
 
+<!--
 <xsl:param name="rc:root"/>
 <xsl:param name="rc:setup"/>
+-->
 
 <xsl:variable name="rc:line" select="'&#10;'"/>
 
@@ -31,10 +35,11 @@
 	</xsl:variable>
 
 	<xsl:variable name="version">
-		<xsl:value-of select="document($rc:setup)/setup/version/number"/>
-		<xsl:value-of select="'.'"/>
-		<xsl:value-of select="document(concat($rc:root, '/.svn/entries'))/
-			svn:wc-entries/svn:entry[@name='']/@committed-rev"/>
+		<xsl:apply-templates select="." mode="C:version"/>
+	</xsl:variable>
+
+	<xsl:variable name="id">
+		<xsl:apply-templates select="." mode="C:id"/>
 	</xsl:variable>
 
 	<xsl:variable name="type">
@@ -68,10 +73,10 @@
 		'VALUE &#x22;CompanyName&#x22;, &#x22;', $company, '&#x22;', $rc:line,
 		'VALUE &#x22;FileDescription&#x22;, &#x22;', @name, '&#x22;', $rc:line,
 		'VALUE &#x22;FileVersion&#x22;, &#x22;', $version, '&#x22;', $rc:line,
-		'VALUE &#x22;InternalName&#x22;, &#x22;', @id, '&#x22;', $rc:line,
+		'VALUE &#x22;InternalName&#x22;, &#x22;', $id, '&#x22;', $rc:line,
 		'VALUE &#x22;LegalCopyright&#x22;, &#x22;\xA9 ', 
 			substring($date, 1, 4), ' ', $company, '&#x22;', $rc:line,
-		'VALUE &#x22;OriginalFileName&#x22;, &#x22;', @id, '.', @type, '&#x22;', 
+		'VALUE &#x22;OriginalFileName&#x22;, &#x22;', $id, '.', @type, '&#x22;', 
 			$rc:line,
 		'VALUE &#x22;ProductName&#x22;, &#x22;', $product, '&#x22;', $rc:line,
 		'VALUE &#x22;ProductVersion&#x22;, &#x22;', $version, '&#x22;', $rc:line,

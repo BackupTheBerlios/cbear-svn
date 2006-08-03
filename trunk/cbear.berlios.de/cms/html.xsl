@@ -234,12 +234,30 @@
 
 	<!-- Version -->
 
-	<xsl:template match="/C:section" mode="C:version">
-		<xsl:apply-templates select="document($C:path.prior, .)/*" mode="C:version"/>
+	<xsl:template match="/C:section" mode="C:version.user">
+		<xsl:apply-templates 
+			select="document($C:path.prior, .)/*" mode="C:version.user"/>
 	</xsl:template>
 
-	<xsl:template match="/C:section[@version]" mode="C:version">
+	<xsl:template match="/C:section[@version]" mode="C:version.user">
 		<xsl:value-of select="@version"/>
+	</xsl:template>
+
+	<xsl:template match="/C:section" mode="C:version">
+		<xsl:variable name="user">
+			<xsl:apply-templates select="." mode="C:version.user"/>
+		</xsl:variable>
+		<xsl:if test="string($user)!=''">
+			<xsl:value-of select="concat($user, '.')"/>
+		</xsl:if>
+		<xsl:value-of select="
+			document($C:svn, .)/S:wc-entries/S:entry[@name='']/@revision"/>
+	</xsl:template>
+
+	<!-- Type -->
+
+	<xsl:template match="/C:section" mode="C:type">
+		<xsl:value-of select="@type"/>
 	</xsl:template>
 
 	<!-- Menu -->
@@ -480,13 +498,6 @@
 			mode="C:language"/>
 	</xsl:template>
 
-	<!-- Revision -->
-
-	<xsl:template match="/C:section" mode="C:revision">
-		<xsl:value-of select="
-			document($C:svn, .)/S:wc-entries/S:entry[@name='']/@revision"/>
-	</xsl:template>
-
 	<!-- -->
 
 	<xsl:variable name="C:td">
@@ -538,8 +549,8 @@
 									<xsl:apply-templates select="." mode="C:version"/>
 								</div>
 								<div class="menu-item">
-									<xsl:value-of select="'Revision:&#160;'"/>
-									<xsl:apply-templates select="." mode="C:revision"/>
+									<xsl:value-of select="'Type:&#160;'"/>					 		
+									<xsl:apply-templates select="." mode="C:type"/>
 								</div>
 							</div>
 							<!-- Menu -->
