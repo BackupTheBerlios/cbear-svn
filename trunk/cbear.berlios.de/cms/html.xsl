@@ -274,7 +274,7 @@
 	<!-- Company -->
 
 	<xsl:template match="/C:section" mode="C:company">
-		<xsl:apply-templates select="document($C:path.prior, .)/*" mode="C:date"/>
+		<xsl:apply-templates select="document($C:path.prior, .)/*" mode="C:company"/>
 	</xsl:template>
 
 	<xsl:template match="/C:section[@company]" mode="C:company">
@@ -524,6 +524,8 @@
 			select="document($C:languages)/C:languages/C:language"
 			mode="C:language"/>
 	</xsl:template>
+
+	<!-- -->
 
 	<!-- -->
 
