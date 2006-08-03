@@ -133,6 +133,14 @@
 		{
 			padding-right: 20px;
 		}
+		a.disable
+		{
+			color: navy;
+		}
+		span.id
+		{
+			font-family: monospace;
+		}
 	</xsl:param>
 
 	<!-- Language -->
@@ -192,6 +200,38 @@
 		</xsl:for-each>
 	</xsl:template>
 
+	<!-- Id -->
+
+	<xsl:template name="C:id">
+		<xsl:param name="url" select="@url"/>
+		<xsl:choose>
+			<xsl:when test="contains($url, '/')">
+				<xsl:call-template name="C:id">
+					<xsl:with-param name="url" select="substring-after($url, '/')"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="translate($url, '.', '_')"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template match="/C:section" mode="C:id">
+		<xsl:variable name="prior">
+			<xsl:apply-templates select="document($C:path.prior, .)/*" mode="C:id"/>
+		</xsl:variable>
+		<xsl:if test="string($prior)!=''">
+			<xsl:value-of select="concat($prior, '.')"/>
+		</xsl:if>
+		<xsl:for-each select="document($C:svn, .)/S:wc-entries/S:entry[@name='']">
+			<xsl:call-template name="C:id"/>
+		</xsl:for-each>
+	</xsl:template>
+
+	<xsl:template match="/C:section[@id]" mode="C:id">
+		<xsl:value-of select="@id"/>
+	</xsl:template>
+
 	<!-- Menu -->
 
 	<xsl:template match="/C:section" mode="C:menu">
@@ -222,8 +262,8 @@
 							</xsl:for-each>
 						</xsl:when>
 						<xsl:otherwise>
-							<a href="{@name}" style="color: gray">
-								<xsl:value-of select="concat('\', @name)"/>
+							<a href="{@name}" class="disable">
+								<xsl:value-of select="concat(@name, '/')"/>
 							</a>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -240,14 +280,21 @@
 	<!-- Files -->
 
 	<xsl:template match="/C:section" mode="C:files">
-		<div class="menu">
-			<xsl:for-each select="document($C:svn, .)/S:wc-entries/S:entry[@kind='file']">				
+		<xsl:variable name="menu">
+			<xsl:for-each select="
+				document($C:svn, .)/S:wc-entries/S:entry[
+					@kind='file' and substring-before(@name, '.')!='index']">
 				<xsl:sort select="@name"/>
 				<div class="menu-item">
-					<a href="{@name}"><xsl:value-of select="@name"/></a>
+					<a href="{@name}" class="disable"><xsl:value-of select="@name"/></a>
 				</div>
 			</xsl:for-each>
-		</div>
+		</xsl:variable>
+		<xsl:if test="string($menu)!=''">
+			<div class="menu">
+				<xsl:copy-of select="$menu"/>
+			</div>
+		</xsl:if>			
 	</xsl:template>
 
 	<!-- Content -->
@@ -456,6 +503,12 @@
 					<tr>
 						<td colspan="2" class="menu">
 							<xsl:apply-templates select="." mode="C:header"/>
+							<div class="menu">
+								<span class="id">
+									<xsl:value-of select="'Id: '"/>
+									<xsl:apply-templates select="." mode="C:id"/>
+								</span>
+							</div>
 						</td>
 					</tr>
 					<!-- Path -->
@@ -474,10 +527,6 @@
 					<!-- -->
 					<tr class="tr">
 						<td class="menu">
-							<!-- Menu -->
-							<xsl:apply-templates select="." mode="C:menu"/>
-							<!-- Files -->
-							<xsl:apply-templates select="." mode="C:files"/>
 							<!-- Language -->
 							<xsl:variable name="languages">
 								<div class="menu">
@@ -487,6 +536,10 @@
 							<xsl:if test="string($languages)!=''">
 								<xsl:copy-of select="$languages"/>
 							</xsl:if>
+							<!-- Menu -->
+							<xsl:apply-templates select="." mode="C:menu"/>
+							<!-- Files -->
+							<xsl:apply-templates select="." mode="C:files"/>
 							<!-- Revision -->
 							<div class="menu">
 								<xsl:apply-templates select="." mode="C:revision"/>
