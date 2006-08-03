@@ -525,13 +525,19 @@
 			mode="C:language"/>
 	</xsl:template>
 
-	<!-- -->
+	<!-- Property -->
+
+	<xsl:template name="C:property">
+		<xsl:param name="name"/>
+		<xsl:param name="value"/>
+		<xsl:if test="string($value)!=''">
+			<div class="menu-item">
+				<xsl:value-of select="concat($name, ':&#160;', $value)"/>
+			</div>
+		</xsl:if>
+	</xsl:template>
 
 	<!-- -->
-
-	<xsl:variable name="C:td">
-		border: lightgray solid 1px;
-	</xsl:variable>
 	
 	<xsl:template match="/C:section">
 		<html>
@@ -569,18 +575,18 @@
 						<td class="menu">
 							<!-- Id -->
 							<div class="menu">
-								<div class="menu-item">
-									<xsl:value-of select="'Id:&#160;'"/>
-									<xsl:apply-templates select="." mode="C:id"/>
-								</div>
-								<div class="menu-item">
-									<xsl:value-of select="'Version:&#160;'"/>
-									<xsl:apply-templates select="." mode="C:version"/>
-								</div>
-								<div class="menu-item">
-									<xsl:value-of select="'Type:&#160;'"/>					 		
-									<xsl:apply-templates select="." mode="C:type"/>
-								</div>
+								<xsl:call-template name="C:property">
+									<xsl:with-param name="name" select="'Id'"/>
+									<xsl:with-param name="value">
+										<xsl:apply-templates select="." mode="C:id"/>
+									</xsl:with-param>
+								</xsl:call-template>
+								<xsl:call-template name="C:property">
+									<xsl:with-param name="name" select="'Type'"/>
+									<xsl:with-param name="value">
+										<xsl:apply-templates select="." mode="C:type"/>
+									</xsl:with-param>
+								</xsl:call-template>
 								<div class="menu-item">
 									<xsl:variable name="date">
 										<xsl:apply-templates select="." mode="C:date"/>
@@ -597,6 +603,12 @@
 										' ', 
 										'&#160;')"/>
 								</div>
+								<xsl:call-template name="C:property">
+									<xsl:with-param name="name" select="'Version'"/>
+									<xsl:with-param name="value">
+										<xsl:apply-templates select="." mode="C:version"/>
+									</xsl:with-param>
+								</xsl:call-template>
 							</div>
 							<!-- Menu -->
 							<xsl:apply-templates select="." mode="C:menu"/>
