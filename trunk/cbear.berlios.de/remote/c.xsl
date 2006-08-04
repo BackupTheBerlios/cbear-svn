@@ -9,12 +9,24 @@
 
 	<xsl:param name="R:cbear"/>
 
+	<xsl:variable name="R:command.begin" select="2"/>
+
 	<!-- coclass -->
+
+	<xsl:template match="R:coclass" mode="C:id">
+		<xsl:value-of select="concat(/R:library/@id, '_remote_', @id)"/>
+	</xsl:template>
 
 	<xsl:template match="R:coclass">
 		<xsl:param name="body"/>
-		<C:function id="{concat(/R:library/@id, '_device_', @id)}">
+		<xsl:variable name="id">
+			<xsl:apply-templates select="." mode="C:id"/>
+		</xsl:variable>
+		<C:function id="{$id}">
 			<C:id.ref id="void"/>
+			<C:parameter id="_command">
+				<C:id.ref id="char"/>
+			</C:parameter>
 			<C:parameter id="_in">
 				<C:id.ref type="_*">
 					<C:id.ref id="char"/>
@@ -29,6 +41,38 @@
 		</C:function>
 	</xsl:template>
 
+	<!-- uuid -->
+
+	<xsl:template name="R:uuid">
+		<xsl:param name="text" select="@uuid"/>
+		<xsl:if test="string($text)!=''">
+			<xsl:choose>
+				<xsl:when test="substring($text, 1, 1)='-'">
+					<xsl:call-template name="R:uuid">
+						<xsl:with-param 
+							name="text" 
+							select="substring($text, 2)"/>
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>
+					<C:id.ref 
+						type="const" value="{concat('0x', substring($text, 1, 2))}"/>
+					<xsl:call-template name="R:uuid">
+						<xsl:with-param 
+							name="text" 
+							select="substring($text, 3)"/>
+					</xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
+	</xsl:template>
+
+	<!-- method -->
+
+	<xsl:template name="R:method.count">
+		<xsl:value-of select="$R:command.begin + count(preceding::R:method[ancesstor::R:coclass = current()/ancesstor::R:coclass])"/>
+	</xsl:template>
+
 	<!-- library -->
 
 	<xsl:template match="/R:library">
@@ -38,16 +82,94 @@
 				$R:cbear, 
 				'cbear.berlios.de/c/html.xsl&#34; type=&#34;text/xsl&#34;')"/>
 		</xsl:processing-instruction>
-		<C:unit id="{concat(@id, '.device')}">
+		<C:unit id="{concat(@id, '.remote')}">
 			<C:h>
 				<xsl:apply-templates select="R:*"/>
 			</C:h>
 			<C:c>
+				<C:include href="cbear.berlios.de/remote/uuid.h"/>
+				<C:include href="cbear.berlios.de/remote/command1_out.h"/>
 				<xsl:for-each select="R:coclass">
+					<xsl:variable name="id">
+						<xsl:apply-templates select="." mode="C:id"/>
+					</xsl:variable>
+					<xsl:variable name="command1-out" select="concat($id, '_command1_out')"/>
+					<xsl:variable name="interface.count" select="count(.//R:interface)"/>
+					<C:exp>
+						<C:id.ref type=" ">
+							<C:id.ref id="cbear_berlios_de_remote_command1_out"/>
+							<C:id.ref type="=">
+								<C:id.ref type="[]">
+									<C:id.ref id="{$command1-out}"/>
+									<C:id.ref type="const" value="{$interface.count}"/>
+								</C:id.ref>
+								<C:id.ref type="{'{}'}">
+									<xsl:for-each select=".//R:interface">
+										<C:id.ref type="{'{}'}">
+											<C:id.ref type="{'{}'}">
+												<xsl:call-template name="R:uuid"/>
+											</C:id.ref>
+											<C:id.ref type="const" value="{$R:command.begin + count(preceding::R:method)}"/>
+										</C:id.ref>
+									</xsl:for-each>
+								</C:id.ref>
+							</C:id.ref>
+						</C:id.ref>
+					</C:exp>
 					<xsl:apply-templates select=".">
 						<xsl:with-param name="body">
 							<C:body>
 								<C:switch>
+									<C:id.ref id="_command"/>
+									<C:body>
+										<!-- 0 -->
+										<C:case>
+											<C:id.ref type="const" value="0"/>
+										</C:case>
+										<C:exp>
+											<C:id.ref type="=">
+												<C:id.ref type="[]">
+													<C:id.ref id="_out"/>
+													<C:id.ref type="const" value="0"/>
+												</C:id.ref>
+												<C:id.ref type="const" value="{$interface.count}"/>
+											</C:id.ref>
+										</C:exp>
+										<C:break/>
+										<!-- 1 -->
+										<C:case>
+											<C:id.ref type="const" value="1"/>
+										</C:case>
+										<C:exp>
+											<C:id.ref type="=">
+												<C:id.ref type="*_">
+													<C:id.ref type="()_">
+														<C:id.ref type="_*">
+															<C:id.ref id="cbear_berlios_de_remote_command1_out"/>
+														</C:id.ref>
+														<C:id.ref id="_out"/>
+													</C:id.ref>
+												</C:id.ref>
+												<C:id.ref type="[]">
+													<C:id.ref id="{$command1-out}"/>
+													<C:id.ref type="[]">
+														<C:id.ref id="_in"/>
+														<C:id.ref type="const" value="0"/>
+													</C:id.ref>
+												</C:id.ref>
+											</C:id.ref>
+										</C:exp>
+										<C:break/>
+										<!-- method -->
+										<xsl:for-each select=".//R:method">
+											<C:case>
+												<C:id.ref 
+													type="const" 
+													value="{$R:command.begin + count(preceding::R:method)}"/>
+											</C:case>
+											<C:break/>
+										</xsl:for-each>
+									</C:body>
 								</C:switch>
 							</C:body>
 						</xsl:with-param>

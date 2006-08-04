@@ -158,7 +158,7 @@ No exceptions.
 <pre><![CDATA[struct header
 {
 	uint8 in_size_hi; 
-	uint8 out_size; // A size of all [IN] parameters.
+	uint8 in_size; // A size of all [IN] parameters.
 	uint8 out_size_hi; 
 	uint8 out_size; // A size of all [OUT] parameters.
 	uint8 command_hi;
