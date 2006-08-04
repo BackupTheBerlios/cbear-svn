@@ -70,7 +70,10 @@
 	<!-- method -->
 
 	<xsl:template name="R:method.count">
-		<xsl:value-of select="$R:command.begin + count(preceding::R:method[ancesstor::R:coclass = current()/ancesstor::R:coclass])"/>
+		<xsl:value-of select="
+			$R:command.begin + 
+			count(preceding::R:method[
+				ancestor::R:coclass/@id = current()/ancestor::R:coclass/@id])"/>
 	</xsl:template>
 
 	<!-- library -->
@@ -109,7 +112,10 @@
 											<C:id.ref type="{'{}'}">
 												<xsl:call-template name="R:uuid"/>
 											</C:id.ref>
-											<C:id.ref type="const" value="{$R:command.begin + count(preceding::R:method)}"/>
+											<xsl:variable name="method.count">
+												<xsl:call-template name="R:method.count"/>
+											</xsl:variable>
+											<C:id.ref type="const" value="{$method.count}"/>
 										</C:id.ref>
 									</xsl:for-each>
 								</C:id.ref>
@@ -163,9 +169,10 @@
 										<!-- method -->
 										<xsl:for-each select=".//R:method">
 											<C:case>
-												<C:id.ref 
-													type="const" 
-													value="{$R:command.begin + count(preceding::R:method)}"/>
+												<xsl:variable name="method.count">
+													<xsl:call-template name="R:method.count"/>
+												</xsl:variable>
+												<C:id.ref type="const" value="{$method.count}"/>
 											</C:case>
 											<C:break/>
 										</xsl:for-each>
