@@ -6,11 +6,7 @@ extern "C"
 {
 #endif
 
-typedef struct 
-{
-	uint8 high;
-	uint8 low;
-} cbear_berlios_de_remote_uint16;
+typedef unsigned short cbear_berlios_de_remote_uint16;
 
 #ifndef __cplusplus
 }

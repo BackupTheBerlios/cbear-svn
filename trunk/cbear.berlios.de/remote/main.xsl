@@ -9,6 +9,10 @@
 
 	<xsl:param name="R:cbear"/>
 
+	<!-- * -->
+
+	<xsl:template match="*"/>
+
 	<!-- size, * -->
 
 	<xsl:template match="O:*" mode="R:size">
@@ -25,7 +29,11 @@
 
 	<xsl:template match="O:struct" mode="R:size">
 		<R:struct library="{/O:library/@id}" id="{@id}">
-			<xsl:apply-templates select="O:object/O:type.ref" mode="R:size"/>
+			<xsl:for-each select="O:object">
+				<R:object id="{@id}">
+					<xsl:apply-templates select="O:type.ref" mode="R:size"/>
+				</R:object>
+			</xsl:for-each>
 		</R:struct>
 	</xsl:template>
 
@@ -57,15 +65,15 @@
 	</xsl:template>
 
 	<xsl:template match="O:type.ref[@id='BYTE']" mode="R:size">
-		<R:size id="{@id}">1</R:size>
+		<R:size id="cbear_berlios_de_remote_uint8">1</R:size>
 	</xsl:template>
 
 	<xsl:template match="O:type.ref[@id='SHORT']" mode="R:size">
-		<R:size id="{@id}">2</R:size>
+		<R:size id="cbear_berlios_de_remote_int16">2</R:size>
 	</xsl:template>
 
 	<xsl:template match="O:type.ref[@id='USHORT']" mode="R:size">
-		<R:size id="{@id}">2</R:size>
+		<R:size id="cbear_berlios_de_remote_uint16">2</R:size>
 	</xsl:template>
 
 	<xsl:template match="O:type.ref[@id='LONG']" mode="R:size">
@@ -73,7 +81,7 @@
 	</xsl:template>
 
 	<xsl:template match="O:type.ref[@id='ULONG']" mode="R:size">
-		<R:size id="{@id}">4</R:size>
+		<R:size id="cbear_berlios_de_remote_uint32">4</R:size>
 	</xsl:template>
 
 	<xsl:template match="O:type.ref[@id='*']" mode="R:size">
@@ -155,6 +163,23 @@
 			O:library/O:interface[current()/@id=@id]"/>
 	</xsl:template>
 
+	<!-- struct -->
+
+	<xsl:template match="O:typedef">
+		<xsl:apply-templates select="*" mode="R:size"/>
+	</xsl:template>
+
+	<!-- coclass -->
+
+	<xsl:template match="O:coclass">
+		<R:coclass 
+			id="{@id}"
+			library="{../@id}"
+			uuid="{O:attribute[@id='uuid']/O:value}">
+			<xsl:apply-templates select="O:type.ref"/>
+		</R:coclass>
+	</xsl:template>
+
 	<!-- library -->
 		
 	<xsl:template match="/O:library">
@@ -175,13 +200,7 @@
 					'&#34;'),
 				'&#34;')}" 
 			uuid="{O:attribute[@id='uuid']/O:value}">
-			<xsl:for-each select="O:coclass">
-				<R:coclass 
-					id="{@id}" 
-					uuid="{O:attribute[@id='uuid']/O:value}">
-					<xsl:apply-templates select="O:type.ref"/>
-				</R:coclass>
-			</xsl:for-each>
+			<xsl:apply-templates select="O:*"/>
 		</R:library>
 	</xsl:template>
 

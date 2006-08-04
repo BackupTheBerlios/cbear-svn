@@ -55,9 +55,16 @@
 	<xsl:template match="C:include"/>
 
 	<!-- id.ref -->	
+
 	<xsl:template match="C:id.ref[@type='_*']">
 		<xsl:apply-templates select="*"/>
 		<xsl:text>*</xsl:text>
+		<xsl:if test="@memory">
+			<span style="{$C:style.key}">
+				<xsl:value-of select="@memory"/>
+			</span>
+			<xsl:value-of select="' '"/>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="C:id.ref[@type='*_']">
@@ -68,20 +75,33 @@
 	<xsl:template match="C:id.ref[@id]">
 		<span style="{$C:style.id}">
 			<xsl:value-of select="@id"/>
-		</span>		
+		</span>
+		<xsl:if test="@memory">
+			<xsl:value-of select="' '"/>
+			<span style="{$C:style.key}">
+				<xsl:value-of select="@memory"/>
+			</span>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="C:id.ref[@type='()']">
 		<xsl:text>(</xsl:text>
-		<xsl:apply-templates select="*[1]"/>
+		<xsl:apply-templates select="C:id.ref[1]"/>
 		<xsl:text>)</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="C:id.ref[@type='()_']">
 		<xsl:text>(</xsl:text>
-		<xsl:apply-templates select="*[1]"/>
+		<xsl:apply-templates select="C:id.ref[1]"/>
 		<xsl:text>)</xsl:text>
-		<xsl:apply-templates select="*[2]"/>
+		<xsl:apply-templates select="C:id.ref[2]"/>
+	</xsl:template>
+
+	<xsl:template match="C:id.ref[@type='_()']">
+		<xsl:apply-templates select="C:id.ref[1]"/>
+		<xsl:text>(</xsl:text>
+		<xsl:apply-templates select="C:id.ref[2]"/>
+		<xsl:text>)</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="C:id.ref[@type='const']">
@@ -91,34 +111,34 @@
 	</xsl:template>
 
 	<xsl:template match="C:id.ref[@type='=']">
-		<xsl:apply-templates select="*[1]"/>
+		<xsl:apply-templates select="C:id.ref[1]"/>
 		<xsl:text> = </xsl:text>
-		<xsl:apply-templates select="*[2]"/>
+		<xsl:apply-templates select="C:id.ref[2]"/>
 	</xsl:template>
 
 	<xsl:template match="C:id.ref[@type='[]']">
-		<xsl:apply-templates select="*[1]"/>
+		<xsl:apply-templates select="C:id.ref[1]"/>
 		<xsl:text>[</xsl:text>
-		<xsl:apply-templates select="*[2]"/>
+		<xsl:apply-templates select="C:id.ref[2]"/>
 		<xsl:text>]</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="C:id.ref[@type='-&gt;']">
-		<xsl:apply-templates select="*[1]"/>
+		<xsl:apply-templates select="C:id.ref[1]"/>
 		<xsl:text>-&gt;</xsl:text>
-		<xsl:apply-templates select="*[2]"/>
+		<xsl:apply-templates select="C:id.ref[2]"/>
 	</xsl:template>
 
 	<xsl:template match="C:id.ref[@type='.']">
-		<xsl:apply-templates select="*[1]"/>
+		<xsl:apply-templates select="C:id.ref[1]"/>
 		<xsl:text>.</xsl:text>
-		<xsl:apply-templates select="*[2]"/>
+		<xsl:apply-templates select="C:id.ref[2]"/>
 	</xsl:template>
 
 	<xsl:template match="C:id.ref[@type=' ']">
-		<xsl:apply-templates select="*[1]"/>
+		<xsl:apply-templates select="C:id.ref[1]"/>
 		<xsl:value-of select="' '"/>
-		<xsl:apply-templates select="*[2]"/>
+		<xsl:apply-templates select="C:id.ref[2]"/>
 	</xsl:template>
 
 	<xsl:template match="C:id.ref[@type='{}']">
@@ -130,6 +150,45 @@
 			</xsl:if>
 		</xsl:for-each>
 		<xsl:text> }</xsl:text>
+	</xsl:template>
+
+	<!-- struct -->
+	<xsl:template match="C:struct">
+		<xsl:call-template name="T:main.line">
+			<xsl:with-param name="text">
+				<span style="{$C:style.key}">struct</span>
+				<xsl:text> </xsl:text>
+				<span style="{$C:style.id}"><xsl:value-of select="@id"/></span>
+				<xsl:text>;</xsl:text>
+			</xsl:with-param>
+		</xsl:call-template>		
+	</xsl:template>
+
+	<xsl:template match="C:struct[C:body]">
+		<xsl:call-template name="T:main.line">
+			<xsl:with-param name="text">
+				<span style="{$C:style.key}">struct</span>
+				<xsl:text> </xsl:text>
+				<span style="{$C:style.id}"><xsl:value-of select="@id"/></span>
+			</xsl:with-param>
+		</xsl:call-template>
+		<xsl:apply-templates select="C:body">
+			<xsl:with-param name="end" select="'};'"/>
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<!-- typedef -->
+	<xsl:template match="C:typedef">
+		<xsl:call-template name="T:main.line">
+			<xsl:with-param name="text">
+				<span style="{$C:style.key}">typedef</span>
+				<xsl:text> </xsl:text>
+				<xsl:apply-templates select="C:id.ref[1]"/>
+				<xsl:text> </xsl:text>
+				<xsl:apply-templates select="C:id.ref[2]"/>
+				<xsl:text>;</xsl:text>
+			</xsl:with-param>
+		</xsl:call-template>		
 	</xsl:template>
 
 	<!-- exp -->
@@ -182,12 +241,13 @@
 
 	<!-- body -->
 	<xsl:template match="C:body">
+		<xsl:param name="end" select="'}'"/>
 		<xsl:call-template name="T:main.line">
 			<xsl:with-param name="text" select="'{'"/>
 		</xsl:call-template>
 		<xsl:apply-templates select="*"/>
 		<xsl:call-template name="T:main.line">
-			<xsl:with-param name="text" select="'}'"/>
+			<xsl:with-param name="text" select="$end"/>
 		</xsl:call-template>
 	</xsl:template>
 
