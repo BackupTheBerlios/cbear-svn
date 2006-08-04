@@ -75,6 +75,29 @@
 		</C:typedef>
 	</xsl:template>
 
+	<xsl:template match="R:*" mode="R:object">
+		<xsl:param name="id"/>
+		<xsl:variable name="type.id">
+			<xsl:apply-templates select="." mode="R:id"/>
+		</xsl:variable>
+		<C:id.ref id="{$type.id}"/>
+		<xsl:copy-of select="$id"/>
+	</xsl:template>
+
+	<!-- array -->
+
+	<xsl:template match="R:array" mode="R:object">
+		<xsl:param name="id"/>
+		<xsl:apply-templates select="R:*[1]" mode="R:object">
+			<xsl:with-param name="id">
+				<C:id.ref type="[]">
+					<xsl:copy-of select="$id"/>
+					<C:id.ref type="const" value="{count(R:*)}"/>
+				</C:id.ref>
+			</xsl:with-param>
+		</xsl:apply-templates>
+	</xsl:template>
+
 	<!-- struct -->
 
 	<xsl:template match="R:struct">
@@ -86,16 +109,20 @@
 				<xsl:for-each select="R:object">
 					<C:exp>
 						<C:id.ref type=" ">
-							<xsl:variable name="type.id">
-								<xsl:apply-templates select="R:*" mode="R:id"/>
-							</xsl:variable>
-							<C:id.ref id="{$type.id}"/>
-							<C:id.ref id="{@id}"/>
+							<xsl:apply-templates select="R:*" mode="R:object">
+								<xsl:with-param name="id">
+      						<C:id.ref id="{@id}"/>
+								</xsl:with-param>
+							</xsl:apply-templates>
 						</C:id.ref>
 					</C:exp>
 				</xsl:for-each>
 			</C:body>
 		</C:struct>
+		<C:typedef>
+			<C:id.ref type="struct" id="{$id}"/>
+			<C:id.ref id="{$id}"/>
+		</C:typedef>
 	</xsl:template>
 
 	<!-- interface -->
@@ -237,6 +264,9 @@
 											<xsl:apply-templates select="." mode="R:id"/>
 										</xsl:variable>
 										<C:id.ref id="{$method.id}"/>
+										<xsl:for-each select="R:parameter">
+											<C:id.ref type="const" value="0"/>
+										</xsl:for-each>
 									</C:id.ref>
 								</C:exp>
 								<C:break/>
@@ -262,6 +292,10 @@
 				<xsl:apply-templates select="R:coclass" mode="R:header"/>
 			</C:h>
 			<C:c>
+				<C:include href="cbear.berlios.de/remote/uint8.h"/>
+				<C:include href="cbear.berlios.de/remote/uint16.h"/>
+				<C:include href="cbear.berlios.de/remote/uint32.h"/>
+				<C:include href="cbear.berlios.de/remote/int32.h"/>
 				<C:include href="cbear.berlios.de/remote/uuid.h"/>
 				<C:include href="cbear.berlios.de/remote/command1_out.h"/>
 				<xsl:apply-templates select="R:*"/>

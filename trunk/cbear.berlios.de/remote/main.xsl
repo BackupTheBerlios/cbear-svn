@@ -60,8 +60,12 @@
 		</xsl:choose>
 	</xsl:template>
 
+	<xsl:template match="O:type.ref[@id='VARIANT_BOOL']" mode="R:size">
+		<R:size id="char">1</R:size>
+	</xsl:template>
+
 	<xsl:template match="O:type.ref[@id='CHAR']" mode="R:size">
-		<R:size id="{@id}">1</R:size>
+		<R:size id="cbear_berlios_de_remote_int8">1</R:size>
 	</xsl:template>
 
 	<xsl:template match="O:type.ref[@id='BYTE']" mode="R:size">
@@ -77,11 +81,19 @@
 	</xsl:template>
 
 	<xsl:template match="O:type.ref[@id='LONG']" mode="R:size">
-		<R:size id="{@id}">4</R:size>
+		<R:size id="cbear_berlios_de_remote_int32">4</R:size>
 	</xsl:template>
 
 	<xsl:template match="O:type.ref[@id='ULONG']" mode="R:size">
 		<R:size id="cbear_berlios_de_remote_uint32">4</R:size>
+	</xsl:template>
+
+	<xsl:template match="O:type.ref[@id='FLOAT']" mode="R:size">
+		<R:size id="float">4</R:size>
+	</xsl:template>
+
+	<xsl:template match="O:type.ref[@id='DATE']" mode="R:size">
+		<R:size id="double">8</R:size>		
 	</xsl:template>
 
 	<xsl:template match="O:type.ref[@id='*']" mode="R:size">

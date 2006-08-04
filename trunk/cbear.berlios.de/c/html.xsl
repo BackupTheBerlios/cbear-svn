@@ -100,7 +100,10 @@
 	<xsl:template match="C:id.ref[@type='_()']">
 		<xsl:apply-templates select="C:id.ref[1]"/>
 		<xsl:text>(</xsl:text>
-		<xsl:apply-templates select="C:id.ref[2]"/>
+		<xsl:for-each select="C:id.ref[position() &gt; 1]">
+			<xsl:apply-templates select="."/>
+			<xsl:if test="position()!=last()">, </xsl:if>
+		</xsl:for-each>
 		<xsl:text>)</xsl:text>
 	</xsl:template>
 
@@ -150,6 +153,12 @@
 			</xsl:if>
 		</xsl:for-each>
 		<xsl:text> }</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="C:id.ref[@type='struct']">
+		<span style="{$C:style.key}">struct</span>
+		<xsl:text> </xsl:text>
+		<span style="{$C:style.id}"><xsl:value-of select="@id"/></span>
 	</xsl:template>
 
 	<!-- struct -->
