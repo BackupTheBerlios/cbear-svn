@@ -37,6 +37,8 @@
 <xsl:variable name="A:html" select="concat($A:output.file, '.html')"/>
 <xsl:variable name="A:remote.xml" select="concat($A:output.file, '.remote.xml')"/>
 <xsl:variable name="A:remote.c.xml" select="concat($A:output.file, '.remote.c.xml')"/>
+<xsl:variable name="A:remote.h" select="concat($A:output.file, '.remote.h')"/>
+<xsl:variable name="A:remote.c" select="concat($A:output.file, '.remote.c')"/>
 <xsl:variable name="A:odl.cs.xml" select="concat($A:output.file, '.odl.cs.xml')"/>
 <xsl:variable name="A:odl.cs" select="concat($A:output.file, '.odl.cs')"/>
 
@@ -245,6 +247,22 @@
 				'-o ', $A:remote.c.xml, ' ',
 				'xmlns:R=http://cbear.berlios.de/remote ',
 				'R:cbear=', $A:cbear)}"/>
+
+		<B:command
+			name="REMOTE.C.XML to REMOTE.H"
+			text="{concat(
+				$A:nxslt, ' ',
+				$A:remote.c.xml, ' ',
+				$A:cbear, 'cbear.berlios.de/c/h.xsl ',
+				'-o ', $A:remote.h)}"/>
+
+		<B:command
+			name="REMOTE.C.XML to REMOTE.C"
+			text="{concat(
+				$A:nxslt, ' ',
+				$A:remote.c.xml, ' ',
+				$A:cbear, 'cbear.berlios.de/c/c.xsl ',
+				'-o ', $A:remote.c)}"/>
 
 		<B:command
 			name="ODL.XML to ODL.CS.XML"
