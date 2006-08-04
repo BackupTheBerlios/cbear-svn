@@ -19,7 +19,7 @@
 <xsl:template name="txt:main.line">
 	<xsl:param name="text"/>
 	<xsl:apply-templates select="ancestor::*" mode="txt:main.indent"/>
-	<xsl:copy-of select="$text"/>
+	<xsl:copy-of select="$text"/>	
 	<xsl:text>&#10;</xsl:text>
 </xsl:template>
 

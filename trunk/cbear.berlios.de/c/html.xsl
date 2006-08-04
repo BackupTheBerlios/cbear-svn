@@ -154,14 +154,17 @@
 
 	<!-- case -->
 	<xsl:template match="C:case">
-		<xsl:call-template name="T:main.line">
-			<xsl:with-param name="text">
-				<span style="{$C:style.key}">case</span>
-				<xsl:text> </xsl:text>
-				<xsl:apply-templates select="*"/>
-				<xsl:text>:</xsl:text>
-			</xsl:with-param>
-		</xsl:call-template>		
+		<xsl:variable name="text">
+			<span style="{$C:style.key}">case</span>
+			<xsl:text> </xsl:text>
+			<xsl:apply-templates select="*"/>
+			<xsl:text>:</xsl:text>
+		</xsl:variable>
+		<xsl:for-each select="..">
+			<xsl:call-template name="T:main.line">
+				<xsl:with-param name="text" select="$text"/>
+			</xsl:call-template>		
+		</xsl:for-each>
 	</xsl:template>
 
 	<!-- switch -->
