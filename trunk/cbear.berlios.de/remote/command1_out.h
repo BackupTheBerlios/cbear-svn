@@ -1,9 +1,9 @@
 #ifndef CBEAR_BERLIOS_DE_REMOTE_COMMAND1_OUT_H_INCLUDED
 #define CBEAR_BERLIOS_DE_REMOTE_COMMAND1_OUT_H_INCLUDED
 
-#include <cbear.berlios.de/remoter/uuid.h>
+#include <cbear.berlios.de/remote/uuid.h>
 
-#ifndef __cplusplus
+#ifdef __cplusplus
 extern "C"
 {
 #endif
@@ -11,10 +11,10 @@ extern "C"
 typedef struct 
 {
 	cbear_berlios_de_remote_uuid uuid;
-	uint8 pointer;
+	cbear_berlios_de_remote_uint8 pointer;
 } cbear_berlios_de_remote_command1_out;
 
-#ifndef __cplusplus
+#ifdef __cplusplus
 }
 #endif
 

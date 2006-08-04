@@ -166,7 +166,15 @@
 				'cbear.berlios.de/windows/com/device/html.xsl&#34; type=&#34;text/xsl&#34;')"/>
 		</xsl:processing-instruction>
 -->
-		<R:library id="{@id}" uuid="{O:attribute[@id='uuid']/O:value}">
+		<R:library 
+			id="{substring-before(
+				substring-after(
+					O:attribute[
+						@id='custom' and 
+						O:value[1]='0F21F359-AB84-41E8-9A78-36D110E6D2F9']/O:value[2], 
+					'&#34;'),
+				'&#34;')}" 
+			uuid="{O:attribute[@id='uuid']/O:value}">
 			<xsl:for-each select="O:coclass">
 				<R:coclass 
 					id="{@id}" 

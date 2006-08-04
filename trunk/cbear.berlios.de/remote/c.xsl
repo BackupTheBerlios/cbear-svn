@@ -14,7 +14,8 @@
 	<!-- coclass -->
 
 	<xsl:template match="R:coclass" mode="C:id">
-		<xsl:value-of select="concat(/R:library/@id, '_remote_', @id)"/>
+		<xsl:value-of select="concat(
+			translate(/R:library/@id, '.', '_'), '_remote_', @id)"/>
 	</xsl:template>
 
 	<xsl:template match="R:coclass">
