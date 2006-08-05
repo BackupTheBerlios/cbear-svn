@@ -8,9 +8,10 @@
 	xmlns:S="svn:"
 	exclude-result-prefixes="C S">
 
+	<xsl:output method="xml" indent="no"/>
+
 	<xsl:param name="C:extension" select="'xml'"/>
 	<xsl:param name="C:languages" select="'languages.xml'"/>
-
 
 	<xsl:variable name="C:svn1" select="'_svn/entries'"/>
 	<xsl:variable name="C:svn2" select="'.svn/entries'"/>

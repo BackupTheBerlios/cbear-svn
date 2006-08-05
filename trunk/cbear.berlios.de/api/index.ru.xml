@@ -4,7 +4,7 @@
 	xmlns="http://cbear.berlios.de/cms" 
 	name="API" 
 	title="Application Programming Interface"
-	xml:lang="ru">	
+	xml:lang="ru">
 	<ul>
 		<li>
 XML Schema <a href="main.xsd"/>. 
