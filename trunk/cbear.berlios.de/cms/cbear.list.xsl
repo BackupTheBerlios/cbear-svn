@@ -20,7 +20,7 @@
 			name="C Bear Build" 
 			log="_list.log.xml"
 			stylesheet="{concat(
-				'file:///', $C:cbear, 'cbear.berlios.de/bat/html.xsl')}">
+				$C:cbear, 'cbear.berlios.de/bat/html.xsl')}">
 			<xsl:apply-templates select="document($C:svn, .)/*/*"/>
 			<xsl:variable name="id">
 				<xsl:apply-templates select="." mode="C:id"/>
