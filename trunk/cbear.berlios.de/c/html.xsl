@@ -161,6 +161,12 @@
 		<span style="{$C:style.id}"><xsl:value-of select="@id"/></span>
 	</xsl:template>
 
+	<xsl:template match="C:id.ref[@type='+']">
+		<xsl:apply-templates select="C:id.ref[1]"/>
+		<xsl:text>+</xsl:text>
+		<xsl:apply-templates select="C:id.ref[2]"/>		
+	</xsl:template>
+
 	<!-- struct -->
 	<xsl:template match="C:struct">
 		<xsl:call-template name="T:main.line">

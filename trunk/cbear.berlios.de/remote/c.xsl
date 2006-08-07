@@ -23,6 +23,12 @@
 
 	<xsl:template match="*"/>
 
+	<xsl:template match="*" mode="R:h">
+		<xsl:apply-templates select="."/>
+	</xsl:template>
+
+	<xsl:template match="*" mode="R:c"/>
+
 	<!-- uuid -->
 
 	<xsl:template name="R:uuid">
@@ -137,12 +143,10 @@
 				<xsl:for-each select="R:parameter">
 					<C:parameter id="{concat('_', position())}">
 						<C:id.ref type="_*">
-							<xsl:for-each select="R:*[@id]">
-								<xsl:variable name="type.id">
-									<xsl:apply-templates select="." mode="R:id"/>
-								</xsl:variable>
-								<C:id.ref id="{$type.id}" memory="xdata"/>
-							</xsl:for-each>
+							<xsl:variable name="type.id">
+								<xsl:apply-templates select="R:*[@id]" mode="R:id"/>
+							</xsl:variable>
+							<C:id.ref id="{$type.id}" memory="xdata"/>
 						</C:id.ref>
 					</C:parameter>
 				</xsl:for-each>
@@ -152,7 +156,7 @@
 
 	<!-- coclass -->
 
-	<xsl:template match="R:coclass" mode="R:header">
+	<xsl:template match="R:coclass" mode="R:h">
 		<xsl:param name="body"/>
 		<xsl:variable name="id">
 			<xsl:apply-templates select="." mode="R:id"/>
@@ -176,7 +180,7 @@
 		</C:function>
 	</xsl:template>
 
-	<xsl:template match="R:coclass">
+	<xsl:template match="R:coclass" mode="R:c">
 		<xsl:variable name="id">
 			<xsl:apply-templates select="." mode="R:id"/>
 		</xsl:variable>
@@ -206,7 +210,7 @@
 				</C:id.ref>
 			</C:id.ref>
 		</C:exp>
-		<xsl:apply-templates select="." mode="R:header">
+		<xsl:apply-templates select="." mode="R:h">
 			<xsl:with-param name="body">
 				<C:body>
 					<C:switch>
@@ -265,7 +269,25 @@
 										</xsl:variable>
 										<C:id.ref id="{$method.id}"/>
 										<xsl:for-each select="R:parameter">
-											<C:id.ref type="const" value="0"/>
+											<C:id.ref type="()_">
+												<xsl:variable name="type.id">
+													<xsl:apply-templates select="R:*[@id]" mode="R:id"/>
+												</xsl:variable>
+												<C:id.ref type="_*">
+													<C:id.ref id="{$type.id}" memory="xdata"/>												
+												</C:id.ref>
+												<C:id.ref type="()">
+													<xsl:for-each select="R:out|R:in">
+														<xsl:variable name="io" select="local-name()"/>
+														<C:id.ref type="+">
+															<C:id.ref id="{concat('_', $io)}"/>
+															<C:id.ref 
+																type="const" 
+																value="{sum(../preceding-sibling::R:parameter[local-name(R:*)=$io]//R:size)}"/>
+														</C:id.ref>
+													</xsl:for-each>														
+												</C:id.ref>
+											</C:id.ref>
 										</xsl:for-each>
 									</C:id.ref>
 								</C:exp>
@@ -289,16 +311,16 @@
 		</xsl:processing-instruction>
 		<C:unit id="{concat(@id, '.remote')}">
 			<C:h>
-				<xsl:apply-templates select="R:coclass" mode="R:header"/>
-			</C:h>
-			<C:c>
 				<C:include href="cbear.berlios.de/remote/uint8.h"/>
 				<C:include href="cbear.berlios.de/remote/uint16.h"/>
 				<C:include href="cbear.berlios.de/remote/uint32.h"/>
 				<C:include href="cbear.berlios.de/remote/int32.h"/>
 				<C:include href="cbear.berlios.de/remote/uuid.h"/>
 				<C:include href="cbear.berlios.de/remote/command1_out.h"/>
-				<xsl:apply-templates select="R:*"/>
+				<xsl:apply-templates select="R:*" mode="R:h"/>
+			</C:h>
+			<C:c>
+				<xsl:apply-templates select="R:*" mode="R:c"/>
 			</C:c>
 		</C:unit>
 	</xsl:template>
