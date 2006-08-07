@@ -477,13 +477,26 @@
 		<xsl:value-of select="."/>
 	</xsl:template>
 
-	<xsl:template match="C:*" mode="C:content.source">
+	<xsl:template match="comment()" mode="C:content.source">
+		<xsl:value-of select="concat('&lt;!--', ., '--&gt;')"/>
+	</xsl:template>
+
+	<xsl:template match="C:*" mode="C:content.source.begin">
 		<xsl:value-of select="concat('&lt;', local-name())"/>
 		<xsl:for-each select="@*">
 			<xsl:value-of select="concat(' ', local-name(), '=&#34;', ., '&#34;')"/>
 		</xsl:for-each>
+	</xsl:template>
+
+	<xsl:template match="C:*" mode="C:content.source">
+		<xsl:apply-templates select="." mode="C:content.source.begin"/>
+		<xsl:value-of select="'/&gt;'"/>
+	</xsl:template>
+
+	<xsl:template match="C:*[*|text()|comment()]" mode="C:content.source">
+		<xsl:apply-templates select="." mode="C:content.source.begin"/>
 		<xsl:value-of select="'&gt;'"/>
-		<xsl:apply-templates select="*|text()" mode="C:content.source"/>
+		<xsl:apply-templates select="*|text()|comment()" mode="C:content.source"/>
 		<xsl:value-of select="concat('&lt;/',local-name(), '&gt;')"/>
 	</xsl:template>
 
@@ -499,7 +512,7 @@
 				<xsl:apply-templates select="@title" mode="C:content.content"/>
 				<xsl:if test="@source='yes'">
 					<pre>
-						<xsl:apply-templates select="*|text()" mode="C:content.source"/>
+						<xsl:apply-templates select="*|text()|comment()" mode="C:content.source"/>
 					</pre>
 				</xsl:if>
 				<xsl:apply-templates select="." mode="C:content.content"/>
