@@ -417,7 +417,7 @@
 					<xsl:value-of select="$name"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:apply-templates select="*|text()" mode="C:content"/>
+					<xsl:apply-templates select="." mode="C:content.content"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</a>
@@ -473,6 +473,20 @@
 		</xsl:apply-templates>		
 	</xsl:template>
 
+	<xsl:template match="text()" mode="C:content.source">
+		<xsl:value-of select="."/>
+	</xsl:template>
+
+	<xsl:template match="C:*" mode="C:content.source">
+		<xsl:value-of select="concat('&lt;', local-name())"/>
+		<xsl:for-each select="@*">
+			<xsl:value-of select="concat(' ', local-name(), '=&#34;', ., '&#34;')"/>
+		</xsl:for-each>
+		<xsl:value-of select="'&gt;'"/>
+		<xsl:apply-templates select="*|text()" mode="C:content.source"/>
+		<xsl:value-of select="concat('&lt;/',local-name(), '&gt;')"/>
+	</xsl:template>
+
 	<xsl:template match="C:section" mode="C:content">
 		<xsl:variable name="number">
 			<xsl:apply-templates select="." mode="C:content.number"/>
@@ -483,6 +497,11 @@
 			<h2><xsl:value-of select="concat($number, ' ', @name)"/></h2>
 			<div class="content-section-content">
 				<xsl:apply-templates select="@title" mode="C:content.content"/>
+				<xsl:if test="@source='yes'">
+					<pre>
+						<xsl:apply-templates select="*|text()" mode="C:content.source"/>
+					</pre>
+				</xsl:if>
 				<xsl:apply-templates select="." mode="C:content.content"/>
 			</div>
 		</div>
