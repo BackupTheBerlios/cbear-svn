@@ -90,7 +90,8 @@ public:
 	hresult::internal_type __stdcall QueryInterface(
 		const uuid::internal_type &U, void **PP)
 	{
-		iunknown &P = iunknown::cpp_out(reinterpret_cast<iunknown::c_out_t>(PP));
+		iunknown_t &P = iunknown_t::cpp_out(
+			reinterpret_cast<iunknown_t::c_out_t>(PP));
 		P = this->interface_list_t::query_interface(uuid::cpp_in(&U));
 		return P ? hresult::s_ok: hresult::e_nointerface;
 	}

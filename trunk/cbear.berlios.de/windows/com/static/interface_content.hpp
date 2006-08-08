@@ -31,13 +31,13 @@ protected:
 		{
 		}
 	};
-	iunknown::move_t query_interface(const uuid &U) throw()
+	iunknown_t::move_t query_interface(const uuid &U) throw()
 	{
 		if(uuid::of< ::IUnknown>()==U)
 		{
-			return move::copy(iunknown::cpp_in(static_cast< ::IUnknown *>(this)));
+			return move::copy(iunknown_t::cpp_in(static_cast< ::IUnknown *>(this)));
 		}
-		return iunknown::move_t();
+		return iunknown_t::move_t();
 	}
 };
 

@@ -23,7 +23,7 @@ class interface_content<T, B, ::IClassFactory>:
 public:
 
 	hresult::internal_type __stdcall CreateInstance(
-		internal_result<in, iunknown>::type Outer, 
+		internal_result<in, iunknown_t>::type Outer, 
 		const uuid::c_t &Uuid, 
 		void **ppObject)
 	{

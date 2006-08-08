@@ -21,9 +21,9 @@ class interface_list:
 protected:
 	typedef interface_<T, typename L::front::type> interface_t;
 	typedef interface_list<T, typename L::pop_front::type> pop_front_t;
-	iunknown::move_t query_interface(const uuid &U) throw()
+	iunknown_t::move_t query_interface(const uuid &U) throw()
 	{
-		iunknown::move_t R = this->interface_t::query_interface(U);
+		iunknown_t::move_t R = this->interface_t::query_interface(U);
 		if(*R) 
 		{
 			return R;
@@ -36,9 +36,9 @@ template<class T>
 class interface_list<T, meta::list>
 {
 protected:
-	iunknown::move_t query_interface(const uuid &) throw()
+	iunknown_t::move_t query_interface(const uuid &) throw()
 	{
-		return iunknown::move_t();
+		return iunknown_t::move_t();
 	}
 };
 

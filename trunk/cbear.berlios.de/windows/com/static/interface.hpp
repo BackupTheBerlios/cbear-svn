@@ -18,11 +18,11 @@ class interface_: public interface_content<T, B, I>
 private:
 	typedef interface_content<T, B, I> base_t;
 protected:
-	iunknown::move_t query_interface(const uuid &U) throw()
+	iunknown_t::move_t query_interface(const uuid &U) throw()
 	{
 		if(uuid::of<I>()==U)
 		{
-			return move::copy(iunknown::cpp_in(static_cast<I *>(this)));
+			return move::copy(iunknown_t::cpp_in(static_cast<I *>(this)));
 		}
 		return base_t::query_interface(U);
 	}

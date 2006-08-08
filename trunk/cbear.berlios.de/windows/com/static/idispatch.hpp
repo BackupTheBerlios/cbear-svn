@@ -39,7 +39,7 @@ public:
 	{
 		// parameters:
 		const uint_t &N = c::cpp_in<uint_t>(N_);
-		itypeinfo &P = c::cpp_out<itypeinfo>(P_);
+		itypeinfo_t &P = c::cpp_out<itypeinfo_t>(P_);
 		//
 		if(N != 0) return hresult::disp_e_badindex;
 		P = scoped_type_info<B>::typeinfo();

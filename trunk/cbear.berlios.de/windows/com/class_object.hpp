@@ -18,7 +18,7 @@ class class_object
 public:
 	class_object(
 		const uuid &Uuid, 
-		const iunknown &Unk, 
+		const iunknown_t &Unk, 
 		const clsctx &Clsctx, 
 		const regcls &Regcls)
 	{

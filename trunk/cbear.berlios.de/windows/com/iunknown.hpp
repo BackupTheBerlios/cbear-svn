@@ -11,7 +11,7 @@ namespace windows
 namespace com
 {
 
-typedef pointer< ::IUnknown> iunknown;
+typedef pointer< ::IUnknown> iunknown_t;
 
 }
 }

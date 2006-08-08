@@ -37,7 +37,7 @@ class basic_interface_info: public intrusive::node<basic_interface_info>
 {
 public:
 	virtual const com::uuid &get_uuid() = 0;
-	virtual iunknown::c_in_t get_pointer() = 0;
+	virtual iunknown_t::c_in_t get_pointer() = 0;
 };
 
 template<class Interface>
@@ -69,7 +69,8 @@ protected:
 	hresult::internal_type query_interface(
 		const uuid::c_t &Uuid, void **PP)
 	{
-		iunknown &P = iunknown::cpp_out(reinterpret_cast<iunknown::c_out_t>(PP));
+		iunknown_t &P = iunknown_t::cpp_out(
+			reinterpret_cast<iunknown_t::c_out_t>(PP));
 		for(
 			range::sub_range<list_type>::type R(this->List); 
 			!R.empty(); 
@@ -77,7 +78,7 @@ protected:
 		{
 			if(*R.front().get_uuid().c_in()==Uuid)
 			{
-				P = iunknown::cpp_in(R.front().get_pointer());
+				P = iunknown_t::cpp_in(R.front().get_pointer());
 				return hresult::s_ok;
 			}
 		}
@@ -117,7 +118,7 @@ protected:
 		return static_cast<implementation<Base, Interface> *>(this);
 	}
 private:
-	iunknown::c_in_t get_pointer() 
+	iunknown_t::c_in_t get_pointer() 
 	{ 
 		return static_cast<Interface *>(this); 
 	}
@@ -125,7 +126,7 @@ private:
 
 template<class Base, class Interface>
 class implementation: 
-	public implementation_base<Base, Interface, iunknown::c_in_t>
+	public implementation_base<Base, Interface, iunknown_t::c_in_t>
 {
 };
 
@@ -160,7 +161,7 @@ class implementation<Base, ::IClassFactory>:
 {
 public:
 	hresult::internal_type __stdcall CreateInstance(
-		internal_result<in, iunknown>::type Outer, 
+		internal_result<in, iunknown_t>::type Outer, 
 		const uuid::c_t &Uuid, 
 		void **ppObject)
 	{
