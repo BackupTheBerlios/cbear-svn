@@ -84,9 +84,9 @@ class pointer_content<Base, ::ITypeLib>:
 {
 public:
 	template<class Interface>
-	itypeinfo gettypeinfoofguid() const
+	itypeinfo_t gettypeinfoofguid() const
 	{
-		itypeinfo Result;
+		itypeinfo_t Result;
 		exception::throw_unless(this->reference().GetTypeInfoOfGuid(
 			*uuid::of<Interface>().c_in(),
 			com::internal<out>(Result)));

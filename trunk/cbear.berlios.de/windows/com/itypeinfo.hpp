@@ -11,7 +11,7 @@ namespace windows
 namespace com
 {
 
-typedef pointer< ::ITypeInfo> itypeinfo;
+typedef pointer< ::ITypeInfo> itypeinfo_t;
 
 template<class T>
 class library_info;
@@ -24,13 +24,13 @@ public:
 	{
 		Value = library_info<T>::type::typelib().gettypeinfoofguid<T>();
 	}
-	static const itypeinfo &typeinfo() { return Value; }
+	static const itypeinfo_t &typeinfo() { return Value; }
 private:
-	static itypeinfo Value;
+	static itypeinfo_t Value;
 };
 
 template<class T>
-itypeinfo scoped_type_info<T>::Value;
+itypeinfo_t scoped_type_info<T>::Value;
 
 }
 }

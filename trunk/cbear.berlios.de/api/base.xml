@@ -162,4 +162,16 @@ See <html:a href="http://cbear.berlios.de/api"
 	</pragma>
 </interface>
 
+<interface id="itypeinfo">
+	<pragma>
+		<com.idl:alias id="ITypeInfo"/>
+	</pragma>
+</interface>
+
+<interface id="itypelib2">
+	<pragma>
+		<com.idl:alias id="ITypeLib2"/>
+	</pragma>
+</interface>
+
 </library>

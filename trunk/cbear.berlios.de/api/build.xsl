@@ -14,7 +14,10 @@
 <xsl:param name="A:output" select="/A:library/A:config/A:output"/>
 <xsl:param name="A:cbear" select="/A:library/A:config/A:cbear"/>
 <xsl:param name="A:nxslt" select="/A:library/A:config/A:nxslt"/>
+<!--
 <xsl:param name="A:vc.var" select="/A:library/A:config/A:vc.var"/>
+-->
+<xsl:param name="A:psdk" select="/A:library/A:config/A:psdk"/>
 <xsl:param name="A:tlbimp" select="/A:library/A:config/A:tlbimp"/>
 <xsl:param name="A:dotnet.key" select="/A:library/A:config/A:dotnet.key"/>
 
@@ -115,8 +118,8 @@
 		stylesheet="{concat('file:///', $A:cbear, 'cbear.berlios.de/bat/html.xsl')}">
 
 		<B:command
-			name="VC enviroment variables"	
-			text="{$A:vc.var}"/>
+			name="PSDK enviroment variables"	
+			text="{concat('call &#34;', $A:psdk, 'setenv.cmd&#34;')}"/>
 
 		<B:command
 			name="Make output dir"
@@ -146,6 +149,7 @@
 			text="{concat(
 				'midl /W4 /robust /error all /nologo /env win32 ', 
 				'/I ', $A:output, ' ',
+				'/I &#34;', $A:psdk, 'lib&#34; ',
 				'/tlb ', $A:tlb, ' ',
 				$A:odl)}"/>
 
@@ -162,6 +166,7 @@
 			text="{concat(
 				'midl /W4 /robust /error all /nologo /env win32 ', 
 				'/I ', $A:output, ' ',
+				'/I &#34;', $A:psdk, 'lib&#34; ',
 				'/tlb ', $A:strong.tlb, ' ',
 				'/header ', $A:h, ' ',
 				'/iid ', $A:iid, ' ',

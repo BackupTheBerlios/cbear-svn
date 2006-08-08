@@ -35,7 +35,7 @@ public:
 	::HRESULT __stdcall GetTypeInfo(
 		c::in_t<uint_t>::type N_, 
 		c::in_t<lcid_t>::type, 
-		itypeinfo::c_out_t P_)
+		itypeinfo_t::c_out_t P_)
 	{
 		// parameters:
 		const uint_t &N = c::cpp_in<uint_t>(N_);

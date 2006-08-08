@@ -36,7 +36,7 @@ public:
 	hresult::internal_type __stdcall GetTypeInfo(
 		uint_t iTInfo,
 		lcid_t,
-		internal_result<out, itypeinfo>::type ppTInfo)
+		internal_result<out, itypeinfo_t>::type ppTInfo)
 	{
 		if(iTInfo != 0) return hresult::disp_e_badindex;
 		wrap<out, itypeinfo>(ppTInfo) = scoped_type_info<Base>::typeinfo();
