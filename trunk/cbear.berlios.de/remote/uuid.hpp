@@ -1,7 +1,7 @@
 #ifndef CBEAR_BERLIOS_DE_REMOTE_UUID_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_REMOTE_UUID_HPP_INCLUDED
 
-#include <cbear_berlios_de/windows/com/uuid.hpp>
+#include <cbear.berlios.de/windows/com/uuid.hpp>
 
 namespace cbear_berlios_de
 {
