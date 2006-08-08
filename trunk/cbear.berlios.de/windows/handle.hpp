@@ -189,10 +189,10 @@ public:
 	class const_
 	{
 	public:
+		static const dword_t value = X;
 		operator ioctl() const { return ioctl(X); }
 	};
 
-private:
 	explicit ioctl(dword_t X): base_t(X) {}
 };
 

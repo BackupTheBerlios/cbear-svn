@@ -106,6 +106,11 @@ public:
 
 	typedef wrap::internal_type internal_type;
 
+	com::uuid &InterfaceClassGuid()
+	{
+		return com::uuid::cpp_in_out(&this->internal().InterfaceClassGuid);
+	}
+
 	sp_device_interface_data() 
 	{ 
 		this->internal().cbSize = sizeof(internal_type); 

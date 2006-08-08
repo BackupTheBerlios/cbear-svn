@@ -185,7 +185,8 @@
 				'/out:', $A:dotnet.dll, ' ')"/>
 			<xsl:for-each select="A:using">
 				<xsl:for-each 
-					select="document(@href, .)/A:library[@id!='cbear_berlios_de.api.base']">
+					select="document(@href, .)/A:library[
+						substring(@id, 1, 20)!='cbear_berlios_de.api']">
 					<xsl:value-of select="concat('/reference:', $A:output, @id, '.dotnet.dll ')"/>
 				</xsl:for-each>
 			</xsl:for-each>
