@@ -640,11 +640,10 @@
 							</td>
 						</tr>
 					</xsl:if>
-					<!--
 					<tr class="tr">
 						<td class="menu">
-							<!- - Properties - ->
 							<xsl:apply-templates select="." mode="C:properties"/>
+<!--
 							<!- - Menu - ->
 							<xsl:apply-templates select="." mode="C:menu"/>
 							<!- - Language - ->
@@ -658,13 +657,15 @@
 							</xsl:if>
 							<!- - Files - ->
 							<xsl:apply-templates select="." mode="C:files"/>
+-->
 						</td>
+<!--
 						<td class="content">
 							<!- - Content - ->
 							<xsl:apply-templates select="." mode="C:content"/>
 						</td>
-					</tr>
 -->
+					</tr>
 				</table>
 			</body>
 		</html>
