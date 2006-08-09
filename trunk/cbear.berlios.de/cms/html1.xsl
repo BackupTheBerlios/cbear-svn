@@ -268,8 +268,10 @@
 				<xsl:value-of select="$prior"/>
 			</xsl:when>
 			<xsl:otherwise>
+<!--
 				<xsl:value-of select="
 					document($C:svn, .)/S:wc-entries/S:entry[@name='']/@committed-date"/>
+-->
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
