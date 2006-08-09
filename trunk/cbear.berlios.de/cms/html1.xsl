@@ -584,7 +584,6 @@
 					<xsl:apply-templates select="." mode="C:type"/>
 				</xsl:with-param>
 			</xsl:call-template>
-<!--
 			<div class="menu-item">
 				<xsl:variable name="date">
 					<xsl:apply-templates select="." mode="C:date"/>
@@ -601,7 +600,6 @@
 					' ', 
 					'&#160;')"/>
 			</div>
--->
 			<xsl:call-template name="C:property">
 				<xsl:with-param name="name" select="'Version'"/>
 				<xsl:with-param name="value">
