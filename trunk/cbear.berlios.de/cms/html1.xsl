@@ -588,7 +588,9 @@
 			</xsl:call-template>
 			<div class="menu-item">
 				<xsl:variable name="date">
+<!--
 					<xsl:apply-templates select="." mode="C:date"/>
+-->
 				</xsl:variable>
 <!--
 				<xsl:variable name="company">
