@@ -629,6 +629,7 @@
 			</head>
 			<body>
 				<table class="main">
+<!--
 					<tr>
 						<td colspan="2" class="menu">
 							<xsl:apply-templates select="." mode="C:header"/>
@@ -646,6 +647,7 @@
 							</td>
 						</tr>
 					</xsl:if>
+-->
 					<tr class="tr">
 						<td class="menu">
 							<xsl:apply-templates select="." mode="C:properties"/>
