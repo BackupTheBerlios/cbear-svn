@@ -601,13 +601,13 @@
 					' ', 
 					'&#160;')"/>
 			</div>
+-->
 			<xsl:call-template name="C:property">
 				<xsl:with-param name="name" select="'Version'"/>
 				<xsl:with-param name="value">
 					<xsl:apply-templates select="." mode="C:version"/>
 				</xsl:with-param>
 			</xsl:call-template>
--->
 		</div>
 	</xsl:template>
 
