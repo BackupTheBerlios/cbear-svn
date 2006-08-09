@@ -622,15 +622,14 @@
 				</style>
 			</head>
 			<body>
-<!--
 				<table class="main">
-					<!- - Header - ->
+					<!-- Header -->
 					<tr>
 						<td colspan="2" class="menu">
 							<xsl:apply-templates select="." mode="C:header"/>
 						</td>
 					</tr>
-					<!- - Path - ->
+					<!-- Path -->
 					<xsl:variable name="path">
 						<xsl:apply-templates select="." mode="C:path"/>
 					</xsl:variable>
@@ -643,14 +642,14 @@
 							</td>
 						</tr>
 					</xsl:if>
-					<!- - - ->
+					<!-- -->
 					<tr class="tr">
 						<td class="menu">
-							<!- - Properties - ->
+							<!-- Properties -->
 							<xsl:apply-templates select="." mode="C:properties"/>
-							<!- - Menu - ->
+							<!-- Menu -->
 							<xsl:apply-templates select="." mode="C:menu"/>
-							<!- - Language - ->
+							<!-- Language -->
 							<xsl:variable name="languages">
 								<div class="menu">
 									<xsl:apply-templates select="." mode="C:language"/>
@@ -659,16 +658,15 @@
 							<xsl:if test="string($languages)!=''">
 								<xsl:copy-of select="$languages"/>
 							</xsl:if>
-							<!- - Files - ->
+							<!-- Files -->
 							<xsl:apply-templates select="." mode="C:files"/>
 						</td>
 						<td class="content">
-							<!- - Content - ->
+							<!-- Content -->
 							<xsl:apply-templates select="." mode="C:content"/>
 						</td>
 					</tr>
 				</table>
--->
 			</body>
 		</html>
 	</xsl:template>
