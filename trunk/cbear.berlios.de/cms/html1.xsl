@@ -585,12 +585,14 @@
 				</xsl:with-param>
 			</xsl:call-template>
 			<div class="menu-item">
+<!--
 				<xsl:variable name="date">
 					<xsl:apply-templates select="." mode="C:date"/>
 				</xsl:variable>
 				<xsl:variable name="company">
 					<xsl:apply-templates select="." mode="C:company"/>
 				</xsl:variable>
+-->
 				<xsl:value-of select="translate(
 					concat(
 						'Copyright &#169; ', 
