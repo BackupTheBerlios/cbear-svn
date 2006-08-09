@@ -622,14 +622,13 @@
 				</style>
 			</head>
 			<body>
-<!--
 				<table class="main">
-					<!- - Header - ->
 					<tr>
 						<td colspan="2" class="menu">
 							<xsl:apply-templates select="." mode="C:header"/>
 						</td>
 					</tr>
+<!--
 					<!- - Path - ->
 					<xsl:variable name="path">
 						<xsl:apply-templates select="." mode="C:path"/>
