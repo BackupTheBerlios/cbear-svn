@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="../cms/html.xsl"?>
 <section 
-	xmlns="http://cbear.berlios.de/cms" name="Организационный вопросы">
+	xmlns="http://cbear.berlios.de/cms" name="Организационные вопросы">
 	<section name="Subversion">
 Для будущих возможных версий и ответвлений, лучше сделать директорию trunk у 
 основания. Т.е. вместо:
