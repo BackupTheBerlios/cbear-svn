@@ -572,13 +572,13 @@
 
 	<xsl:template match="/C:section" mode="C:properties">
 		<div class="menu">
-<!--
 			<xsl:call-template name="C:property">
 				<xsl:with-param name="name" select="'Id'"/>
 				<xsl:with-param name="value">
 					<xsl:apply-templates select="." mode="C:id"/>
 				</xsl:with-param>
 			</xsl:call-template>
+<!--
 			<xsl:call-template name="C:property">
 				<xsl:with-param name="name" select="'Type'"/>
 				<xsl:with-param name="value">
