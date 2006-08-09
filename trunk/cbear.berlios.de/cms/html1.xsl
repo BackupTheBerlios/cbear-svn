@@ -666,8 +666,8 @@
 							<xsl:apply-templates select="." mode="C:content"/>
 						</td>
 					</tr>
-				</table>
 -->
+				</table>
 			</body>
 		</html>
 	</xsl:template>
