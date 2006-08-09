@@ -259,7 +259,9 @@
 
 	<xsl:template match="/C:section" mode="C:date">
 		<xsl:variable name="prior">
+<!--
 			<xsl:apply-templates select="document($C:path.prior, .)/*" mode="C:date"/>
+-->
 		</xsl:variable>
 <!--
 		<xsl:choose>
