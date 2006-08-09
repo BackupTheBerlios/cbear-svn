@@ -644,9 +644,7 @@
 					</xsl:if>
 					<tr class="tr">
 						<td class="menu">
-<!--
 							<xsl:apply-templates select="." mode="C:properties"/>
--->
 <!--
 							<!- - Menu - ->
 							<xsl:apply-templates select="." mode="C:menu"/>
