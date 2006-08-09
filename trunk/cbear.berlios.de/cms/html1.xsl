@@ -631,7 +631,6 @@
 					<xsl:variable name="path">
 						<xsl:apply-templates select="." mode="C:path"/>
 					</xsl:variable>
-<!--
 					<xsl:if test="string($path)!=''">
 						<tr>
 							<td colspan="2" class="menu">
@@ -641,7 +640,7 @@
 							</td>
 						</tr>
 					</xsl:if>
-					<!- - - ->
+					<!--
 					<tr class="tr">
 						<td class="menu">
 							<!- - Properties - ->
