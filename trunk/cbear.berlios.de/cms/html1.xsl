@@ -628,11 +628,10 @@
 							<xsl:apply-templates select="." mode="C:header"/>
 						</td>
 					</tr>
-<!--
-					<!- - Path - ->
 					<xsl:variable name="path">
 						<xsl:apply-templates select="." mode="C:path"/>
 					</xsl:variable>
+<!--
 					<xsl:if test="string($path)!=''">
 						<tr>
 							<td colspan="2" class="menu">
