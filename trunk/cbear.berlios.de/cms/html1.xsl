@@ -258,22 +258,20 @@
 	<!-- Date -->
 
 	<xsl:template match="/C:section" mode="C:date">
-		<xsl:variable name="prior">
 <!--
+		<xsl:variable name="prior">
 			<xsl:apply-templates select="document($C:path.prior, .)/*" mode="C:date"/>
--->
 		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="string($prior)">
 				<xsl:value-of select="$prior"/>
 			</xsl:when>
 			<xsl:otherwise>
-<!--
 				<xsl:value-of select="
 					document($C:svn, .)/S:wc-entries/S:entry[@name='']/@committed-date"/>
--->
 			</xsl:otherwise>
 		</xsl:choose>
+-->
 	</xsl:template>
 
 	<!-- Company -->
