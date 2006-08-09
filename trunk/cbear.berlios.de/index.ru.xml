@@ -3,7 +3,7 @@
 <section 
 	xmlns="http://cbear.berlios.de/cms" 
 	xml:lang="ru"
-	version="0.7"
+	version="0.8"
 	company="C Bear" 
 	id="cbear_berlios_de"
 	name="C Bear">
@@ -26,6 +26,7 @@
 			<a href="GCC" type="wikipedia"/>.
 		</li>
 	</ul>
+Сообщество <a href="http://community.livejournal.com/ru_cbear/">C Bear на русском</a>.
 	<section name="Лицензия">
 <a href="license.txt"/>.
 	</section>
