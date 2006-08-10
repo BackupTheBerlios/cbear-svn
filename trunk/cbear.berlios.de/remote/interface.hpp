@@ -19,34 +19,34 @@ public:
 
 private:
 
-	static T *this_(interface_ *This)
+	static T *this_(interface_ *I)
 	{
-		return static_cast<T *>(This);	
+		return static_cast<T *>(I);	
 	}
 
 	static ::HRESULT __stdcall query_interface(
-		interface_ *This, ::UUID const* Uuid, void **P)
+		interface_ *I, ::UUID const* Uuid, void **P)
 	{
-		return this_(This)->query_interface(Uuid, P);
+		return this_(I)->query_interface(uuid::cpp_in(Uuid), P).c_in();
 	}
 
-	static ::ULONG __stdcall add_ref(interface_ *This)
+	static ::ULONG __stdcall add_ref(interface_ *I)
 	{
-		return this_(This)->add_ref();
+		return this_(I)->add_ref();
 	}
 
-	static ::ULONG __stdcall release(interface_ *This)
+	static ::ULONG __stdcall release(interface_ *I)
 	{
-		return this_(This)->release();
+		return this_(I)->release();
 	}
 
 	template<std::size_t N>
-	static ::HRESULT __cdecl universal(interface_ *This)	
+	static ::HRESULT __cdecl universal(interface_ *I)	
 	{
-		return this_(This)->universal(N, reinterpret_cast<char *>(&This));
+		return this_(I)->universal(N, reinterpret_cast<char *>(&I)).c_in();
 	}
 
-	static void function();
+	typedef void function();
 
 	function *const *virtual_table_pointer;
 
@@ -63,13 +63,13 @@ private:
 		}
 
 		template<std::size_t N>
-		class contructor_traits
+		class constructor_traits
 		{
 		public:
 
 			static void do_()
 			{
-				contructor_traits<N - 1>::do_();
+				constructor_traits<N - 1>::do_();
 				begin()[N - 1] = univeral<N - 1>;
 			}
 		};

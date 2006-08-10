@@ -195,7 +195,19 @@ Serialized in <a href="big endian" type="wikipedia"/>.
 			Serialized in the order of its fields. Aligment is one byte.
 		</section>
 		<section name="Fixed Arrays">
-			Serialized in the order of its items.
-		</section>		
+			Serialized in the order of their items.
+		</section>
+	</section>		
+	<section name="C++ Implementation">
+<pre><![CDATA[template<class T>
+class interface_
+{
+};]]></pre>
+The <em>T</em> type must be derived from <em>interface&lt;T&gt;</em> and 
+implement those member functions:
+<pre><![CDATA[windows::com::hresult query_interface(const windows::com::uuid &U, void **P);
+windows::com::ulong add_ref();
+windows::com::ulong release();
+windows::com::hresult universal(std::size_t N, char *P);]]></pre>
 	</section>
 </section>
