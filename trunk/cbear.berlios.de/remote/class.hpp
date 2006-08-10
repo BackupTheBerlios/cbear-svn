@@ -8,13 +8,15 @@ namespace cbear_berlios_de
 namespace remote
 {
 
+class coclass;
+
 class implementation: private interface<implementation>
 {
 public:
 	implementation(const windows::com::itypeinfo &TypeInfo):
 		TypeInfo(TypeInfo)
 	{
-	}
+	}	
 };
 
 }
