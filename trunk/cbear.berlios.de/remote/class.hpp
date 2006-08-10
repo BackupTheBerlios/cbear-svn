@@ -12,9 +12,15 @@ namespace cbear_berlios_de
 namespace remote
 {
 
+template<class Io>
 class class_: public windows::com::iunknown_t::interface_t
 {
 public:
+
+	explicit class_(const Io &I):
+		I(I)
+	{
+	}
 
 	virtual ::HRESULT __stdcall QueryInterface(::UUID const &Uuid, void **P)
 	{
@@ -68,6 +74,20 @@ private:
 
 		windows::com::hresult universal(std::size_t const N, char *P)
 		{
+			class_ &C = this->Class.get();
+
+			std::size_t InSize = 0;
+			std::size_t OutSize = 0;			
+
+			char *In = C.I.set_in(InSize);
+			C.I.set_out(OutSize);
+
+			// Fill In.
+
+			C.I.call();
+
+			//
+
 			return windows::com::hresult::s_ok;
 		}
 
@@ -120,6 +140,8 @@ private:
 
 	typedef std::vector<implementation> ListT;
 	ListT List;
+
+	Io I;
 };
 
 }
