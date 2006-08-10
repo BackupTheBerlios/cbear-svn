@@ -230,6 +230,11 @@ public:
 		return code_reference(*this);
 	}
 
+	const internal_type &c_in() const
+	{
+		return this->internal();
+	}
+
 	//
 
 	hresult(bool S, facility_type F, code_type C)

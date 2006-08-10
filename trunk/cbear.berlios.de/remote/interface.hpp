@@ -1,6 +1,8 @@
 #ifndef CBEAR_BERLIOS_DE_REMOTE_INTERFACE_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_REMOTE_INTERFACE_HPP_INCLUDED
 
+#include <cbear.berlios.de/windows/com/iunknown.hpp>
+
 namespace cbear_berlios_de
 {
 namespace remote
@@ -17,31 +19,41 @@ public:
 		this->virtual_table_pointer = virtual_table::begin();
 	}	
 
+	windows::com::iunknown_t::move_t iunknown()
+	{
+		return move::copy(
+			windows::com::iunknown_t::cpp_in(
+				cast::traits<windows::com::iunknown_t::c_in_t>::reinterpret(this)));
+	}
+
 private:
 
-	static T *this_(interface_ *I)
+	static T *this_(interface_ *const I)
 	{
 		return static_cast<T *>(I);	
 	}
 
 	static ::HRESULT __stdcall query_interface(
-		interface_ *I, ::UUID const* Uuid, void **P)
+		interface_ *I, ::UUID const *Uuid, void **P)
 	{
-		return this_(I)->query_interface(uuid::cpp_in(Uuid), P).c_in();
+		return 
+			this_(I)->
+			query_interface(uuid::cpp_in(Uuid), iunknown::cpp_out(P)).
+			c_in();
 	}
 
-	static ::ULONG __stdcall add_ref(interface_ *I)
+	static ::ULONG __stdcall add_ref(interface_ *const I)
 	{
 		return this_(I)->add_ref();
 	}
 
-	static ::ULONG __stdcall release(interface_ *I)
+	static ::ULONG __stdcall release(interface_ *const I)
 	{
 		return this_(I)->release();
 	}
 
 	template<std::size_t N>
-	static ::HRESULT __cdecl universal(interface_ *I)	
+	static ::HRESULT __cdecl universal(interface_ *I)
 	{
 		return this_(I)->universal(N, reinterpret_cast<char *>(&I)).c_in();
 	}
@@ -54,9 +66,9 @@ private:
 	{
 	public:
 
-		static const std::size_t size = 1000;
+		static std::size_t const size = 1000;
 
-		static function *const begin()
+		static function *begin()
 		{
 			static function *const Instance[size];
 			return Instance;
