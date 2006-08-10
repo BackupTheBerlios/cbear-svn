@@ -1,22 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="../cms/html.xsl"?>
 <section 
-	xmlns="http://cbear.berlios.de/cms" name="Организационные вопросы">
-	<section name="Subversion">
-Для будущих возможных версий и ответвлений, лучше сделать директорию trunk у 
-основания. Т.е. вместо:
-<a href="https://svn.sourceforge.net/svnroot/cpp-object/">https://svn.sourceforge.net/svnroot/cpp-object/</a>
-основной директорией сделать 
-<a href="https://svn.sourceforge.net/svnroot/cpp-object/trunk">https://svn.sourceforge.net/svnroot/cpp-object/trunk</a>
-(broken link). Вполне возможно, что кроме <em>trunk</em>, позже появятся 
-директории <em>stable</em>, <em>v.3.0</em> и т.п. Так как, разветвления в 
-Subversion делаются только 
-<a href="http://svnbook.red-bean.com/en/1.1/ch04s02.html#svn-ch-4-sect-2.3">через директории</a>,
-что меня вполне устраивает.
-	</section>
+	xmlns="http://cbear.berlios.de/cms" 
+	name="Организационные вопросы"
+	xml:lang="ru">
 	<section name="Организация директорий">
-Я предпочитаю делать разделение директорий по 
-подпроектам, а не по типам файлов. Т.е. вместо такой организации:
+Директории разбиты по подпроектам, а не по типам файлов. Т.е. вместо такой организации:
 <pre>
 inc\a.hpp
    \b.hpp
@@ -28,7 +17,7 @@ test\a.cpp
     \b.cpp
     \subproject\c.cpp
 </pre>
-сделать такую:
+используется такую:
 <pre>
 a.hpp
 a.html
@@ -41,21 +30,67 @@ suproject\c.hpp
          \c.test.cpp
 </pre>
 В такой структуре гораздо легче выделять/копировать/переносить подпроекты.
-Например: переименовать, перенести, а тем более удалить устаревший проект 
-subproject не составляет труда. Делаем одно действие с директорией subproject.
-При этом, никто не запрещает сделать BATCH файл который будет просто копировать 
-из всех директорий, например, только HTML файлы в отдельную директорию (если 
-нужен пакет только с документацией на все подпроекты).
+Например: переименовать, перенести, а тем более удалить устаревший подпроект не 
+составляет труда.
+		<ul>
+			<li>
+В именах директорий и файлов нельзя использовать заглавные буквы.
+			</li>
+			<li>
+Имена директорий должны соотвествовать пространству имен, или префиксам в языках
+в которых нет пространств имен. Например файлу <a href=
+"cbear.berlios.de/meta/if.hpp" type="http"/> в языке <em>C++</em> соотвествует 
+пространство имен <em>cbear_berlios_de::meta</em>.
+			</li>
+		</ul>
 	</section>
 	<section name="Расширения файлов">
 		<ul>
 			<li>
-Заголовочные <em>С++</em> файлы имеют расширение <em>hpp</em>.
+Заголовочные <em>С++</em> файлы имеют расширение <em>hpp</em>. Пример 
+<em>hpp</em> файла:
+<pre><![CDATA[#ifndef CBEAR_BERLIOS_DE_PROJECT_SUBPROJECT_OBJECT_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_PROJECT_SUBPROJECT_OBJECT_HPP_INCLUDED
+
+namespace cbear_berlios_de
+{
+namespace project
+{
+namespace subporject
+{
+
+class object
+{
+};
+
+}
+}
+}
+
+#endif]]></pre>
 			</li>
 			<li>
 Заголовочные <em>C</em> файлы имеют расширение <em>h</em>. Если заголовочный 
 файл предназначен и для <em>C</em> и для <em>C++</em>, то он имеет расширение
-<em>h</em>.
+<em>h</em>. Пример <em>h</em> файла:
+<pre><![CDATA[#ifndef CBEAR_BERLIOS_DE_REMOTE_UUID_H_INCLUDED
+#define CBEAR_BERLIOS_DE_REMOTE_UUID_H_INCLUDED
+
+#ifdef __cpluplus
+extern "C"
+{
+#endif
+
+typedef struct
+{
+	unsigned char value[16];
+} cbear_berlios_de_remote_uuid;
+
+#ifndef __cplusplus
+}
+#endif
+
+#endif]]></pre>
 			</li>
 		</ul>
 	</section>
