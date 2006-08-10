@@ -15,6 +15,49 @@ namespace com
 
 typedef pointer< ::ITypeInfo> itypeinfo_t;
 
+class typekind_t
+{
+public:
+
+	typedef ::TYPEKIND c_t;
+
+	enum enum_t
+	{
+   	enum_ = ::TKIND_ENUM,
+		record = ::TKIND_RECORD,
+		module = ::TKIND_MODULE,
+		interface_ = ::TKIND_INTERFACE,
+		dispatch = ::TKIND_DISPATCH,
+		coclass = ::TKIND_COCLASS,
+		alias = ::TKIND_ALIAS,
+		union_ = ::TKIND_UNION,
+		max = ::TKIND_MAX,
+	};
+
+	typekind_t(enum_t X = enum_):
+		X(c_t(X)) 
+	{
+	}
+
+	static typekind_t &cpp_in_out(c_t *X)
+	{
+		return *cast::traits<typekind_t *>::reinterpret(X);
+	}
+
+	bool operator==(const typekind_t &B) const
+	{
+		return this->X == B.X;
+	}
+
+	bool operator!=(const typekind_t &B) const
+	{
+		return this->X != B.X;
+	}
+
+private:
+	c_t X;
+};
+
 class typeattr_t
 {
 public:
@@ -67,6 +110,11 @@ public:
 	uuid &guid()
 	{
 		return uuid::cpp_in_out(&this->pointer.get()->guid);
+	}
+
+	typekind_t &typekind()
+	{
+		return typekind_t::cpp_in_out(&this->pointer.get()->typekind);
 	}
 
 private:
