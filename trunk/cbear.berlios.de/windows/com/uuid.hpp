@@ -92,6 +92,18 @@ public:
 		}		
 	}
 
+	template<class Stream>
+	void binary_read(Stream &I)
+	{
+		I >> this->V.Data1 >> this->V.Data2 >> this->V.Data3 >> this->V.Data4;
+	}
+
+	template<class Stream>
+	void binary_write(Stream &O) const
+	{
+		O << this->V.Data1 << this->V.Data2 << this->V.Data3 << this->V.Data4;
+	}
+
 public:
 
 	typedef ::UUID c_t;

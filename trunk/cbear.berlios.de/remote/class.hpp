@@ -4,7 +4,9 @@
 #include <cbear.berlios.de/remote/ioctl.hpp>
 #include <cbear.berlios.de/remote/interface.hpp>
 #include <cbear.berlios.de/windows/com/itypeinfo.hpp>
+#include <cbear.berlios.de/windows/com/safearray.hpp>
 #include <cbear.berlios.de/atomic/main.hpp>
+#include <cbear.berlios.de/stream/binary/irange.hpp>
 
 #include <vector>
 
@@ -19,8 +21,10 @@ class class_: public windows::com::iunknown_t::interface_t
 public:
 
 	typedef typename Io::store_t store_t;
+	typedef typename windows::com::safearray_t<windows::com::itypeinfo_t> 
+		typeinfo_list_t;
 
-	explicit class_(const Io &I):
+	explicit class_(const Io &I, const typeinfo_list_t &List):
 		I(I)
 	{
 		store_t In, Out;
@@ -35,9 +39,24 @@ public:
 		{
 			In.resize(2);
 			In[0] = 1;
-			In[1] = I;
+			In[1] = windows::byte_t(I);
 			Out.resize(17);
 			this->control(In, Out);
+			stream::binary::irange IRange = stream::binary::irange::const_range_type(
+				cast::traits<const char *>::reinterpret(Out.begin()), Out.size());
+			windows::com::uuid Uuid;
+			windows::byte_t Offset;
+			IRange >> Uuid >> Offset;
+
+			for(typeinfo_list_t::iterator_range_t R(List); !R.empty(); ++R.begin())
+			{
+				Com::typeattr_t Ra(R.front());
+				if(Uuid == Ra.guid())
+				{
+					this->List.push_back(implementation(this, R.front()));
+					break;
+				}
+			}
 		}
 	}
 
@@ -60,12 +79,6 @@ public:
 	virtual ::ULONG __stdcall Release()
 	{
 		return this->release();
-	}
-
-	void push_back(windows::com::itypeinfo_t const &TypeInfo)
-	{
-		implementation I(this, TypeInfo);
-		this->List.push_back(I);
 	}
 
 private:
@@ -107,20 +120,22 @@ private:
 			return this->Class.get()->release();
 		}
 
-		windows::com::hresult universal(std::size_t, char *)
+		windows::com::hresult universal(std::size_t N, char *)
 		{
 			try
 			{
 				class_ &C = *this->Class.get();
 
-				std::size_t InSize = 0;
-				std::size_t OutSize = 0;			
+				std::size_t InSize = 1;
+				std::size_t OutSize = 1;			
 
 				typename Io::store_t In, Out;
 				In.resize(InSize);
 				Out.resize(OutSize);
 
 				// Serialize To In.
+
+				In[0] = N + 2 - 3;
 
 				// Call
 
