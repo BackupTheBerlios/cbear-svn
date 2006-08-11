@@ -1,6 +1,7 @@
 #ifndef CBEAR_BERLIOS_DE_REMOTE_CLASS_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_REMOTE_CLASS_HPP_INCLUDED
 
+#include <cbear.berlios.de/remote/ioctl.hpp>
 #include <cbear.berlios.de/remote/interface.hpp>
 #include <cbear.berlios.de/windows/com/itypeinfo.hpp>
 #include <cbear.berlios.de/atomic/main.hpp>
@@ -43,21 +44,37 @@ public:
 		return this->release();
 	}
 
+	void push_back(windows::com::itypeinfo_t const &TypeInfo)
+	{
+		implementation I(this, TypeInfo);
+		this->List.push_back(I);
+	}
+
 private:
 
 	class implementation: public interface_<implementation>
 	{
 	public:
 
-		void set(class_ *const Class, windows::com::itypeinfo_t const &TypeInfo)
+		implementation(
+			class_ *const Class, 
+			windows::com::itypeinfo_t const &TypeInfo)
 		{
 			this->Class.get() = Class;
-			this->TypeInfo = TypeInfo;	
-			this->TypeAttr.assign(TypeInfo);
+			windows::com::typeattr_t TypeAttr(TypeInfo);
+			this->Uuid = TypeAttr.guid();
+			std::size_t N = TypeAttr.cfuncs();
+			this->Functions.resize(N);
+			for(std::size_t I = 0; I < N; ++I)
+			{
+				windows::com::funcdesc_t FuncDesc(
+					static_cast<unsigned int>(I), TypeInfo);
+			}
 		}	
 
 		windows::com::hresult query_interface(
-			windows::com::uuid const &Uuid, windows::com::iunknown_t &P)
+			windows::com::uuid const &Uuid, 
+			windows::com::iunknown_t &P)
 		{
 			return this->Class.get()->query_interface(Uuid, P);
 		}
@@ -72,31 +89,46 @@ private:
 			return this->Class.get()->release();
 		}
 
-		windows::com::hresult universal(std::size_t const N, char *P)
+		windows::com::hresult universal(std::size_t, char *)
 		{
-			class_ &C = this->Class.get();
+			class_ &C = *this->Class.get();
 
 			std::size_t InSize = 0;
 			std::size_t OutSize = 0;			
 
-			char *In = C.I.set_in(InSize);
-			C.I.set_out(OutSize);
+			typename Io::store_t In, Out;
+			In.resize(InSize);
+			Out.resize(OutSize);
 
-			// Fill In.
+			// Serialize To In.
 
-			C.I.call();
+			// Call
+
+			C.I.control(ioctl(), In, Out);
+
+			// Deserialize From Out.
 
 			//
 
 			return windows::com::hresult::s_ok;
 		}
 
-		windows::com::typeattr_t TypeAttr;
+		windows::com::uuid const &uuid() const
+		{
+			return this->Uuid;
+		}
 
 	private:
-
 		base::initialized<class_ *> Class;
-		windows::com::itypeinfo_t TypeInfo;
+		windows::com::uuid Uuid;
+
+		class function
+		{
+		};
+
+		typedef std::vector<function> function_list;
+
+		std::vector<function> Functions;
 	};
 
 	windows::com::hresult query_interface(
@@ -111,7 +143,7 @@ private:
 		}
 		for(range::sub_range<ListT>::type R(this->List); !R.empty(); ++R.begin())
 		{
-			if(Uuid == R.front().TypeAttr.guid())
+			if(Uuid == R.front().uuid())
 			{
 				P = R.front().iunknown();
 				return windows::com::hresult::s_ok;

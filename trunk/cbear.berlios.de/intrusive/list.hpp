@@ -16,8 +16,15 @@ class basic_node: boost::noncopyable
 {
 public:
 
-	basic_node() { this->construct(); }
-	~basic_node() { this->destroy(); }
+	basic_node() 
+	{ 
+		this->construct(); 
+	}
+
+	~basic_node() 
+	{ 
+		this->destroy(); 
+	}
 
 	typedef basic_node *pointer;
 	typedef basic_node &reference;
@@ -26,18 +33,32 @@ public:
 	{
 	public:
 
-		iterator(): P(0) {}
+		iterator(): 
+			P(0) 
+		{
+		}
 
-		explicit iterator(reference N): P(&N) {}
+		explicit iterator(reference N): 
+			P(&N) 
+		{
+		}
 
-		reference operator*() const { return *this->P; }
-		pointer operator->() const { return this->P; }
+		reference operator*() const 
+		{ 
+			return *this->P; 
+		}
+
+		pointer operator->() const 
+		{ 
+			return this->P; 
+		}
 
 		iterator &operator++()
 		{
 			this->P = this->P->Next;
 			return *this;
 		}
+
 		iterator operator++(int)
 		{
 			iterator R(*this);
@@ -50,6 +71,7 @@ public:
 			this->P = this->P->Prev;
 			return *this;
 		}
+
 		iterator operator--(int)
 		{
 			iterator R(*this);
@@ -57,11 +79,12 @@ public:
 			return R;
 		}
 
-		bool operator==(const iterator &B) const
+		bool operator==(iterator const &B) const
 		{
 			return this->P == B.P;
 		}
-		bool operator!=(const iterator &B) const
+
+		bool operator!=(iterator const &B) const
 		{
 			return this->P != B.P;
 		}
@@ -95,7 +118,10 @@ private:
 	pointer Prev;
 	pointer Next;
   
-	void construct() { this->Prev = this->Next = this; }
+	void construct() 
+	{ 
+		this->Prev = this->Next = this; 
+	}
 
 	void destroy()
 	{
@@ -112,8 +138,8 @@ private:
 	// Because of VC 7.1
 	typedef basic_node::iterator basic_iterator;
 
-	node(const node &);
-	node &operator=(const node &);
+	node(node const &);
+	node &operator=(node const &);
 
 public:
 
@@ -128,20 +154,23 @@ public:
 	{
 	public:
 
-		iterator() {}
+		iterator() 
+		{
+		}
 
-		explicit iterator(reference N): basic_node::iterator(N) {}
+		explicit iterator(reference N): 
+			basic_node::iterator(N) 
+		{
+		}
 
 		reference operator*() const 
 		{ 
-			return static_cast<reference>(
-				this->basic_node::iterator::operator*());
+			return static_cast<reference>(this->basic_node::iterator::operator*());
 		}
 
 		pointer operator->() const 
 		{ 
-			return &static_cast<reference>(
-				this->basic_node::iterator::operator*());
+			return &static_cast<reference>(this->basic_node::iterator::operator*());
 		}
 
 		iterator &operator++()
@@ -156,12 +185,15 @@ public:
 			return *this;
 		}
 
-		bool operator==(const iterator &B) const
+		bool operator==(iterator const &B) const
 		{
 			return this->basic_node::iterator::operator==(B);
 		}
 
-		void insert(reference R) { this->basic_node::iterator::insert(R); }
+		void insert(reference R) 
+		{ 
+			this->basic_node::iterator::insert(R); 
+		}
 
 		using basic_iterator::erase;
 	};
@@ -184,20 +216,38 @@ public:
 	typedef typename node_type::pointer pointer;
 	typedef typename node_type::reference reference;
 
-	iterator begin() const { return boost::next(this->end()); }
+	iterator begin() const 
+	{ 
+		return boost::next(this->end()); 
+	}
 
 	iterator end() const
 	{
 		return iterator(*static_cast<pointer>(&this->Node));
 	}
 
-	void push_front(reference R) { this->begin().insert(R); }
-	void push_back(reference R) { this->end().insert(R); }
+	void push_front(reference R) 
+	{ 
+		this->begin().insert(R); 
+	}
 
-	void pop_front() { this->begin().erase(); }
-	void pop_back() { boost::prior(this->end()).erase(); }
+	void push_back(reference R) 
+	{
+		this->end().insert(R); 
+	}
+
+	void pop_front() 
+	{ 
+		this->begin().erase(); 
+	}
+
+	void pop_back() 
+	{ 
+		boost::prior(this->end()).erase(); 
+	}
+
 private:
-	mutable node<ValueType> Node;
+	node<ValueType> mutable Node;
 };
 
 }

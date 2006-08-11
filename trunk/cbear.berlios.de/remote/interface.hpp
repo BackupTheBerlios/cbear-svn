@@ -38,16 +38,19 @@ private:
 	{
 		return 
 			this_(I)->
-			query_interface(uuid::cpp_in(Uuid), iunknown::cpp_out(P)).
+			query_interface(
+				windows::com::uuid::cpp_in(Uuid), 
+				windows::com::iunknown_t::cpp_out(
+					cast::traits<windows::com::iunknown_t::c_out_t>::reinterpret(P))).
 			c_in();
 	}
 
-	static ::ULONG __stdcall add_ref(interface_ *const I)
+	static ::ULONG __stdcall add_ref(interface_ *I)
 	{
 		return this_(I)->add_ref();
 	}
 
-	static ::ULONG __stdcall release(interface_ *const I)
+	static ::ULONG __stdcall release(interface_ *I)
 	{
 		return this_(I)->release();
 	}
@@ -68,10 +71,16 @@ private:
 
 		static std::size_t const size = 1000;
 
-		static function *begin()
+		static function * *begin()
 		{
-			static function *const Instance[size];
+			static function *Instance[size];
 			return Instance;
+		}
+
+		template<class Function>
+		static void construct(std::size_t N, Function F)
+		{
+			begin()[N] = cast::traits<function *>::reinterpret(F);
 		}
 
 		template<std::size_t N>
@@ -82,7 +91,7 @@ private:
 			static void do_()
 			{
 				constructor_traits<N - 1>::do_();
-				begin()[N - 1] = univeral<N - 1>;
+				construct(N - 1, &universal<N - 1>);
 			}
 		};
 
@@ -107,9 +116,9 @@ private:
 		public:
 			static void do_()
 			{
-				begin()[0] = query_interface;
-				begin()[1] = add_ref;
-				begin()[2] = release;
+				construct(0, &query_interface);
+				construct(1, &add_ref);
+				construct(2, &release);
 			}
 		};
 

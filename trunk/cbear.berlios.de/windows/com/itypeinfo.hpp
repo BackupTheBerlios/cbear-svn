@@ -35,7 +35,7 @@ public:
 	};
 
 	typekind_t(enum_t X = enum_):
-		X(c_t(X)) 
+		X(c_t(X))
 	{
 	}
 
@@ -44,12 +44,12 @@ public:
 		return *cast::traits<typekind_t *>::reinterpret(X);
 	}
 
-	bool operator==(const typekind_t &B) const
+	bool operator==(typekind_t const &B) const
 	{
 		return this->X == B.X;
 	}
 
-	bool operator!=(const typekind_t &B) const
+	bool operator!=(typekind_t const &B) const
 	{
 		return this->X != B.X;
 	}
@@ -68,12 +68,12 @@ public:
 	{
 	}
 
-	typeattr_t(const itypeinfo_t &I)
+	typeattr_t(itypeinfo_t const &I)
 	{
 		this->assign(I);
 	}
 
-	typeattr_t(const move_t &M)
+	typeattr_t(move_t const &M)
 	{
 		this->assign(M);
 	}
@@ -92,7 +92,7 @@ public:
 		}
 	}
 
-	void assign(const itypeinfo_t &info)
+	void assign(itypeinfo_t const &info)
 	{
 		this->assign();
 		if(info->GetTypeAttr(&this->pointer.get()) == S_OK)
@@ -101,7 +101,7 @@ public:
 		}
 	}
 
-	void assign(const move_t &M)
+	void assign(move_t const &M)
 	{
 		base::swap(this->info, M->info);
 		base::swap(this->pointer, M->pointer);
@@ -117,13 +117,63 @@ public:
 		return typekind_t::cpp_in_out(&this->pointer.get()->typekind);
 	}
 
+	unsigned short &cfuncs()
+	{
+		return this->pointer.get()->cFuncs;
+	}
+
 private:
 
-	typeattr_t(const typeattr_t &);
-	typeattr_t &operator=(const typeattr_t &);
+	typeattr_t(typeattr_t const &);
+	typeattr_t &operator=(typeattr_t const &);
 
 	itypeinfo_t info;
 	base::initialized< ::TYPEATTR *> pointer;
+};
+
+class funcdesc_t
+{
+public:
+
+	funcdesc_t()
+	{
+	}
+
+	funcdesc_t(unsigned int N, itypeinfo_t const &info)
+	{
+		this->assign(N, info);
+	}
+
+	~funcdesc_t()
+	{
+		this->assign();
+	}
+
+	void assign()
+	{
+		if(this->info)
+		{
+			this->info->ReleaseFuncDesc(this->pointer.get());
+			this->pointer.get() = 0;
+		}
+	}
+
+	void assign(unsigned int N, itypeinfo_t const &info)
+	{
+		this->assign();
+		if(info->GetFuncDesc(N, &this->pointer.get()) == S_OK)
+		{
+			this->info = info;
+		}
+	}
+
+private:
+
+	funcdesc_t(funcdesc_t const &);
+	funcdesc_t &operator=(funcdesc_t const &);
+
+	itypeinfo_t info;
+	base::initialized< ::FUNCDESC *> pointer;
 };
 
 template<class T>
@@ -133,12 +183,16 @@ template<class T>
 class scoped_type_info
 {
 public:
+
 	scoped_type_info()
 	{
 		Value = library_info<T>::type::typelib().gettypeinfoofguid<T>();
 	}
+
 	static const itypeinfo_t &typeinfo() { return Value; }
+
 private:
+
 	static itypeinfo_t Value;
 };
 
