@@ -37,20 +37,24 @@ namespace cbear_berlios_de.windows.com
                 object R = System.Activator.CreateInstance(T);
                 foreach (Reflection.FieldInfo F in T.GetFields())
                 {
-                    System.Type FT = F.FieldType;
-                    F.SetValue(
-                        R,
-                        read(
-                            Stream,
-                            FT,
-                            FT.IsArray ?
-                                new object[] 
-                                {
-                                    get_custom_attribute<
-                                        InteropServices.MarshalAsAttribute>(
-                                        F, false, 0).SizeConst
-                                } :
-                                null));
+									if (F.IsStatic)
+									{
+										continue;
+									}
+                  System.Type FT = F.FieldType;
+                  F.SetValue(
+                    R,
+                    read(
+                      Stream,
+                      FT,
+                      FT.IsArray ?
+                        new object[] 
+                        {
+                          get_custom_attribute<
+                            InteropServices.MarshalAsAttribute>(
+															F, false, 0).SizeConst
+                        } :
+                        null));
                 }
                 return R;
             }
@@ -77,7 +81,7 @@ namespace cbear_berlios_de.windows.com
         {
             System.Type T = Value.GetType();
 
-            if (T.IsPrimitive)
+            if (T.IsPrimitive || T == typeof(System.Guid))
             {
                 stream.binary.primitive_type.write(Stream, Value);
                 return;
@@ -93,8 +97,14 @@ namespace cbear_berlios_de.windows.com
                 return;
             }
 
-            foreach (Reflection.FieldInfo F in T.GetFields())
-                write(Stream, F.GetValue(Value));
+						foreach (Reflection.FieldInfo F in T.GetFields())
+						{
+							if (F.IsStatic)
+							{
+								continue;
+							}
+							write(Stream, F.GetValue(Value));
+						}
         }
 
         public static void write<T>(IO.Stream Stream, T Value)

@@ -15,6 +15,7 @@ namespace cbear_berlios_de.stream.binary
             new uint64(),
             new int64(),
             new single(),
+						new uuid(),
         };
 
         public class unknown_type : System.Exception

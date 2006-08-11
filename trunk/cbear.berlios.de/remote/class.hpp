@@ -18,9 +18,27 @@ class class_: public windows::com::iunknown_t::interface_t
 {
 public:
 
+	typedef typename Io::store_t store_t;
+
 	explicit class_(const Io &I):
 		I(I)
 	{
+		store_t In, Out;
+		// 0
+		In.resize(1);
+		Out.resize(1);
+		In[0] = 0;
+		this->control(In, Out);
+		std::size_t InterfaceListCount = Out[0];
+		// 1
+		for(std::size_t I = 0; I < InterfaceListCount; ++I)
+		{
+			In.resize(2);
+			In[0] = 1;
+			In[1] = I;
+			Out.resize(17);
+			this->control(In, Out);
+		}
 	}
 
 	virtual ::HRESULT __stdcall QueryInterface(::UUID const &Uuid, void **P)
@@ -91,26 +109,33 @@ private:
 
 		windows::com::hresult universal(std::size_t, char *)
 		{
-			class_ &C = *this->Class.get();
+			try
+			{
+				class_ &C = *this->Class.get();
 
-			std::size_t InSize = 0;
-			std::size_t OutSize = 0;			
+				std::size_t InSize = 0;
+				std::size_t OutSize = 0;			
 
-			typename Io::store_t In, Out;
-			In.resize(InSize);
-			Out.resize(OutSize);
+				typename Io::store_t In, Out;
+				In.resize(InSize);
+				Out.resize(OutSize);
 
-			// Serialize To In.
+				// Serialize To In.
 
-			// Call
+				// Call
 
-			C.I.control(ioctl(), In, Out);
+				C.control(In, Out);
 
-			// Deserialize From Out.
+				// Deserialize From Out.
 
-			//
+				//
 
-			return windows::com::hresult::s_ok;
+				return windows::com::hresult::s_ok;
+			}
+			catch(...)
+			{
+				return windows::com::create_exception::catch_();
+			}
 		}
 
 		windows::com::uuid const &uuid() const
@@ -172,6 +197,11 @@ private:
 
 	typedef std::vector<implementation> ListT;
 	ListT List;
+
+	void control(const store_t &In, store_t &Out)
+	{
+		this->I.control(ioctl(), In, Out);
+	}
 
 	Io I;
 };
