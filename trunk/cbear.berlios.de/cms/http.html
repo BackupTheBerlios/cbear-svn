@@ -32,9 +32,12 @@ function state_Change()
   	// if "OK"
 	  if (xmlhttp.status==200 || xmlhttp.status==0)
 	  {
+/*
 		  document.getElementById('A1').innerHTML=xmlhttp.status
 		  document.getElementById('A2').innerHTML=xmlhttp.statusText
 		  document.getElementById('A3').innerHTML=xmlhttp.responseText
+*/
+			document.body.innterHTML = xmlhttp.responseText;
 	  }
   	else
 	  {
