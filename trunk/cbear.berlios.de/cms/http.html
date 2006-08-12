@@ -2,27 +2,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<script type="text/javascript">
-var url = "svn.berlios.de/viewcvs/cbear/trunk/cbear.berlios.de/index.xml"
 var xmlhttp
 
-xmlhttp=null
-
-// Mozilla family.
-if (window.XMLHttpRequest)
+function go()
 {
- 	xmlhttp=new XMLHttpRequest()
-}
-else
-{
-	alert("Your browser does not support XMLHttpRequest.")
-	return;
-}
+	xmlhttp=null
 
-xmlhttp.onreadystatechange = state_Change
-xmlhttp.open("GET", url, true)
-xmlhttp.send(null)
+	var url = "svn.berlios.de/viewcvs/cbear/trunk/cbear.berlios.de/index.xml"
 
-document.write("a")
+	// Mozilla family.
+	if (window.XMLHttpRequest)
+	{
+ 		xmlhttp=new XMLHttpRequest()
+	}
+	else
+	{
+		alert("Your browser does not support XMLHttpRequest.")
+		return;
+	}
+
+	xmlhttp.onreadystatechange = state_Change
+	xmlhttp.open("GET", url, true)
+	xmlhttp.send(null)
+
+	document.write("a")
+}
 
 function state_Change()
 {
@@ -42,5 +46,5 @@ function state_Change()
 }
 		</script>
 	</head>
-	<body/>
+	<body onload="go()"/>
 </html>
