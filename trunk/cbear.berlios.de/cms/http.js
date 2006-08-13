@@ -19,15 +19,17 @@ function main()
 {
 	var xsltProcessor = null
 
-	var xml = xmlLoad("http://svn.berlios.de/viewcvs/*checkout*/cbear/trunk/cbear.berlios.de/index.xml")
+	var path = window.location.search.substring(1)
+
+	var xml = xmlLoad(
+		"http://svn.berlios.de/viewcvs/*checkout*/cbear/trunk/cbear.berlios.de/" + 
+		path + 
+		"/index.xml")
 
 	var xslt = new XSLTProcessor()
 	xslt.importStylesheet(xmlLoad("http.xsl").responseXML)	
 
 	var html = xslt.transformToFragment(xml.responseXML, document);
-
-	document.getElementsByTagName("body")[0].innerHTML = 
-		window.location.search.substring(1);
 
 	document.getElementsByTagName("body")[0].appendChild(html);
 }
