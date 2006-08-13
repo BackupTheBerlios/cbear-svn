@@ -1,4 +1,5 @@
 var xmlhttp = null
+var xsltProcessor = null
 
 var url = "http://svn.berlios.de/viewcvs/*checkout*/cbear/trunk/cbear.berlios.de/index.xml" 
 
@@ -6,6 +7,7 @@ var url = "http://svn.berlios.de/viewcvs/*checkout*/cbear/trunk/cbear.berlios.de
 if (window.XMLHttpRequest)
 {
 		xmlhttp=new XMLHttpRequest()
+		xsltProcessor = new XSLTProcessor();
 }
 else
 {
@@ -14,25 +16,17 @@ else
 }
 
 xmlhttp.onreadystatechange = stateChange
-xmlhttp.open("GET", url, true)
+xmlhttp.open("GET", url, false)
 xmlhttp.send(null)
 
-function stateChange()
+// if "OK"
+if (xmlhttp.status!=200 && xmlhttp.status!=0)
 {
-	// if xmlhttp shows "loaded"
-	if (xmlhttp.readyState!=4)
-  {
-		return;
-	}
-
- 	// if "OK"
-  if (xmlhttp.status!=200 && xmlhttp.status!=0)
-  {
-		alert("Problem retrieving XML data:" + xmlhttp.status + " " + xmlhttp.statusText)
-		return;
-	}
-
-	document.write("a")
-	document.write(xmlhttp.responseText);
+	alert("Problem retrieving XML data:" + xmlhttp.status + " " + xmlhttp.statusText)
+	return;
 }
+
+document.write("a")
+document.write(xmlhttp.responseText);
+
 
