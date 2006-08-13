@@ -1,12 +1,15 @@
-var xmlhttp = null
+var xml = null
+var xsl = null
 var xsltProcessor = null
 
-var url = "http://svn.berlios.de/viewcvs/*checkout*/cbear/trunk/cbear.berlios.de/index.xml" 
+var xmlUrl = "http://svn.berlios.de/viewcvs/*checkout*/cbear/trunk/cbear.berlios.de/index.xml" 
+var xslUrl = "http.xsl"
 
 // Mozilla family.
 if (window.XMLHttpRequest)
 {
-		xmlhttp=new XMLHttpRequest()
+		xml = new XMLHttpRequest()
+		xsl = new XMLHttpRequest()
 		xsltProcessor = new XSLTProcessor();
 }
 else
@@ -15,18 +18,29 @@ else
 	return;
 }
 
-xmlhttp.onreadystatechange = stateChange
-xmlhttp.open("GET", url, false)
-xmlhttp.send(null)
+xml.onreadystatechange = stateChange
+xml.open("GET", xmlUrl, false)
+xml.send(null)
 
 // if "OK"
-if (xmlhttp.status!=200 && xmlhttp.status!=0)
+if (xml.status!=200 && xml.status!=0)
 {
-	alert("Problem retrieving XML data:" + xmlhttp.status + " " + xmlhttp.statusText)
+	alert("Problem retrieving XML data: " + xml.status + " " + xml.statusText)
 	return;
 }
 
-document.write("a")
-document.write(xmlhttp.responseText);
+xsl.onreadystatechange = stateChange
+xsl.open("GET", xslUrl, false)
+xsl.send(null)
+
+// if "OK"
+if (xsl.status!=200 && xsl.status!=0)
+{
+	alert("Problem retrieving XSL data: " + xsl.status + " " + xsl.statusText)
+	return;
+}
+
+document.write("b")
+document.write(xml.responseText);
 
 
