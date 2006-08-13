@@ -1,28 +1,21 @@
-var xmlhttp
+var xmlhttp = null
 
-go()
+var url = "http://svn.berlios.de/viewcvs/*checkout*/cbear/trunk/cbear.berlios.de/index.xml" 
 
-function go()
+// Mozilla family.
+if (window.XMLHttpRequest)
 {
-	xmlhttp=null
-
-	var url = "http://svn.berlios.de/viewcvs/*checkout*/cbear/trunk/cbear.berlios.de/index.xml" 
-
-	// Mozilla family.
-	if (window.XMLHttpRequest)
-	{
- 		xmlhttp=new XMLHttpRequest()
-	}
-	else
-	{
-		alert("Your browser does not support XMLHttpRequest.")
-		return;
-	}
-
-	xmlhttp.onreadystatechange = stateChange
-	xmlhttp.open("GET", url, true)
-	xmlhttp.send(null)
+		xmlhttp=new XMLHttpRequest()
 }
+else
+{
+	alert("Your browser does not support XMLHttpRequest.")
+	return;
+}
+
+xmlhttp.onreadystatechange = stateChange
+xmlhttp.open("GET", url, true)
+xmlhttp.send(null)
 
 function stateChange()
 {
