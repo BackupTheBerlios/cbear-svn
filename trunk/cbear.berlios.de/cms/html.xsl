@@ -191,7 +191,7 @@
 			</xsl:apply-templates>
 		</xsl:for-each>
 		<span class="path">
-			<a href="{concat($current, $path, $C:index.link)}" title="{@title}">
+			<a href="{concat($C:current, $path, $C:index.link)}" title="{@title}">
 				<xsl:value-of select="@name"/>
 			</a>
 		</span>
