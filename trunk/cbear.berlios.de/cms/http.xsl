@@ -10,15 +10,8 @@
 	<xsl:output method="xml" indent="no"/>
 
 	<xsl:template match="/C:section">
-		<html>
-			<head>
-				<title><xsl:value-of select="@name"/></title>
-			</head>
-			<body id="body">
-Preved
-				<h1><xsl:value-of select="@name"/></h1>
-			</body>
-		</html>
+		<h1><xsl:value-of select="@name"/></h1>
+		<h2><xsl:value-of select="@name"/></h2>
 	</xsl:template>
 
 </xsl:stylesheet>
