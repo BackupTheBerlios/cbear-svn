@@ -26,10 +26,8 @@ function main()
 
 	var html = xslt.transformToFragment(xml.responseXML, document);
 
-	var location = window.location
-
 	document.getElementsByTagName("body")[0].innerHTML = 
-		location.substring(location.indexOf("#"));
+		window.location.substring(window.location.indexOf("#"));
 
 	document.getElementsByTagName("body")[0].appendChild(html);
 }
