@@ -23,15 +23,17 @@ function main()
 
 	var full = 
 		"http://svn.berlios.de/viewcvs/*checkout*/cbear/trunk/cbear.berlios.de/" + 
-		path + 
-		"/index.xml"
+		path;
 
-	document.getElementsByTagName("body")[0].innerHTML = full
+	var file = full + "/index.xml"
 
-	var xml = xmlLoad(full)
+	document.getElementsByTagName("body")[0].innerHTML = file
+
+	var xml = xmlLoad(file)
 
 	var xslt = new XSLTProcessor()
 	xslt.importStylesheet(xmlLoad("http.xsl").responseXML)	
+	xslt.setParameter("http://cbear.berlios.de/cms", "current", full)
 
 	var html = xslt.transformToFragment(xml.responseXML, document);
 
