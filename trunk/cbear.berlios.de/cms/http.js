@@ -29,7 +29,7 @@ function main()
 	var location = window.location
 
 	document.getElementsByTagName("body")[0].innerHTML = 
-		location.substring(location.indexOf('#'));
+		location.substring(location.indexOf("#"));
 
 	document.getElementsByTagName("body")[0].appendChild(html);
 }
