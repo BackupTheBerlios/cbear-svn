@@ -24,9 +24,9 @@ function main()
 	var xslt = new XSLTProcessor()
 	xslt.importStylesheet(xmlLoad("http.xsl").responseXML)	
 
-	var html = xslt.transformToDocument(xml.responseXML);
+	var html = xslt.transformToFragment(xml.responseXML, document);
 
 	// document.write("1")
-	document.getElementById("body").innerHTML = html.getElementById("body").innerHTML;
+	document.getElementById("body").appendChild(html);
 }
 
