@@ -11,8 +11,9 @@
 
 	<xsl:template match="/C:section">
 		<html>
+			<head>
+			</head>
 			<body>
-Preved!
 			</body>
 		</html>
 	</xsl:template>
