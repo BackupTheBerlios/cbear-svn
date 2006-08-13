@@ -28,22 +28,20 @@ function go()
 
 function state_Change()
 {
-	document.write("a")
-/*
 	// if xmlhttp shows "loaded"
-	if (xmlhttp.readyState==4)
+	if (xmlhttp.readyState!=4)
   {
-  	// if "OK"
-	  if (xmlhttp.status==200 || xmlhttp.status==0)
-	  {
-			document.write(xmlhttp.responseText);
-	  }
-  	else
-	  {
-		  alert("Problem retrieving XML data:" + xmlhttp.status + " " + xmlhttp.statusText)
-	  }
-  }
-*/
+		return;
+	}
+
+ 	// if "OK"
+  if (xmlhttp.status!=200 &amp;&amp; xmlhttp.status!=0)
+  {
+		alert("Problem retrieving XML data:" + xmlhttp.status + " " + xmlhttp.statusText)
+		return;
+	}
+
+	document.write(xmlhttp.responseText);
 }
 		</script>
 	</head>
