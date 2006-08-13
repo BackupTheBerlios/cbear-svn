@@ -4,11 +4,10 @@
 		<script type="text/javascript">
 var xmlhttp
 
-function go()
-{
+
 	xmlhttp=null
 
-	var url = "svn.berlios.de/viewcvs/cbear/trunk/cbear.berlios.de/index.xml"
+	var url = "http://svn.berlios.de/viewcvs/cbear/trunk/cbear.berlios.de/index.xml"
 
 	// Mozilla family.
 	if (window.XMLHttpRequest)
@@ -24,9 +23,6 @@ function go()
 	xmlhttp.onreadystatechange = state_Change
 	xmlhttp.open("GET", url, true)
 	xmlhttp.send(null)
-
-	document.write("a")
-}
 
 function state_Change()
 {
@@ -46,5 +42,5 @@ function state_Change()
 }
 		</script>
 	</head>
-	<body onload="go()"/>
+	<body/>
 </html>
