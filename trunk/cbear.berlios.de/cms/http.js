@@ -33,7 +33,8 @@ function main()
 
 	var xslt = new XSLTProcessor()
 	xslt.importStylesheet(xmlLoad("http.xsl").responseXML)	
-	xslt.setParameter("http://cbear.berlios.de/cms", "current", full)
+	xslt.setParameter(
+		"http://cbear.berlios.de/cms", "current", windows.location.href)
 
 	var html = xslt.transformToFragment(xml.responseXML, document);
 
