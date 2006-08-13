@@ -27,7 +27,8 @@ function main()
 	var html = xslt.transformToFragment(xml.responseXML, document);
 
 	// document.write("1")
-	document.getElementById("body").appendChild(html);
+	document.getElementById("body").innerHTML = "idite naher";
+	//document.getElementById("body").appendChild(html);
 }
 
 main()
