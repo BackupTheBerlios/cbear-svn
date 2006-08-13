@@ -12,7 +12,7 @@
 	<xsl:template match="/C:section">
 		<div>
 			<h1><xsl:value-of select="@name"/></h1>
-			<h2><xsl:value-of select="@name"/></h2>
+			<h2>Blin</h2>
 		</div>
 	</xsl:template>
 
