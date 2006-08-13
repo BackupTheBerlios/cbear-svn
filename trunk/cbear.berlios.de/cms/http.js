@@ -6,7 +6,7 @@ function xmlLoad(url)
 	xml.open("GET", url, false)
 	xml.send(null)
 
-	// if "OK"
+	// if not "OK"
 	if (xml.status!=200 && xml.status!=0)
 	{
 		alert("Problem retrieving XML data: " + xml.status + " " + xml.statusText)
@@ -20,7 +20,9 @@ function main()
 	var xsltProcessor = null
 
 	var xml = xmlLoad("http://svn.berlios.de/viewcvs/*checkout*/cbear/trunk/cbear.berlios.de/index.xml")
-	var xsl = xmlLoad("http.xsl")
+
+	var xslt = new XSLTProcessor()
+	xslt.importStylesheet(xmlLoad("http.xsl").responseXML)	
 
 	document.write("b")
 	document.write(xml.responseText);
