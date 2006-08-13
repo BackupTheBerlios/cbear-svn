@@ -27,7 +27,7 @@ function main()
 	var html = xslt.transformToFragment(xml.responseXML, document);
 
 	document.getElementsByTagName("body")[0].innerHTML = 
-		window.location;
+		window.location.search;
 
 	document.getElementsByTagName("body")[0].appendChild(html);
 }
