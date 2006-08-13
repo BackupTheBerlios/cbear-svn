@@ -26,7 +26,7 @@ function main()
 
 	var html = xslt.transformToFragment(xml.responseXML, document);
 
-	var location = windows.location
+	var location = window.location
 
 	document.getElementsByTagName("body")[0].innerHTML = 
 		location.substring(location.indexOf('#'));
