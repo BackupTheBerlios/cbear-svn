@@ -1,7 +1,42 @@
 <?xml version="1.0"?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<script type="text/javascript" src="http.js"/>
+		<script type="text/javascript"><!--
+function xmlLoad(url)
+{
+	var xml = new XMLHttpRequest()
+
+	//xml.onreadystatechange = stateChange
+	xml.open("GET", url, false)
+	xml.send(null)
+
+	// if not "OK"
+	if (xml.status!=200 && xml.status!=0)
+	{
+		alert("Problem retrieving XML data: " + xml.status + " " + xml.statusText)
+		return null
+	}
+	return xml
+}
+
+function main()
+{
+	var xsltProcessor = null
+
+	var xml = xmlLoad("http://svn.berlios.de/viewcvs/*checkout*/cbear/trunk/cbear.berlios.de/index.xml")
+
+	var xslt = new XSLTProcessor()
+	xslt.importStylesheet(xmlLoad("http.xsl").responseXML)	
+
+	var html = xslt.transformToFragment(xml.responseXML, document);
+
+	// document.write("1")
+	document.getElementById("body").innerHTML = "idite naher";
+	//document.getElementById("body").appendChild(html);
+}
+
+main()
+		--></script>
 	</head>
 	<body>
 		<p id="body"/>
