@@ -12,9 +12,10 @@
 	<xsl:template match="/C:section">
 		<html>
 			<head>
+				<title><xsl:value-of select="@name"/></title>
 			</head>
-			<body>
-Preved!
+			<body id="body">
+				<h1><xsl:value-of select="@name"/></h1>
 			</body>
 		</html>
 	</xsl:template>
