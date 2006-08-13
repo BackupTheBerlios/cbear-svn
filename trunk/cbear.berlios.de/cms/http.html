@@ -21,12 +21,12 @@ function go()
 		return;
 	}
 
-	xmlhttp.onreadystatechange = state_Change
+	xmlhttp.onreadystatechange = stateChange
 	xmlhttp.open("GET", url, true)
 	xmlhttp.send(null)
 }
 
-function state_Change()
+function stateChange()
 {
 	// if xmlhttp shows "loaded"
 	if (xmlhttp.readyState!=4)
@@ -41,6 +41,7 @@ function state_Change()
 		return;
 	}
 
+	document.write("a")
 	document.write(xmlhttp.responseText);
 }
 		</script>
