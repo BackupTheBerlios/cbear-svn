@@ -10,6 +10,8 @@
 
 	<xsl:output method="xml" indent="no"/>
 
+	<xsl:param name="C:root"/>
+
 	<xsl:param name="C:extension" select="'xml'"/>
 	<xsl:param name="C:languages" select="'languages.xml'"/>
 
@@ -189,7 +191,7 @@
 			</xsl:apply-templates>
 		</xsl:for-each>
 		<span class="path">
-			<a href="{concat($path, $C:index.link)}" title="{@title}">
+			<a href="{concat($root, $path, $C:index.link)}" title="{@title}">
 				<xsl:value-of select="@name"/>
 			</a>
 		</span>
