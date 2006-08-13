@@ -12,6 +12,9 @@
 	<xsl:template match="/C:section">
 		<table>			
 			<tr>
+				<td>1</td>
+			</tr>
+			<tr>
 				<td>
 					<xsl:apply-templates select="." mode="C:header"/>
 				</td>
