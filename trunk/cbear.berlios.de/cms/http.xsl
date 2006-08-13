@@ -10,15 +10,14 @@
 	<xsl:import href="html.xsl"/>
 
 	<xsl:template match="/C:section">
-		<table>			
-			<tr>
-				<td>1</td>
-			</tr>
+		<table>
 			<tr>
 				<td>
 					<xsl:apply-templates select="." mode="C:header"/>
 				</td>
 			</tr>
+			<xsl:variable name="path">
+			</xsl:variable>
 		</table>
 	</xsl:template>
 
