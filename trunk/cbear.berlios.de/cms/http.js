@@ -24,9 +24,10 @@ function main()
 	var xslt = new XSLTProcessor()
 	xslt.importStylesheet(xmlLoad("http.xsl").responseXML)	
 
-	var html = xslt.transformToFragment(xml.responseXML, document);
+	var html = xslt.transformToDocument(xml.responseXML);
 
 	// document.write("1")
-	document.getElementById("body").appendChild(html);
+	// document.getElementById("body").appendChild(html);
+	document = html;
 }
 
