@@ -4,7 +4,8 @@
 		<script type="text/javascript">
 var xmlhttp
 
-
+function go()
+{
 	xmlhttp=null
 
 	var url = "http://svn.berlios.de/viewcvs/cbear/trunk/cbear.berlios.de/index.xml"
@@ -23,6 +24,7 @@ var xmlhttp
 	xmlhttp.onreadystatechange = state_Change
 	xmlhttp.open("GET", url, true)
 	xmlhttp.send(null)
+}
 
 function state_Change()
 {
@@ -42,5 +44,5 @@ function state_Change()
 }
 		</script>
 	</head>
-	<body/>
+	<body onload="go()"/>
 </html>
