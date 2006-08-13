@@ -17,6 +17,7 @@
 				</td>
 			</tr>
 			<xsl:variable name="path">
+				<xsl:apply-templates select="." mode="C:path"/>
 			</xsl:variable>
 		</table>
 	</xsl:template>
