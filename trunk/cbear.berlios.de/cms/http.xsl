@@ -10,10 +10,13 @@
 	<xsl:import href="html.xsl"/>
 
 	<xsl:template match="/C:section">
-		<div>
-			<h1><xsl:value-of select="@name"/></h1>
-			<h2><xsl:value-of select="@name"/></h2>
-		</div>
+		<table>			
+			<tr>
+				<td>
+					<xsl:apply-templates select="." mode="C:header"/>
+				</td>
+			</tr>
+		</table>
 	</xsl:template>
 
 </xsl:stylesheet>
