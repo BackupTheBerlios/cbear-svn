@@ -7,7 +7,7 @@
 	xmlns:C="http://cbear.berlios.de/cms"
 	exclude-result-prefixes="S">
 
-	<xsl:output method="xml" indent="no"/>
+	<xsl:output method="html"/>
 
 	<xsl:template match="/C:section">
 		<html>
