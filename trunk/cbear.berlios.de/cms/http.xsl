@@ -7,7 +7,7 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	exclude-result-prefixes="S">
 
-	<xsl:output method="xml"/>
+	<xsl:import href="html.xsl"/>
 
 	<xsl:template match="/C:section">
 		<div>
