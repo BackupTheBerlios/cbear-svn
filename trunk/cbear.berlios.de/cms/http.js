@@ -27,7 +27,6 @@ function main()
 	var html = xslt.transformToDocument(xml.responseXML);
 
 	// document.write("1")
-	// document.getElementById("body").appendChild(html);
-	document = html;
+	document.getElementById("body").innerHTML = html.getElementById("body").innerHTML;
 }
 

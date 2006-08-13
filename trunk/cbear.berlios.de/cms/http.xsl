@@ -10,12 +10,12 @@
 	<xsl:output method="xml" indent="no"/>
 
 	<xsl:template match="/C:section">
-		<div>
-			<div>
+		<html>
+			<body id="body">
 				<h1><xsl:value-of select="@name"/></h1>
 				<h2>Blin</h2>
-			</div>
-		</div>
+			</body>
+		</html>
 	</xsl:template>
 
 </xsl:stylesheet>
