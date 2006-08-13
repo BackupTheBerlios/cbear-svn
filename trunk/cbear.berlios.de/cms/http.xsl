@@ -19,6 +19,13 @@
 			<xsl:variable name="path">
 				<xsl:apply-templates select="." mode="C:path"/>
 			</xsl:variable>
+			<xsl:if test="$path">
+				<tr>
+					<td>
+						<xsl:copy-of select="$path"/>
+					</td>
+				</tr>
+			</xsl:if>
 		</table>
 	</xsl:template>
 
