@@ -20,7 +20,7 @@ function main()
 		return
 	}
 
-	xml.onreadystatechange = stateChange
+	//xml.onreadystatechange = stateChange
 	xml.open("GET", xmlUrl, false)
 	xml.send(null)
 
@@ -31,7 +31,7 @@ function main()
 		return
 	}
 
-	xsl.onreadystatechange = stateChange
+	//xsl.onreadystatechange = stateChange
 	xsl.open("GET", xslUrl, false)
 	xsl.send(null)
 
