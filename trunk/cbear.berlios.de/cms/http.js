@@ -30,4 +30,3 @@ function main()
 	document.getElementById("body").appendChild(html);
 }
 
-main()
