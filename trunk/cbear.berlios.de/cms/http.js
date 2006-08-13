@@ -1,5 +1,7 @@
 var xmlhttp
 
+go()
+
 function go()
 {
 	xmlhttp=null
