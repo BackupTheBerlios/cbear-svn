@@ -10,7 +10,7 @@ namespace windows
 namespace com
 {
 
-CBEAR_BERLIOS_DE_WINDOWS_COM_DECLARE_DEFAULT_TRAITS(long_t, ::VT_I4);
+CBEAR_BERLIOS_DE_WINDOWS_COM_DECLARE_DEFAULT_TRAITS(long_t, vartype_t::i4);
 
 }
 }

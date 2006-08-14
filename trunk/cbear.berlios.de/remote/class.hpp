@@ -7,6 +7,8 @@
 #include <cbear.berlios.de/windows/com/safearray.hpp>
 #include <cbear.berlios.de/atomic/main.hpp>
 #include <cbear.berlios.de/stream/binary/irange.hpp>
+#include <cbear.berlios.de/stream/binary/orange.hpp>
+#include <cbear.berlios.de/stream/binary/size.hpp>
 
 #include <vector>
 
@@ -94,12 +96,13 @@ private:
 			this->Class.get() = Class;
 			windows::com::typeattr_t TypeAttr(TypeInfo);
 			this->Uuid = TypeAttr.guid();
-			std::size_t N = TypeAttr.cfuncs();
+			std::size_t const N = TypeAttr.cfuncs();
 			this->Functions.resize(N);
 			for(std::size_t I = 0; I < N; ++I)
 			{
 				windows::com::funcdesc_t FuncDesc(
 					static_cast<unsigned int>(I), TypeInfo);
+				this->Functions[I].assign(FuncDesc);
 			}
 		}	
 
@@ -120,28 +123,125 @@ private:
 			return this->Class.get()->release();
 		}
 
-		windows::com::hresult universal(std::size_t N, char *)
+		static std::size_t const aligment = 4;
+
+		class in
+		{
+		public:
+			function &f;
+			parameters const p;
+			in(function &f, parameters const &p):
+				f(f),
+				p(p)
+			{
+			}
+			template<class Stream>
+			void binary_write(Stream &S) const
+			{
+				S << (unsigned char)(this->p.number + 2);
+				char *P = this->p.pointer;
+				P += aligment;
+				for(
+					range::sub_range<parameter_list_t>::type R(this->f.parameters); 
+					!R.empty(); 
+					++R.begin())
+				{
+					if(R.front().flags.has(windows::com::paramflags_t::in))
+					{
+						windows::com::vartype_t::enum_t const V = R.front().vt.enum_();
+						switch(V)
+						{
+						case windows::com::vartype_t::bool_:
+							S << 
+								(*reinterpret_cast<windows::com::variant_bool_t *>(P) ? 
+									(char)1: 
+									(char)0);
+							P += aligment;
+							break;
+						case windows::com::vartype_t::i1:
+						case windows::com::vartype_t::ui1:
+							S << *P;
+							P += aligment;
+							break;
+						case windows::com::vartype_t::i2:
+						case windows::com::vartype_t::ui2:
+							S << *reinterpret_cast<windows::ushort_t *>(P);
+							P += aligment;
+							break;
+						case windows::com::vartype_t::i4:
+						case windows::com::vartype_t::ui4:
+							S << *reinterpret_cast<windows::ulong_t *>(P);
+							P += aligment;
+							break;
+						default:
+							S << *reinterpret_cast<int *>(P);
+							P += aligment;
+						}
+					}
+				}
+			}
+		private:
+			in(const in &);
+			in &operator=(const in &);
+		};
+
+		class out
+		{
+		public:
+			function &f;
+			parameters const p;
+
+			out(function &f, parameters const &p):
+				f(f),
+				p(p)
+			{
+			}
+			template<class Stream>
+			void binary_read(Stream &)
+			{
+			}
+		private:
+			out(const out &);
+			out &operator=(const out &);
+		};
+
+		windows::com::hresult universal(parameters const &P)
 		{
 			try
 			{
 				class_ &C = *this->Class.get();
 
-				std::size_t InSize = 1;
-				std::size_t OutSize = 1;			
+				in In(this->Functions[P.number], P);
+				out Out(this->Functions[P.number], P);
 
-				typename Io::store_t In, Out;
-				In.resize(InSize);
-				Out.resize(OutSize);
+				stream::binary::size InSize, OutSize;
+
+				InSize << In;
+				OutSize >> Out;
+
+				typename Io::store_t InStore, OutStore;
+				InStore.resize(InSize());
+				OutStore.resize(OutSize());
 
 				// Serialize To In.
 
-				In[0] = N + 2 - 3;
+				stream::binary::orange InRange = 
+					stream::binary::orange::range_type(
+						cast::traits<char *>::reinterpret(InStore.begin()), 
+						cast::traits<char *>::reinterpret(InStore.end()));
+				InRange << In;
 
 				// Call
 
-				C.control(In, Out);
+				C.control(InStore, OutStore);
 
 				// Deserialize From Out.
+
+				stream::binary::irange OutRange = 
+					stream::binary::irange::const_range_type(
+						cast::traits<const char *>::reinterpret(OutStore.begin()), 
+						cast::traits<const char *>::reinterpret(OutStore.end()));
+				OutRange >> Out;
 
 				//
 
@@ -162,8 +262,34 @@ private:
 		base::initialized<class_ *> Class;
 		windows::com::uuid Uuid;
 
+		class parameter
+		{
+		public:
+			windows::com::paramflags_t flags;
+			windows::com::vartype_t vt;
+			void assign(windows::com::elemdesc_t &Elemdesc)
+			{
+				this->flags = Elemdesc.paramdesc().paramflags();
+				this->vt = Elemdesc.tdesc().vt();
+			}
+		};
+
+		typedef std::vector<parameter> parameter_list_t;
+
 		class function
 		{
+		public:
+			parameter_list_t parameters;
+			void assign(windows::com::funcdesc_t &Desc)
+			{
+				std::size_t const N = Desc.cparams();
+				windows::com::elemdesc_t *Elemdesc = Desc.elemdescparam();
+				this->parameters.resize(N);
+				for(std::size_t I = 0; I < N; ++I)
+				{					
+					this->parameters[I].assign(Elemdesc[I]);
+				}
+			}
 		};
 
 		typedef std::vector<function> function_list;

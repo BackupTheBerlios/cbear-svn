@@ -179,7 +179,7 @@ public:
 
 	typedef uuid move_type;
 
-	static const vartype_t vt = ::VT_EMPTY;
+	static const vartype_t::enum_t vt = vartype_t::empty;
 
 	typedef void extra_result;
 

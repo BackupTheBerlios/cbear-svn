@@ -10,7 +10,7 @@ namespace windows
 namespace com
 {
 
-CBEAR_BERLIOS_DE_WINDOWS_COM_DECLARE_DEFAULT_TRAITS(uint_t, ::VT_UINT);
+CBEAR_BERLIOS_DE_WINDOWS_COM_DECLARE_DEFAULT_TRAITS(uint_t, vartype_t::uint);
 
 }
 }

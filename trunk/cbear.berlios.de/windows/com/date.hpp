@@ -15,10 +15,13 @@ class date_t: public policy::wrap<date_t, ::DATE>
 public:
 	typedef void *extra_result;
 	typedef date_t move_type;
-	static const vartype_t vt = ::VT_DATE;
+	static vartype_t::enum_t const vt = vartype_t::date;
 
-	date_t() {}
-	explicit date_t(const systemtime_t &SystemTime) 
+	date_t() 
+	{
+	}
+
+	explicit date_t(systemtime_t const &SystemTime) 
 	{
 		if(::SystemTimeToVariantTime(
 			const_cast<systemtime_t*>(&SystemTime), &this->internal())==0)

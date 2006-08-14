@@ -159,9 +159,9 @@ public:
 		}
 	};
 
-	static const vartype_t vt = 
+	static const vartype_t::enum_t vt = 
 		boost::is_base_of< ::IDispatch, I>::value ? 
-			::VT_DISPATCH: ::VT_UNKNOWN;
+			vartype_t::dispatch: vartype_t::unknown;
 
 	typedef void *extra_result;
 

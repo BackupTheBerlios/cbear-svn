@@ -12,25 +12,27 @@ namespace binary
 
 // POD.
 template<class S, class T>
-typename boost::enable_if<boost::is_pod<T> >::type write(S &s, const T &t)
+typename boost::enable_if<boost::is_pod<T> >::type write(S &s, T const &t)
 {
-	const char *B = &reinterpret_cast<const char &>(t);
+	char const *B = &reinterpret_cast<char const &>(t);
 	s.push_back_range(range::make_iterator_range(B, B + sizeof(T)));
 }
 
 // Complex structures.
 template<class S, class T>
-typename boost::enable_if<boost::is_class<T> >::type write(S &s, const T &t)
+typename boost::enable_if<boost::is_class<T> >::type write(S &s, T const &t)
 {
 	t.binary_write(s);
 }
 
 // An array.
 template<class S, class T, std::size_t Size>
-void write(S &s, const T (&t)[Size])
+void write(S &s, T const (&t)[Size])
 { 
 	for(range::iterator_range<T *> R(t); !R.empty(); ++R.begin())
+	{
 		binary::write(s, R.front());
+	}
 }
 
 }

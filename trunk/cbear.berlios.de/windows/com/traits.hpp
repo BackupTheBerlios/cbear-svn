@@ -5,6 +5,7 @@
 #include <cbear.berlios.de/move/main.hpp>
 #include <cbear.berlios.de/windows/message_box.hpp>
 #include <cbear.berlios.de/policy/main.hpp>
+#include <cbear.berlios.de/windows/com/vartype.hpp>
 
 // BOOST_STATIC_ASSERT
 #include <boost/static_assert.hpp>
@@ -34,7 +35,7 @@ enum io_type
 	in_out = in|out,
 };
 
-typedef ::VARTYPE vartype_t;
+// typedef ::VARTYPE vartype_t;
 
 template<class Type>
 struct class_traits
@@ -45,7 +46,7 @@ struct class_traits
 
 	typedef typename type::move_type move_type;
 
-	static const vartype_t vt = type::vt;
+	static const vartype_t::enum_t vt = type::vt;
 
 	static typename type::extra_result extra() { return type::extra(); }
 
@@ -105,7 +106,7 @@ struct class_traits
 	};
 };
 
-template<class Type, vartype_t Vt>
+template<class Type, vartype_t::enum_t Vt>
 struct default_traits
 {
 	typedef Type type;
@@ -115,7 +116,7 @@ struct default_traits
 
 	typedef type move_type;
 
-	static const vartype_t vt = Vt;
+	static vartype_t::enum_t const vt = Vt;
 
 	static void *extra() { return 0; }
 
@@ -170,7 +171,9 @@ struct undefined_traits
 };
 
 template<class Type>
-struct enum_traits: default_traits<Type, ::VT_INT> {};
+struct enum_traits: default_traits<Type, vartype_t::int_> 
+{
+};
 
 template<class Type>
 struct traits: 

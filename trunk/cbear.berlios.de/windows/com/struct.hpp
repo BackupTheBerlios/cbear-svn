@@ -30,7 +30,7 @@ public:
 
 	typedef move::t<Type> move_type;
 
-	static const vartype_t vt = ::VT_RECORD;
+	static const vartype_t::enum_t vt = vartype_t::record;
 
 	typedef void *extra_result;
 

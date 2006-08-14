@@ -49,7 +49,7 @@ class variant_bool_t: public detail::variant_bool_wrap
 {
 public:
 	typedef void *extra_result;
-	static const vartype_t vt = ::VT_BOOL;
+	static vartype_t::enum_t const vt = vartype_t::bool_;
 	typedef detail::variant_bool_wrap::internal_policy internal_policy;
 	typedef variant_bool_t move_type;
 	variant_bool_t() {}

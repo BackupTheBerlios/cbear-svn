@@ -16,6 +16,7 @@ class size
 public:
 
 	typedef range::iterator_range<const char *> const_range_type;
+	typedef range::iterator_range<char *> range_type;
 
 	size(): V(0) {}
 
@@ -24,10 +25,22 @@ public:
 		this->V += N.size();
 	}	
 
+	void pop_front_range(const range_type &N)
+	{
+		this->V += N.size();
+	}
+
 	template<class T>
 	size &operator<<(const T &t)
 	{
 		binary::write(*this, t);
+		return *this;
+	}
+
+	template<class T>
+	size &operator>>(T &t)
+	{
+		binary::read(*this, t);
 		return *this;
 	}
 

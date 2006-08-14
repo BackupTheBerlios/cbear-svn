@@ -212,7 +212,7 @@ public:
 
 	typedef value_type char_type;
 
-	static const vartype_t vt = ::VT_BSTR;
+	static const vartype_t::enum_t vt = vartype_t::bstr;
 
 	bstr_t() {}
 

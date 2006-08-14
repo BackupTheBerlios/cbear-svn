@@ -131,6 +131,61 @@ private:
 	base::initialized< ::TYPEATTR *> pointer;
 };
 
+class paramflags_t
+{
+public:
+	enum enum_t
+	{
+		in = PARAMFLAG_FIN,
+		out = PARAMFLAG_FOUT,
+	};
+
+	bool has(enum_t E) const
+	{
+		return (this->V & E) != 0;
+	}
+
+private:
+	windows::ushort_t V;
+};
+
+class paramdesc_t
+{
+public:
+	paramflags_t &paramflags()
+	{
+		return cast::traits<paramflags_t &>::reinterpret(this->V.wParamFlags);
+	}
+private:
+	::PARAMDESC V;
+};
+
+class typedesc_t
+{
+public:
+	vartype_t &vt()
+	{
+		return cast::traits<vartype_t &>::reinterpret(this->V.vt);
+	}
+private:
+	::TYPEDESC V;
+};
+
+class elemdesc_t
+{
+public:
+	typedesc_t &tdesc()
+	{
+		return cast::traits<typedesc_t &>::reinterpret(this->V.tdesc);
+	}
+	paramdesc_t &paramdesc()
+	{
+		return cast::traits<paramdesc_t &>::reinterpret(this->V.paramdesc);
+	}
+private:
+	::ELEMDESC V;
+};
+
 class funcdesc_t
 {
 public:
@@ -165,6 +220,17 @@ public:
 		{
 			this->info = info;
 		}
+	}
+
+	short &cparams()
+	{
+		return this->pointer.get()->cParams;
+	}
+
+	elemdesc_t *elemdescparam()
+	{
+		return cast::traits<elemdesc_t *>::reinterpret(
+			this->pointer.get()->lprgelemdescParam);
 	}
 
 private:

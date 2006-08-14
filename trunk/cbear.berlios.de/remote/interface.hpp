@@ -26,6 +26,23 @@ public:
 				cast::traits<windows::com::iunknown_t::c_in_t>::reinterpret(this)));
 	}
 
+	class parameters
+	{
+	public:
+		std::size_t number;
+		char *pointer;
+		parameters(std::size_t number, char *pointer):
+			number(number),
+			pointer(pointer)
+		{
+		}
+	};
+
+	static std::size_t const iunknown_query_interface = 0;
+	static std::size_t const iunknown_add_ref = 1;
+	static std::size_t const iunknown_release = 2;
+	static std::size_t const iunknown_function_list_count = 3;
+
 private:
 
 	static T *this_(interface_ *const I)
@@ -58,7 +75,12 @@ private:
 	template<std::size_t N>
 	static ::HRESULT __cdecl universal(interface_ *I)
 	{
-		return this_(I)->universal(N, reinterpret_cast<char *>(&I)).c_in();
+		return this_(I)->
+			universal(
+				parameters(
+					N - iunknown_function_list_count, 
+					reinterpret_cast<char *>(&I))).
+			c_in();
 	}
 
 	typedef void function();
@@ -96,22 +118,22 @@ private:
 		};
 
 		template<>
-		class constructor_traits<0>
+		class constructor_traits<iunknown_query_interface>
 		{
 		};
 
 		template<>
-		class constructor_traits<1>
+		class constructor_traits<iunknown_add_ref>
 		{
 		};
 
 		template<>
-		class constructor_traits<2>
+		class constructor_traits<iunknown_release>
 		{
 		};
 
 		template<>
-		class constructor_traits<3>
+		class constructor_traits<iunknown_function_list_count>
 		{
 		public:
 			static void do_()

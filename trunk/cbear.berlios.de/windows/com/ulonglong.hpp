@@ -10,7 +10,7 @@ namespace windows
 namespace com
 {
 
-CBEAR_BERLIOS_DE_WINDOWS_COM_DECLARE_DEFAULT_TRAITS(ulonglong_t, ::VT_UI8);
+CBEAR_BERLIOS_DE_WINDOWS_COM_DECLARE_DEFAULT_TRAITS(ulonglong_t, vartype_t::ui8);
 
 }
 }

@@ -23,7 +23,7 @@ class enum_t: public policy::wrap<Type, ValueType, enum_policy<ValueType> >
 public:
 	typedef void *extra_result;
 	typedef Type move_type;
-	static const vartype_t vt = ::VT_INT;
+	static vartype_t::enum_t const vt = vartype_t::int_;
 	template<class ArchiveT>
 	void serialize(ArchiveT &Archive, const unsigned int )
 	{

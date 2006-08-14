@@ -162,8 +162,9 @@ public:
 	typedef range::iterator_range<iterator> iterator_range_t;
 	typedef range::iterator_range<const_iterator> const_iterator_range_t;
 
-	static const vartype_t value_type_vt = traits<ValueType>::vt;
-	static const vartype_t vt = VT_ARRAY | value_type_vt;
+	static vartype_t::enum_t const value_type_vt = traits<ValueType>::vt;
+	static vartype_t::enum_t const vt = 
+		vartype_t::or_<vartype_t::array, value_type_vt>::value;
 
 	class scoped_lock: boost::noncopyable
 	{
