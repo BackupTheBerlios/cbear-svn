@@ -10,7 +10,7 @@
 
 	<xsl:output method="xml" indent="no"/>
 
-	<xsl:param name="C:current" select="'u'"/>
+	<xsl:param name="C:current"/>
 
 	<xsl:param name="C:extension" select="'xml'"/>
 	<xsl:param name="C:languages" select="'languages.xml'"/>
