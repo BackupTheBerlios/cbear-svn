@@ -48,8 +48,20 @@ public:
 		return static_cast<enum_t>(this->V);
 	}
 
+	typedef ::VARTYPE c_t;
+
+	vartype_t(enum_t E = empty):
+		V(c_t(E))
+	{
+	}
+
+	bool operator==(const vartype_t &B) const
+	{
+		return this->V == B.V;
+	}
+
 private:
-	::VARTYPE V;
+	c_t V;
 };
 
 }

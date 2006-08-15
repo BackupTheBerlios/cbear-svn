@@ -133,7 +133,10 @@ public:
 	// It throws an exception initialized by a system COM error info.
 	static void throw_unless(hresult Value)
 	{
-		if(!Value.failed()) return;
+		if(!Value.failed()) 
+		{
+			return;
+		}
 		ierrorinfo ErrorInfo;
 		::GetErrorInfo(0, com::internal<out>(ErrorInfo));
 		throw exception(Value, ErrorInfo);

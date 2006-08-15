@@ -13,8 +13,6 @@ namespace windows
 namespace com
 {
 
-typedef pointer< ::ITypeInfo> itypeinfo_t;
-
 class typekind_t
 {
 public:
@@ -56,6 +54,36 @@ public:
 
 private:
 	c_t X;
+};
+
+template<class Base>
+class pointer_content<Base, ::ITypeInfo>: 
+	public pointer_content<Base, ::IUnknown>
+{
+public:
+	template<class T>
+	typename T::itypeinfo_t::move_t getreftypeinfo(const T &hRefType) const
+	{
+		typename pointer<Base>::move_t Result;
+		exception::throw_unless(
+			this->reference().GetRefTypeInfo(hRefType.c_in(), Result->c_out()));
+		return Result;
+	}
+};
+
+typedef pointer< ::ITypeInfo> itypeinfo_t;
+
+class hreftype_t
+{
+public:
+	typedef itypeinfo_t itypeinfo_t;
+	typedef ::HREFTYPE c_t;
+	const c_t &c_in() const
+	{
+		return this->V;
+	}
+private:
+	::HREFTYPE V;
 };
 
 class typeattr_t
@@ -117,6 +145,11 @@ public:
 		return typekind_t::cpp_in_out(&this->pointer.get()->typekind);
 	}
 
+	unsigned long &sizeinstance()
+	{
+		return this->pointer.get()->cbSizeInstance;
+	}
+
 	unsigned short &cfuncs()
 	{
 		return this->pointer.get()->cFuncs;
@@ -163,6 +196,14 @@ private:
 class typedesc_t
 {
 public:
+	typedesc_t &desc()
+	{
+		return *cast::traits<typedesc_t *>::reinterpret(this->V.lptdesc);
+	}
+	hreftype_t &hreftype()
+	{
+		return cast::traits<hreftype_t &>::reinterpret(this->V.hreftype);
+	}
 	vartype_t &vt()
 	{
 		return cast::traits<vartype_t &>::reinterpret(this->V.vt);
@@ -252,10 +293,13 @@ public:
 
 	scoped_type_info()
 	{
-		Value = library_info<T>::type::typelib().gettypeinfoofguid<T>();
+		this->Value = library_info<T>::type::typelib().gettypeinfoofguid<T>();
 	}
 
-	static const itypeinfo_t &typeinfo() { return Value; }
+	static const itypeinfo_t &typeinfo() 
+	{ 
+		return this->Value; 
+	}
 
 private:
 

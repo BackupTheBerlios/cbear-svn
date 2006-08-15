@@ -125,6 +125,8 @@ private:
 
 		static std::size_t const aligment = 4;
 
+		class parameter;
+
 		class in
 		{
 		public:
@@ -135,56 +137,70 @@ private:
 				p(p)
 			{
 			}
+
+			template<class Stream>
+			static std::size_t parameter_write(
+				Stream & S, char *P, parameter &Parameter)
+			{
+				switch(Parameter.vt.enum_())
+				{
+				case windows::com::vartype_t::bool_:
+					S << 
+						(*reinterpret_cast<windows::com::variant_bool_t *>(P) ? 
+							(char)1: 
+							(char)0);
+					return sizeof(char);
+				case windows::com::vartype_t::i1:
+				case windows::com::vartype_t::ui1:
+					S << *P;
+					return sizeof(char);
+				case windows::com::vartype_t::i2:
+				case windows::com::vartype_t::ui2:
+					S << *reinterpret_cast<windows::ushort_t *>(P);
+					return sizeof(windows::ushort_t);
+				case windows::com::vartype_t::i4:
+				case windows::com::vartype_t::ui4:
+					S << *reinterpret_cast<windows::ulong_t *>(P);
+					return sizeof(windows::ulong_t);
+				case windows::com::vartype_t::userdefined:
+					for(std::size_t i = 0; i < Parameter.size; ++i)
+					{
+						S << P[i];
+					}
+					return Parameter.size;
+				default:
+					BOOST_ASSERT(false);
+					break;
+				}
+				return 0;
+			}
+
+			static std::size_t aligment_size(std::size_t Size)
+			{
+				return ((Size + (aligment - 1)) / aligment) * aligment;
+			}
+
 			template<class Stream>
 			void binary_write(Stream &S) const
 			{
 				S << (unsigned char)(this->p.number + 2);
-				char *P = this->p.pointer;
-				P += aligment;
+				char *P = this->p.pointer + aligment;
 				for(
 					range::sub_range<parameter_list_t>::type R(this->f.parameters); 
 					!R.empty(); 
 					++R.begin())
 				{
-					if(R.front().flags.has(windows::com::paramflags_t::in))
+					parameter &Parameter = R.front();
+					if(Parameter.flags.has(windows::com::paramflags_t::in))
 					{
-						windows::com::vartype_t::enum_t const V = R.front().vt.enum_();
-						switch(V)
+						if(Parameter.pointer)
 						{
-						case windows::com::vartype_t::bool_:
-							S << 
-								(*reinterpret_cast<windows::com::variant_bool_t *>(P) ? 
-									(char)1: 
-									(char)0);
-							P += aligment;
-							break;
-						case windows::com::vartype_t::i1:
-						case windows::com::vartype_t::ui1:
-							S << *P;
-							P += aligment;
-							break;
-						case windows::com::vartype_t::i2:
-						case windows::com::vartype_t::ui2:
-							S << *reinterpret_cast<windows::ushort_t *>(P);
-							P += aligment;
-							break;
-						case windows::com::vartype_t::i4:
-						case windows::com::vartype_t::ui4:
-							S << *reinterpret_cast<windows::ulong_t *>(P);
-							P += aligment;
-							break;
-						case windows::com::vartype_t::ptr:
-							S << *reinterpret_cast<int *>(P);
-							P += aligment;
-							break;
-						case windows::com::vartype_t::userdefined:
-							this->f.typeinfo;
-							S << *reinterpret_cast<int *>(P);
-							P += aligment;
-							break;
-						default:
-							BOOST_ASSERT(false);
-							break;
+							parameter_write(S, *reinterpret_cast<char * *>(P), Parameter);
+							P += aligment_size(sizeof(char *));
+						}
+						else
+						{
+							P += aligment_size(parameter_write(S, P, Parameter));
 						}
 					}
 				}
@@ -275,11 +291,28 @@ private:
 		{
 		public:
 			windows::com::paramflags_t flags;
+			bool pointer;
 			windows::com::vartype_t vt;
-			void assign(windows::com::elemdesc_t &Elemdesc)
+			std::size_t size;
+			void assign(
+				const windows::com::itypeinfo_t &TypeInfo, 
+				windows::com::elemdesc_t &Elemdesc)
 			{
 				this->flags = Elemdesc.paramdesc().paramflags();
-				this->vt = Elemdesc.tdesc().vt();
+				windows::com::typedesc_t &TypeDesc = Elemdesc.tdesc();
+				this->vt = TypeDesc.vt();
+				this->pointer = this->vt == windows::com::vartype_t::ptr;
+				if(this->pointer)
+				{
+					this->vt = TypeDesc.desc().vt();
+				}
+				if(this->vt == windows::com::vartype_t::userdefined)
+				{
+					windows::com::itypeinfo_t Ti = 
+						TypeInfo.getreftypeinfo(TypeDesc.hreftype());
+					windows::com::typeattr_t Attr(Ti);
+					this->size = Attr.sizeinstance();
+				}
 			}
 		};
 
@@ -302,7 +335,7 @@ private:
 				this->parameters.resize(N);
 				for(std::size_t I = 0; I < N; ++I)
 				{					
-					this->parameters[I].assign(Elemdesc[I]);
+					this->parameters[I].assign(typeinfo, Elemdesc[I]);
 				}
 			}
 		};
