@@ -165,7 +165,10 @@ private:
 
 	hresult set() const
 	{
-		if(this->ErrorInfo) ::SetErrorInfo(0, com::internal<in>(this->ErrorInfo));
+		if(this->ErrorInfo) 
+		{
+			::SetErrorInfo(0, com::internal<in>(this->ErrorInfo));
+		}
 		return this->Result;
 	}
 

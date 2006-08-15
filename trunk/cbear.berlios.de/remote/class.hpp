@@ -102,7 +102,7 @@ private:
 			{
 				windows::com::funcdesc_t FuncDesc(
 					static_cast<unsigned int>(I), TypeInfo);
-				this->Functions[I].assign(FuncDesc);
+				this->Functions[I].assign(TypeInfo, FuncDesc);
 			}
 		}	
 
@@ -173,9 +173,18 @@ private:
 							S << *reinterpret_cast<windows::ulong_t *>(P);
 							P += aligment;
 							break;
-						default:
+						case windows::com::vartype_t::ptr:
 							S << *reinterpret_cast<int *>(P);
 							P += aligment;
+							break;
+						case windows::com::vartype_t::userdefined:
+							this->f.typeinfo;
+							S << *reinterpret_cast<int *>(P);
+							P += aligment;
+							break;
+						default:
+							BOOST_ASSERT(false);
+							break;
 						}
 					}
 				}
@@ -280,8 +289,14 @@ private:
 		{
 		public:
 			parameter_list_t parameters;
-			void assign(windows::com::funcdesc_t &Desc)
+			windows::com::itypeinfo_t typeinfo;
+
+			void assign(
+				const windows::com::itypeinfo_t &typeinfo, 
+				windows::com::funcdesc_t &Desc)
 			{
+				this->typeinfo = typeinfo;
+				//
 				std::size_t const N = Desc.cparams();
 				windows::com::elemdesc_t *Elemdesc = Desc.elemdescparam();
 				this->parameters.resize(N);
