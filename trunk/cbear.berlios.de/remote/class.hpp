@@ -299,17 +299,18 @@ private:
 				windows::com::elemdesc_t &Elemdesc)
 			{
 				this->flags = Elemdesc.paramdesc().paramflags();
-				windows::com::typedesc_t &TypeDesc = Elemdesc.tdesc();
-				this->vt = TypeDesc.vt();
+				windows::com::typedesc_t *Ptd = &Elemdesc.tdesc();
+				this->vt = Ptd->vt();
 				this->pointer = this->vt == windows::com::vartype_t::ptr;
 				if(this->pointer)
 				{
-					this->vt = TypeDesc.desc().vt();
+					Ptd = &Ptd->desc();
+					this->vt = Ptd->vt();
 				}
 				if(this->vt == windows::com::vartype_t::userdefined)
 				{
 					windows::com::itypeinfo_t Ti = 
-						TypeInfo.getreftypeinfo(TypeDesc.hreftype());
+						TypeInfo.getreftypeinfo(Ptd->hreftype());
 					windows::com::typeattr_t Attr(Ti);
 					this->size = Attr.sizeinstance();
 				}
