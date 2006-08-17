@@ -198,13 +198,57 @@ private:
 	::PARAMDESC V;
 };
 
+class typedesc_t;
+
+class safearraybound_t
+{
+public:
+
+	unsigned long &celements()
+	{
+		return this->V.cElements;
+	}
+
+private:
+	::SAFEARRAYBOUND V;
+};
+
+class arraydesc_t
+{
+public:
+
+	typedesc_t &tdescelem()
+	{
+		return cast::traits<typedesc_t &>::reinterpret(this->V.tdescElem);
+	}
+
+	unsigned short &cdims()
+	{
+		return this->V.cDims;
+	}
+
+	safearraybound_t *rgbounds()
+	{
+		return cast::traits<safearraybound_t *>::reinterpret(this->V.rgbounds);
+	}
+
+private:
+	::ARRAYDESC V;
+};
+
 class typedesc_t
 {
 public:
-	typedesc_t &desc()
+	typedesc_t &tdesc()
 	{
 		return *cast::traits<typedesc_t *>::reinterpret(this->V.lptdesc);
 	}
+
+	arraydesc_t &adesc()
+	{
+		return *cast::traits<arraydesc_t *>::reinterpret(this->V.lpadesc);
+	}
+
 	hreftype_t &hreftype()
 	{
 		return cast::traits<hreftype_t &>::reinterpret(this->V.hreftype);

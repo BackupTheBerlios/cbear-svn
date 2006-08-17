@@ -140,7 +140,7 @@ private:
 			}
 
 			template<class Stream>
-			static std::size_t parameter_write(
+			static std::size_t var_element_write(
 				Stream & S, char *P, var &Var)
 			{
 				switch(Var.vt.enum_())
@@ -164,15 +164,9 @@ private:
 					S << *reinterpret_cast<windows::ulong_t *>(P);
 					return sizeof(windows::ulong_t);
 				case windows::com::vartype_t::userdefined:
-					/*
-					for(std::size_t i = 0; i < Parameter.size; ++i)
-					{
-						S << P[i];
-					}
-					*/
 					for(std::size_t I = 0; I < Var.vars.size(); ++I)
 					{
-						parameter_write(S, P + Var.vars[I].offset, Var.vars[I]);
+						var_write(S, P + Var.vars[I].offset, Var.vars[I]);
 					}
 					return Var.size;
 				default:
@@ -180,6 +174,19 @@ private:
 					break;
 				}
 				return 0;
+			}
+
+			template<class Stream>
+			static std::size_t var_write(
+				Stream & S, char *P, var &Var)
+			{
+				std::size_t Size;
+				for(std::size_t I = Var.count; I > 0; --I)
+				{
+					Size = var_element_write(S, P, Var);
+					P += Size;
+				}
+				return Size * Var.count;
 			}
 
 			static std::size_t aligment_size(std::size_t Size)
@@ -202,12 +209,12 @@ private:
 					{
 						if(Parameter.pointer)
 						{
-							parameter_write(S, *reinterpret_cast<char * *>(P), Parameter);
+							var_write(S, *reinterpret_cast<char * *>(P), Parameter);
 							P += aligment_size(sizeof(char *));
 						}
 						else
 						{
-							P += aligment_size(parameter_write(S, P, Parameter));
+							P += aligment_size(var_write(S, P, Parameter));
 						}
 					}
 				}
@@ -299,21 +306,37 @@ private:
 		public:
 			std::size_t offset;
 			windows::com::vartype_t vt;
+			std::size_t count;
 			std::size_t size;
 			typedef std::vector<var> var_list_t;
 			var_list_t vars;
 
+			var():
+				count(1)
+			{
+			}
+
 			void assign(
 				const windows::com::itypeinfo_t &TypeInfo,
 				std::size_t offset,
-				windows::com::typedesc_t &Td)
+				windows::com::typedesc_t *Td)
 			{
 				this->offset = offset;
-				this->vt = Td.vt();
+				this->vt = Td->vt();
+				if(this->vt == windows::com::vartype_t::carray)
+				{
+					windows::com::arraydesc_t &A = Td->adesc();
+					for(std::size_t I = 0; I < A.cdims(); ++I)
+					{
+						this->count *= A.rgbounds()[I].celements();
+					}
+					Td = &A.tdescelem();
+					this->vt = Td->vt();
+				}
 				if(this->vt == windows::com::vartype_t::userdefined)
 				{
 					windows::com::itypeinfo_t const Ti = 
-						TypeInfo.getreftypeinfo(Td.hreftype());
+						TypeInfo.getreftypeinfo(Td->hreftype());
 					windows::com::typeattr_t Attr(Ti);
 					this->size = Attr.sizeinstance();
 
@@ -322,7 +345,7 @@ private:
 					{
 						windows::com::vardesc_t VarDesc(Ti, static_cast<unsigned int>(I));
 						this->vars[I].assign(
-							Ti, VarDesc.oinst(), VarDesc.elemdescvar().tdesc());
+							Ti, VarDesc.oinst(), &VarDesc.elemdescvar().tdesc());
 					}
 				}
 			}
@@ -343,9 +366,9 @@ private:
 				this->pointer = Ptd->vt() == windows::com::vartype_t::ptr;
 				if(this->pointer)
 				{
-					Ptd = &Ptd->desc();
+					Ptd = &Ptd->tdesc();
 				}
-				this->var::assign(TypeInfo, 0, *Ptd);
+				this->var::assign(TypeInfo, 0, Ptd);
 			}
 		};
 

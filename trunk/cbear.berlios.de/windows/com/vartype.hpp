@@ -30,6 +30,7 @@ public:
 		date = ::VT_DATE,
 		bstr = ::VT_BSTR,
 		array = ::VT_ARRAY,
+		carray = ::VT_CARRAY,
 		ptr = ::VT_PTR,
 		unknown = ::VT_UNKNOWN,
 		dispatch = ::VT_DISPATCH,
