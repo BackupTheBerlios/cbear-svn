@@ -155,6 +155,11 @@ public:
 		return this->pointer.get()->cFuncs;
 	}
 
+	unsigned short cvars()
+	{
+		return this->pointer.get()->cVars;
+	}
+
 private:
 
 	typeattr_t(typeattr_t const &);
@@ -225,6 +230,57 @@ public:
 	}
 private:
 	::ELEMDESC V;
+};
+
+class vardesc_t
+{
+public:
+
+	vardesc_t()
+	{
+	}
+
+	vardesc_t(itypeinfo_t const &info, unsigned int index)
+	{
+		this->assign(info, index);
+	}
+
+	void assign()
+	{
+		if(this->info)
+		{
+			this->info->ReleaseVarDesc(this->pointer.get());
+			this->pointer.get() = 0;
+		}
+	}
+
+	void assign(itypeinfo_t const &info, unsigned int index)
+	{
+		this->assign();
+		if(info->GetVarDesc(index, &this->pointer.get()) == S_OK)
+		{
+			this->info = info;
+		}
+	}
+
+	elemdesc_t &elemdescvar()
+	{
+		return cast::traits<elemdesc_t &>::reinterpret(
+			this->pointer.get()->elemdescVar);
+	}
+
+	unsigned long &oinst()
+	{
+		return this->pointer.get()->oInst;
+	}
+
+private:
+
+	vardesc_t(vardesc_t const &);
+	vardesc_t &operator=(vardesc_t const &);
+
+	itypeinfo_t info;
+	base::initialized< ::VARDESC *> pointer;
 };
 
 class funcdesc_t

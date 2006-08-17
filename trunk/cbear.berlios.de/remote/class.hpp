@@ -126,6 +126,7 @@ private:
 		static std::size_t const aligment = 4;
 
 		class parameter;
+		class var;
 
 		class in
 		{
@@ -140,9 +141,9 @@ private:
 
 			template<class Stream>
 			static std::size_t parameter_write(
-				Stream & S, char *P, parameter &Parameter)
+				Stream & S, char *P, var &Var)
 			{
-				switch(Parameter.vt.enum_())
+				switch(Var.vt.enum_())
 				{
 				case windows::com::vartype_t::bool_:
 					S << 
@@ -163,11 +164,17 @@ private:
 					S << *reinterpret_cast<windows::ulong_t *>(P);
 					return sizeof(windows::ulong_t);
 				case windows::com::vartype_t::userdefined:
+					/*
 					for(std::size_t i = 0; i < Parameter.size; ++i)
 					{
 						S << P[i];
 					}
-					return Parameter.size;
+					*/
+					for(std::size_t I = 0; I < Var.vars.size(); ++I)
+					{
+						parameter_write(S, P + Var.vars[I].offset, Var.vars[I]);
+					}
+					return Var.size;
 				default:
 					BOOST_ASSERT(false);
 					break;
@@ -287,13 +294,45 @@ private:
 		base::initialized<class_ *> Class;
 		windows::com::uuid Uuid;
 
-		class parameter
+		class var
+		{
+		public:
+			std::size_t offset;
+			windows::com::vartype_t vt;
+			std::size_t size;
+			typedef std::vector<var> var_list_t;
+			var_list_t vars;
+
+			void assign(
+				const windows::com::itypeinfo_t &TypeInfo,
+				std::size_t offset,
+				windows::com::typedesc_t &Td)
+			{
+				this->offset = offset;
+				this->vt = Td.vt();
+				if(this->vt == windows::com::vartype_t::userdefined)
+				{
+					windows::com::itypeinfo_t const Ti = 
+						TypeInfo.getreftypeinfo(Td.hreftype());
+					windows::com::typeattr_t Attr(Ti);
+					this->size = Attr.sizeinstance();
+
+					this->vars.resize(Attr.cvars());
+					for(std::size_t I = 0; I < this->vars.size(); ++I)
+					{
+						windows::com::vardesc_t VarDesc(Ti, static_cast<unsigned int>(I));
+						this->vars[I].assign(
+							Ti, VarDesc.oinst(), VarDesc.elemdescvar().tdesc());
+					}
+				}
+			}
+		};
+
+		class parameter: public var
 		{
 		public:
 			windows::com::paramflags_t flags;
 			bool pointer;
-			windows::com::vartype_t vt;
-			std::size_t size;
 			void assign(
 				const windows::com::itypeinfo_t &TypeInfo, 
 				windows::com::elemdesc_t &Elemdesc)
@@ -301,19 +340,12 @@ private:
 				this->flags = Elemdesc.paramdesc().paramflags();
 				windows::com::typedesc_t *Ptd = &Elemdesc.tdesc();
 				this->vt = Ptd->vt();
-				this->pointer = this->vt == windows::com::vartype_t::ptr;
+				this->pointer = Ptd->vt() == windows::com::vartype_t::ptr;
 				if(this->pointer)
 				{
 					Ptd = &Ptd->desc();
-					this->vt = Ptd->vt();
 				}
-				if(this->vt == windows::com::vartype_t::userdefined)
-				{
-					windows::com::itypeinfo_t Ti = 
-						TypeInfo.getreftypeinfo(Ptd->hreftype());
-					windows::com::typeattr_t Attr(Ti);
-					this->size = Attr.sizeinstance();
-				}
+				this->var::assign(TypeInfo, 0, *Ptd);
 			}
 		};
 
