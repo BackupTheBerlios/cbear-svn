@@ -8,7 +8,11 @@
 	xmlns:S="svn:"
 	exclude-result-prefixes="C S">
 
-	<xsl:output method="xml" indent="no"/>
+	<xsl:output 
+		method="xml" 
+		indent="no" 
+		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
 
 	<xsl:param name="C:current"/>
 
@@ -364,12 +368,20 @@
 		</xsl:if>
 	</xsl:template>
 
+	<xsl:template match="C:section" mode="C:content.id">		
+		<xsl:value-of select="'o'"/>
+		<xsl:apply-templates select="." mode="C:content.number"/>
+	</xsl:template>
+
 	<xsl:template match="C:section" mode="C:content.table">
 		<xsl:variable name="number">
 			<xsl:apply-templates select="." mode="C:content.number"/>
 		</xsl:variable>
+		<xsl:variable name="id">
+			<xsl:apply-templates select="." mode="C:content.id"/>
+		</xsl:variable>
 		<div class="content-table">
-			<a href="{concat('#', $number)}" title="{@title}">
+			<a href="{concat('#', $id)}" title="{@title}">
 				<xsl:value-of select="concat($number, ' ', @name)"/>
 			</a>
 			<xsl:apply-templates select="C:section" mode="C:content.table"/>
@@ -385,7 +397,7 @@
 	</xsl:template>
 
 	<xsl:template match="*" mode="C:content.content">
-		<xsl:apply-templates select="*|text()|comment()" mode="C:content"/>
+		<xsl:apply-templates select="*|text()" mode="C:content"/>
 	</xsl:template>
 
 	<xsl:template match="@title" mode="C:content.content">
@@ -398,11 +410,11 @@
 		<xsl:value-of select="."/>
 	</xsl:template>
 
-	<xsl:template match="comment()" mode="C:content">
-		<xsl:copy-of select="."/>
+	<xsl:template match="*" mode="C:content" priority="-2">
+		<xsl:element name="{local-name()}" />
 	</xsl:template>
 
-	<xsl:template match="*" mode="C:content">
+	<xsl:template match="*[*|@*|text()]" mode="C:content" priority="-1">
 		<xsl:element name="{local-name()}">
 			<xsl:copy-of select="@*"/>
 			<xsl:apply-templates select="." mode="C:content.content"/>
@@ -506,9 +518,12 @@
 		<xsl:variable name="number">
 			<xsl:apply-templates select="." mode="C:content.number"/>
 		</xsl:variable>
+		<xsl:variable name="id">
+			<xsl:apply-templates select="." mode="C:content.id"/>
+		</xsl:variable>
 		<div 
 			class="content-section"
-			id="{$number}">
+			id="{$id}">
 			<h2><xsl:value-of select="concat($number, ' ', @name)"/></h2>
 			<div class="content-section-content">
 				<xsl:apply-templates select="@title" mode="C:content.content"/>

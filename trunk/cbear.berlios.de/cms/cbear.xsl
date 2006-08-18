@@ -75,6 +75,7 @@
 					</td>
 				</tr>
 			</table>
+			<xsl:copy-of select="document('cbear.xml')/H:html/H:analytics/*"/>
 		</body>
 	</html>
 </xsl:template>
