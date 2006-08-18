@@ -62,4 +62,27 @@
 </form>
 		</div>
 	</section>
+	<section name="Subversion">
+		<ul>
+			<li>
+Анонимный доступ к <a href="SVN" type="wikipedia"/>:<br/>
+<a href="svn://svn.berlios.de/cbear/trunk"/>.
+			</li>
+			<li>
+Анонимный доступ к <a href="SVN" type="wikipedia"/> через <a href="HTTP" 
+type="wikipedia"/>:<br/>
+<a href="http://svn.berlios.de/svnroot/repos/cbear/trunk"/>.
+			</li>
+			<li>
+Доступ к <a href="SVN" type="wikipedia"/> для разработчиков через <a href="SSH" 
+type="wikipedia"/>:<br/>
+<a href="svn+ssh://svn.berlios.de/svnroot/repos/cbear/trunk"/>.
+			</li>
+			<li>
+Доступ к <a href="SVN" type="wikipedia"/> для разработчиков через <a 
+href="HTTPS" type="wikipedia"/>:<br/>
+<a href="https://svn.berlios.de/svnroot/repos/cbear/trunk"/>.
+			</li>
+		</ul>
+	</section>
 </section>

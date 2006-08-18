@@ -61,4 +61,27 @@ It supports different programming languages and platforms.
 </form>
 		</p>
 	</section>
+	<section name="Subversion">
+		<ul>
+			<li>
+Anonymous <a href="SVN" type="wikipedia"/> Access<br/>
+<a href="svn://svn.berlios.de/cbear/trunk"/>.
+			</li>
+			<li>
+Anonymous <a href="SVN" type="wikipedia"/> Access via <a href="HTTP" 
+type="wikipedia"/><br/>
+<a href="http://svn.berlios.de/svnroot/repos/cbear/trunk"/>.
+			</li>
+			<li>
+Developer <a href="SVN" type="wikipedia"/> Access via <a href="SSH" 
+type="wikipedia"/><br/>
+<a href="svn+ssh://svn.berlios.de/svnroot/repos/cbear/trunk"/>.
+			</li>
+			<li>
+Developer <a href="SVN" type="wikipedia"/> Access via <a href="HTTPS" 
+type="wikipedia"/><br/>
+<a href="https://svn.berlios.de/svnroot/repos/cbear/trunk"/>.
+			</li>
+		</ul>
+	</section>
 </section>
