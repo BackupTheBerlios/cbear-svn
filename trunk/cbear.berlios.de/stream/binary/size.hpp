@@ -37,13 +37,6 @@ public:
 		return *this;
 	}
 
-	template<class T>
-	size &operator>>(T &t)
-	{
-		binary::read(*this, t);
-		return *this;
-	}
-
 	std::size_t operator()() const { return this->V; }
 
 private:

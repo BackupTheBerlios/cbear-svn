@@ -51,6 +51,17 @@ public:
 
 	typedef ::VARTYPE c_t;
 
+	template<enum_t V>
+	class const_
+	{
+	public:
+		static enum_t const value = V;
+		operator vartype_t() const
+		{
+			return vartype_t(V);
+		}
+	};
+
 	vartype_t(enum_t E = empty):
 		V(c_t(E))
 	{
@@ -59,6 +70,86 @@ public:
 	bool operator==(const vartype_t &B) const
 	{
 		return this->V == B.V;
+	}
+
+	template<class F>
+	void apply(F f) const
+	{
+		switch(this->V)
+		{
+		case empty:
+			f(const_<empty>());
+			break;
+		case bool_:
+			f(const_<bool_>());
+			break;
+		case int_:
+			f(const_<int_>());
+			break;
+		case uint:
+			f(const_<uint>());
+			break;
+		case i1:
+			f(const_<i1>());
+			break;
+		case ui1:
+			f(const_<ui1>());
+			break;
+		case i2:
+			f(const_<i2>());
+			break;
+		case ui2:
+			f(const_<ui2>());
+			break;
+		case i4:
+			f(const_<i4>());
+			break;
+		case ui4:
+			f(const_<ui4>());
+			break;
+		case i8:
+			f(const_<i8>());
+			break;
+		case ui8:
+			f(const_<ui8>());
+			break;
+		case r4:
+			f(const_<r4>());
+			break;
+		case r8:
+			f(const_<r8>());
+			break;
+		case date:
+			f(const_<date>());
+			break;
+		case bstr:
+			f(const_<bstr>());
+			break;
+		case array:
+			f(const_<array>());
+			break;
+		case carray:
+			f(const_<carray>());
+			break;
+		case ptr:
+			f(const_<ptr>());
+			break;
+		case unknown:
+			f(const_<unknown>());
+			break;
+		case dispatch:
+			f(const_<dispatch>());
+			break;
+		case userdefined:
+			f(const_<userdefined>());
+			break;
+		case record:
+			f(const_<record>());
+			break;
+		default:
+			f(*this);
+			break;
+		}
 	}
 
 private:

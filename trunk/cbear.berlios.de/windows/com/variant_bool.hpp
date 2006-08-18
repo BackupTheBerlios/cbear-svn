@@ -52,9 +52,17 @@ public:
 	static vartype_t::enum_t const vt = vartype_t::bool_;
 	typedef detail::variant_bool_wrap::internal_policy internal_policy;
 	typedef variant_bool_t move_type;
-	variant_bool_t() {}
-	explicit variant_bool_t(bool X): detail::variant_bool_wrap(X) {}
-	operator bool() const { return internal_policy::cast(this->internal()); }
+	variant_bool_t() 
+	{
+	}
+	explicit variant_bool_t(bool X): 
+		detail::variant_bool_wrap(X) 
+	{
+	}
+	operator bool() const 
+	{ 
+		return internal_policy::cast(this->internal()); 
+	}
 	template<class Stream>
 	void write(Stream &O) const
 	{
@@ -68,6 +76,18 @@ public:
 	void move_assign(variant_bool_t &F)
 	{
 		this->internal() = F.internal();
+	}
+	template<class Stream>
+	void binary_write(Stream &S) const
+	{
+		S << (internal_policy::cast(this->internal()) ? char(1): char(0));
+	}
+	template<class Stream>
+	void binary_read(Stream &S)
+	{
+		char V;
+		S >> V;
+		this->internal() = V ? TRUE: FALSE;
 	}
 };
 

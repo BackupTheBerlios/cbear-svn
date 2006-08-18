@@ -172,15 +172,27 @@ private:
 class paramflags_t
 {
 public:
+
 	enum enum_t
 	{
+		none = PARAMFLAG_NONE,
 		in = PARAMFLAG_FIN,
 		out = PARAMFLAG_FOUT,
 	};
 
-	bool has(enum_t E) const
+	bool has(paramflags_t const &E) const
 	{
-		return (this->V & E) != 0;
+		return (this->V & E.V) != 0;
+	}
+
+	paramflags_t(enum_t E = none):
+		V(static_cast<windows::ushort_t>(E))
+	{
+	}
+
+	bool operator==(paramflags_t const &B) const
+	{
+		return this->V == B.V;
 	}
 
 private:

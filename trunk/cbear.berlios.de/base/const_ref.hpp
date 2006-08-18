@@ -7,7 +7,10 @@ namespace base
 {
 
 template<class T>
-const T &const_ref(const T &X) { return X; }
+const T &const_ref(const T &X) 
+{ 
+	return X; 
+}
 
 }
 }
