@@ -25,11 +25,11 @@ function main()
 		"http://svn.berlios.de/viewcvs/*checkout*/cbear/trunk/cbear.berlios.de/" + 
 		path;
 
-	var file = full + "/index.xml"
+	// var file = full + "/index.xml"
 
-	document.getElementsByTagName("body")[0].innerHTML = file
+	document.getElementsByTagName("body")[0].innerHTML = full
 
-	var xml = xmlLoad(file)
+	var xml = xmlLoad(full)
 
 	var xslt = new XSLTProcessor()
 	xslt.importStylesheet(xmlLoad("http.xsl").responseXML)	
