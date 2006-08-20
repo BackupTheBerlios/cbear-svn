@@ -19,17 +19,15 @@ function main()
 {
 	var xsltProcessor = null
 
-	var path = window.location.search.substring(1)
+	var file = window.location.search.substring(1)
 
-	var full = 
+	var path = 
 		"http://svn.berlios.de/viewcvs/*checkout*/cbear/trunk/cbear.berlios.de/" + 
-		path;
+		file;
 
-	// var file = full + "/index.xml"
+	document.getElementsByTagName("body")[0].innerHTML = path
 
-	document.getElementsByTagName("body")[0].innerHTML = full
-
-	var xml = xmlLoad(full)
+	var xml = xmlLoad(path)
 
 	var xslt = new XSLTProcessor()
 	xslt.importStylesheet(xmlLoad("http.xsl").responseXML)	

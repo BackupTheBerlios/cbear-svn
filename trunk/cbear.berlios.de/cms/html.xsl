@@ -14,8 +14,6 @@
 		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
 
-	<xsl:param name="C:current"/>
-
 	<xsl:param name="C:extension" select="'xml'"/>
 	<xsl:param name="C:languages" select="'languages.xml'"/>
 
@@ -195,7 +193,7 @@
 			</xsl:apply-templates>
 		</xsl:for-each>
 		<span class="path">
-			<a href="{concat($C:current, $path, $C:index.link)}" title="{@title}">
+			<a href="{concat($path, $C:index.link)}" title="{@title}">
 				<xsl:value-of select="@name"/>
 			</a>
 		</span>
