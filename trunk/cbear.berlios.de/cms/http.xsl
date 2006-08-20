@@ -9,6 +9,8 @@
 
 	<xsl:import href="html.xsl"/>
 
+	<xsl:param name="C:current"/>
+
 	<xsl:template match="/C:section">
 		<table>
 			<tr>

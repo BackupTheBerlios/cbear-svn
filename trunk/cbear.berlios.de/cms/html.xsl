@@ -167,6 +167,13 @@
 		<h1><xsl:value-of select="@name"/></h1>
 	</xsl:template>
 
+	<!-- Href -->
+
+	<xsl:template name="C:href">
+		<xsl:param name="path"/>
+		<xsl:value-of select="concat($path, $C:index.link)"/>
+	</xsl:template>
+
 	<!-- Path -->
 
 	<xsl:variable 
@@ -192,8 +199,13 @@
 				<xsl:with-param name="path" select="concat('../', $path)"/>
 			</xsl:apply-templates>
 		</xsl:for-each>
-		<span class="path">
-			<a href="{concat($path, $C:index.link)}" title="{@title}">
+		<span class="path">			
+			<xsl:variable name="href">
+				<xsl:call-template name="C:href">
+					<xsl:with-param name="path" select="$path"/>
+				</xsl:call-template>
+			</xsl:variable>
+			<a href="{$href}" title="{@title}">
 				<xsl:value-of select="@name"/>
 			</a>
 		</span>
