@@ -37,6 +37,7 @@
 	<xsl:template name="C:href">
 		<xsl:param name="current.directory" select="$C:current.directory"/>
 		<xsl:param name="path"/>
+<!--
 		<xsl:choose>
 			<xsl:when test="substring($path, 1, 3) = '../'">
 				<xsl:call-template name="C:href">
@@ -52,10 +53,13 @@
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
+-->
 				<xsl:value-of select="concat(
 					$C:http.html.path, '?', $C:current.directory, $path, $C:index.link)"/>
+<!--
 			</xsl:otherwise>
 		</xsl:choose>
+-->
 	</xsl:template>
 
 	<xsl:template match="/C:section">
