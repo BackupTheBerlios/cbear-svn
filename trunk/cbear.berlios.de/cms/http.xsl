@@ -20,7 +20,7 @@
 	<xsl:template name="C:directory">
 		<xsl:param name="file.path"/>
 		<xsl:if test="contains($file.path, '/')">
-			<xsl:value-of select="concat(substring-before($file.path, '/'), '/')"/>
+			<xsl:value-of select="concat(substring-before($file.path, '/'), '/X')"/>
 			<xsl:call-template name="C:directory">
 				<xsl:with-param 
 					name="file.path" select="substring-after($file.path, '/')"/>
