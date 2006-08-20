@@ -32,7 +32,7 @@ function main()
 	xslt.importStylesheet(xmlLoad("http.xsl").responseXML)	
 
 	xslt.setParameter(
-		"http://cbear.berlios.de/cms", "current", window.location.href + "/")
+		"http://cbear.berlios.de/cms", "current", window.location.href)
 
 	var html = xslt.transformToFragment(xml.responseXML, document);
 
