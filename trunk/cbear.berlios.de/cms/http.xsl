@@ -53,7 +53,7 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="concat(
-					$C:http.html.path, '?', $C:current.directory, $path, $C:index.link)"/>
+					$C:http.html.path, '?', $current.directory, $path, $C:index.link)"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
