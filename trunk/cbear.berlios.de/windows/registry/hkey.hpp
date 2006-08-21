@@ -3,6 +3,7 @@
 
 #include <Winreg.h>
 
+#include <cbear.berlios.de/range/fill.hpp>
 #include <cbear.berlios.de/policy/main.hpp>
 #include <cbear.berlios.de/windows/base.hpp>
 #include <cbear.berlios.de/windows/lpstr.hpp>
@@ -111,6 +112,8 @@ public:
 		return Result;
 	}
 
+	// See
+	// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/sysinfo/base/regconnectregistry.asp
 	template<class Char>
 	hkey connect(const basic_lpstr<const Char> &X) const
 	{
@@ -121,6 +124,8 @@ public:
 		return Result;
 	}
 
+	// See
+	// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/sysinfo/base/regopenkeyex.asp
 	template<class Char>
 	hkey open(const basic_lpstr<const Char> &SubKey, sam Sam) const
 	{
@@ -151,30 +156,106 @@ public:
 		exception::throw_if(::RegCloseKey(this->internal()));
 	}
 
-	template<class Char, class DataType>
-	void set_value(
-		const basic_lpstr<const Char> &ValueName, const DataType &Data) const
+	template<class Char>
+	void query_value(
+		basic_lpstr<Char const> const &Value,
+		data<Char> &Data)
 	{
 		typedef data<Char> data_type;
 		typedef typename data_type::properties_type properties_type;
 		properties_type Properties = data_type::properties(Data);
-		exception::throw_if(CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, RegSetValueEx)(
-			this->internal(), 
-			ValueName.get(),
-			0,
-			Properties.id.get(),
+		data_id_type Id = Properties.id;
+		dword_t Size = Properties.size;
+		exception::throw_if(
+			CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::RegQueryValueEx)(
+				this->internal(),
+				Value.get(),
+				0,
+				&Id.get(),
+				0,
+				&Size));
+		switch(Id.get())
+		{
+		case data_type::id_type::none:
+			Data = data_type();
+			break;
+		case data_type::id_type::dword:
+			Data = data_type(dword_t());
+			break;
+		case data_type::id_type::qword:
+			Data = data_type(ulonglong_t());
+			break;
+		case data_type::id_type::sz:
+			Data = data_type(data_type::string_type(range::make_fill(
+				Char(0), Size / sizeof(Char) - 1)));
+			break;
+		default:
+			BOOST_ASSERT(false);
+		}
+		Properties = data_type::properties(Data);
+		BOOST_ASSERT(Size == Properties.size);
+		exception::throw_if(
+			CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::RegQueryValueEx)(
+				this->internal(),
+				Value.get(),
+				0,
+				&Id.get(),
+				Properties.begin,
+				&Size));
+	}
+
+	/*
+	// Client: Requires Windows Vista or Windows XP Pro x64
+	// Server: Requires Windows Server "Longhorn" or Windows Server 2003 SP1.
+	template<class Char>
+	void get_value(
+		basic_lpstr<Char const> const &SubKey,
+		basic_lpstr<Char const> const &Value,
+		data<Char> &Data)
+	{
+		typedef data<Char> data_type;
+		typedef typename data_type::properties_type properties_type;
+		properties_type Properties = data_type::properties(Data);
+		data_id_type Type = Properties.id;
+		dword_t Size = Properties.size;
+		exception::throw_if(CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, RegGetValue)(
+			this->internal(),
+			SubKey.get(),
+			Value.get(),
+			Properties.flags.c_in(),
+			&Type.get(),
 			Properties.begin,
-			Properties.size));
+			&Size));
+	}
+	*/
+
+	// See
+	// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/sysinfo/base/regsetvalueex.asp
+	template<class Char, class DataType>
+	void set_value(
+		const basic_lpstr<const Char> &ValueName, DataType &Data) const
+	{
+		typedef data<Char> data_type;
+		typedef typename data_type::properties_type properties_type;
+		properties_type Properties = data_type::properties(Data);
+		exception::throw_if(
+			CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::RegSetValueEx)(
+				this->internal(), 
+				ValueName.get(),
+				0,
+				Properties.id.get(),
+				Properties.begin,
+				Properties.size));
 	}
 
 	template<class Char>
-	void set_value(const value<Char> &Value) const
+	void set_value(value<Char> &Value) const
 	{ 
 		this->set_value<Char>(Value.first, Value.second);
 	}
 
 	template<class Char>
-	void set_value(const data<Char> &Data) const 
+	void set_value(data<Char> &Data) const 
 	{ 
 		this->set_value(basic_lpstr<const Char>(), Data); 
 	}

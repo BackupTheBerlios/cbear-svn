@@ -19,13 +19,21 @@ public:
 	typedef data<char_type> data_type;
 	typedef std::pair<string_type, data_type> base_type;
 
-	value() {}
+	value() 
+	{
+	}
 
 	template<class DataType>
-	explicit value(const DataType &data): base_type(string_type(), data) {}
+	explicit value(const DataType &data): 
+		base_type(string_type(), data) 
+	{
+	}
 
 	template<class DataType >
-	value(const string_type &name, const DataType &data): base_type(name, data) {}
+	value(const string_type &name, const DataType &data): 
+		base_type(name, data) 
+	{
+	}
 };
 
 }

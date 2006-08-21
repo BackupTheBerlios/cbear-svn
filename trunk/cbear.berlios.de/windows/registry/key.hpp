@@ -63,17 +63,17 @@ public:
 
 	typedef hkey::create_options<char_type> create_options_type;
 
-	void create(hkey HKey, const create_options_type &Options) const
+	void create(hkey HKey, const create_options_type &Options)
 	{
 		for(
-			range::sub_range<const value_list_type>::type A(this->ValueList);
+			range::sub_range<value_list_type>::type A(this->ValueList);
 			!A.empty();
 			A.begin()++)
 		{
 			HKey.set_value(*A.begin());
 		}
 		for(
-			range::sub_range<const key_list_type>::type E(this->KeyList);
+			range::sub_range<key_list_type>::type E(this->KeyList);
 			!E.empty();
 			E.begin()++)
 		{
@@ -127,7 +127,7 @@ public:
 	key() {}
 	explicit key(const string_type name): name(name) {}
 
-	void create(hkey HKey, const create_options_type &Options) const
+	void create(hkey HKey, const create_options_type &Options)
 	{
 		hkey SubKey = HKey.create<char_type>(this->name, Options).hkey;
 		this->base_type::create(SubKey, Options);

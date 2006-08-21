@@ -100,15 +100,18 @@ public:
 	{
 	public:
 
-		typedef const byte_t *pointer_type;
+		typedef byte_t *pointer_type;
 		typedef dword_t size_type;
 
 		id_type id;
 		pointer_type begin;
 		size_type size;
 
-		properties_type(id_type id, pointer_type begin, size_type size):
-			id(id), begin(begin), size(size)
+		properties_type(
+			id_type id, pointer_type begin, size_type size):
+			id(id), 
+			begin(begin), 
+			size(size)
 		{
 		}
 	};
@@ -121,10 +124,12 @@ public:
 	{
 	public:
 		static const id_type::enumeration_type id = TypeId;
-		static properties_type properties(const Type &X)
+		static properties_type properties(Type &X)
 		{
 			return properties_type(
-				id, reinterpret_cast<typename properties_type::pointer_type>(&X), sizeof(Type));
+				id, 
+				reinterpret_cast<typename properties_type::pointer_type>(&X), 
+				sizeof(Type));
 		}
 	};
 
@@ -139,10 +144,13 @@ public:
 	};
 
 	template<class D>
-	class traits<dword_t, D>: public traits_helper<dword_t, id_type::dword> {};
+	class traits<dword_t, D>: public traits_helper<dword_t, id_type::dword>
+	{
+	};
 
 	template<class D>
-	class traits<ulonglong_t, D>: public traits_helper<ulonglong_t, id_type::qword>
+	class traits<ulonglong_t, D>: 
+		public traits_helper<ulonglong_t, id_type::qword>
 	{
 	};
 
@@ -152,12 +160,12 @@ public:
 	class traits<string_type, D>: public traits_helper<string_type, id_type::sz>
 	{
 	public:
-		static properties_type properties(const string_type &X)
+		static properties_type properties(string_type &X)
 		{ 
 			typedef typename properties_type::size_type size_type;
 			return properties_type(
 				id_type::sz, 
-				reinterpret_cast<typename properties_type::pointer_type>(X.c_str()),
+				reinterpret_cast<typename properties_type::pointer_type>(&*X.begin()),
 				size_type((X.size() + 1) * sizeof(Char)));
 		}
 	};
@@ -184,22 +192,28 @@ public:
 		{
 		public:
 			template<class T>
-			properties_type operator()(const T &X) const 
+			properties_type operator()(T &X) const 
 			{ 
 				return traits<T>::properties(X); 
 			}
 		};
 	public:
-		static properties_type properties(const data &X) 
+		static properties_type properties(data &X) 
 		{ 		
 			return boost::apply_visitor(properties_visitor(), X);
 		}
 	};
 
 	template<class T>
-	static properties_type properties(const T &X)
+	static properties_type properties(T &X)
 	{
 		return traits<T>::properties(X);
+	}
+
+	template<class T>
+	T const &get() const
+	{
+		return boost::get<T>(*this);
 	}
 
 	data &operator=(const data &X)
@@ -208,15 +222,26 @@ public:
 		return *this;
 	}
 
-	data() {}
+	data() 
+	{
+	}
 
-	data(const data &X): base_type(static_cast<const base_type &>(X)) {}
+	data(const data &X): 
+		base_type(static_cast<const base_type &>(X)) 
+	{
+	}
 
 	template<class T>
-	data(const T &X): base_type(X) {}
+	data(const T &X): 
+		base_type(X) 
+	{
+	}
 
 	template<std::size_t Size>
-	data(const char_type (&X)[Size]): base_type(string_type(X, Size - 1)) {}
+	data(const char_type (&X)[Size]): 
+		base_type(string_type(X, Size - 1)) 
+	{
+	}
 };
 
 }

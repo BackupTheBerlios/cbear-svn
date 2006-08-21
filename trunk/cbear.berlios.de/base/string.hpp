@@ -71,6 +71,7 @@ public:
 	using base_type::begin;
 	using base_type::end;
 	using base_type::size;
+	using base_type::data;
 
 	void swap(basic_string &S)
 	{
@@ -195,18 +196,34 @@ public:
 
 	basic_string() {}
 
-	basic_string(const move_type &M) { this->move_assign(*M); }
+	basic_string(const move_type &M) 
+	{ 
+		this->move_assign(*M); 
+	}
 
 	template<class Container>
-	basic_string(const Container &C) { this->assign(C); }
+	basic_string(const Container &C) 
+	{ 
+		this->assign(C); 
+	}
 
 	template<class Container>
-	basic_string &operator=(const Container &C) { return this->assign(C); }
+	basic_string &operator=(const Container &C) 
+	{ 
+		return this->assign(C); 
+	}
 
-	basic_string &operator=(const move_type &C) { C.swap(*this); return *this; }
+	basic_string &operator=(const move_type &C) 
+	{ 
+		C.swap(*this); 
+		return *this; 
+	}
 
 	template<class Container>
-	basic_string &operator+=(const Container &C) { return this->append(C); }
+	basic_string &operator+=(const Container &C) 
+	{ 
+		return this->append(C); 
+	}
 
 	/*
 	template<class Container>

@@ -10,6 +10,7 @@
 #include <cbear.berlios.de/base/const_ref.hpp>
 #include <cbear.berlios.de/base/swap.hpp>
 #include <cbear.berlios.de/windows/com/traits.hpp>
+#include <cbear.berlios.de/stream/read.hpp>
 
 // ::SysStringLen
 #pragma comment(lib, "oleaut32.lib")
@@ -110,8 +111,15 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 	{
 		const iterator_range ThisRange = make_sub_range(This);
 		const std::ptrdiff_t Dif = NewSize - ThisRange.size();
-		if(!Dif) return;
-		if(Dif < 0) { realloc(This, This, NewSize); return; }
+		if(!Dif) 
+		{
+			return;
+		}
+		if(Dif < 0) 
+		{ 
+			realloc(This, This, NewSize); 
+			return; 
+		}
 		// constructing a new BSTR.
 		type New;
 		alloc(New, NewSize);
@@ -141,9 +149,9 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 		return range::equal(make_sub_range(A), make_sub_range(B));
 	}
 
-	// 2. realloc can work only to decrease 
 	// 1. The source range can be a subrange of an operated object so
 	// we can't use resize.
+	// 2. Realloc can work only to decrease.
 	template<class SourceRange>
 	static void push_back_range(type &This, const SourceRange &Range)
 	{
@@ -169,6 +177,39 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 	static void push_back_range(type &This, const type &Source) 
 	{
 		push_back_range(This, make_sub_range(Source));
+	}
+
+	class empty_exception
+	{
+	};
+
+	template<class Range>
+	static void pop_front_range(type &This, Range &Source) 
+	{
+		std::ptrdiff_t const SourceSize = range::size(Source);		
+		iterator_range const ThisRange = make_sub_range(This);
+		std::ptrdiff_t const ThisSize = ThisRange.size();
+		std::ptrdiff_t const NewSize = ThisSize - SourceSize;
+		if(NewSize < 0)
+		{
+			throw empty_exception();
+		}
+		if(SourceSize == 0)
+		{
+			return;
+		}
+		iterator_range CopyRange(ThisRange.begin(), SourceSize);
+		range::copy(CopyRange, range::begin(Source));
+		//
+		for(
+			; 
+			CopyRange.end() != ThisRange.end(); 
+			++CopyRange.begin(), ++CopyRange.end())
+		{
+			*CopyRange.begin() = *CopyRange.end();
+		}
+		//
+		realloc(This, This, NewSize);
 	}
 
 	//using standard_policy_type::output;
@@ -237,6 +278,11 @@ public:
 	{
 	}
 
+	explicit bstr_t(const base::basic_string<wchar_t> &X): 
+		helper_type(const_iterator_range(X.c_str(), (size_type)X.size()), 0)
+	{
+	}
+
 	bstr_t(const move_type &F) { this->move_assign(*F); }
 
 	bstr_t &operator=(const move_type &F)
@@ -289,16 +335,23 @@ public:
 		internal_policy::push_back_range(this->internal(), c);
 	}
 
-	//template<class S>
-	//void write(S &s) const
-	//{
-	//	s.push_back_range(const_iterator_range(*this));
-	//}
-
 	template<class T>
 	bstr_t &operator<<(const T &t)
 	{
 		::cbear_berlios_de::stream::write(*this, t);
+		return *this;
+	}
+
+	template<class C>
+	void pop_front_range(C &c)
+	{
+		internal_policy::pop_front_range(this->internal(), c);
+	}
+
+	template<class T>
+	bstr_t &operator>>(T &t)
+	{
+		::cbear_berlios_de::stream::read(*this, t);
 		return *this;
 	}
 };

@@ -5,6 +5,7 @@
 #include <cbear.berlios.de/remote/interface.hpp>
 #include <cbear.berlios.de/windows/com/itypeinfo.hpp>
 #include <cbear.berlios.de/windows/com/safearray.hpp>
+#include <cbear.berlios.de/windows/com/isupporterrorinfo.hpp>
 #include <cbear.berlios.de/atomic/main.hpp>
 #include <cbear.berlios.de/stream/binary/irange.hpp>
 #include <cbear.berlios.de/stream/binary/orange.hpp>
@@ -20,7 +21,8 @@ namespace remote
 {
 
 template<class Io>
-class class_: public windows::com::iunknown_t::interface_t
+class class_: 
+	public windows::com::isupporterrorinfo_t::interface_t
 {
 public:
 
@@ -28,7 +30,7 @@ public:
 	typedef typename windows::com::safearray_t<windows::com::itypeinfo_t> 
 		typeinfo_list_t;
 
-	explicit class_(const Io &I, const typeinfo_list_t &List):
+	explicit class_(const Io &I, const typeinfo_list_t &/*List*/):
 		I(I)
 	{
 		store_t In, Out;
@@ -52,6 +54,30 @@ public:
 			windows::byte_t Offset;
 			IRange >> Uuid >> Offset;
 
+			windows::com::bstr_t SubKeyName;
+			SubKeyName << L"Interface\\{" << Uuid << L"}\\TypeLib";
+
+			windows::registry::hkey HKey =
+				windows::registry::hkey(windows::registry::hkey::classes_root).
+				open<wchar_t>(SubKeyName, windows::registry::sam());
+
+			typedef windows::registry::data<wchar_t> data_type;
+
+			data_type Data;
+
+			HKey.query_value<wchar_t>(windows::lpcwstr_t(), Data);
+			Com::bstr_t TypeLibUuid = Com::bstr_t(Data.get<data_type::string_type>());
+
+			HKey.query_value<wchar_t>(windows::lpcwstr_t(L"Version"), Data);
+			Com::bstr_t TypeLibVersion = Com::bstr_t(
+				Data.get<data_type::string_type>());
+
+			wchar_t W;
+			TypeLibUuid >> W;
+
+			HKey.close();
+
+			/*
 			for(typeinfo_list_t::iterator_range_t R(List); !R.empty(); ++R.begin())
 			{
 				Com::typeattr_t Ra(R.front());
@@ -61,6 +87,7 @@ public:
 					break;
 				}
 			}
+			*/
 		}
 	}
 
@@ -83,6 +110,11 @@ public:
 	virtual ::ULONG __stdcall Release()
 	{
 		return this->release();
+	}
+
+	virtual ::HRESULT __stdcall InterfaceSupportsErrorInfo(const ::IID &)
+	{
+		return S_OK;
 	}
 
 private:
@@ -239,27 +271,7 @@ private:
 			param(param const &);
 			param &operator=(param const &);
 		};
-/*
-		class out
-		{
-		public:
-			function &f;
-			parameters const p;
 
-			out(function &f, parameters const &p):
-				f(f),
-				p(p)
-			{
-			}
-			template<class Stream>
-			void binary_read(Stream &)
-			{
-			}
-		private:
-			out(const out &);
-			out &operator=(const out &);
-		};
-*/
 		windows::com::hresult universal(parameters const &P)
 		{
 			try
@@ -450,6 +462,13 @@ private:
 			P = 
 				windows::com::iunknown_t::cpp_in(
 				static_cast<windows::com::iunknown_t::c_in_t>(this));
+			return windows::com::hresult::s_ok;			
+		}
+		else if(Uuid == windows::com::uuid::of<windows::com::isupporterrorinfo_t>())
+		{
+			P = 
+				windows::com::iunknown_t::cpp_in(
+				static_cast<windows::com::isupporterrorinfo_t::c_in_t>(this));
 			return windows::com::hresult::s_ok;			
 		}
 		for(range::sub_range<ListT>::type R(this->List); !R.empty(); ++R.begin())
