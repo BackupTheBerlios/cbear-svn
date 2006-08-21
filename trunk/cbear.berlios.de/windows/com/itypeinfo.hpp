@@ -410,7 +410,7 @@ public:
 
 	static const itypeinfo_t &typeinfo() 
 	{ 
-		return this->Value; 
+		return Value; 
 	}
 
 private:
