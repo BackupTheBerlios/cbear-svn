@@ -81,7 +81,6 @@
 				</td>
 				<td>
 					<!-- Content -->
-					A!
 					<xsl:apply-templates select="." mode="C:content"/>
 				</td>
 			</tr>
