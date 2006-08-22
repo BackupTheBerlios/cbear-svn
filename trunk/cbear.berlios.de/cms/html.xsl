@@ -384,15 +384,20 @@
 	</xsl:template>
 
 	<xsl:template match="C:section" mode="C:content.table">
+		<!--
 		<xsl:variable name="number">
 			<xsl:apply-templates select="." mode="C:content.number"/>
 		</xsl:variable>
+		-->
 		<xsl:variable name="id">
 			<xsl:apply-templates select="." mode="C:content.id"/>
 		</xsl:variable>
 		<div class="content-table">
 			<a href="{concat('#', $id)}" title="{@title}">
+				<!--
 				<xsl:value-of select="concat($number, ' ', @name)"/>
+				-->
+				<xsl:value-of select="@name"/>
 			</a>
 			<xsl:apply-templates select="C:section" mode="C:content.table"/>
 		</div>
@@ -525,16 +530,21 @@
 	</xsl:template>
 
 	<xsl:template match="C:section" mode="C:content">
+		<!--
 		<xsl:variable name="number">
 			<xsl:apply-templates select="." mode="C:content.number"/>
 		</xsl:variable>
+		-->
 		<xsl:variable name="id">
 			<xsl:apply-templates select="." mode="C:content.id"/>
 		</xsl:variable>
 		<div 
 			class="content-section"
 			id="{$id}">
+			<!--
 			<h2><xsl:value-of select="concat($number, ' ', @name)"/></h2>
+			-->
+			<h2><xsl:value-of select="@name"/></h2>
 			<div class="content-section-content">
 				<xsl:apply-templates select="@title" mode="C:content.content"/>
 				<xsl:if test="@source='yes'">
