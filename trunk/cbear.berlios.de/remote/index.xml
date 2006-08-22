@@ -189,7 +189,7 @@ Serialized in <a href="big endian" type="wikipedia"/>.
 			</ul>
 		</section>
 		<section name="Enumerations">
-			The size of an enumeration depends on possible values.
+			The size of an enumeration is one byte.
 		</section>
 		<section name="Structures">
 			Serialized in the order of its fields. Aligment is one byte.
