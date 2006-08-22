@@ -21,6 +21,11 @@ class class_traits
 public:
 	template<class S, class T>
 	static void write(S &s, const T &t) { t.write(s); }
+	template<class S, class T>
+	static void read(S &s, T &t) 
+	{ 
+		t.read(s); 
+	}
 };
 
 class bool_traits

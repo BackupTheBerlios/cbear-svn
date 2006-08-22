@@ -83,14 +83,18 @@ class pointer_content<Base, ::ITypeLib>:
 	public pointer_content<Base, ::IUnknown>
 {
 public:
-	template<class Interface>
-	itypeinfo_t gettypeinfoofguid() const
+	itypeinfo_t gettypeinfoofguid(uuid const &Uuid) const
 	{
 		itypeinfo_t Result;
 		exception::throw_unless(this->reference().GetTypeInfoOfGuid(
-			*uuid::of<Interface>().c_in(),
+			*Uuid.c_in(),
 			com::internal<out>(Result)));
 		return Result;
+	}
+	template<class Interface>
+	itypeinfo_t gettypeinfoofguid() const
+	{
+		return this->gettypeinfoofguid(uuid::of<Interface>());
 	}
 	tlibattr_t getlibattr() const 
 	{ 
@@ -144,6 +148,20 @@ inline void un_register_type_lib(const tlibattr_t &LibAttr)
 		LibAttr.wMinorVerNum(),
 		LibAttr.lcid(),
 		LibAttr.syskind());
+}
+
+inline itypelib loadregtypelib(
+	uuid const &Uuid, ushort_t Major, ushort_t Minor, lcid_t const &Lcid)
+{
+	itypelib Result;
+	com::exception::throw_unless(
+		::LoadRegTypeLib(
+			*Uuid.c_in(),
+ 			Major,
+			Minor,
+			com::internal<in>(Lcid),
+			com::internal<out>(Result)));
+	return Result;
 }
 
 template<class T>

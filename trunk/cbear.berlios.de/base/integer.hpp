@@ -203,20 +203,30 @@ class out_t
 {
 public:
 
-	out_t(T X): X(X), P(1)
+	out_t(T X): 
+		X(X), 
+		P(1)
 	{
-		const T N = this->X / Base;
-		while(N >= this->P) this->P *= Base;
+		T const N = this->X / Base;
+		while(N >= this->P) 
+		{
+			this->P *= Base;
+		}
 	}
 
-	out_t(T X, std::size_t I): X(X), P(1) 
+	out_t(T X, std::size_t I): 
+		X(X), 
+		P(1) 
 	{
 		for(; I>1; --I) 
 		{
 			BOOST_ASSERT(boost::integer_traits<T>::const_max / Base > this->P);
 			this->P *= Base; 
 		}
-		if(this->X / this->P >= Base) this->X %= this->P * Base;
+		if(this->X / this->P >= Base) 
+		{
+			this->X %= this->P * Base;
+		}
 	}
 
 
@@ -230,7 +240,10 @@ public:
 		{
 			const T c = XI / PI;
 			s << value_type(c + (c < 10 ? '0': 'A' - 10));
-			if(PI==1) return;
+			if(PI==1) 
+			{
+				return;
+			}
 			XI %= PI;
 			PI /= Base;
 		}
@@ -242,16 +255,133 @@ private:
 };
 
 template<std::size_t Base, class T>
+class uint_fixed_read
+{
+public:
+
+	uint_fixed_read(T &X, std::size_t I):
+		X(X),
+		I(I)
+	{
+	}
+
+	template<class S>
+	void read(S &s) const
+	{
+		this->X = 0;
+		typedef typename S::value_type value_type;
+		for(std::size_t Ii = I; Ii > 0; --Ii)
+		{
+			value_type C;
+			s >> C;
+			if('0' <= C && C <= '9')
+			{
+				C -= '0';
+			}
+			else if('A' <= C && C <= 'Z')
+			{
+				C -= ('A' - 10);
+			}
+			else if('a' <= C && C <= 'z')
+			{
+				C -= ('a' - 10);
+			}
+			else
+			{
+				return;
+			}
+			if(C >= Base)
+			{
+				return;
+			}
+			// It should throw an exception if C is not in any range or >= Base.
+			X = X * Base + T(C);
+		}
+	}
+	
+private:
+	T &X;
+	std::size_t const I;
+	uint_fixed_read &operator=(uint_fixed_read const &);
+};
+
+template<std::size_t Base, class T>
+class uint_read
+{
+public:
+
+	uint_read(T &X):
+		X(X)
+	{
+	}
+
+	template<class S>
+	void read(S &s) const
+	{
+		this->X = 0;
+		typedef typename S::value_type value_type;
+		typedef typename S::const_iterator_range const_iterator_range;
+		for(;;)
+		{
+			const_iterator_range R = s.get_front_range(1);
+			if(R.size() != 1)
+			{
+				return;
+			}
+			value_type C = R.front();
+			if('0' <= C && C <= '9')
+			{
+				C -= '0';
+			}
+			else if('A' <= C && C <= 'Z')
+			{
+				C -= ('A' - 10);
+			}
+			else if('a' <= C && C <= 'z')
+			{
+				C -= ('a' - 10);
+			}
+			else
+			{
+				return;
+			}
+			if(C >= Base)
+			{
+				return;
+			}			
+			X = X * Base + T(C);
+			s.pop_front_range(1);
+		}
+	}
+
+private:
+	T &X;
+	uint_read &operator=(uint_read const &);
+};
+
+template<std::size_t Base, class T>
 out_t<Base, T> out(T X) { return out_t<Base, T>(X); }
 
 template<std::size_t Base, class T>
 out_t<Base, T> out(T X, std::size_t I) { return out_t<Base, T>(X, I); }
 
 template<class T>
+uint_read<10, T> dec(T &X) 
+{ 
+	return uint_read<10, T>(X); 
+}
+
+template<class T>
 out_t<16, T> hex(T X) { return out_t<16, T>(X); }
 
 template<class T>
-out_t<16, T> hex(T X, std::size_t I) { return out_t<16, T>(X, I); }
+out_t<16, T> hex(T const &X, std::size_t I) { return out_t<16, T>(X, I); }
+
+template<class T>
+uint_fixed_read<16, T> hex(T &X, std::size_t I)
+{
+	return uint_fixed_read<16, T>(X, I);
+}
 
 }
 }

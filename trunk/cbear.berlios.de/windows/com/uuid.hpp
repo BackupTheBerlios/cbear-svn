@@ -92,6 +92,36 @@ public:
 		}		
 	}
 
+	template<class S>
+	void read(S &O)
+	{
+		typedef typename S::value_type char_type;
+		typedef range::iterator_range<boost::uint8_t *> range_type;
+		char_type W;
+		O >>
+			base::const_ref(base::hex(this->V.Data1, 8)) >>
+			W >>
+			base::const_ref(base::hex(this->V.Data2, 4)) >>
+			W >>
+			base::const_ref(base::hex(this->V.Data3, 4)) >>
+			W;
+		for(
+			range_type R(this->V.Data4, this->V.Data4 + 2); 
+			!R.empty(); 
+			++R.begin())
+		{
+			O >> base::const_ref(base::hex(R.front(), 2));
+		}
+		O >> W;
+		for(
+			range_type R(this->V.Data4 + 2, this->V.Data4 + 8);
+			!R.empty(); 
+			++R.begin())
+		{
+			O >> base::const_ref(base::hex(R.front(), 2));
+		}
+	}
+
 	template<class Stream>
 	void binary_read(Stream &I)
 	{

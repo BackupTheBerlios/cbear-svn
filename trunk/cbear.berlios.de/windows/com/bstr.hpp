@@ -183,6 +183,32 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 	{
 	};
 
+	static void pop_front_range(type &This, std::size_t SourceSize)
+	{
+		iterator_range const ThisRange = make_sub_range(This);
+		std::ptrdiff_t const ThisSize = ThisRange.size();
+		std::ptrdiff_t const NewSize = ThisSize - SourceSize;
+		if(NewSize < 0)
+		{
+			throw empty_exception();
+		}
+		if(SourceSize == 0)
+		{
+			return;
+		}
+		iterator_range CopyRange(ThisRange.begin(), SourceSize);
+		//
+		for(
+			; 
+			CopyRange.end() != ThisRange.end(); 
+			++CopyRange.begin(), ++CopyRange.end())
+		{
+			*CopyRange.begin() = *CopyRange.end();
+		}
+		//
+		realloc(This, This, NewSize);
+	}
+
 	template<class Range>
 	static void pop_front_range(type &This, Range &Source) 
 	{
@@ -342,10 +368,20 @@ public:
 		return *this;
 	}
 
+	void pop_front_range(std::size_t S)
+	{
+		internal_policy::pop_front_range(this->internal(), S);
+	}
+
 	template<class C>
 	void pop_front_range(C &c)
 	{
 		internal_policy::pop_front_range(this->internal(), c);
+	}
+
+	const_iterator_range get_front_range(std::size_t S)
+	{
+		return const_iterator_range(this->begin(), ::std::min(this->size(), S));
 	}
 
 	template<class T>

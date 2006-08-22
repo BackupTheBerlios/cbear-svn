@@ -53,41 +53,49 @@ public:
 			windows::com::uuid Uuid;
 			windows::byte_t Offset;
 			IRange >> Uuid >> Offset;
-
-			windows::com::bstr_t SubKeyName;
-			SubKeyName << L"Interface\\{" << Uuid << L"}\\TypeLib";
-
-			windows::registry::hkey HKey =
-				windows::registry::hkey(windows::registry::hkey::classes_root).
-				open<wchar_t>(SubKeyName, windows::registry::sam());
-
-			typedef windows::registry::data<wchar_t> data_type;
-
-			data_type Data;
-
-			HKey.query_value<wchar_t>(windows::lpcwstr_t(), Data);
-			Com::bstr_t TypeLibUuid = Com::bstr_t(Data.get<data_type::string_type>());
-
-			HKey.query_value<wchar_t>(windows::lpcwstr_t(L"Version"), Data);
-			Com::bstr_t TypeLibVersion = Com::bstr_t(
-				Data.get<data_type::string_type>());
-
-			wchar_t W;
-			TypeLibUuid >> W;
-
-			HKey.close();
-
-			/*
-			for(typeinfo_list_t::iterator_range_t R(List); !R.empty(); ++R.begin())
+		
+			try
 			{
-				Com::typeattr_t Ra(R.front());
-				if(Uuid == Ra.guid())
-				{
-					this->List.push_back(implementation(this, R.front()));
-					break;
-				}
+				windows::com::bstr_t SubKeyName;
+				SubKeyName << L"Interface\\{" << Uuid << L"}\\TypeLib";
+
+				windows::registry::hkey HKey =
+					windows::registry::hkey(windows::registry::hkey::classes_root).
+					open<wchar_t>(SubKeyName, windows::registry::sam());
+
+				typedef windows::registry::data<wchar_t> data_type;
+
+				data_type Data;
+
+				HKey.query_value<wchar_t>(windows::lpcwstr_t(), Data);
+				Com::bstr_t TypeLibUuidStr = 
+					Com::bstr_t(Data.get<data_type::string_type>());
+
+				HKey.query_value<wchar_t>(windows::lpcwstr_t(L"Version"), Data);
+				Com::bstr_t TypeLibVersion = Com::bstr_t(
+					Data.get<data_type::string_type>());
+
+				HKey.close();
+
+				wchar_t W;
+				windows::com::uuid TypeLibUuid;
+				TypeLibUuidStr >> W >> TypeLibUuid;
+
+				unsigned short Major, Minor;
+				TypeLibVersion >> 
+					base::const_ref(base::dec(Major)) >> 
+					W >> 
+					base::const_ref(base::dec(Minor));
+
+				windows::com::itypelib TypeLib = windows::com::loadregtypelib(
+					TypeLibUuid, Major, Minor, windows::com::lcid_t());
+
+				this->List.push_back(implementation(
+					this, TypeLib.gettypeinfoofguid(Uuid)));
 			}
-			*/
+			catch(...)
+			{
+			}
 		}
 	}
 
