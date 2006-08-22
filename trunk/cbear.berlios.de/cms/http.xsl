@@ -75,6 +75,15 @@
 					</td>
 				</tr>
 			</xsl:if>
+			<!-- -->
+			<tr>
+				<td>
+				</td>
+				<td class="content">
+					<!-- Content -->
+					<xsl:apply-templates select="." mode="C:content"/>
+				</td>
+			</tr>
 		</table>
 	</xsl:template>
 
