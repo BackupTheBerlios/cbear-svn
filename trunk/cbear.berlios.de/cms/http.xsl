@@ -61,7 +61,7 @@
 	<xsl:template match="/C:section">
 		<table>
 			<tr>
-				<td>
+				<td colspan="2">
 					<xsl:apply-templates select="." mode="C:header"/>
 				</td>
 			</tr>
@@ -70,7 +70,7 @@
 			</xsl:variable>
 			<xsl:if test="$path">
 				<tr>
-					<td>
+					<td colspan="2">
 						<xsl:copy-of select="$path"/>
 					</td>
 				</tr>
