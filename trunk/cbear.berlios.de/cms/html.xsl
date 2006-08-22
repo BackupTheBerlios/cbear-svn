@@ -39,7 +39,9 @@
 		}
 		table
 		{ 
-			border: none; border-spacing: 1px; background-color: gray; 
+			border: none; 
+			border-spacing: 1px; 
+			background-color: gray; 
 		}
 		th, td 
 		{ 
@@ -55,11 +57,11 @@
 		}
 		h1, h2, div.menu
 		{
-			border-top: solid 1px #00007F;
+			border-top: solid 1px #E0E0E0; /* #00007F; */
 		}
 		h1, h2
 		{
-			background-color: #E0E8FF;
+			background-color: #F0F0F0; /*#E0E8FF;*/
 			color: #00003F;
 			margin: 0 0 0 0;
 			padding: 1px 1px 1px 1px;
@@ -79,9 +81,10 @@
 		}
 		pre
 		{
-			border-left: solid 1px #00007F;
+			/* border: solid 1px #E0E0E0; /*#00007F;*/
 			padding-left: 5px;
-			background-color: #F0F7FF;
+			background-color: #F4F4F4; /*#F0F7FF;*/
+			color: navy;
 		}
 		table.main
 		{
@@ -122,12 +125,16 @@
 		}
 		div.content-section
 		{
+			/* border-left: 1px solid gray; */
+			margin-left: 5px;
 			margin-top: 5px;
 			margin-borrom: 5px;
 		}
 		div.content-section-content
 		{
-			padding: 0 0 0 0;
+			border-left: 1px solid #E0E0E0;
+			/* padding: 0 0 0 0; */
+			padding-left: 5px;
 			margin: 5px 0 5px 0;
 		}
 		tr.tr
