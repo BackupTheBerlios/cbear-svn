@@ -512,6 +512,12 @@
 		<xsl:value-of select="."/>
 	</xsl:template>
 
+	<xsl:template name="C:span">
+		<xsl:param name="style"/>
+		<xsl:param name="text"/>
+		<span style="{$style}"><xsl:value-of select="text"/></span>
+	</xsl:template>
+
 	<xsl:template match="comment()" mode="C:content.source">
 		<span style="{$C:style.comment}">
 			<xsl:value-of select="concat('&lt;!--', ., '--&gt;')"/>
@@ -519,8 +525,10 @@
 	</xsl:template>
 
 	<xsl:template match="C:*" mode="C:content.source.begin">
-		<span style="color:red;">$</span>
-		<span style="{$C:style.element.symbol}">&lt;</span>
+		<span>
+			<xsl:attribute name="style"><xsl:value-of select="$C:style.element.symbol"/></xsl:attribute>
+			<xsl:value-of select="'&lt;'"/>
+		</span>
 		<span style="{$C:style.element.name}">
 			<xsl:value-of select="local-name()"/>
 		</span>
