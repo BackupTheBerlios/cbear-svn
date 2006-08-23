@@ -25,8 +25,7 @@ Multilanguage support.
 	<!-- Internal comment. -->
 	<ol>
 		<li>
-List item. 
-<br/>
+List item.<br/>
 Image: <img src="http://www.livejournal.com/userpic/42497029/6618534"/>.
 		</li>
 		<li>
@@ -39,10 +38,10 @@ List item. Link <a href="http://www.google.com">Google</a>.
 					<th>Column 1</th>
 					<th>Column 2</th>
 					<th>Column 3</th>
-					<!-- Commented columns. They will not be visible: 
-						<th>Column 4</th>
-						<th>Column 5</th>
-					-->
+<!-- Commented columns. They will not be visible: 
+					<th>Column 4</th>
+					<th>Column 5</th>
+-->
 				</tr>
 				<tr>
 					<td>C 1</td>

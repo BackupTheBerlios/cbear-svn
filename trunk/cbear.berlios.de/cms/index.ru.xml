@@ -21,4 +21,76 @@
 Поддержка нескольких языков.
 		</li>
 	</ol>
+	<section name="Секция" source="yes">		
+<section name="Пример">
+	Привет <b>мир</b>! Упорядоченный список:
+	<!-- Комментарий. -->
+	<ol>
+		<li>
+Элемент списка.<br/>
+Картинка: <img src="http://www.livejournal.com/userpic/42497029/6618534"/>.
+		</li>
+		<li>
+Элемент списка. Ссылка <a href="http://www.google.com">Google</a>.
+		</li>
+		<li>
+			Таблица.
+			<table>
+				<tr>
+					<th>Столбик 1</th>
+					<th>Столбик 2</th>
+					<th>Столбик 3</th>
+<!-- Закомментированные столбики: 
+					<th>Столбик 4</th>
+					<th>Столбик 5</th>
+-->
+				</tr>
+				<tr>
+					<td>C 1</td>
+					<td>C 2</td>
+					<td rowspan="2">
+						Неупорядоченный список:
+						<ul>
+							<li>A.</li>
+							<li>B.</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="color: red;">C 1 и 2</td>
+				</tr>
+			</table>
+		</li>
+	</ol>
+</section>
+	</section>
+	<section name="HTML &lt;a&gt; ссылки" source="yes">
+С описанием <a href="http://wikipedia.org" title="The Free Encyclopedia">Wikipedia</a>.
+Ленивая ссылка <a href="http://wikipedia.org"/>.
+	</section>
+	<section name="Относительные локальные ссылки" source="yes">
+<a href="../api" type="cms"/>.
+<a href="../windows" type="cms"/>.
+<a href="../windows/com" type="cms"/>.
+	</section>
+	<section name="Ссылки на Wikipedia" source="yes">
+С описанием <a 
+	href="Component Object Model" 
+	type="wikipedia" 
+	title="Component Object Model"
+>COM</a>.
+Ленивая ссылка <a href="GUI" type="wikipedia"/>.
+	</section>
+	<section name="Электронная почта" source="yes">
+Ленивая ссылка <a href="pupkin@pupkin.domain" type="mailto"/>.
+	</section>
+	<section name="Ссылки на фалы и директории" source="yes">
+Ленивая ссылка <a href="c:\cbear\cbear.berlios.de\license.txt" type="file"/>.
+<a href="c:/Program Files/" type="file">Program files</a>.
+	</section>
+	<section name="Другие ссылк" source="yes">
+HTTP: <a href="cbear.berlios.de" type="http"/>.
+SVN: <a href="svn.berlios.de/cbear/trunk" type="svn"/>.
+FTP: <a href="ftp.gimp.org" type="ftp"/>.
+	</section>
 </section>
