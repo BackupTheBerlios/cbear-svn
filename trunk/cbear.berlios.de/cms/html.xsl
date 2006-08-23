@@ -84,7 +84,7 @@
 			/* border: solid 1px #E0E0E0; /*#00007F;*/
 			padding-left: 5px;
 			background-color: #F4F4F4; /*#F0F7FF;*/
-			color: navy;
+			/* color: navy; */
 		}
 		table.main
 		{
@@ -154,6 +154,13 @@
 			font-family: monospace;
 		}
 	</xsl:param>
+
+	<xsl:variable name="C:style.comment" select="'color: #FF00FF;'"/>
+	<xsl:variable name="C:style.element.symbol" select="'color: #007F7F;'"/>	
+	<xsl:variable name="C:style.element.name" select="'color: #00007F;'"/>
+	<xsl:variable name="C:style.attribute.name" select="'color: #00007F;'"/>
+	<xsl:variable name="C:style.attribute.symbol" select="'color: #007F7F;'"/>
+	<xsl:variable name="C:style.attribute.value" select="'color: #007F00;'"/>
 
 	<!-- Language -->
 
@@ -391,19 +398,11 @@
 	</xsl:template>
 
 	<xsl:template match="C:section" mode="C:content.table">
-		<!--
-		<xsl:variable name="number">
-			<xsl:apply-templates select="." mode="C:content.number"/>
-		</xsl:variable>
-		-->
 		<xsl:variable name="id">
 			<xsl:apply-templates select="." mode="C:content.id"/>
 		</xsl:variable>
 		<div class="content-table">
 			<a href="{concat('#', $id)}" title="{@title}">
-				<!--
-				<xsl:value-of select="concat($number, ' ', @name)"/>
-				-->
 				<xsl:value-of select="@name"/>
 			</a>
 			<xsl:apply-templates select="C:section" mode="C:content.table"/>
@@ -514,43 +513,49 @@
 	</xsl:template>
 
 	<xsl:template match="comment()" mode="C:content.source">
-		<xsl:value-of select="concat('&lt;!--', ., '--&gt;')"/>
+		<span style="{$C:style.comment}">
+			<xsl:value-of select="concat('&lt;!--', ., '--&gt;')"/>
+		</span>
 	</xsl:template>
 
 	<xsl:template match="C:*" mode="C:content.source.begin">
-		<xsl:value-of select="concat('&lt;', local-name())"/>
+		<span style="{$C:style.element.symbol}">&lt;</span>
+		<span style="{$C:style.element.name}">
+			<xsl:value-of select="local-name()"/>
+		</span>
 		<xsl:for-each select="@*">
-			<xsl:value-of select="concat(' ', local-name(), '=&#34;', ., '&#34;')"/>
+			<xsl:value-of select="' '"/>
+			<span style="{$C:style.attribute.name}">
+				<xsl:value-of select="local-name()"/>
+			</span>
+			<span style="{$C:style.attribute.symbol}">=</span>
+			<span style="{$C:style.attribute.value}">
+				<xsl:value-of select="concat('&#34;', ., '&#34;')"/>
+			</span>
 		</xsl:for-each>
 	</xsl:template>
 
 	<xsl:template match="C:*" mode="C:content.source">
 		<xsl:apply-templates select="." mode="C:content.source.begin"/>
-		<xsl:value-of select="'/&gt;'"/>
+		<span style="{$C:style.element.symbol}">/&gt;</span>
 	</xsl:template>
 
 	<xsl:template match="C:*[*|text()|comment()]" mode="C:content.source">
 		<xsl:apply-templates select="." mode="C:content.source.begin"/>
-		<xsl:value-of select="'&gt;'"/>
+		<span style="{$C:style.element.symbol}">&gt;</span>
 		<xsl:apply-templates select="*|text()|comment()" mode="C:content.source"/>
-		<xsl:value-of select="concat('&lt;/',local-name(), '&gt;')"/>
+		<span style="{$C:style.element.symbol}">&lt;/</span>
+		<span style="{$C:style.element.name}">
+			<xsl:value-of select="local-name()"/>
+		</span>
+		<span style="{$C:style.element.symbol}">&gt;</span>
 	</xsl:template>
 
 	<xsl:template match="C:section" mode="C:content">
-		<!--
-		<xsl:variable name="number">
-			<xsl:apply-templates select="." mode="C:content.number"/>
-		</xsl:variable>
-		-->
 		<xsl:variable name="id">
 			<xsl:apply-templates select="." mode="C:content.id"/>
 		</xsl:variable>
-		<div 
-			class="content-section"
-			id="{$id}">
-			<!--
-			<h2><xsl:value-of select="concat($number, ' ', @name)"/></h2>
-			-->
+		<div class="content-section" id="{$id}">
 			<h2><xsl:value-of select="@name"/></h2>
 			<div class="content-section-content">
 				<xsl:apply-templates select="@title" mode="C:content.content"/>
