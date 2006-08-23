@@ -519,6 +519,7 @@
 	</xsl:template>
 
 	<xsl:template match="C:*" mode="C:content.source.begin">
+		<span style="color:red;">$</span>
 		<span style="{$C:style.element.symbol}">&lt;</span>
 		<span style="{$C:style.element.name}">
 			<xsl:value-of select="local-name()"/>

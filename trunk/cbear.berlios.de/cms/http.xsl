@@ -80,7 +80,7 @@
 			<tr>
 				<td>
 				</td>
-				<td style="color: red;">
+				<td>
 					<!-- Content -->
 					<xsl:apply-templates select="." mode="C:content"/>
 				</td>
