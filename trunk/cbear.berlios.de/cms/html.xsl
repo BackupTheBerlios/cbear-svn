@@ -524,9 +524,10 @@
 	</xsl:template>
 
 	<xsl:template match="comment()" mode="C:content.source">
-		<span style="{$C:style.comment}">
-			<xsl:value-of select="concat('&lt;!--', ., '--&gt;')"/>
-		</span>
+		<xsl:call-template name="C:span">
+			<xsl:with-param name="style" select="$C:style.comment"/>
+			<xsl:with-param name="text" select="concat('&lt;!--', ., '--&gt;')"/>
+		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template match="C:*" mode="C:content.source.begin">
@@ -540,30 +541,48 @@
 		</xsl:call-template>
 		<xsl:for-each select="@*">
 			<xsl:value-of select="' '"/>
-			<span style="{$C:style.attribute.name}">
-				<xsl:value-of select="local-name()"/>
-			</span>
-			<span style="{$C:style.attribute.symbol}">=</span>
-			<span style="{$C:style.attribute.value}">
-				<xsl:value-of select="concat('&#34;', ., '&#34;')"/>
-			</span>
+			<xsl:call-template name="C:span">
+				<xsl:with-param name="style" select="$C:style.attribute.name"/>
+				<xsl:with-param name="text" select="local-name()"/>
+			</xsl:call-template>
+			<xsl:call-template name="C:span">
+				<xsl:with-param name="style" select="$C:style.attribute.symbol"/>
+				<xsl:with-param name="text" select="'='"/>
+			</xsl:call-template>
+			<xsl:call-template name="C:span">
+				<xsl:with-param name="style" select="$C:style.attribute.value"/>
+				<xsl:with-param name="text" select="concat('&#34;', ., '&#34;')"/>
+			</xsl:call-template>
 		</xsl:for-each>
 	</xsl:template>
 
 	<xsl:template match="C:*" mode="C:content.source">
 		<xsl:apply-templates select="." mode="C:content.source.begin"/>
-		<span style="{$C:style.element.symbol}">/&gt;</span>
+		<xsl:call-template name="C:span">
+			<xsl:with-param name="style" select="$C:style.element.symbol"/>
+			<xsl:with-param name="text" select="'/&gt;'"/>
+		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template match="C:*[*|text()|comment()]" mode="C:content.source">
 		<xsl:apply-templates select="." mode="C:content.source.begin"/>
-		<span style="{$C:style.element.symbol}">&gt;</span>
+		<xsl:call-template name="C:span">
+			<xsl:with-param name="style" select="$C:style.element.symbol"/>
+			<xsl:with-param name="text" select="'&gt;'"/>
+		</xsl:call-template>
 		<xsl:apply-templates select="*|text()|comment()" mode="C:content.source"/>
-		<span style="{$C:style.element.symbol}">&lt;/</span>
-		<span style="{$C:style.element.name}">
-			<xsl:value-of select="local-name()"/>
-		</span>
-		<span style="{$C:style.element.symbol}">&gt;</span>
+		<xsl:call-template name="C:span">
+			<xsl:with-param name="style" select="$C:style.element.symbol"/>
+			<xsl:with-param name="text" select="'&lt;'"/>
+		</xsl:call-template>
+		<xsl:call-template name="C:span">
+			<xsl:with-param name="style" select="$C:style.element.name"/>
+			<xsl:with-param name="text" select="local-name()"/>
+		</xsl:call-template>
+		<xsl:call-template name="C:span">
+			<xsl:with-param name="style" select="$C:style.element.symbol"/>
+			<xsl:with-param name="text" select="'&gt;'"/>
+		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template match="C:section" mode="C:content">
