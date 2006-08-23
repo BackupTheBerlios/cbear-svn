@@ -11,6 +11,7 @@
 #include <cbear.berlios.de/base/swap.hpp>
 #include <cbear.berlios.de/windows/com/traits.hpp>
 #include <cbear.berlios.de/stream/read.hpp>
+#include <cbear.berlios.de/base/string.hpp>
 
 // ::SysStringLen
 #pragma comment(lib, "oleaut32.lib")
