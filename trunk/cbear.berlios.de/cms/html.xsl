@@ -515,7 +515,12 @@
 	<xsl:template name="C:span">
 		<xsl:param name="style"/>
 		<xsl:param name="text"/>
-		<span style="{$style}"><xsl:value-of select="$text"/></span>
+		<span>
+			<xsl:attribute name="style">
+				<xsl:value-of select="$style"/>
+			</xsl:attribute>
+			<xsl:value-of select="$text"/>
+		</span>
 	</xsl:template>
 
 	<xsl:template match="comment()" mode="C:content.source">
