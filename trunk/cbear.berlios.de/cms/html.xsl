@@ -560,7 +560,7 @@
 			<div class="content-section-content">
 				<xsl:apply-templates select="@title" mode="C:content.content"/>
 				<xsl:if test="@source='yes'">
-					<pre>
+					<pre title="XML Source Code">
 						<xsl:apply-templates select="*|text()|comment()" mode="C:content.source"/>
 					</pre>
 				</xsl:if>
