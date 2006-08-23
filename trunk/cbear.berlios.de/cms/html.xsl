@@ -157,8 +157,8 @@
 
 	<xsl:variable name="C:style.comment" select="'color: #FF00FF;'"/>
 	<xsl:variable name="C:style.element.symbol" select="'color: #007F7F;'"/>	
-	<xsl:variable name="C:style.element.name" select="'color: #00007F;'"/>
-	<xsl:variable name="C:style.attribute.name" select="'color: #00007F;'"/>
+	<xsl:variable name="C:style.element.name" select="'color: #003F7F;'"/>
+	<xsl:variable name="C:style.attribute.name" select="'color: #003F7F;'"/>
 	<xsl:variable name="C:style.attribute.symbol" select="'color: #007F7F;'"/>
 	<xsl:variable name="C:style.attribute.value" select="'color: #007F00;'"/>
 
