@@ -525,13 +525,14 @@
 	</xsl:template>
 
 	<xsl:template match="C:*" mode="C:content.source.begin">
-		<span>
-			<xsl:attribute name="style"><xsl:value-of select="$C:style.element.symbol"/></xsl:attribute>
-			<xsl:value-of select="'&lt;'"/>
-		</span>
-		<span style="{$C:style.element.name}">
-			<xsl:value-of select="local-name()"/>
-		</span>
+		<xsl:call-template name="C:span">
+			<xsl:with-param name="style" select="$C:style.element.symbol"/>
+			<xsl:with-param name="text" select="'&lt;'"/>
+		</xsl:call-template>
+		<xsl:call-template name="C:span">
+			<xsl:with-param name="style" select="$C:style.element.name"/>
+			<xsl:with-param name="text" select="local-name()"/>
+		</xsl:call-template>
 		<xsl:for-each select="@*">
 			<xsl:value-of select="' '"/>
 			<span style="{$C:style.attribute.name}">
