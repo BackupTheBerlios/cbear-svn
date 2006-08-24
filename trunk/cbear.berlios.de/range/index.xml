@@ -2,155 +2,217 @@
 <?xml-stylesheet type="text/xsl" href="../cms/html.xsl"?>
 <section 
 	xmlns="http://cbear.berlios.de/cms" name="Iterator Range Algorithms">
-	
-
-		
-		<ul>
-			<li>
-				<p>
-Description <a href="traits.xml"/>, implementation 
-<a href="traits.hpp"/>.
-				</p>
-			</li>
-			<li>
-				<p>
-Common functions and meta functions.
-				</p>
-				<ul>
-					<li>
-						<p>
-Description <a href="iterator.xml"/>, implementation 
-<a href="iterator.hpp"/>.
-						</p>
-					</li>
-					<li>
-						<p>
-Description <a href="value_type.xml"/>, implementation 
-<a href="value_type.hpp"/>.
-						</p>
-					</li>
-					<li>
-						<p>
-Description <a href="difference_type.xml"/>, implementation 
-<a href="difference_type.hpp"/>.
-						</p>
-					</li>
-					<li>
-						<p>
-Description <a href="size_type.xml"/>, implementation 
-<a href="size_type.hpp"/>.
-						</p>
-					</li>
-					<li>
-						<p>
-Description <a href="reference.xml"/>, implementation 
-<a href="reference.hpp"/>.
-						</p>
-					</li>
-					<li>
-						<p>
-Description <a href="pointer.xml"/>, implementation 
-<a href="pointer.hpp"/>.
-						</p>
-					</li>
-					<li>
-						<p>
-Description <a href="reverse_iterator.xml"/>, implementation 
-<a href="reverse_iterator.hpp"/>.
-						</p>
-					</li>
-					<li>
-						<p>
-Description <a href="begin.xml"/>, implementation 
-<a href="begin.hpp"/>.
-						</p>
-					</li>
-					<li>
-						<p>
-Description <a href="end.xml"/>, implementation 
-<a href="end.hpp"/>.
-						</p>
-					</li>
-					<li>
-						<p>
-Description <a href="empty.xml"/>, implementation 
-<a href="empty.hpp"/>.
-						</p>
-					</li>
-					<li>
-						<p>
-Description <a href="size.xml"/>, implementation 
-<a href="size.hpp"/>.
-						</p>
-					</li>
-					<li>
-						<p>
-Description <a href="front.xml"/>, implementation 
-<a href="front.hpp"/>.
-						</p>
-					</li>
-					<li>
-						<p>
-Description <a href="back.xml"/>, implementation 
-<a href="back.hpp"/>.
-						</p>
-					</li>
-					<li>
-						<p>
-Description <a href="at.xml"/>, implementation 
-<a href="at.hpp"/>.
-						</p>
-					</li>
-					<li>
-						<p>
-Description <a href="rbegin.xml"/>, implementation 
-<a href="rbegin.hpp"/>.
-						</p>
-					</li>
-					<li>
-						<p>
-Description <a href="rend.xml"/>, implementation 
-<a href="rend.hpp"/>.
-						</p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p>
-Description <a href="helper.xml"/>, implementation 
-<a href="helper.hpp"/>.
-				</p>
-			</li>
-			<li>
-				<p>
-Description <a href="iterator_range.xml"/>, implementation 
-<a href="iterator_range.hpp"/>.
-				</p>
-			</li>
-			<li>
-				<p>
-Range functions and meta functions.
-				</p>
-				<ul>
-					<li>
-						<p>
-Description <a href="sub_range.xml"/>, implementation 
-<a href="sub_range.hpp"/>.
-						</p>
-					</li>
-					<li>
-						<p>
-Description <a href="reverse_iterator_range.xml"/>, implementation 
-<a href="reverse_iterator_range.hpp"/>.
-						</p>
-					</li>
-					<li>
-						<p>
-Description <a href="reverse_sub_range.xml"/>, implementation 
-<a href="reverse_sub_range.hpp"/>.
-						</p>
-					</li>
-				</ul>
-			</li>
-		</ul>
+	<section name="Traits">
+<pre><![CDATA[template<class Container>
+class traits
+{
+public:
+	typedef Container container;
+	typedef ... iterator;
+	typedef ... difference_type;
+	typedef ... size_type;
+	typedef ... referense;
+	typedef ... pointer;
+	typedef ... value_type;
+	typedef ... reverse_iterator;
+	static iterator begin(container & );
+	static iterator end(container & );
+	static reference front(container & );
+	static reference back(container & );
+	static reference at(container & , size_type);
+	static bool empty(container & );
+	static size_type size(container & );
+	static reverse_iterator rbegin(container & );
+	static reverse_iterator rend(container & );
+};]]></pre>
+		<section name="Iterator">
+<pre><![CDATA[template<class Container>
+class iterator
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>
+		<section name="Value Type">
+<pre><![CDATA[template<class Container>
+class value_type
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>
+		<section name="Difference Type">
+<pre><![CDATA[template<class Container>
+class difference_type
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>
+		<section name="Size Type">
+<pre><![CDATA[template<class Container>
+class size_type
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>
+		<section name="Reference">
+<pre><![CDATA[template<class Container>
+class reference
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>
+		<section name="Pointer">
+<pre><![CDATA[template<class Container>
+class pointer
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>		
+		<section name="Reverse Iterator">
+<pre><![CDATA[template<class Container>
+class reverse_iterator
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>
+		<section name="Begin">
+<pre><![CDATA[template<class Container>
+... begin(Container &X);
+template<class Container>
+... begin(Container const &X);]]></pre>
+		</section>
+		<section name="End">
+<pre><![CDATA[template<class Container>
+... end(Container &X);
+template<class Container>
+... end(Container const &X);]]></pre>
+		</section>
+		<section name="Empty">
+<pre><![CDATA[template<class Container>
+bool empty(Container const &X);]]></pre>
+		</section>
+		<section name="Size">
+<pre><![CDATA[template<class Container>
+... size(Container const &X);]]></pre>
+		</section>
+		<section name="Front">
+<pre><![CDATA[template<class Container>
+... front(Container &X);
+template<class Container>
+... front(Container const &X);]]></pre>
+		</section>
+		<section name="Back">
+<pre><![CDATA[template<class Container>
+... back(Container &X);
+template<class Container>
+... back(Container const &X);]]></pre>
+		</section>
+		<section name="At">
+<pre><![CDATA[template<class Container, class Size>
+... at(Container &X, Size I);
+template<class Container>
+... at(Container const &X, Size I);]]></pre>
+		</section>
+		<section name="Reverse Begin">
+<pre><![CDATA[template<class Container>
+... rbegin(Container &X);
+template<class Container>
+... rbegin(Container const &X);]]></pre>
+		</section>
+		<section name="Reverse End">
+<pre><![CDATA[template<class Container>
+... rend(Container &X);
+template<class Container>
+... rend(Container const &X);]]></pre>
+		</section>
+	</section>
+	<section name="Helper">
+<pre><![CDATA[template<class Container, class Iterator, class ConstIterator>
+class helper
+{
+public:
+	typedef Container container;
+	typedef Iterator iterator;
+	typedef ConstIterator const_iterator;
+	typedef ... value_type;
+	typedef ... difference_type;
+	typedef ... size_type;
+	typedef ... reference;
+	typedef ... const_reference;
+	typedef ... pointer;
+	typedef ... const_pointer;
+	typedef ... reverse_iterator;
+	typedef ... const_reverse_iterator;
+	bool empty() const;
+	size_type size() const;
+	reference front();
+	const_reference front() const;
+	reference back();
+	const_reference back() const;
+	reference operator[](size_type);
+	const_reference operator[](size_type) const;
+	reverse_iterator rbegin();
+	const_reverse_iterator rbegin() const;
+	reverse_iterator rend();
+	const_reverse_iterator rend() const;
+};]]></pre>
+	</section>
+	<section name="Iterator Range">
+<pre><![CDATA[template<class Iterator>
+class iterator_range
+{
+public:
+	typedef Iterator iterator;
+	typedef Iterator const_iterator;
+	iterator_range();
+	iterator_range(iterator const & , iterator const & );
+	template<class Range>
+	explicit iterator_range(Range const & );
+	template<class Range>
+	explicit iterator_range(Range & );
+	iterator begin() const;
+	iterator end() const;
+	...
+};
+template<class Iterator>
+... make_iterator_range(Iterator const & , Iterator const & );
+template<class Range>
+... make_iterator_range(Range const & );
+template<class Range>
+... make_iterator_range(Range & );]]></pre>
+		<section name="Subrange">
+<pre><![CDATA[template<class Container>
+class sub_range
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>
+		<section name="Reverse Range">
+<pre><![CDATA[template<class Iterator>
+class reverse_iterator_range
+{
+public:
+	typedef ... type;
+};
+template<class Iterator>
+... make_reverse_iterator_range(Iterator const &, Iterator const &);
+template<class Container>
+... make_reverse_iterator_range(Container &);
+template<class Container>
+... make_reverse_iterator_range(Container const &);
+template<class Container>
+class reverse_sub_range
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>
+	</section>
 </section>
