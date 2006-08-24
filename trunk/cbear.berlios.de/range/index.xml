@@ -7,7 +7,6 @@
 class traits
 {
 public:
-	typedef Container container;
 	typedef ... iterator;
 	typedef ... difference_type;
 	typedef ... size_type;
@@ -15,15 +14,16 @@ public:
 	typedef ... pointer;
 	typedef ... value_type;
 	typedef ... reverse_iterator;
-	static iterator begin(container & );
-	static iterator end(container & );
-	static reference front(container & );
-	static reference back(container & );
-	static reference at(container & , size_type);
-	static bool empty(container & );
-	static size_type size(container & );
-	static reverse_iterator rbegin(container & );
-	static reverse_iterator rend(container & );
+	static size_type const const_size;
+	static iterator begin(Container & );
+	static iterator end(Container & );
+	static reference front(Container & );
+	static reference back(Container & );
+	static reference at(Container & , size_type);
+	static bool empty(Container & );
+	static size_type size(Container & );
+	static reverse_iterator rbegin(Container & );
+	static reverse_iterator rend(Container & );
 };]]></pre>
 		<section name="Iterator">
 <pre><![CDATA[template<class Container>
@@ -79,6 +79,14 @@ class reverse_iterator
 {
 public:
 	typedef ... type;
+};]]></pre>
+		</section>
+		<section name="Constant Size">
+<pre><![CDATA[template<class Container>
+class const_size
+{
+public:
+	static ... const value = ...;
 };]]></pre>
 		</section>
 		<section name="Begin">
@@ -213,6 +221,45 @@ class reverse_sub_range
 public:
 	typedef ... type;
 };]]></pre>
+		</section>
+		<section name="Zero Ended Range">
+<pre><![CDATA[template<class V>
+... make_arrayz_range(V *)]]></pre>
+		</section>
+	</section>
+	<section name="Algorithms">
+		<section name="Copy">
+<pre><![CDATA[template<class Container, class OutputIterator>
+OutputIterator copy(Container const &X, OutputIterator O);]]></pre>
+		</section>
+		<section name="Fill">
+<pre><![CDATA[template<class Container, class T>
+void fill(Container &X, T const &Value);
+
+template<class T>
+class fill_iterator_t
+{
+public:
+	...
+	fill_iterator_t(T const &V, difference_type I);
+	... operator*() const;
+	bool operator!=(fill_iterator_t const &B) const;
+	fill_iterator_t &operator++();
+	bool operator<(fill_iterator_t const &B);
+	... operator-(fill_iterator_t const &B) const;
+};
+
+template<class T, class Size>
+... make_fill(T const &V, Size S);]]></pre>
+		</section>
+		<section name="Sort">
+<pre><![CDATA[template<class Container, class Less>
+void sort(Container &X, Less L);]]></pre>
+		</section>
+		<section name="Transform">
+<pre><![CDATA[template<class InputRange, class OutputIterator, class UnaryOperation>
+OutputIterator transform(
+	InputRange &R, OutputIterator Result, UnaryOperation Op);]]></pre>
 		</section>
 	</section>
 </section>

@@ -12,7 +12,10 @@ template<class V>
 iterator_range<V *> make_arrayz_range(V *B)
 {
 	iterator_range<V *> R(B, B);
-	if(!B) return R;
+	if(!B) 
+	{
+		return R;
+	}
 	for(; *R.end() != 0; ++R.end());
 	return R;
 }
