@@ -3,10 +3,7 @@
 <section 
 	xmlns="http://cbear.berlios.de/cms" name="Iterator Range Algorithms">
 	
-	<p>
-Namesapce <em>cbear_berlios_de::range</em>.
-	</p>
-	<section name="Files">
+
 		
 		<ul>
 			<li>
@@ -156,5 +153,4 @@ Description <a href="reverse_sub_range.xml"/>, implementation
 				</ul>
 			</li>
 		</ul>
-	</section>
 </section>
