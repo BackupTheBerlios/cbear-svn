@@ -372,7 +372,9 @@
 					@kind='file' and substring-before(@name, '.')!='index']">
 				<xsl:sort select="@name"/>
 				<div class="menu-item">
-					<a href="{@name}" class="disable"><xsl:value-of select="@name"/></a>
+					<a href="{@name}" class="disable">
+						<xsl:value-of select="translate(@name, ' ', '&#160;')"/>
+					</a>
 				</div>
 			</xsl:for-each>
 		</xsl:variable>
