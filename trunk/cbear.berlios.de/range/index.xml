@@ -6,16 +6,6 @@
 	<p>
 Namesapce <em>cbear_berlios_de::range</em>.
 	</p>
-	<section name="Lexicographical Compare and Less">
-		
-		<p>
-Header <a href="lexicographical::compare.hpp"/>.
-		</p>
-<pre>template&lt;class Range1, class Range2&gt; 
-int lexicographical::compare(const Range1 &amp;A, const Range2 &amp;B);</pre>
-<pre>template&lt;class Range1, class Range2&gt; 
-bool lexicographical::less(const Range1 &amp;A, const Range2 &amp;B);</pre>
-	</section>
 	<section name="Files">
 		
 		<ul>
