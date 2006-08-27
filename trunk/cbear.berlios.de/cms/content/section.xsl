@@ -7,7 +7,7 @@
 	xmlns:C="http://cbear.berlios.de/cms"
 	exclude-result-prefixes="C">
 
-	<!-- Content -->
+	<xsl:import href="source.xsl"/>
 
 	<xsl:template match="C:section" mode="C:content.number">		
 		<xsl:if test="..!=.">
@@ -66,7 +66,7 @@
 	</xsl:template>
 
 	<xsl:template match="/C:section" mode="C:content">
-		<xsl:value-of select="'10'"/>
+		<xsl:value-of select="'11'"/>
 		<xsl:apply-templates select="." mode="C:content.table"/>
 		<div class="menu">
 			<div class="content-section-content">
@@ -74,81 +74,6 @@
 				<xsl:apply-templates select="." mode="C:content.content"/>
 			</div>
 		</div>
-	</xsl:template>
-
-	<!-- -->
-
-	<xsl:template name="C:span">
-		<xsl:param name="style"/>
-		<xsl:param name="text"/>
-		<span>
-			<xsl:attribute name="style">
-				<xsl:value-of select="$style"/>
-			</xsl:attribute>
-			<xsl:value-of select="$text"/>
-		</span>
-	</xsl:template>
-
-	<xsl:template match="comment()" mode="C:content.source">
-		<xsl:call-template name="C:span">
-			<xsl:with-param name="style" select="$C:style.comment"/>
-			<xsl:with-param name="text" select="concat('&lt;!--', ., '--&gt;')"/>
-		</xsl:call-template>
-	</xsl:template>
-
-	<xsl:template match="C:*" mode="C:content.source.begin">
-		<xsl:call-template name="C:span">
-			<xsl:with-param name="style" select="$C:style.element.symbol"/>
-			<xsl:with-param name="text" select="'&lt;'"/>
-		</xsl:call-template>
-		<xsl:call-template name="C:span">
-			<xsl:with-param name="style" select="$C:style.element.name"/>
-			<xsl:with-param name="text" select="local-name()"/>
-		</xsl:call-template>
-		<xsl:for-each select="@*">
-			<xsl:value-of select="' '"/>
-			<xsl:call-template name="C:span">
-				<xsl:with-param name="style" select="$C:style.attribute.name"/>
-				<xsl:with-param name="text" select="local-name()"/>
-			</xsl:call-template>
-			<xsl:call-template name="C:span">
-				<xsl:with-param name="style" select="$C:style.attribute.symbol"/>
-				<xsl:with-param name="text" select="'='"/>
-			</xsl:call-template>
-			<xsl:call-template name="C:span">
-				<xsl:with-param name="style" select="$C:style.attribute.value"/>
-				<xsl:with-param name="text" select="concat('&#34;', ., '&#34;')"/>
-			</xsl:call-template>
-		</xsl:for-each>
-	</xsl:template>
-
-	<xsl:template match="C:*" mode="C:content.source">
-		<xsl:apply-templates select="." mode="C:content.source.begin"/>
-		<xsl:call-template name="C:span">
-			<xsl:with-param name="style" select="$C:style.element.symbol"/>
-			<xsl:with-param name="text" select="'/&gt;'"/>
-		</xsl:call-template>
-	</xsl:template>
-
-	<xsl:template match="C:*[*|text()|comment()]" mode="C:content.source">
-		<xsl:apply-templates select="." mode="C:content.source.begin"/>
-		<xsl:call-template name="C:span">
-			<xsl:with-param name="style" select="$C:style.element.symbol"/>
-			<xsl:with-param name="text" select="'&gt;'"/>
-		</xsl:call-template>
-		<xsl:apply-templates select="*|text()|comment()" mode="C:content.source"/>
-		<xsl:call-template name="C:span">
-			<xsl:with-param name="style" select="$C:style.element.symbol"/>
-			<xsl:with-param name="text" select="'&lt;'"/>
-		</xsl:call-template>
-		<xsl:call-template name="C:span">
-			<xsl:with-param name="style" select="$C:style.element.name"/>
-			<xsl:with-param name="text" select="local-name()"/>
-		</xsl:call-template>
-		<xsl:call-template name="C:span">
-			<xsl:with-param name="style" select="$C:style.element.symbol"/>
-			<xsl:with-param name="text" select="'&gt;'"/>
-		</xsl:call-template>
 	</xsl:template>
 
 </xsl:stylesheet>
