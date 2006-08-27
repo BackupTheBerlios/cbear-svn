@@ -63,6 +63,7 @@
 	<xsl:template match="/C:section" mode="C:content">
 		<xsl:apply-templates select="." mode="C:content.table"/>
 		<div class="menu">
+ssss
 			<div class="content-section-content">
 				<xsl:apply-templates select="@title" mode="C:content.title"/>
 				<xsl:apply-templates select="." mode="C:content.inside"/>
