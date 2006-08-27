@@ -16,7 +16,6 @@
 		<xsl:param name="name" select="@href"/>
 		<xsl:param name="title" select="@title"/>
 		<a href="{$href}" title="{$title}">
-1
 			<xsl:attribute name="style">
 				<xsl:value-of select="$C:content.a"/>
 			</xsl:attribute>
