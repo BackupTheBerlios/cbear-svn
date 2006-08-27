@@ -9,7 +9,7 @@
 
 	<xsl:variable 
 		name="C:content.a" 
-		select="'text-decoration: none;'"/>
+		select="'color: blue; text-decoration: none;'"/>
 
 	<xsl:template match="C:a" mode="C:content.a">
 		<xsl:param name="href" select="@href"/>
