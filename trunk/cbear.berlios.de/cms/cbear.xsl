@@ -9,7 +9,7 @@
 	xmlns:H="http://www.w3.org/1999/xhtml"
 	exclude-result-prefixes="C S H">
 
-<xsl:import href="html/html.xsl"/>
+<xsl:import href="html.xsl"/>
 
 <xsl:template match="/C:section">
 	<html>
