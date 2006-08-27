@@ -17,7 +17,7 @@
 					<xsl:value-of select="$name"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:apply-templates select="." mode="C:content.content"/>
+					<xsl:apply-templates select="." mode="C:content.inside"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</a>

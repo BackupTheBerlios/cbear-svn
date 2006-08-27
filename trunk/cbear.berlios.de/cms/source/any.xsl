@@ -13,6 +13,10 @@
 	<xsl:variable name="C:source.attribute.symbol" select="'color: #007F7F;'"/>
 	<xsl:variable name="C:source.attribute.value" select="'color: #007F00;'"/>
 
+	<xsl:template match="C:*" mode="C:source.inside">
+		<xsl:apply-templates select="*|text()|comment()" mode="C:source"/>
+	</xsl:template>
+
 	<xsl:template match="C:*" mode="C:source.begin">
 		<xsl:call-template name="C:span">
 			<xsl:with-param name="style" select="$C:source.element.symbol"/>
@@ -53,10 +57,10 @@
 			<xsl:with-param name="style" select="$C:source.element.symbol"/>
 			<xsl:with-param name="text" select="'&gt;'"/>
 		</xsl:call-template>
-		<xsl:apply-templates select="*|text()|comment()" mode="C:source"/>
+		<xsl:apply-templates select="." mode="C:source.inside"/>
 		<xsl:call-template name="C:span">
 			<xsl:with-param name="style" select="$C:source.element.symbol"/>
-			<xsl:with-param name="text" select="'&lt;'"/>
+			<xsl:with-param name="text" select="'&lt;/'"/>
 		</xsl:call-template>
 		<xsl:call-template name="C:span">
 			<xsl:with-param name="style" select="$C:source.element.name"/>

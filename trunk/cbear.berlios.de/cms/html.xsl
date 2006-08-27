@@ -10,6 +10,7 @@
 
 	<xsl:import href="content/any.xsl"/>
 	<xsl:import href="content/a.xsl"/>
+	<xsl:import href="content/section.xsl"/>
 
 	<xsl:import href="source/comment.xsl"/>
 	<xsl:import href="source/any.xsl"/>
@@ -405,32 +406,6 @@
 		<xsl:apply-templates select="." mode="C:content.number"/>
 	</xsl:template>
 
-	<xsl:template match="C:section" mode="C:content.table">
-		<xsl:variable name="id">
-			<xsl:apply-templates select="." mode="C:content.id"/>
-		</xsl:variable>
-		<div class="content-table">
-			<a href="{concat('#', $id)}" title="{@title}">
-				<xsl:value-of select="@name"/>
-			</a>
-			<xsl:apply-templates select="C:section" mode="C:content.table"/>
-		</div>
-	</xsl:template>
-
-	<xsl:template match="/C:section" mode="C:content.table">
-		<xsl:if test="C:section">
-			<div class="menu">
-				<xsl:apply-templates select="C:section" mode="C:content.table"/>
-			</div>
-		</xsl:if>
-	</xsl:template>
-
-	<xsl:template match="@title" mode="C:content.content">
-		<div class="title">
-			<xsl:value-of select="."/>
-		</div>
-	</xsl:template>
-
 	<xsl:template name="C:span">
 		<xsl:param name="style"/>
 		<xsl:param name="text"/>
@@ -440,34 +415,6 @@
 			</xsl:attribute>
 			<xsl:value-of select="$text"/>
 		</span>
-	</xsl:template>
-
-	<xsl:template match="C:section" mode="C:content">
-		<xsl:variable name="id">
-			<xsl:apply-templates select="." mode="C:content.id"/>
-		</xsl:variable>
-		<div class="content-section" id="{$id}">
-			<h2><xsl:value-of select="@name"/></h2>
-			<div class="content-section-content">
-				<xsl:apply-templates select="@title" mode="C:content.content"/>
-				<xsl:if test="@source='yes'">
-					<pre title="XML">
-						<xsl:apply-templates select="*|text()|comment()" mode="C:source"/>
-					</pre>
-				</xsl:if>
-				<xsl:apply-templates select="." mode="C:content.content"/>
-			</div>
-		</div>
-	</xsl:template>
-
-	<xsl:template match="/C:section" mode="C:content">
-		<xsl:apply-templates select="." mode="C:content.table"/>
-		<div class="menu">
-			<div class="content-section-content">
-				<xsl:apply-templates select="@title" mode="C:content.content"/>
-				<xsl:apply-templates select="." mode="C:content.content"/>
-			</div>
-		</div>
 	</xsl:template>
 
 	<!-- Language -->

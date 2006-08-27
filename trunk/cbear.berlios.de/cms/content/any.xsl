@@ -7,7 +7,7 @@
 	xmlns:C="http://cbear.berlios.de/cms"
 	exclude-result-prefixes="C">
 
-	<xsl:template match="*" mode="C:content.content">
+	<xsl:template match="*" mode="C:content.inside">
 		<xsl:apply-templates select="*|text()" mode="C:content"/>
 	</xsl:template>
 
@@ -18,7 +18,7 @@
 	<xsl:template match="*[*|@*|text()]" mode="C:content" priority="-1">
 		<xsl:element name="{local-name()}">
 			<xsl:copy-of select="@*"/>
-			<xsl:apply-templates select="." mode="C:content.content"/>
+			<xsl:apply-templates select="." mode="C:content.inside"/>
 		</xsl:element>
 	</xsl:template>
 
