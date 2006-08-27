@@ -9,6 +9,8 @@
 
 	<xsl:import href="source.xsl"/>
 
+	<xsl:variable name="C:content.section.title" select="'font-style: italic;'"/>
+
 	<xsl:template match="C:section" mode="C:content.number">		
 		<xsl:if test="..!=.">
 			<xsl:apply-templates select=".." mode="C:content.number"/>

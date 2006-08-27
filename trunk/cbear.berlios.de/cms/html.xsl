@@ -117,10 +117,12 @@
 			padding-top: 5px;
 			padding-bottom: 5px;			
 		}
+/*
 		div.title
 		{
 			font-style: italic;
 		}
+*/
 		div.menu-item
 		{
 			color: gray;
