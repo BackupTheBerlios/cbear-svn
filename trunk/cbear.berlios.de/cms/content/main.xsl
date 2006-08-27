@@ -14,6 +14,7 @@
 
 	<xsl:template match="/C:section" mode="C:content">
 		<xsl:apply-templates select="." mode="C:content.table"/>
+blin
 		<div class="menu">
 			<div class="content-section-content">
 				<xsl:apply-templates select="@title" mode="C:content.title"/>
