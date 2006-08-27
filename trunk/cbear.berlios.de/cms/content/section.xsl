@@ -44,10 +44,8 @@
 	</xsl:template>
 
 	<xsl:template match="@title" mode="C:content.content">
-		<div>
-			<xsl:attribute name="style">
-				<xsl:value-of select="$C:content.section.title"/>
-			</xsl:attribute>
+		<div style="{$C:content.section.title}">
+			1
 			<xsl:value-of select="."/>
 		</div>
 	</xsl:template>
