@@ -8,10 +8,6 @@
 	xmlns:S="svn:"
 	exclude-result-prefixes="C S">
 
-<!--
-	<xsl:import href="content/main.xsl"/>
--->
-
 	<xsl:output 
 		method="xml" 
 		indent="no" 
@@ -158,6 +154,13 @@
 			font-family: monospace;
 		}
 	</xsl:param>
+
+	<xsl:variable name="C:style.comment" select="'color: #FF00FF;'"/>
+	<xsl:variable name="C:style.element.symbol" select="'color: #007F7F;'"/>	
+	<xsl:variable name="C:style.element.name" select="'color: #003F7F;'"/>
+	<xsl:variable name="C:style.attribute.name" select="'color: #003F7F;'"/>
+	<xsl:variable name="C:style.attribute.symbol" select="'color: #007F7F;'"/>
+	<xsl:variable name="C:style.attribute.value" select="'color: #007F00;'"/>
 
 	<!-- Language -->
 
@@ -384,25 +387,16 @@
 
 	<!-- Content -->
 
-	<xsl:template name="C:span">
-		<xsl:param name="style"/>
-		<xsl:param name="text"/>
-		<span>
-			<xsl:attribute name="style">
-				<xsl:value-of select="$style"/>
-			</xsl:attribute>
-			<xsl:value-of select="$text"/>
-		</span>
+	<xsl:template match="C:section" mode="C:content.number">		
+		<xsl:if test="..!=.">
+			<xsl:apply-templates select=".." mode="C:content.number"/>
+			<xsl:value-of select="concat(count(preceding-sibling::C:section) + 1, '.')"/>
+		</xsl:if>
 	</xsl:template>
-
 
 	<xsl:template match="C:section" mode="C:content.id">		
 		<xsl:value-of select="'o'"/>
-		<xsl:if test="..!=.">
-			<xsl:apply-templates select=".." mode="C:content.number"/>
-			<xsl:value-of select="concat(
-				count(preceding-sibling::C:section) + 1, '.')"/>
-		</xsl:if>
+		<xsl:apply-templates select="." mode="C:content.number"/>
 	</xsl:template>
 
 	<xsl:template match="C:section" mode="C:content.table">
@@ -425,10 +419,172 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="@title" mode="C:content.title">
+	<xsl:template match="*" mode="C:content.content">
+		<xsl:apply-templates select="*|text()" mode="C:content"/>
+	</xsl:template>
+
+	<xsl:template match="@title" mode="C:content.content">
 		<div class="title">
 			<xsl:value-of select="."/>
 		</div>
+	</xsl:template>
+
+	<xsl:template match="text()" mode="C:content">
+		<xsl:value-of select="."/>
+	</xsl:template>
+
+	<xsl:template match="*" mode="C:content" priority="-2">
+		<xsl:element name="{local-name()}" />
+	</xsl:template>
+
+	<xsl:template match="*[*|@*|text()]" mode="C:content" priority="-1">
+		<xsl:element name="{local-name()}">
+			<xsl:copy-of select="@*"/>
+			<xsl:apply-templates select="." mode="C:content.content"/>
+		</xsl:element>
+	</xsl:template>
+
+	<xsl:template match="C:a" mode="C:content.a">
+		<xsl:param name="href" select="@href"/>
+		<xsl:param name="name" select="@href"/>
+		<xsl:param name="title" select="@title"/>
+		<a href="{$href}" title="{$title}">
+			<xsl:choose>
+				<xsl:when test="not(*|text())">
+					<xsl:value-of select="$name"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:apply-templates select="." mode="C:content.content"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</a>
+	</xsl:template>
+
+	<xsl:template match="C:a" mode="C:content">
+		<xsl:apply-templates select="." mode="C:content.a"/>
+	</xsl:template>
+
+	<xsl:template match="C:a[@type]" mode="C:content">
+		<xsl:apply-templates select="." mode="C:content.a">
+			<xsl:with-param name="href" select="concat(@type, '://', @href)"/>
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<xsl:template match="C:a[@type='mailto']" mode="C:content">
+		<xsl:apply-templates select="." mode="C:content.a">
+			<xsl:with-param name="href" select="concat('mailto:', @href)"/>
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<xsl:template match="C:a[@type='file']" mode="C:content">
+		<xsl:apply-templates select="." mode="C:content.a">
+			<xsl:with-param name="href" select="concat('file:///', @href)"/>
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<xsl:template match="C:a[@type='wikipedia']" mode="C:content">
+		<xsl:variable name="language">
+			<xsl:for-each select="/C:section/@xml:lang">
+				<xsl:value-of select="concat(., '.')"/>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:apply-templates select="." mode="C:content.a">
+			<xsl:with-param 
+				name="href" 
+				select="concat('http://', $language, 'wikipedia.org/wiki/', @href)"/>
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<xsl:template match="C:a[@type='cms']" mode="C:content">		
+		<xsl:param name="index.xml" select="concat(@href, '/', $C:index.xml)"/>
+		<xsl:apply-templates select="." mode="C:content.a">
+			<xsl:with-param 
+				name="href" 
+				select="concat(@href, '/', $C:index.xml)"/>
+			<xsl:with-param 
+				name="name"
+				select="document($index.xml, .)/C:section/@name"/>
+			<xsl:with-param 
+				name="title"
+				select="document($index.xml, .)/C:section/@title"/>
+		</xsl:apply-templates>		
+	</xsl:template>
+
+	<xsl:template match="text()" mode="C:content.source">
+		<xsl:value-of select="."/>
+	</xsl:template>
+
+	<xsl:template name="C:span">
+		<xsl:param name="style"/>
+		<xsl:param name="text"/>
+		<span>
+			<xsl:attribute name="style">
+				<xsl:value-of select="$style"/>
+			</xsl:attribute>
+			<xsl:value-of select="$text"/>
+		</span>
+	</xsl:template>
+
+	<xsl:template match="comment()" mode="C:content.source">
+		<xsl:call-template name="C:span">
+			<xsl:with-param name="style" select="$C:style.comment"/>
+			<xsl:with-param name="text" select="concat('&lt;!--', ., '--&gt;')"/>
+		</xsl:call-template>
+	</xsl:template>
+
+	<xsl:template match="C:*" mode="C:content.source.begin">
+		<xsl:call-template name="C:span">
+			<xsl:with-param name="style" select="$C:style.element.symbol"/>
+			<xsl:with-param name="text" select="'&lt;'"/>
+		</xsl:call-template>
+		<xsl:call-template name="C:span">
+			<xsl:with-param name="style" select="$C:style.element.name"/>
+			<xsl:with-param name="text" select="local-name()"/>
+		</xsl:call-template>
+		<xsl:for-each select="@*">
+			<xsl:value-of select="' '"/>
+			<xsl:call-template name="C:span">
+				<xsl:with-param name="style" select="$C:style.attribute.name"/>
+				<xsl:with-param name="text" select="local-name()"/>
+			</xsl:call-template>
+			<xsl:call-template name="C:span">
+				<xsl:with-param name="style" select="$C:style.attribute.symbol"/>
+				<xsl:with-param name="text" select="'='"/>
+			</xsl:call-template>
+			<xsl:call-template name="C:span">
+				<xsl:with-param name="style" select="$C:style.attribute.value"/>
+				<xsl:with-param name="text" select="concat('&#34;', ., '&#34;')"/>
+			</xsl:call-template>
+		</xsl:for-each>
+	</xsl:template>
+
+	<xsl:template match="C:*" mode="C:content.source">
+		<xsl:apply-templates select="." mode="C:content.source.begin"/>
+		<xsl:call-template name="C:span">
+			<xsl:with-param name="style" select="$C:style.element.symbol"/>
+			<xsl:with-param name="text" select="'/&gt;'"/>
+		</xsl:call-template>
+	</xsl:template>
+
+	<xsl:template match="C:*[*|text()|comment()]" mode="C:content.source">
+		<xsl:apply-templates select="." mode="C:content.source.begin"/>
+		<xsl:call-template name="C:span">
+			<xsl:with-param name="style" select="$C:style.element.symbol"/>
+			<xsl:with-param name="text" select="'&gt;'"/>
+		</xsl:call-template>
+		<xsl:apply-templates select="*|text()|comment()" mode="C:content.source"/>
+		<xsl:call-template name="C:span">
+			<xsl:with-param name="style" select="$C:style.element.symbol"/>
+			<xsl:with-param name="text" select="'&lt;'"/>
+		</xsl:call-template>
+		<xsl:call-template name="C:span">
+			<xsl:with-param name="style" select="$C:style.element.name"/>
+			<xsl:with-param name="text" select="local-name()"/>
+		</xsl:call-template>
+		<xsl:call-template name="C:span">
+			<xsl:with-param name="style" select="$C:style.element.symbol"/>
+			<xsl:with-param name="text" select="'&gt;'"/>
+		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template match="C:section" mode="C:content">
@@ -438,24 +594,23 @@
 		<div class="content-section" id="{$id}">
 			<h2><xsl:value-of select="@name"/></h2>
 			<div class="content-section-content">
-				<xsl:apply-templates select="@title" mode="C:content.title"/>
+				<xsl:apply-templates select="@title" mode="C:content.content"/>
 				<xsl:if test="@source='yes'">
 					<pre title="XML">
-						<xsl:apply-templates select="." mode="C:source.inside"/>
+						<xsl:apply-templates select="*|text()|comment()" mode="C:content.source"/>
 					</pre>
 				</xsl:if>
-				<xsl:apply-templates select="." mode="C:content.inside"/>
+				<xsl:apply-templates select="." mode="C:content.content"/>
 			</div>
 		</div>
 	</xsl:template>
 
 	<xsl:template match="/C:section" mode="C:content">
-qqq
 		<xsl:apply-templates select="." mode="C:content.table"/>
 		<div class="menu">
 			<div class="content-section-content">
-				<xsl:apply-templates select="@title" mode="C:content.title"/>
-				<xsl:apply-templates select="." mode="C:content.inside"/>
+				<xsl:apply-templates select="@title" mode="C:content.content"/>
+				<xsl:apply-templates select="." mode="C:content.content"/>
 			</div>
 		</div>
 	</xsl:template>

@@ -5,13 +5,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:C="http://cbear.berlios.de/cms"
 	xmlns="http://www.w3.org/1999/xhtml"
-	exclude-result-prefixes="C">
-
-	<xsl:output 
-		method="xml" 
-		indent="no" 
-		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
+	exclude-result-prefixes="S">
 
 	<xsl:import href="html.xsl"/>
 
@@ -65,6 +59,7 @@
 	</xsl:template>
 
 	<xsl:template match="/C:section">
+		<xsl:value-of select="'1'"/>
 		<table>
 			<tr>
 				<td colspan="2">
@@ -81,23 +76,16 @@
 					</td>
 				</tr>
 			</xsl:if>
+			<!-- -->
 			<tr>
 				<td>
 				</td>
 				<td>
-pizdets
+					<!-- Content -->
 					<xsl:apply-templates select="." mode="C:content"/>
 				</td>
 			</tr>
 		</table>
 	</xsl:template>
-
-<!--
-	<xsl:import href="html.xsl"/>
-
-	<xsl:template match="/C:section">
-		<xsl:apply-templates select="." mode="C:content"/>
-	</xsl:template>
--->
 
 </xsl:stylesheet>
