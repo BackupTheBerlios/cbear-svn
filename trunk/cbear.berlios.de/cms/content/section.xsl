@@ -31,7 +31,7 @@
 		<div class="content-table">
 			<xsl:apply-templates select="." mode="C:content.link">
 				<xsl:with-param name="href" select="concat('#', $id)"/>
-				<xsl:with-param name="name" select="@name"/>
+				<xsl:with-param name="name" select="string(@name)"/>
 			</xsl:apply-templates>
 			<xsl:apply-templates select="C:section" mode="C:content.table"/>
 		</div>
