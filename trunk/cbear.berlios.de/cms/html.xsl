@@ -9,7 +9,6 @@
 	exclude-result-prefixes="C S">
 
 	<xsl:import href="content/main.xsl"/>
-	<xsl:import href="source/main.xsl"/>
 
 	<xsl:output 
 		method="xml" 
