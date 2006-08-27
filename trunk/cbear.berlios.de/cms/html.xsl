@@ -8,7 +8,6 @@
 	xmlns:S="svn:"
 	exclude-result-prefixes="C S">
 
-	<xsl:import href="content/text.xsl"/>
 	<xsl:import href="content/any.xsl"/>
 	<xsl:import href="content/a.xsl"/>
 
