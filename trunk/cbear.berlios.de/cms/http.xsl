@@ -91,6 +91,7 @@
 	<xsl:import href="content/main.xsl"/>
 
 	<xsl:template match="/C:section">
+1
 		<xsl:apply-templates select="." mode="C:content"/>
 	</xsl:template>
 
