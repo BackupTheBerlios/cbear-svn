@@ -28,6 +28,7 @@
 			<xsl:apply-templates select="." mode="C:content.id"/>
 		</xsl:variable>
 		<div class="content-table">
+1
 			<xsl:apply-templates select="." mode="C:content.link">
 				<xsl:with-param name="href" select="concat('#', $id)"/>
 				<xsl:with-param name="name" select="@name"/>
