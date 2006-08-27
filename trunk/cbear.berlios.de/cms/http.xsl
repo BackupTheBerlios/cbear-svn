@@ -7,6 +7,12 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	exclude-result-prefixes="S">
 
+	<xsl:output 
+		method="xml" 
+		indent="no" 
+		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
+
 <!--
 	<xsl:import href="html.xsl"/>
 
@@ -91,7 +97,6 @@
 	<xsl:import href="content/main.xsl"/>
 
 	<xsl:template match="/C:section">
-1
 		<xsl:apply-templates select="." mode="C:content"/>
 	</xsl:template>
 
