@@ -7,6 +7,13 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	exclude-result-prefixes="S">
 
+	<xsl:import href="content/main.xsl"/>
+
+	<xsl:template match="/C:section">
+		<xsl:apply-templates select="." mode="C:content"/>
+	</xsl:template>
+
+<!--
 	<xsl:import href="html.xsl"/>
 
 	<xsl:param name="C:current"/>
@@ -75,16 +82,15 @@
 					</td>
 				</tr>
 			</xsl:if>
-			<!-- -->
 			<tr>
 				<td>
 				</td>
 				<td>
-					<!-- Content -->
 					<xsl:apply-templates select="." mode="C:content"/>
 				</td>
 			</tr>
 		</table>
 	</xsl:template>
+-->
 
 </xsl:stylesheet>
