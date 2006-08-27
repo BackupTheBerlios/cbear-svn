@@ -7,6 +7,8 @@
 	xmlns:C="http://cbear.berlios.de/cms"
 	exclude-result-prefixes="C">
 
+	<xsl:import href="any.xsl"/>
+
 	<!-- Content -->
 
 	<xsl:template match="C:section" mode="C:content.number">		
@@ -66,7 +68,7 @@
 	</xsl:template>
 
 	<xsl:template match="/C:section" mode="C:content">
-		<xsl:value-of select="'7'"/>
+		<xsl:value-of select="'8'"/>
 		<xsl:apply-templates select="." mode="C:content.table"/>
 		<div class="menu">
 			<div class="content-section-content">
