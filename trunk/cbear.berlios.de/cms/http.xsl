@@ -13,7 +13,6 @@
 		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
 
-<!--
 	<xsl:import href="html.xsl"/>
 
 	<xsl:param name="C:current"/>
@@ -92,14 +91,13 @@
 			</tr>
 		</table>
 	</xsl:template>
--->
 
+<!--
 	<xsl:import href="html.xsl"/>
 
 	<xsl:template match="/C:section">
-		<div>
-			<xsl:apply-templates select="." mode="C:content"/>
-		</div>
+		<xsl:apply-templates select="." mode="C:content"/>
 	</xsl:template>
+-->
 
 </xsl:stylesheet>
