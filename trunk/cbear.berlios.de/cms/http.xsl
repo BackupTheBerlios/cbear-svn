@@ -5,7 +5,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:C="http://cbear.berlios.de/cms"
 	xmlns="http://www.w3.org/1999/xhtml"
-	exclude-result-prefixes="S">
+	exclude-result-prefixes="C">
 
 	<xsl:output 
 		method="xml" 
