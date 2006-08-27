@@ -85,7 +85,6 @@
 				<td>
 				</td>
 				<td>
-					<a href="a">a</a>
 					<xsl:apply-templates select="." mode="C:content"/>
 				</td>
 			</tr>
