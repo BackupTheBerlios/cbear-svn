@@ -16,10 +16,11 @@
 		<xsl:param name="href" select="@href"/>
 		<xsl:param name="name" select="@href"/>
 		<xsl:param name="title" select="@title"/>
-		<a href="{$href}" title="{$title}">Y
+		<a href="{$href}" title="{$title}">
 			<xsl:attribute name="style">
 				<xsl:value-of select="$C:content.a"/>
 			</xsl:attribute>
+X
 			<xsl:choose>
 				<xsl:when test="not(*|text())">
 					<xsl:value-of select="$name"/>
