@@ -8,9 +8,8 @@
 	exclude-result-prefixes="C">
 
 	<xsl:import href="section.xsl"/>
+	<xsl:import href="any.xsl"/>
 
 	<!-- Content -->
-
-
 
 </xsl:stylesheet>
