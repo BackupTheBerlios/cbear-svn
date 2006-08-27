@@ -44,7 +44,7 @@
 	</xsl:template>
 
 	<xsl:template match="@title" mode="C:content.content">
-		<div class="title">
+		<div style="{$C:content.section.title}">
 			<xsl:value-of select="."/>
 		</div>
 	</xsl:template>
