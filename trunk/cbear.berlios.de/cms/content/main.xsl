@@ -7,7 +7,9 @@
 	xmlns:C="http://cbear.berlios.de/cms"
 	exclude-result-prefixes="C">
 
+<!--
 	<xsl:import href="any.xsl"/>
+-->
 	<xsl:import href="section.xsl"/>
 
 	<!-- Content -->
