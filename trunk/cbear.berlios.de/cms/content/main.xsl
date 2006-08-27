@@ -7,11 +7,13 @@
 	xmlns:C="http://cbear.berlios.de/cms"
 	exclude-result-prefixes="C">
 
-	<xsl:import href="a.xsl"/>
-	<xsl:import href="section.xsl"/>
-
 	<!-- * -->
 
 	<xsl:import href="any.xsl"/>
+
+	<!-- section, a -->
+
+	<xsl:import href="section.xsl"/>
+	<xsl:import href="a.xsl"/>
 
 </xsl:stylesheet>
