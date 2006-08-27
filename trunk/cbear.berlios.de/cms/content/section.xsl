@@ -68,7 +68,7 @@
 	</xsl:template>
 
 	<xsl:template match="/C:section" mode="C:content">
-		<xsl:value-of select="'9'"/>
+		<xsl:value-of select="'10'"/>
 		<xsl:apply-templates select="." mode="C:content.table"/>
 		<div class="menu">
 			<div class="content-section-content">
