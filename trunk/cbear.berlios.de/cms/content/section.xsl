@@ -7,6 +7,15 @@
 	xmlns:C="http://cbear.berlios.de/cms"
 	exclude-result-prefixes="C">
 
+	<xsl:template match="C:section" mode="C:content.id">		
+		<xsl:value-of select="'o'"/>
+		<xsl:if test="..!=.">
+			<xsl:apply-templates select=".." mode="C:content.number"/>
+			<xsl:value-of select="concat(
+				count(preceding-sibling::C:section) + 1, '.')"/>
+		</xsl:if>
+	</xsl:template>
+
 	<xsl:template match="C:section" mode="C:content.table">
 		<xsl:variable name="id">
 			<xsl:apply-templates select="." mode="C:content.id"/>
