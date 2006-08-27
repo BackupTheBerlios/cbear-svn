@@ -27,6 +27,7 @@
 		<xsl:param name="href" select="@href"/>
 		<xsl:param name="name" select="@href"/>
 		<xsl:param name="title" select="@title"/>
+X
 		<xsl:apply-templates select="." mode="C:content.link">
 			<xsl:with-param name="href" select="$href"/>
 			<xsl:with-param name="title" select="$title"/>
