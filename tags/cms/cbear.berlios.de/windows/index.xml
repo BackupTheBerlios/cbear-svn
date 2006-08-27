@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../cms/cbear.xsl"?>
+<section xmlns="http://cbear.berlios.de/cms" name="Windows API">
+	<ul>
+		<li>
+Enumerations.
+<pre><![CDATA[class a: public wrap<a, internal>
+{
+public:
+
+	enum enum_
+	{
+		b = B;
+		c = C;
+	};
+
+	a() {}
+	a(enum_ E): wrap<a, internal>(E) {}
+};]]></pre>
+		</li>
+		<li>
+Structures.
+<pre><![CDATA[typedef std_wrap<A> a;]]></pre>
+		</li>
+		<li>
+Windows structures.
+<pre><![CDATA[template<class T>
+class windows_structure: public T
+{
+public:
+	windows_structure()
+	{
+		this->cbSize = sizeof(T);
+	}
+};
+
+typedef windows_structure<A> a;]]></pre>
+		</li>
+		<li>
+Dynamic array on the end of structures.
+<pre><![CDATA[template<class T>
+class dynamic_structure
+{
+public:
+	dynamic_structure(std::size_t Size): Internal(Size) 
+	{
+		new(&*Internal.begin()) T();
+	}	
+private:
+	std::vector<byte> Internal;
+};
+
+struct A
+{
+	DWORD cbSize;
+	DWORD Len;
+	CHAR Array[0];
+};
+
+typedef dynamic_structure<windows_structure<A> > a;]]></pre>
+		</li>
+		<li>
+Optional reference.
+<pre><![CDATA[template<class T>
+class optional_ref: public wrap<T *>
+{
+public:
+	optional_ref() {}
+	optional_ref(T &X): wrap(&X) {}
+};]]></pre>
+		</li>
+	</ul>
+</section>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="cbear.xsl"?>
+<section 
+	xmlns="http://cbear.berlios.de/cms" 
+	name="CMS"
+	title="Content Management System.">
+Benefits:
+	<ol>
+		<li>
+<a href="XML" type="wikipedia"/> based.
+		</li>
+		<li>
+<a href="HTML" type="wikipedia"/> based syntax.
+		</li>
+		<li>
+<a href="SVN" type="wikipedia"/> based.
+		</li>
+		<li>
+Multilanguage support.
+		</li>
+	</ol>
+	<section name="Sections" source="yes">		
+<section name="Example Section">
+	Hello <b>world</b>! Ordered list:
+	<!-- Internal comment. -->
+	<ol>
+		<li>
+List item.<br/>
+Image: <img src="http://www.livejournal.com/userpic/42497029/6618534"/>.
+		</li>
+		<li>
+List item. Link <a href="http://www.google.com">Google</a>.
+		</li>
+		<li>
+			Table.
+			<table>
+				<tr>
+					<th>Column 1</th>
+					<th>Column 2</th>
+					<th>Column 3</th>
+<!-- Commented columns. They will not be visible: 
+					<th>Column 4</th>
+					<th>Column 5</th>
+-->
+				</tr>
+				<tr>
+					<td>C 1</td>
+					<td>C 2</td>
+					<td rowspan="2">
+						Unordered list:
+						<ul>
+							<li>A.</li>
+							<li>B.</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="color: red;">C 1 and 2</td>
+				</tr>
+			</table>
+		</li>
+	</ol>
+</section>
+	</section>
+	<section name="HTML &lt;a&gt; Links" source="yes">
+With title <a href="http://wikipedia.org" title="The Free Encyclopedia">Wikipedia</a>.
+Lazy link <a href="http://wikipedia.org"/>.
+	</section>
+	<section name="Relative Local Links" source="yes">
+<a href="../api" type="cms"/>.
+<a href="../windows" type="cms"/>.
+<a href="../windows/com" type="cms"/>.
+	</section>
+	<section name="Wikipedia Links" source="yes">
+With title <a 
+	href="Component Object Model" 
+	type="wikipedia" 
+	title="Component Object Model"
+>COM</a>.
+Lazy link <a href="GUI" type="wikipedia"/>.
+	</section>
+	<section name="E-Mail Links" source="yes">
+Lazy link <a href="pupkin@pupkin.domain" type="mailto"/>.
+	</section>
+	<section name="File/Directory Links" source="yes">
+Lazy link <a href="c:\cbear\cbear.berlios.de\license.txt" type="file"/>.
+<a href="c:/Program Files/" type="file">Program files</a>.
+	</section>
+	<section name="Other Links" source="yes">
+HTTP: <a href="cbear.berlios.de" type="http"/>.
+SVN: <a href="svn.berlios.de/cbear/trunk" type="svn"/>.
+FTP: <a href="ftp.gimp.org" type="ftp"/>.
+	</section>
+</section>

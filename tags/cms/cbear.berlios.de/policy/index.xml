@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../cms/cbear.xsl"?>
+<section xmlns="http://cbear.berlios.de/cms" name="Type Policies">
+	
+	<p>
+Namespace <em>cbear_berlios_de::policy</em>.
+	</p>
+	<p>
+Header <a href="main.hpp"/>.
+	</p>
+	<section name="Standard Policy">
+		
+<pre>template&lt;class Type&gt;
+struct standard_policy
+{
+	static void construct(type &amp;This);
+	static void construct_copy(type &amp;This, const Type &amp;Source);
+	static void destroy(Type &amp;);
+	static void assign(Type &amp;This, const Type &amp;Source);
+
+	static void swap(Type &amp;A, Type &amp;B);
+
+	static bool equal(const Type &amp;A, const Type &amp;B);
+
+	static bool less(const Type &amp;A, const Type &amp;B);
+
+	typedef ... value_type;
+	typedef ... reference;
+	typedef ... pointer;
+
+	static reference reference_of(const type &amp;This);
+};</pre>
+	</section>
+	<section name="Wrap">
+		
+<pre>template&lt;
+	class Type, 
+	class InternalType, 
+	class Policy = standard_policy&lt;InternalType&gt; &gt;
+class wrap
+{
+public:
+	internal_type &amp;internal();
+	const internal_type &amp;internal() const;
+
+	// Requires Policy::swap.
+	void swap(Type &amp;X);
+
+	// Requires Policy::equal.
+	friend bool operator==(const Type &amp;A, const Type &amp;B);
+	// Requires Policy::equal.
+	friend bool operator!=(const Type &amp;A, const Type &amp;B);
+
+	// Requires Policy::less.
+	friend bool operator&lt;(const Type &amp;A, const Type &amp;B);
+	// Requires Policy::less.
+	friend bool operator&gt;(const Type &amp;A, const Type &amp;B);
+	// Requires Policy::less.
+	friend bool operator&lt;=(const Type &amp;A, const Type &amp;B);
+	// Requires Policy::less.
+	friend bool operator&gt;=(const Type &amp;A, const Type &amp;B);
+
+	// Requires Policy::reference_of.
+	typename Policy::reference operator*() const;
+	// Requires Policy::reference_of.
+	typename Policy::pointer operator-&gt;() const;
+
+protected:
+	// Requires Policy::construct.
+	wrap();
+	// Requires Policy::construct_copy.
+	wrap(const wrap &amp;);
+	// Requires Policy::construct_copy.
+	wrap(const InternalType &amp;);
+	// Requires Policy::destroy.
+	~wrap();
+	// Requires Policy::assign.
+	wrap operator=(const wrap &amp;);
+};</pre>
+	</section>
+</section>

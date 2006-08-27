@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../cms/cbear.xsl"?>
+<section xmlns="http://cbear.berlios.de/cms" name="C++ Language Structure">
+	
+	<p>
+XML Schema <a href="main.xsd"/>. Default HTML generator 
+<a href="html.xsl"/>.
+	</p>
+	<section name="Examples">
+		
+		<p>
+<a href="examples/empty.cpp.xml"/>, 
+<a href="examples/namespace.cpp.xml"/>,
+<a href="examples/class.cpp.xml"/>,
+<a href="examples/template.cpp.xml"/>,
+<a href="examples/method.cpp.xml"/>.
+		</p>
+	</section>
+	<section name="Dreams">
+		
+		<section name="Type Of Expression">
+			
+<pre>typedef __typeof__(X + Y) type;</pre>
+		</section>
+		<section name="Auto">
+			
+<pre>__auto__ Z = X + Y;</pre>
+<pre>template&lt;class T&gt;
+__auto__ minus(T R) { return R - R; }</pre>
+		</section>
+		<section name="Typedef Template">
+			
+			<p>
+Without specialization.
+			</p>
+<pre>template&lt;class A&gt;
+typedef first&lt;parents_of&lt;A&gt; &gt; first_parent_of;	
+</pre>
+		</section>
+		<section name="Type List">
+			
+<pre>template&lt;class L&gt;
+class M;
+
+template&lt;&gt;
+class M&lt;std::empty_type_list&gt; {};
+
+template&lt;class Begin&gt;
+class M&lt;std::type_list&lt;Begin&gt; &gt; 
+{
+	typedef Begin first;
+};
+
+template&lt;class Begin, class Next&gt;
+class M&lt;std::type_list&lt;Begin, Next&gt; &gt;: detail::M&lt;Begin, Next&gt;
+{
+};
+
+BOOST_STATIC_ASSERT((
+	boost::is_same&lt;
+		std::type_list&lt;A, std::undefined&gt;, 
+		std::type_list&lt;A&gt;::value));
+
+BOOST_STATIC_ASSERT((
+	boost::is_same&lt;
+		std::type_list&lt;std::undefined, std::undefined&gt;,
+		std::empty_list&gt;::value));
+
+
+typedef M&lt;{A, B, C, D}&gt; MyM;
+
+template&lt;class L&gt;
+class Mi;
+
+template&lt;class Begin, class Next&gt;
+class Mi&lt;std::type_list&lt;Begin, Next&gt; &gt;: detail::Mi&lt;Begin, Next&gt;
+{
+};
+
+typedef Mi&lt;{0, 1, 2, 3}&gt; MyMi;
+
+template&lt;class L&gt;
+class Mc;
+
+template&lt;class Begin, class Next&gt;
+class Mc&lt;std::type_list&lt;Begin, Next&gt; &gt;: detail::Mc&lt;Begin, Next&gt;
+{
+};
+
+typedef Mc&lt;"Hello world!"&gt; MyMc;
+
+BOOST_STATIC_ASSERT((boost::is_same&lt;
+	{0, 1, 2, 3}, std::type_list&lt;std::constant&lt;int, 0&gt;, {1, 2, 3}&gt; &gt;::value);</pre>
+		</section>
+		<section name="Compile Time Type Information">
+			
+			<section name="Parents">
+				
+				<p>
+A type list.
+				</p>
+<pre>parents_of&lt;A&gt;</pre>
+			</section>
+			<section name="Members">
+				
+				<p>
+A type list.
+				</p>
+<pre>members_of&lt;A&gt;</pre>
+				<p>
+For each member you can apply:
+				</p>
+<pre>member::is_function&lt;Member&gt;
+member::is_typedef&lt;Member&gt;
+member::is_template&lt;Member&gt;
+member::is_static&lt;Member&gt;
+member::is_field&lt;Member&gt;
+
+member::name_of&lt;Member&gt;</pre>
+				<p>
+and others.
+				</p>
+			</section>
+		</section>
+		<section name="Type Friend">
+			
+<pre>template&lt;class T&gt;
+class A
+{
+private:
+	A() {}
+	~A() {}
+	A(const A &amp;) {}
+  A &amp;operator=(const A &amp;) { return *this; }
+	__firend__ T;
+};
+
+class B: A
+{
+};</pre>
+		</section>		
+		<section name="Enumeration Base Type">
+			
+<pre>__enum__&lt;unsigned char&gt; color
+{
+	red,
+	green,
+	blue,
+};</pre>
+		</section>
+		<section name="Lambda Functions">
+			
+			<p/>
+		</section>
+		<section name="Library">
+			
+<pre>template&lt;...&gt;
+class basic_string
+{
+public:
+	...
+	template&lt;std::size_t Size&gt;
+	basic_string(const value_type (&amp;X)[Size]);
+	...
+};
+</pre>
+		</section>
+		<section name="Exceptions">
+			<ul>
+				<li>
+<pre><![CDATA[void A() throw(B)
+{
+	if(D())
+	{
+	  throw B();
+	}
+}
+
+void C()
+{
+  try
+	{
+		A()
+	}
+	catch<T>(T &t)
+	{
+		throw t;
+	}
+}]]></pre>
+				</li>
+			</ul>
+		</section>
+	</section>
+</section>

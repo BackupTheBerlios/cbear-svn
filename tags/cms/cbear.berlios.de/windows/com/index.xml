@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../../cms/cbear.xsl"?>
+<section 
+	xmlns="http://cbear.berlios.de/cms" 
+	name="COM" 
+	title="Component Object Model">	
+	<p>
+Namespace <em>cbear_berlios_de::windows::com</em>.
+	</p>
+	<p>
+Draft <a href="draft.svg"/>.
+	</p>
+	<section name="Type Traits">		
+		<p>
+Header <a href="traits.hpp"/>.
+		</p>
+<pre>template&lt;class Type&gt;
+class traits
+{
+	typedef ... internal_policy;
+};</pre>
+		<section name="Target">
+		</section>
+	</section>
+<!--
+	<section href="system.xml"/>
+	<section href="uuid.xml"/>
+	<section href="hresult.xml"/>
+	<section href="object.xml"/>
+	<section href="dynamic/index.xml"/>
+	<section href="odl.xml"/>
+-->
+	<section name="Tasks">
+		<section name="Scoped Library Initialization"/>
+		<section name="Separated Fabrics"/>
+		<section name="Garbage Collection"/>
+	</section>
+	<section name="Articles (Russian)">
+<!--
+		<section href="manager.ru.xml"/>
+-->
+	</section>
+</section>

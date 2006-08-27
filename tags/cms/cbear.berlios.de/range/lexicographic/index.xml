@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../../cms/cbear.xsl"?>
+<section 
+	xmlns="http://cbear.berlios.de/cms" name="Lexicographical Compare">
+		
+<pre>template&lt;class Range1, class Range2&gt; 
+int lexicographical::compare(const Range1 &amp;A, const Range2 &amp;B);</pre>
+<pre>template&lt;class Range1, class Range2&gt; 
+bool lexicographical::less(const Range1 &amp;A, const Range2 &amp;B);</pre>
+</section>

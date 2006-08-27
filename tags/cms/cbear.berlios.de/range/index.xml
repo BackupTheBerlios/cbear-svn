@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../cms/cbear.xsl"?>
+<section 
+	xmlns="http://cbear.berlios.de/cms" name="Iterator Range Algorithms">
+	<section name="Traits">
+<pre><![CDATA[template<class Container>
+class traits
+{
+public:
+	typedef ... iterator;
+	typedef ... difference_type;
+	typedef ... size_type;
+	typedef ... referense;
+	typedef ... pointer;
+	typedef ... value_type;
+	typedef ... reverse_iterator;
+	static size_type const const_size;
+	static iterator begin(Container & );
+	static iterator end(Container & );
+	static reference front(Container & );
+	static reference back(Container & );
+	static reference at(Container & , size_type);
+	static bool empty(Container & );
+	static size_type size(Container & );
+	static reverse_iterator rbegin(Container & );
+	static reverse_iterator rend(Container & );
+};]]></pre>
+		<section name="Iterator">
+<pre><![CDATA[template<class Container>
+class iterator
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>
+		<section name="Value Type">
+<pre><![CDATA[template<class Container>
+class value_type
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>
+		<section name="Difference Type">
+<pre><![CDATA[template<class Container>
+class difference_type
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>
+		<section name="Size Type">
+<pre><![CDATA[template<class Container>
+class size_type
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>
+		<section name="Reference">
+<pre><![CDATA[template<class Container>
+class reference
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>
+		<section name="Pointer">
+<pre><![CDATA[template<class Container>
+class pointer
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>		
+		<section name="Reverse Iterator">
+<pre><![CDATA[template<class Container>
+class reverse_iterator
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>
+		<section name="Constant Size">
+<pre><![CDATA[template<class Container>
+class const_size
+{
+public:
+	static ... const value = ...;
+};]]></pre>
+		</section>
+		<section name="Begin">
+<pre><![CDATA[template<class Container>
+... begin(Container &X);
+template<class Container>
+... begin(Container const &X);]]></pre>
+		</section>
+		<section name="End">
+<pre><![CDATA[template<class Container>
+... end(Container &X);
+template<class Container>
+... end(Container const &X);]]></pre>
+		</section>
+		<section name="Empty">
+<pre><![CDATA[template<class Container>
+bool empty(Container const &X);]]></pre>
+		</section>
+		<section name="Size">
+<pre><![CDATA[template<class Container>
+... size(Container const &X);]]></pre>
+		</section>
+		<section name="Front">
+<pre><![CDATA[template<class Container>
+... front(Container &X);
+template<class Container>
+... front(Container const &X);]]></pre>
+		</section>
+		<section name="Back">
+<pre><![CDATA[template<class Container>
+... back(Container &X);
+template<class Container>
+... back(Container const &X);]]></pre>
+		</section>
+		<section name="At">
+<pre><![CDATA[template<class Container, class Size>
+... at(Container &X, Size I);
+template<class Container>
+... at(Container const &X, Size I);]]></pre>
+		</section>
+		<section name="Reverse Begin">
+<pre><![CDATA[template<class Container>
+... rbegin(Container &X);
+template<class Container>
+... rbegin(Container const &X);]]></pre>
+		</section>
+		<section name="Reverse End">
+<pre><![CDATA[template<class Container>
+... rend(Container &X);
+template<class Container>
+... rend(Container const &X);]]></pre>
+		</section>
+	</section>
+	<section name="Helper">
+<pre><![CDATA[template<class Container, class Iterator, class ConstIterator>
+class helper
+{
+public:
+	typedef Container container;
+	typedef Iterator iterator;
+	typedef ConstIterator const_iterator;
+	typedef ... value_type;
+	typedef ... difference_type;
+	typedef ... size_type;
+	typedef ... reference;
+	typedef ... const_reference;
+	typedef ... pointer;
+	typedef ... const_pointer;
+	typedef ... reverse_iterator;
+	typedef ... const_reverse_iterator;
+	bool empty() const;
+	size_type size() const;
+	reference front();
+	const_reference front() const;
+	reference back();
+	const_reference back() const;
+	reference operator[](size_type);
+	const_reference operator[](size_type) const;
+	reverse_iterator rbegin();
+	const_reverse_iterator rbegin() const;
+	reverse_iterator rend();
+	const_reverse_iterator rend() const;
+};]]></pre>
+	</section>
+	<section name="Iterator Range">
+<pre><![CDATA[template<class Iterator>
+class iterator_range
+{
+public:
+	typedef Iterator iterator;
+	typedef Iterator const_iterator;
+	iterator_range();
+	iterator_range(iterator const & , iterator const & );
+	template<class Range>
+	explicit iterator_range(Range const & );
+	template<class Range>
+	explicit iterator_range(Range & );
+	iterator begin() const;
+	iterator end() const;
+	...
+};
+template<class Iterator>
+... make_iterator_range(Iterator const & , Iterator const & );
+template<class Range>
+... make_iterator_range(Range const & );
+template<class Range>
+... make_iterator_range(Range & );]]></pre>
+		<section name="Subrange">
+<pre><![CDATA[template<class Container>
+class sub_range
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>
+		<section name="Reverse Range">
+<pre><![CDATA[template<class Iterator>
+class reverse_iterator_range
+{
+public:
+	typedef ... type;
+};
+template<class Iterator>
+... make_reverse_iterator_range(Iterator const &, Iterator const &);
+template<class Container>
+... make_reverse_iterator_range(Container &);
+template<class Container>
+... make_reverse_iterator_range(Container const &);
+template<class Container>
+class reverse_sub_range
+{
+public:
+	typedef ... type;
+};]]></pre>
+		</section>
+		<section name="Zero Ended Range">
+<pre><![CDATA[template<class V>
+... make_arrayz_range(V *)]]></pre>
+		</section>
+	</section>
+	<section name="Algorithms">
+		<section name="Copy">
+<pre><![CDATA[template<class Container, class OutputIterator>
+OutputIterator copy(Container const &X, OutputIterator O);]]></pre>
+		</section>
+		<section name="Fill">
+<pre><![CDATA[template<class Container, class T>
+void fill(Container &X, T const &Value);
+
+template<class T>
+class fill_iterator_t
+{
+public:
+	...
+	fill_iterator_t(T const &V, difference_type I);
+	... operator*() const;
+	bool operator!=(fill_iterator_t const &B) const;
+	fill_iterator_t &operator++();
+	bool operator<(fill_iterator_t const &B);
+	... operator-(fill_iterator_t const &B) const;
+};
+
+template<class T, class Size>
+... make_fill(T const &V, Size S);]]></pre>
+		</section>
+		<section name="Sort">
+<pre><![CDATA[template<class Container, class Less>
+void sort(Container &X, Less L);]]></pre>
+		</section>
+		<section name="Transform">
+<pre><![CDATA[template<class InputRange, class OutputIterator, class UnaryOperation>
+OutputIterator transform(
+	InputRange &R, OutputIterator Result, UnaryOperation Op);]]></pre>
+		</section>
+	</section>
+</section>

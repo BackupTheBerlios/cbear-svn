@@ -1,0 +1,34 @@
+﻿<root hkey="HKEY_CLASSES_ROOT">
+	<key name="Library.Coclass">
+		<value data="Brief"/>
+		<key name="CLSID">
+			<value data="{9051E94D-6A0C-44b8-B163-716CD2117C58}"/>
+		</key>
+		<key name="CurVer">
+			<value data="'2'"/>
+		</key>
+	</key>
+	<key name="Library.Coclass.2">
+		<value data="Brief. Version 2"/>
+		<key name="CLSID">
+			<value data="{9051E94D-6A0C-44b8-B163-716CD2117C58}"/>
+		</key>
+	</key>
+	<path subkey="CLSID">
+		<key name="{9051E94D-6A0C-44b8-B163-716CD2117C58}">
+			<value data="Brief"/>
+			<key name="LocalServer32">
+				<value data="'filepath.exe'"/>
+			</key>
+			<key name="TypeLib">
+				<value data="'{36A515C0-9401-4fea-B76F-55016651D6D7}'"/>
+			</key>
+			<key name="VersionIndependentProgId">
+				<value data="'Library.Coclass'"/>
+			</key>
+			<key name="ProgId">
+				<value data="'Library.Coclass.2'"/>
+			</key>
+		</key>
+	</path>	
+</root>
