@@ -448,6 +448,7 @@
 	</xsl:template>
 
 	<xsl:template match="/C:section" mode="C:content">
+qqq
 		<xsl:apply-templates select="." mode="C:content.table"/>
 		<div class="menu">
 			<div class="content-section-content">
@@ -590,7 +591,6 @@
 						</td>
 						<td class="content">
 							<!-- Content -->
-pizdetc
 							<xsl:apply-templates select="." mode="C:content"/>
 						</td>
 					</tr>

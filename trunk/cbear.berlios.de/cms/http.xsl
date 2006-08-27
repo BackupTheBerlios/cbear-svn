@@ -85,6 +85,7 @@
 				<td>
 				</td>
 				<td>
+pizdets
 					<xsl:apply-templates select="." mode="C:content"/>
 				</td>
 			</tr>
