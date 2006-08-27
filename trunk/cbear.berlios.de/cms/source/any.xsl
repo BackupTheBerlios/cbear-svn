@@ -7,8 +7,8 @@
 	xmlns:C="http://cbear.berlios.de/cms"
 	exclude-result-prefixes="C">
 
-	<xsl:variable name="C:source.element.name" select="'color: #007F7F;'"/>	
-	<xsl:variable name="C:source.element.symbol" select="'color: #003F7F;'"/>
+	<xsl:variable name="C:source.element.name" select="'color: #003F7F;'"/>
+	<xsl:variable name="C:source.element.symbol" select="'color: #007F7F;'"/>	
 	<xsl:variable name="C:source.attribute.name" select="'color: #003F7F;'"/>
 	<xsl:variable name="C:source.attribute.symbol" select="'color: #007F7F;'"/>
 	<xsl:variable name="C:source.attribute.value" select="'color: #007F00;'"/>
