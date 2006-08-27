@@ -11,7 +11,7 @@
 		name="C:content.a" 
 		select="'color: blue; text-decoration: none;'"/>
 
-	<xsl:template match="C:a" mode="C:content.a">
+	<xsl:template match="C:*" mode="C:content.link">
 		<xsl:param name="href" select="@href"/>
 		<xsl:param name="name" select="@href"/>
 		<xsl:param name="title" select="@title"/>
@@ -19,15 +19,28 @@
 			<xsl:attribute name="style">
 				<xsl:value-of select="$C:content.a"/>
 			</xsl:attribute>
-			<xsl:choose>
-				<xsl:when test="not(*|text())">
-					<xsl:value-of select="$name"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:apply-templates select="." mode="C:content.content"/>
-				</xsl:otherwise>
-			</xsl:choose>
+			<xsl:copy-of select="$name"/>
 		</a>
+	</xsl:template>
+
+	<xsl:template match="C:*" mode="C:content.a">
+		<xsl:param name="href" select="@href"/>
+		<xsl:param name="name" select="@href"/>
+		<xsl:param name="title" select="@title"/>
+		<xsl:apply-templates select="." mode="C:content.link">
+			<xsl:with-param name="href" select="$href"/>
+			<xsl:with-param name="title" select="$title"/>
+			<xsl:with-param name="name">
+				<xsl:choose>
+					<xsl:when test="not(*|text())">
+						<xsl:value-of select="$name"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:apply-templates select="." mode="C:content.content"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:with-param>
+		</xsl:apply-templates>
 	</xsl:template>
 
 	<xsl:template match="C:a" mode="C:content">
