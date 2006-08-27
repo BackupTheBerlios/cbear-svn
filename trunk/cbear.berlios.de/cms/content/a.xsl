@@ -7,7 +7,7 @@
 	xmlns:C="http://cbear.berlios.de/cms"
 	exclude-result-prefixes="C">
 
-	<!-- -->
+	<xsl:variable name="C:content.a" select="'text-decoration: none;'"/>
 
 	<xsl:template match="C:a" mode="C:content.a">
 		<xsl:param name="href" select="@href"/>
