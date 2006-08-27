@@ -16,6 +16,7 @@
 		<xsl:param name="name" select="@href"/>
 		<xsl:param name="title" select="@title"/>
 		<a href="{$href}" title="{$title}">
+1
 			<xsl:attribute name="style">
 				<xsl:value-of select="$C:content.a"/>
 			</xsl:attribute>
@@ -27,7 +28,6 @@
 		<xsl:param name="href" select="@href"/>
 		<xsl:param name="name" select="@href"/>
 		<xsl:param name="title" select="@title"/>
-X
 		<xsl:apply-templates select="." mode="C:content.link">
 			<xsl:with-param name="href" select="$href"/>
 			<xsl:with-param name="title" select="$title"/>
@@ -85,7 +85,7 @@ X
 			<xsl:with-param name="href" select="$index.xml"/>
 			<xsl:with-param 
 				name="name"
-				select="string(document($index.xml, .)/C:section/@name)"/>
+				select="document($index.xml, .)/C:section/@name"/>
 			<xsl:with-param 
 				name="title"
 				select="document($index.xml, .)/C:section/@title"/>
