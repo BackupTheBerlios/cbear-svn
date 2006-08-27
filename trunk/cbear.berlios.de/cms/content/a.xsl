@@ -81,12 +81,10 @@
 	<xsl:template match="C:a[@type='cms']" mode="C:content">		
 		<xsl:param name="index.xml" select="concat(@href, '/', $C:index.xml)"/>
 		<xsl:apply-templates select="." mode="C:content.a">
-			<xsl:with-param 
-				name="href" 
-				select="concat(@href, '/', $C:index.xml)"/>
+			<xsl:with-param name="href" select="$index.xml"/>
 			<xsl:with-param 
 				name="name"
-				select="document($index.xml, .)/C:section/@name"/>
+				select="string(document($index.xml, .)/C:section/@name)"/>
 			<xsl:with-param 
 				name="title"
 				select="document($index.xml, .)/C:section/@title"/>
