@@ -8,7 +8,9 @@
 	xmlns:S="svn:"
 	exclude-result-prefixes="C S">
 
+<!--
 	<xsl:import href="content/main.xsl"/>
+-->
 
 	<xsl:output 
 		method="xml" 
