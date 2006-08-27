@@ -97,7 +97,9 @@
 	<xsl:import href="html.xsl"/>
 
 	<xsl:template match="/C:section">
-		<xsl:apply-templates select="." mode="C:content"/>
+		<div>
+			<xsl:apply-templates select="." mode="C:content"/>
+		</div>
 	</xsl:template>
 
 </xsl:stylesheet>
