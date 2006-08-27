@@ -10,13 +10,13 @@
 	<xsl:variable 
 		name="C:content.a" 
 		select="
-			'{text-decoration: none; } ::hover { text-decoration: underline; }'"/>
+			'{text-decoration: none; } :hover { text-decoration: underline; }'"/>
 
 	<xsl:template match="C:a" mode="C:content.a">
 		<xsl:param name="href" select="@href"/>
 		<xsl:param name="name" select="@href"/>
 		<xsl:param name="title" select="@title"/>
-		<a href="{$href}" title="{$title}">
+		<a href="{$href}" title="{$title}">X
 			<xsl:attribute name="style">
 				<xsl:value-of select="$C:content.a"/>
 			</xsl:attribute>
