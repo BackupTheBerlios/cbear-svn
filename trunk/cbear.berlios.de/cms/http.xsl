@@ -65,7 +65,6 @@
 	</xsl:template>
 
 	<xsl:template match="/C:section">
-		<xsl:value-of select="'1'"/>
 		<table>
 			<tr>
 				<td colspan="2">

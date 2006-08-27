@@ -10,16 +10,8 @@
 	<xsl:import href="any.xsl"/>
 	<xsl:import href="a.xsl"/>
 	<xsl:import href="section.xsl"/>
+<!--
 	<xsl:import href="../source/main.xsl"/>
-
-	<xsl:template match="/C:section" mode="C:content">
-		<xsl:apply-templates select="." mode="C:content.table"/>
-		<div class="menu">
-			<div class="content-section-content">
-				<xsl:apply-templates select="@title" mode="C:content.title"/>
-				<xsl:apply-templates select="." mode="C:content.inside"/>
-			</div>
-		</div>
-	</xsl:template>
+-->
 
 </xsl:stylesheet>
