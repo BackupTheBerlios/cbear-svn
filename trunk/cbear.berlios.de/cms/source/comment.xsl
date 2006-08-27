@@ -7,11 +7,11 @@
 	xmlns:C="http://cbear.berlios.de/cms"
 	exclude-result-prefixes="C">
 
-	<xsl:variable name="C:style.comment" select="'color: #FF00FF;'"/>
+	<xsl:variable name="C:source.comment" select="'color: #FF00FF;'"/>
 
-	<xsl:template match="comment()" mode="C:content.source">
+	<xsl:template match="comment()" mode="C:source">
 		<xsl:call-template name="C:span">
-			<xsl:with-param name="style" select="$C:style.comment"/>
+			<xsl:with-param name="style" select="$C:source.comment"/>
 			<xsl:with-param name="text" select="concat('&lt;!--', ., '--&gt;')"/>
 		</xsl:call-template>
 	</xsl:template>
