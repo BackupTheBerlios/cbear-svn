@@ -7,8 +7,6 @@
 	xmlns:C="http://cbear.berlios.de/cms"
 	exclude-result-prefixes="C">
 
-	<xsl:import href="any.xsl"/>
-
 	<!-- Content -->
 
 	<xsl:template match="C:section" mode="C:content.number">		

@@ -10,6 +10,8 @@
 	<xsl:import href="a.xsl"/>
 	<xsl:import href="section.xsl"/>
 
-	<!-- Content -->
+	<!-- * -->
+
+	<xsl:import href="any.xsl"/>
 
 </xsl:stylesheet>
