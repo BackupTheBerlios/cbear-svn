@@ -19,7 +19,6 @@
 			<xsl:attribute name="style">
 				<xsl:value-of select="$C:content.a"/>
 			</xsl:attribute>
-X
 			<xsl:choose>
 				<xsl:when test="not(*|text())">
 					<xsl:value-of select="$name"/>
