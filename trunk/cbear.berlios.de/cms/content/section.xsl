@@ -41,6 +41,12 @@
 		</xsl:if>
 	</xsl:template>
 
+	<xsl:template match="@title" mode="C:content.content">
+		<div class="title">
+			<xsl:value-of select="."/>
+		</div>
+	</xsl:template>
+
 	<xsl:template match="C:section" mode="C:content">
 		<xsl:variable name="id">
 			<xsl:apply-templates select="." mode="C:content.id"/>
@@ -60,7 +66,7 @@
 	</xsl:template>
 
 	<xsl:template match="/C:section" mode="C:content">
-		<xsl:value-of select="'4'"/>
+		<xsl:value-of select="'5'"/>
 		<xsl:apply-templates select="." mode="C:content.table"/>
 		<div class="menu">
 			<div class="content-section-content">
@@ -71,31 +77,6 @@
 	</xsl:template>
 
 	<!-- -->
-
-	<xsl:template match="*" mode="C:content.content">
-		<xsl:apply-templates select="*|text()" mode="C:content"/>
-	</xsl:template>
-
-	<xsl:template match="@title" mode="C:content.content">
-		<div class="title">
-			<xsl:value-of select="."/>
-		</div>
-	</xsl:template>
-
-	<xsl:template match="text()" mode="C:content">
-		<xsl:value-of select="."/>
-	</xsl:template>
-
-	<xsl:template match="*" mode="C:content" priority="-2">
-		<xsl:element name="{local-name()}" />
-	</xsl:template>
-
-	<xsl:template match="*[*|@*|text()]" mode="C:content" priority="-1">
-		<xsl:element name="{local-name()}">
-			<xsl:copy-of select="@*"/>
-			<xsl:apply-templates select="." mode="C:content.content"/>
-		</xsl:element>
-	</xsl:template>
 
 	<xsl:template match="C:a" mode="C:content.a">
 		<xsl:param name="href" select="@href"/>
