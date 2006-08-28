@@ -15,7 +15,8 @@
 
 	<xsl:template match="*" mode="C:content.div">
 		<xsl:param name="content"/>
-		<div>
+		<xsl:param name="id"/>
+		<div id="{$id}">
 			<xsl:attribute name="style">
 				<xsl:value-of select="$C:content"/>
 			</xsl:attribute>
@@ -68,21 +69,23 @@
 	</xsl:template>
 
 	<xsl:template match="C:section" mode="C:content">
-		<xsl:variable name="id">
-			<xsl:apply-templates select="." mode="C:content.id"/>
-		</xsl:variable>
-		<div class="content-section" id="{$id}">
-			<h2><xsl:value-of select="@name"/></h2>
-			<div class="content-section-content">
-				<xsl:apply-templates select="@title" mode="C:content.content"/>
-				<xsl:if test="@source='yes'">
-					<pre title="XML">
-						<xsl:apply-templates select="*|text()|comment()" mode="C:content.source"/>
-					</pre>
-				</xsl:if>
-				<xsl:apply-templates select="." mode="C:content.content"/>
-			</div>
-		</div>
+		<xsl:apply-templates select="." mode="C:content.div">
+			<xsl:with-param name="id">
+				<xsl:apply-templates select="." mode="C:content.id"/>
+			</xsl:with-param>
+			<xsl:with-param name="content">
+				<h2><xsl:value-of select="@name"/></h2>
+				<div class="content-section-content">
+					<xsl:apply-templates select="@title" mode="C:content.content"/>
+					<xsl:if test="@source='yes'">
+						<pre title="XML">
+							<xsl:apply-templates select="*|text()|comment()" mode="C:content.source"/>
+						</pre>
+					</xsl:if>
+					<xsl:apply-templates select="." mode="C:content.content"/>
+				</div>
+			</xsl:with-param>
+		</xsl:apply-templates>
 	</xsl:template>
 
 	<xsl:template match="/C:section" mode="C:content">
