@@ -12,6 +12,7 @@
 
 	<xsl:variable name="C:content" select="'border-top: solid 1px #E0E0E0;'"/>
 	<xsl:variable name="C:content.section.title" select="'font-style: italic;'"/>
+	<xsl:variable name="C:content.section.table" select="'margin-left: 10px;'"/>
 
 	<xsl:template match="*" mode="C:content.div">
 		<xsl:param name="content"/>
@@ -40,7 +41,10 @@
 		<xsl:variable name="id">
 			<xsl:apply-templates select="." mode="C:content.id"/>
 		</xsl:variable>
-		<div class="content-table">
+		<div>
+			<xsl:attribute name="style">
+				<xsl:value-of select="$C:content.section.table"/>
+			</xsl:attribute>
 			<xsl:apply-templates select="." mode="C:content.link">
 				<xsl:with-param name="href" select="concat('#', $id)"/>
 				<xsl:with-param name="name" select="string(@name)"/>
