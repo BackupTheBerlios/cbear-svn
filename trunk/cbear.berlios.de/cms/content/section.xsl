@@ -10,6 +10,7 @@
 	<xsl:import href="source.xsl"/>
 	<xsl:import href="a.xsl"/>
 
+	<xsl:variable name="C:content" select="'border-top: solid 1px #E0E0E0;'"/>
 	<xsl:variable name="C:content.section.title" select="'font-style: italic;'"/>
 
 	<xsl:template match="C:section" mode="C:content.number">		
@@ -74,7 +75,10 @@
 
 	<xsl:template match="/C:section" mode="C:content">
 		<xsl:apply-templates select="." mode="C:content.table"/>
-		<div class="menu">
+		<div>
+			<xsl:attribute name="style">
+				<xsl:value-of select="$C:content"/>
+			</xsl:attribute>
 			<div class="content-section-content">
 				<xsl:apply-templates select="@title" mode="C:content.content"/>
 				<xsl:apply-templates select="." mode="C:content.content"/>
