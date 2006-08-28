@@ -13,6 +13,16 @@
 	<xsl:variable name="C:content" select="'border-top: solid 1px #E0E0E0;'"/>
 	<xsl:variable name="C:content.section.title" select="'font-style: italic;'"/>
 
+	<xsl:template match="*" mode="C:content.div">
+		<xsl:param name="content"/>
+		<div>
+			<xsl:attribute name="style">
+				<xsl:value-of select="$C:content"/>
+			</xsl:attribute>
+			<xsl:copy-of select="$content"/>
+		</div>
+	</xsl:template>
+
 	<xsl:template match="C:section" mode="C:content.number">		
 		<xsl:if test="..!=.">
 			<xsl:apply-templates select=".." mode="C:content.number"/>
@@ -40,9 +50,11 @@
 
 	<xsl:template match="/C:section" mode="C:content.table">
 		<xsl:if test="C:section">
-			<div class="menu">
-				<xsl:apply-templates select="C:section" mode="C:content.table"/>
-			</div>
+			<xsl:apply-templates select="." mode="C:content.div">
+				<xsl:with-param name="content">
+					<xsl:apply-templates select="C:section" mode="C:content.table"/>
+				</xsl:with-param>
+			</xsl:apply-templates>
 		</xsl:if>
 	</xsl:template>
 
@@ -75,15 +87,14 @@
 
 	<xsl:template match="/C:section" mode="C:content">
 		<xsl:apply-templates select="." mode="C:content.table"/>
-		<div>
-			<xsl:attribute name="style">
-				<xsl:value-of select="$C:content"/>
-			</xsl:attribute>
-			<div class="content-section-content">
-				<xsl:apply-templates select="@title" mode="C:content.content"/>
-				<xsl:apply-templates select="." mode="C:content.content"/>
-			</div>
-		</div>
+		<xsl:apply-templates select="." mode="C:content.div">
+			<xsl:with-param name="content">
+				<div class="content-section-content">
+					<xsl:apply-templates select="@title" mode="C:content.content"/>
+					<xsl:apply-templates select="." mode="C:content.content"/>
+				</div>
+			</xsl:with-param>
+		</xsl:apply-templates>
 	</xsl:template>
 
 </xsl:stylesheet>
