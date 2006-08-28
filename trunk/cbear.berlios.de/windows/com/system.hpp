@@ -64,6 +64,14 @@ pointer<T> create_instance(
 		internal<in>(ClsContext), 
 		*uuid::of<T>().c_in(), 
 		(void**)internal<out>(Result)));
+/*
+	exception::throw_unless(::CoCreateInstanceEx(
+		*Uuid.c_in(), 
+		internal<in>(UnkOuter), 
+		internal<in>(ClsContext), 
+		*uuid::of<T>().c_in(), 
+		(void**)internal<out>(Result)));
+		*/
 	return Result;
 }
 
