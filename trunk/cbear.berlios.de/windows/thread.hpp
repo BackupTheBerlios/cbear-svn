@@ -6,6 +6,8 @@
 #include <cbear.berlios.de/windows/exception.hpp>
 #include <cbear.berlios.de/windows/optional_ref.hpp>
 
+#include <process.h>
+
 namespace cbear_berlios_de
 {
 namespace windows
@@ -42,8 +44,10 @@ public:
 		this->H = internal_t();
 	}
 
+	typedef dword_t id_t;
+
 	template<class T>
-	dword_t create(
+	id_t create(
 		const security_attributes &Attributes,
 		size_t StackSize,
 		T &P,
@@ -51,9 +55,29 @@ public:
 	{
 		this->close();
 		exception::scope_last_error S;
-		dword_t Id;
+		id_t Id;
 		this->H = ::CreateThread(
-			Attributes.get(), StackSize, traits<T>::func, &P, Flags, &Id);
+			Attributes.get(), StackSize, traits<id_t, T>::func, &P, Flags, &Id);
+		return Id;
+	}
+
+	template<class T>
+	id_t begin(
+		const security_attributes &Attributes,
+		size_t StackSize,
+		T &P,
+		dword_t Flags)
+	{
+		this->close();
+		exception::scope_last_error S;
+		unsigned int Id;
+		this->H = reinterpret_cast<internal_t>(::_beginthreadex(
+			Attributes.get(), 
+			static_cast<unsigned int>(StackSize), 
+			traits<unsigned int, T>::func, 
+			&P, 
+			Flags, 
+			&Id));
 		return Id;
 	}
 
@@ -61,11 +85,11 @@ private:
 	typedef ::HANDLE internal_t;
 	internal_t H;
 
-	template<class T>
+	template<class Result, class T>
 	class traits
 	{
 	public:
-		static DWORD WINAPI func(LPVOID lpParameter)
+		static Result WINAPI func(LPVOID lpParameter)
 		{
 			(*reinterpret_cast<T *>(lpParameter))();
 			return 0;
