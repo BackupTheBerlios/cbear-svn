@@ -165,6 +165,9 @@
 					<xsl:call-template name="U:hex.and.test">
 						<xsl:with-param name="ab" select="'f5'"/>
 					</xsl:call-template>
+					<xsl:call-template name="U:hex.and.test">
+						<xsl:with-param name="ab" select="'93'"/>
+					</xsl:call-template>
 				</ul>
 				<h1>UUID</h1>
 				<ul>
@@ -208,10 +211,31 @@
 						</ul>
 					</li>
 					<li>
+						<xsl:variable name="clock-seq-and-reserved">
+							<xsl:call-template name="U:uuid.clock-seq-and-reserved">
+								<xsl:with-param name="uuid" select="$uuid"/>
+							</xsl:call-template>
+						</xsl:variable>
 						clock-seq-and-reserved = 
-						<xsl:call-template name="U:uuid.clock-seq-and-reserved">
-							<xsl:with-param name="uuid" select="$uuid"/>
-						</xsl:call-template>
+						<xsl:value-of select="$clock-seq-and-reserved"/>
+						<ul>
+							<li>
+								reserved =
+								<xsl:call-template name="U:clock-seq-and-reserved.reserved">
+									<xsl:with-param 
+										name="clock-seq-and-reserved" 
+										select="$clock-seq-and-reserved"/>
+								</xsl:call-template>					
+							</li>
+							<li>
+								clock-seq-high =
+								<xsl:call-template name="U:clock-seq-and-reserved.clock-seq-high">
+									<xsl:with-param 
+										name="clock-seq-and-reserved" 
+										select="$clock-seq-and-reserved"/>
+								</xsl:call-template>					
+							</li>
+						</ul>
 					</li>
 					<li>
 						clock-seq-low = 
@@ -231,6 +255,12 @@
 					<li>
 						timestamp =
 						<xsl:call-template name="U:uuid.timestamp">
+							<xsl:with-param name="uuid" select="$uuid"/>
+						</xsl:call-template>
+					</li>
+					<li>
+						clock-seq =
+						<xsl:call-template name="U:uuid.clock-seq">
 							<xsl:with-param name="uuid" select="$uuid"/>
 						</xsl:call-template>
 					</li>
