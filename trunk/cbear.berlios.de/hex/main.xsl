@@ -147,4 +147,32 @@
 		</xsl:call-template>
 	</xsl:template>
 
+	<xsl:template name="H:ascii">
+		<xsl:param name="text"/>
+		<xsl:variable name="size" select="string-length($text)"/>
+		<xsl:choose>
+			<xsl:when test="$size = 0"/>
+			<xsl:when test="$size = 1">
+				<xsl:variable 
+					name="hex" 
+					select="
+						document('ascii.xml')/H:set/H:character[@id=$text]/@hex"/>
+				<xsl:if test="string-length($hex) != 2">
+					<xsl:message terminate="yes">unknown character</xsl:message>
+				</xsl:if>
+				<xsl:value-of select="$hex"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:variable name="middle" select="floor($size div 2)"/>
+				<xsl:call-template name="H:ascii">
+					<xsl:with-param name="text" select="substring($text, 1, $middle)"/>
+				</xsl:call-template>
+				<xsl:call-template name="H:ascii">
+					<xsl:with-param 
+						name="text" select="substring($text, $middle + 1, $size - $middle)"/>
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
 </xsl:stylesheet>

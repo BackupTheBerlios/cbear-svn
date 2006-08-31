@@ -159,6 +159,12 @@
 						<xsl:with-param name="ab" select="'93'"/>
 					</xsl:call-template>
 				</ul>
+				<h1>ASCII</h1>
+				<xsl:variable name="ascii" select="'Hello world!'"/>
+				<xsl:value-of select="$ascii"/> =
+				<xsl:call-template name="H:ascii">
+					<xsl:with-param name="text" select="$ascii"/>
+				</xsl:call-template>
 			</body>
 		</html>
 	</xsl:template>
