@@ -4,10 +4,13 @@
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:U="http://cbear.berlios.de/uuid"
-	exclude-result-prefixes="U">
+	xmlns:H="http://cbear.berlios.de/hex"
+	exclude-result-prefixes="U H">
+
+	<xsl:import href="../hex/main.xsl"/>
 
 	<!-- hex -->
-
+<!--
 	<xsl:variable name="U:hex" select="'0123456789abcdef'"/>
 
 	<xsl:variable name="U:hex.not" select="'fedcba9876543210'"/>
@@ -43,7 +46,6 @@
 			"/>
 
 	<xsl:template name="U:hex">
-		<!-- 0 <= $number < 16 -->
 		<xsl:param name="number"/>
 		<xsl:choose>
 			<xsl:when test="string-length($number) = 1">
@@ -57,7 +59,6 @@
 	</xsl:template>
 
 	<xsl:template name="U:hex.number">
-		<!-- $hex in {'0'..'9', 'A'..'F', 'a'..'f'} -->
 		<xsl:param name="hex"/>
 		<xsl:choose>
 			<xsl:when test="contains('0123456789', $hex)">
@@ -119,6 +120,7 @@
 			<xsl:with-param name="o" select="$U:hex.and"/>
 		</xsl:call-template>
 	</xsl:template>
+-->
 
 	<!-- uuid -->
 
@@ -223,7 +225,7 @@
 		<xsl:param name="clock-seq-and-reserver"/>
 		<xsl:call-template name="U:hex.div">
 			<xsl:with-param name="a">
-				<xsl:call-template name="U:hex.and">
+				<xsl:call-template name="H:and">
 					<xsl:with-param 
 						name="a" select="substring($clock-seq-and-reserved, 1, 1)"/>
 					<xsl:with-param name="b" select="'c'"/>
@@ -235,7 +237,7 @@
 
 	<xsl:template name="U:clock-seq-and-reserved.clock-seq-high">
 		<xsl:param name="clock-seq-and-reserved"/>
-		<xsl:call-template name="U:hex.and">
+		<xsl:call-template name="H:and">
 			<xsl:with-param 
 				name="a" select="substring($clock-seq-and-reserved, 1, 1)"/>
 			<xsl:with-param name="b" select="'3'"/>

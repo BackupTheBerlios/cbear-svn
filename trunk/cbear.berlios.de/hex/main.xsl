@@ -12,7 +12,7 @@
 
 	<xsl:variable name="H:lower" select="'abcdef'"/>
 
-	<xsl:variable name="H:hex" select="concat(H:dec, H:lower)"/>
+	<xsl:variable name="H:hex" select="concat($H:dec, $H:lower)"/>
 
 	<xsl:template name="H:hex">
 		<!-- 0 <= $number < 16 -->
@@ -39,7 +39,7 @@
 				<xsl:value-of select="concat(
 					'1', 
 					translate(
-						translate($hex, $H:upper, $H:lower), $H:lower, $H:digits))"/>
+						translate($hex, $H:upper, $H:lower), $H:lower, $H:dec))"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
