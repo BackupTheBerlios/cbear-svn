@@ -2,6 +2,7 @@
 <?xml-stylesheet type="text/xsl" href="sha1.test.xsl"?>
 <test>
 	<text/>
+	<text>http://cbear.berlios.de</text>
 	<text>The quick brown fox jumps over the lazy dog.</text>
 	<text>The quick brown fox jumps over the lazy cog.</text>
 	<text>The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy cog.</text>
