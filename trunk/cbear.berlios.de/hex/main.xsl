@@ -95,8 +95,7 @@
 
 	<xsl:template name="H:not">
 		<xsl:param name="a"/>
-		<xsl:value-of select="translate(
-			translate($a, $H:upper, $H:lower), $H:hex, $H:not)"/>
+		<xsl:value-of select="translate($a, $H:hex, $H:not)"/>
 	</xsl:template>
 
 	<!-- div -->
