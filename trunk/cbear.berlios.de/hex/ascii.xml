@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ascii"?>
 <set xmlns="http://cbear.berlios.de/hex">
+	<character id="&#10;" dec="10" hex="0a"/>
 	<character id=" " dec="32" hex="20"/>
 	<character id="!" dec="33" hex="21"/>
 	<character id="&quot;" dec="34" hex="22"/>
