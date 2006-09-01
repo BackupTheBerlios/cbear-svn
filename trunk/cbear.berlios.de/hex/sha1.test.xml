@@ -1,3 +1,8 @@
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="sha1.test.xsl"?>
-<test/>
+<test>
+	<text/>
+	<text>The quick brown fox jumps over the lazy dog.</text>
+	<text>The quick brown fox jumps over the lazy cog.</text>
+	<text>The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy cog.</text>
+</test>
