@@ -282,7 +282,9 @@
 					</xsl:call-template>
 				</ul>
 				<h1>ASCII</h1>
-				<xsl:variable name="ascii"/><!-- select="'The quick brown fox jumps over the lazy dog'"/> -->
+				<xsl:variable 
+					name="ascii" 
+					select="'The quick brown fox jumps over the lazy dog'"/>
 				<xsl:variable name="hex">
 					<xsl:call-template name="H:ascii.hex">
 						<xsl:with-param name="text" select="$ascii"/>
@@ -291,17 +293,6 @@
 				<xsl:value-of select="concat($ascii, ' = ', $hex)"/>
 				<br/>
 				<xsl:value-of select="string-length($hex)"/>
-				<h1>SHA-1</h1>
-				<xsl:variable name="sha1">
-					<xsl:call-template name="H:sha1">
-						<xsl:with-param name="hex" select="$hex"/>
-					</xsl:call-template>
-				</xsl:variable>
-				<pre>
-					<xsl:value-of select="$sha1"/>
-				</pre>
-				<br/>
-				<xsl:value-of select="string-length($sha1)"/>
 			</body>
 		</html>
 	</xsl:template>

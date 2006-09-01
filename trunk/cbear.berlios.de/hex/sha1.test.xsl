@@ -158,7 +158,7 @@
 					</xsl:call-template>
 -->
 					<xsl:call-template name="H:sha1">
-						<xsl:with-param name="hex" select="$hex"/>
+						<xsl:with-param name="source" select="$hex"/>
 					</xsl:call-template>
 				</pre>
 			</body>
