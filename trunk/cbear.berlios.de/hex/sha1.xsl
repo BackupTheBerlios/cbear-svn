@@ -68,6 +68,133 @@
 		</xsl:choose>
 	</xsl:template>
 
+	<xsl:template name="H:sha1.next">
+		<xsl:param name="w"/>
+		<xsl:param name="hash"/>
+
+		<xsl:variable name="a" select="substring($hash,  1, 8)"/>
+		<xsl:variable name="b" select="substring($hash,  9, 8)"/>
+		<xsl:variable name="c" select="substring($hash, 17, 8)"/>
+		<xsl:variable name="d" select="substring($hash, 25, 8)"/>
+		<xsl:variable name="e" select="substring($hash, 33, 8)"/>
+
+		<xsl:variable name="size" select="string-length($w)"/>
+
+		<xsl:variable name="fk">
+			<xsl:choose>
+
+				<!-- i < 20 words => size > (640 - 20 * 8) = 480 -->
+				<xsl:when test="$size &gt; 480">
+					<xsl:call-template name="H:xor">
+						<xsl:with-param name="a" select="$d"/>
+						<xsl:with-param name="b">
+							<xsl:call-template name="H:and">
+								<xsl:with-param name="a" select="$b"/>
+								<xsl:with-param name="b">
+									<xsl:call-template name="H:xor">
+										<xsl:with-param name="a" select="$c"/>
+										<xsl:with-param name="b" select="$d"/>
+									</xsl:call-template>
+								</xsl:with-param>
+							</xsl:call-template>
+						</xsl:with-param>
+					</xsl:call-template>
+					<xsl:value-of select="'5a827999'"/>
+				</xsl:when>
+
+				<!-- i < 40 words => size > (640 - 40 * 8) = 320 -->
+				<xsl:when test="$size &gt; 320">
+					<xsl:call-template name="H:xor">
+						<xsl:with-param name="a">
+							<xsl:call-template name="H:xor">
+								<xsl:with-param name="a" select="$b"/>
+								<xsl:with-param name="b" select="$c"/>
+							</xsl:call-template>
+						</xsl:with-param>
+						<xsl:with-param name="b" select="$d"/>
+					</xsl:call-template>
+					<xsl:value-of select="'6ed9eba1'"/>
+				</xsl:when>
+
+				<!-- i < 60 words => size > (640 - 60 * 8) = 160 -->
+				<xsl:when test="$size &gt; 160">
+					<xsl:call-template name="H:or">
+						<xsl:with-param name="a">
+							<xsl:call-template name="H:and">
+								<xsl:with-param name="a" select="$b"/>
+								<xsl:with-param name="b" select="$c"/>
+							</xsl:call-template>
+						</xsl:with-param>
+						<xsl:with-param name="b">
+							<xsl:call-template name="H:and">
+								<xsl:with-param name="a" select="$d"/>
+								<xsl:with-param name="b">
+									<xsl:call-template name="H:or">
+										<xsl:with-param name="a" select="$b"/>
+										<xsl:with-param name="b" select="$c"/>
+									</xsl:call-template>
+								</xsl:with-param>
+							</xsl:call-template>
+						</xsl:with-param>
+					</xsl:call-template>
+					<xsl:value-of select="'8f1bbcdc'"/>
+				</xsl:when>
+
+				<!-- i < 80 words => size > 0 -->
+				<xsl:otherwise>
+					<xsl:call-template name="H:xor">
+						<xsl:with-param name="a">
+							<xsl:call-template name="H:xor">
+								<xsl:with-param name="a" select="$b"/>
+								<xsl:with-param name="b" select="$c"/>
+							</xsl:call-template>
+						</xsl:with-param>
+						<xsl:with-param name="b" select="$d"/>
+					</xsl:call-template>
+					<xsl:value-of select="'ca62c1d6'"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<!-- a -->
+		<xsl:call-template name="H:plus">
+			<xsl:with-param name="a">
+				<xsl:call-template name="H:leftshift">
+					<xsl:with-param name="a" select="$a"/>
+				<xsl:with-param name="b" select="5"/>
+				</xsl:call-template>
+			</xsl:with-param>
+			<xsl:with-param name="b">
+				<xsl:call-template name="H:plus">
+					<xsl:with-param name="a">
+						<xsl:call-template name="H:plus">
+							<xsl:with-param name="a" select="substring($fk, 1, 8)"/>
+							<xsl:with-param name="b" select="substring($fk, 9)"/>
+						</xsl:call-template>
+					</xsl:with-param>
+					<xsl:with-param name="b">
+						<xsl:call-template name="H:plus">
+							<xsl:with-param name="a" select="$e"/>
+							<xsl:with-param name="b" select="substring($w, 1, 8)"/>
+						</xsl:call-template>	
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:with-param>
+		</xsl:call-template>
+		<!-- b = a -->
+		<xsl:value-of select="$a"/>
+		<!-- c = b << 30 -->
+		<xsl:call-template name="H:leftshift">
+			<xsl:with-param name="a" select="$b"/>
+			<xsl:with-param name="b" select="30"/>
+		</xsl:call-template>
+		<!-- d = c -->
+		<xsl:value-of select="$c"/>
+		<!-- e = d -->
+		<xsl:value-of select="$d"/>
+	
+	</xsl:template>
+
 	<xsl:template name="H:sha1.main">
 		<xsl:param name="w"/>
 		<xsl:param name="hash"/>
@@ -103,7 +230,7 @@
 									<xsl:value-of select="'5a827999'"/>
 								</xsl:when>
 								<!-- i < 40 words => size > (640 - 40 * 8) = 320 -->
-								<xsl:when test="$size &gt; 160">
+								<xsl:when test="$size &gt; 320">
 									<xsl:call-template name="H:xor">
 										<xsl:with-param name="a">
 											<xsl:call-template name="H:xor">
@@ -116,7 +243,7 @@
 									<xsl:value-of select="'6ed9eba1'"/>
 								</xsl:when>
 								<!-- i < 60 words => size > (640 - 60 * 8) = 160 -->
-								<xsl:when test="$size &lt; 160">
+								<xsl:when test="$size &gt; 160">
 									<xsl:call-template name="H:or">
 										<xsl:with-param name="a">
 											<xsl:call-template name="H:and">
@@ -206,7 +333,7 @@
 		<xsl:param name="hash" select="'67452301efcdab8998badcfe10325476c3d2e1f0'"/>
 
 		<xsl:choose>
-			<xsl:when test="string-length($data) &gt;= 128">
+			<xsl:when test="string-length($data) &gt; 0">
 				<xsl:call-template name="H:sha1.chunk">
 					<xsl:with-param name="data" select="substring($data, 129, 128)"/>
 					<xsl:with-param name="hash">
@@ -247,6 +374,31 @@
 				<xsl:value-of select="$hash"/>
 			</xsl:otherwise>
 		</xsl:choose> 
+	</xsl:template>
+
+	<xsl:template name="H:sha1.message">
+		<xsl:param name="source"/>
+
+		<!-- source.size [hex] -->
+		<xsl:variable name="source.size" select="string-length($source)"/>
+		<!-- chunk: 512 bits = 128 hexs -->
+		<!-- end of data: 64 + 4 bits = 17 hexs -->
+		<!-- 17 + 128 - 1 hexs = 144 hexs -->
+		<xsl:variable 
+			name="size" select="floor(($source.size + 144) div 128) * 128"/>
+		<xsl:variable name="end">
+			<xsl:call-template name="H:hex">
+				<xsl:with-param name="number" select="$source.size * 4"/>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:value-of select="concat($source, '8')"/>
+		<xsl:call-template name="H:fill">
+			<xsl:with-param 
+				name="number" 
+				select="$size - $source.size - 1 - string-length($end)"/>
+			<xsl:with-param name="text" select="'0'"/>
+		</xsl:call-template>
+		<xsl:value-of select="$end"/>
 	</xsl:template>
 
 	<xsl:template name="H:sha1">
