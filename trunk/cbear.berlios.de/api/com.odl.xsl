@@ -8,8 +8,11 @@
 	xmlns="http://cbear.berlios.de/windows/com"
 	xmlns:odl="http://cbear.berlios.de/windows/com"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:U="http://cbear.berlios.de/uuid"
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="xi api odl">
+
+<xsl:import href="../uuid/main.xsl"/>
 
 <xsl:output method="xml" indent="yes"/>
 
@@ -30,7 +33,9 @@
 		namespace="http://cbear.berlios.de/windows/com"
 		name="{local-name()}">
 		<xsl:apply-templates select="@id" mode="api:body.local"/>
-		<xsl:apply-templates select="@uuid" mode="api:body"/>
+<!--
+		<xsl:apply-templates select="." mode="api:body.uuid"/>
+-->
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:apply-templates select="*" mode="api:body"/>
 	</xsl:element>
@@ -76,6 +81,15 @@
 	</xsl:apply-templates>
 </xsl:template>
 
+<xsl:template match="*" mode="api:body.id.full">
+	<xsl:apply-templates select="/api:library" mode="api:body.id.full"/>
+	<xsl:value-of select="concat('.', @id)"/>
+</xsl:template>
+
+<xsl:template match="api:library" mode="api:body.id.full">
+	<xsl:value-of select="@id"/>
+</xsl:template>
+
 <!-- @brief -->
 
 <xsl:template match="@brief" mode="api:body">
@@ -86,10 +100,28 @@
 
 <!-- @uuid -->
 
-<xsl:template match="@uuid" mode="api:body">
+<xsl:template match="*" mode="api:body.uuid.explicit">
+	<xsl:param name="uuid" select="@uuid"/>
 	<attribute id="uuid">
-		<value><xsl:value-of select="."/></value>
+		<value><xsl:value-of select="$uuid"/></value>
 	</attribute>
+</xsl:template>
+
+<xsl:template match="*" mode="api:body.uuid">
+	<xsl:apply-templates select="." mode="api:body.uuid.explicit">
+		<xsl:with-param name="uuid"> 
+			<xsl:call-template name="U:create">
+				<xsl:with-param name="namespace" select="U:cbear.id"/>
+				<xsl:with-param name="name">
+					<xsl:apply-templates select="." mode="api:body.id.full"/>
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:with-param>
+	</xsl:apply-templates>
+</xsl:template>
+
+<xsl:template match="*[@uuid]" mode="api:body.uuid">
+	<xsl:apply-templates select="." mode="api:body.uuid.explicit"/>
 </xsl:template>
 
 <!-- @version -->
@@ -116,6 +148,7 @@
 
 <!-- custom -->
 
+<!--
 <xsl:template name="api:body.custom">
 	<xsl:param name="id"/>
 	<attribute id="custom">
@@ -123,11 +156,22 @@
 		<value><xsl:value-of select="concat('&#34;', $id, '&#34;')"/></value>
 	</attribute>
 </xsl:template>
+-->
 
 <xsl:template match="api:*" mode="api:body.custom">
+	<attribute id="custom">
+		<value>0F21F359-AB84-41E8-9A78-36D110E6D2F9</value>
+		<value>
+			<xsl:value-of select="'&#34;'"/>
+			<xsl:apply-templates select="." mode="api:body.id.full"/>
+			<xsl:value-of select="'&#34;'"/>
+		</value>
+	</attribute>
+<!--
 	<xsl:call-template name="api:body.custom">
 		<xsl:with-param name="id" select="concat(/api:library/@id, '.',	@id)"/>
 	</xsl:call-template>
+-->
 </xsl:template>
 
 <!-- prefix -->
@@ -381,7 +425,10 @@
 <xsl:template match="api:interface" mode="api:body">
 	<interface>
 		<xsl:apply-templates select="@id" mode="api:body.local"/>
+<!--
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
+-->
+		<xsl:apply-templates select="." mode="api:body.uuid"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
 		<xsl:apply-templates select="." mode="api:body.dual"/>
 		<xsl:apply-templates select="." mode="api:body.custom"/>
@@ -402,7 +449,10 @@
 <xsl:template match="api:struct" mode="api:body.typedef">
 	<struct>
 		<xsl:apply-templates select="@id" mode="api:body.local"/>
+<!--
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
+-->
+		<xsl:apply-templates select="." mode="api:body.uuid"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:apply-templates select="*" mode="api:body"/>
@@ -412,7 +462,10 @@
 <xsl:template match="api:enum" mode="api:body.typedef">
 	<enum>
 		<xsl:apply-templates select="@id" mode="api:body.local"/>
+<!--
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
+-->
+		<xsl:apply-templates select="." mode="api:body.uuid"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:apply-templates select="*" mode="api:body"/>
@@ -440,7 +493,10 @@
 <xsl:template match="api:library/api:object" mode="api:body">
 	<coclass>
 		<xsl:apply-templates select="@id" mode="api:body.local"/>
+<!--
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
+-->
+		<xsl:apply-templates select="." mode="api:body.uuid"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
 		<xsl:apply-templates select="." mode="api:body.custom"/>
 		<attribute id="appobject"/>
@@ -504,12 +560,18 @@
 		xsi:schemaLocation="{concat(
 			'http://cbear.berlios.de/windows/com ', $api:com.odl.xsd)}">
 		<xsl:apply-templates select="@id" mode="api:body"/>
+<!--
 		<xsl:apply-templates select="@uuid" mode="api:body"/>
+-->
+		<xsl:apply-templates select="." mode="api:body.uuid"/>
 		<xsl:apply-templates select="@version" mode="api:body"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
+<!--
 		<xsl:call-template name="api:body.custom">
 			<xsl:with-param name="id" select="@id"/>
 		</xsl:call-template>
+-->
+		<xsl:apply-templates select="." mode="api:body.custom"/>
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:apply-templates select="api:using" mode="api:body"/>
 		<xsl:apply-templates select="api:enum" mode="api:body"/>
