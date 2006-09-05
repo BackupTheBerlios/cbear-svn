@@ -8,6 +8,7 @@
 	exclude-result-prefixes="U H">
 
 	<xsl:import href="../hex/main.xsl"/>
+	<xsl:import href="../hex/sha1.xsl"/>
 
 	<!-- uuid -->
 
@@ -74,7 +75,7 @@
 	<xsl:template name="U:time-high-and-version">
 		<xsl:param name="time-high"/>
 		<xsl:param name="version"/>
-		<xsl:value-of select="concat($time-high, $version)"/>
+		<xsl:value-of select="concat($version, $time-high)"/>
 	</xsl:template>
 
 	<xsl:template name="U:time-high-and-version.time-high">
@@ -112,13 +113,11 @@
 		<xsl:param name="clock-seq-and-reserved"/>
 		<xsl:call-template name="H:div">
 			<xsl:with-param name="a">
-
 				<xsl:call-template name="H:and">
 					<xsl:with-param 
 						name="a" select="substring($clock-seq-and-reserved, 1, 1)"/>
 					<xsl:with-param name="b" select="'c'"/>
 				</xsl:call-template>
-
 			</xsl:with-param>
 			<xsl:with-param name="b" select="'4'"/>
 		</xsl:call-template>
@@ -132,6 +131,20 @@
 			<xsl:with-param name="b" select="'3'"/>
 		</xsl:call-template>
 		<xsl:value-of select="substring($clock-seq-and-reserved, 2, 1)"/>
+	</xsl:template>
+
+	<xsl:template name="U:clock-seq-and-reserved">
+		<xsl:param name="clock-seq-high"/>
+		<xsl:call-template name="H:or">
+			<xsl:with-param name="a">
+				<xsl:call-template name="H:and">
+					<xsl:with-param name="a" select="substring($clock-seq-high, 1, 1)"/>
+					<xsl:with-param name="b" select="'3'"/>
+				</xsl:call-template>
+			</xsl:with-param>
+			<xsl:with-param name="b" select="'8'"/>
+		</xsl:call-template>
+		<xsl:value-of select="substring($clock-seq-high, 2, 1)"/>
 	</xsl:template>
 
 	<!-- clock-seq -->
@@ -149,5 +162,86 @@
 			<xsl:with-param name="uuid" select="$uuid"/>
 		</xsl:call-template>
 	</xsl:template>
+
+	<!-- hex -->
+
+	<xsl:template name="U:uuid.hex">
+		<xsl:param name="uuid"/>
+		<xsl:value-of select="concat(
+			substring($uuid, 1, 8),
+			substring($uuid, 10, 4),
+			substring($uuid, 15, 4),
+			substring($uuid, 20, 4),
+			substring($uuid, 25, 12))"/>
+	</xsl:template>
+
+	<xsl:template name="U:hex.uuid">
+		<xsl:param name="hex"/>
+		<xsl:value-of select="concat(
+			substring($hex, 1, 8), 
+			'-',
+			substring($hex, 9, 4), 
+			'-',
+			substring($hex, 13, 4),
+			'-',
+			substring($hex, 17, 4),
+			'-',
+			substring($hex, 21, 12))"/>
+	</xsl:template>
+
+	<!-- name based -->
+
+	<xsl:template name="U:create">
+		<xsl:param name="namespace"/>
+		<xsl:param name="name"/>
+
+		<xsl:variable name="hash">
+			<xsl:call-template name="H:sha1">
+				<xsl:with-param name="source">
+					<xsl:call-template name="U:uuid.hex">
+						<xsl:with-param name="uuid" select="$namespace"/>
+					</xsl:call-template>
+					<xsl:call-template name="H:ascii.hex">
+						<xsl:with-param name="text" select="$name"/>
+					</xsl:call-template>
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:call-template name="U:uuid">
+			<!-- 0123, 12345678 -->
+			<xsl:with-param name="time-low" select="substring($hash, 1, 8)"/>
+			<!-- 45, 9 0123 -->
+			<xsl:with-param name="time-mid" select="substring($hash, 9, 4)"/>
+			<!-- 67, 4 5678 -->
+			<xsl:with-param name="time-high-and-version">
+				<xsl:call-template name="U:time-high-and-version">
+					<xsl:with-param name="time-high" select="substring($hash, 14, 3)"/>
+					<xsl:with-param name="version" select="'5'"/>
+				</xsl:call-template>
+			</xsl:with-param>
+			<!-- 8, 9 01 -->
+			<xsl:with-param 
+				name="clock-seq-and-reserved">
+				<xsl:call-template name="U:clock-seq-and-reserved">
+					<xsl:with-param 
+						name="clock-seq-high" select="substring($hash, 17, 2)"/>
+				</xsl:call-template>
+			</xsl:with-param>
+			<!-- 9, 23 -->
+			<xsl:with-param name="clock-seq-low" select="substring($hash, 19, 2)"/>
+			<!-- 012345, 4 567890123456 -->
+			<xsl:with-param name="node" select="substring($hash, 21, 12)"/>
+		</xsl:call-template>
+	</xsl:template>
+
+	<!-- namespaces -->
+
+	<xsl:variable name="U:dns" select="'6ba7b810-9dad-11d1-80b4-00c04fd430c8'"/>
+
+	<xsl:variable name="U:url" select="'6ba7b811-9dad-11d1-80b4-00c04fd430c8'"/>
+
+	<xsl:variable name="U:oid" select="'6ba7b812-9dad-11d1-80b4-00c04fd430c8'"/>
+
+	<xsl:variable name="U:x500" select="'6ba7b814-9dad-11d1-80b4-00c04fd430c8'"/>
 
 </xsl:stylesheet>

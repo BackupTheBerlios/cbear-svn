@@ -118,6 +118,39 @@
 						</xsl:call-template>
 					</li>
 				</ul>
+				<h1>Hex</h1>
+				<xsl:variable name="hex">
+					<xsl:call-template name="U:uuid.hex">
+						<xsl:with-param name="uuid" select="$uuid"/>
+					</xsl:call-template>
+				</xsl:variable>
+				<ul>
+					<li>
+						<xsl:value-of select="concat('hex = ', $hex)"/>
+					</li>
+					<li>
+						<xsl:call-template name="U:hex.uuid">
+							<xsl:with-param name="hex" select="$hex"/>
+						</xsl:call-template>
+					</li>
+				</ul>
+				<h1>Create</h1>
+				<xsl:variable name="namespace" select="$U:dns"/>
+				<xsl:variable name="name" select="'www.widgets.com'"/>
+				<ul>
+					<li>
+						<xsl:value-of select="concat('namespace = ', $namespace)"/>
+					</li>
+					<li>
+						<xsl:value-of select="concat('namespace = ', $name)"/>
+					</li>
+					<li>
+						<xsl:call-template name="U:create">
+							<xsl:with-param name="namespace" select="$namespace"/>
+							<xsl:with-param name="name" select="$name"/>
+						</xsl:call-template>
+					</li>
+				</ul>
 			</body>
 		</html>
 	</xsl:template>
