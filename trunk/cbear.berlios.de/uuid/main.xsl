@@ -244,4 +244,7 @@
 
 	<xsl:variable name="U:x500" select="'6ba7b814-9dad-11d1-80b4-00c04fd430c8'"/>
 
+	<xsl:variable
+		name="U:cbear.id" select="'658560e5-45f0-461c-a8f6-9cb63309af65'"/>
+
 </xsl:stylesheet>

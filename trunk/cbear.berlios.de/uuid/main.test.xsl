@@ -135,20 +135,42 @@
 					</li>
 				</ul>
 				<h1>Create</h1>
-				<xsl:variable name="namespace" select="$U:dns"/>
-				<xsl:variable name="name" select="'www.widgets.com'"/>
 				<ul>
 					<li>
-						<xsl:value-of select="concat('namespace = ', $namespace)"/>
+						<xsl:variable name="namespace" select="$U:dns"/>
+						<xsl:variable name="name" select="'www.widgets.com'"/>
+						<ul>
+							<li>
+								<xsl:value-of select="concat('namespace = ', $namespace)"/>
+							</li>
+							<li>
+								<xsl:value-of select="concat('name = ', $name)"/>
+							</li>
+							<li>
+								<xsl:call-template name="U:create">
+									<xsl:with-param name="namespace" select="$namespace"/>
+									<xsl:with-param name="name" select="$name"/>
+								</xsl:call-template>
+							</li>				
+						</ul>
 					</li>
 					<li>
-						<xsl:value-of select="concat('namespace = ', $name)"/>
-					</li>
-					<li>
-						<xsl:call-template name="U:create">
-							<xsl:with-param name="namespace" select="$namespace"/>
-							<xsl:with-param name="name" select="$name"/>
-						</xsl:call-template>
+						<xsl:variable name="namespace" select="$U:cbear.id"/>
+						<xsl:variable name="name" select="'widgets_com'"/>
+						<ul>
+							<li>
+								<xsl:value-of select="concat('namespace = ', $namespace)"/>
+							</li>
+							<li>
+								<xsl:value-of select="concat('name = ', $name)"/>
+							</li>
+							<li>
+								<xsl:call-template name="U:create">
+									<xsl:with-param name="namespace" select="$namespace"/>
+									<xsl:with-param name="name" select="$name"/>
+								</xsl:call-template>
+							</li>				
+						</ul>
 					</li>
 				</ul>
 			</body>
