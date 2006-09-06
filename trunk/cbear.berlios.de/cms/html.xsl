@@ -10,17 +10,23 @@
 
 	<xsl:import href="content/main.xsl"/>
 
+<!-- fucking XSLT output... You can not switch off "doctype" once it declared.
 	<xsl:output 
 		method="xml" 
 		indent="no" 
 		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
+-->
+
+	<xsl:output 
+		method="xml" 
+		indent="no"/>
 
 	<xsl:param name="C:extension" select="'xml'"/>
 	<xsl:param name="C:languages" select="'languages.xml'"/>
 
-	<xsl:variable name="C:svn1" select="'_svn/entries'"/>
-	<xsl:variable name="C:svn2" select="'.svn/entries'"/>
+	<xsl:variable name="C:svn1" select="'.svn/entries'"/>
+	<xsl:variable name="C:svn2" select="'_svn/entries'"/>
 
 	<xsl:param name="C:svn">
 		<xsl:choose>
