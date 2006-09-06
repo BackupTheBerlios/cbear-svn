@@ -352,11 +352,10 @@
 	match="odl:interface[odl:type.ref/@library]" mode="odl:cs.interface.type">
 	<xsl:variable name="library" select="odl:type.ref/@library"/>
 	<xsl:variable name="id" select="odl:type.ref/@id"/>
-	<xsl:variable 
-		name="href" select="/odl:library/odl:importlib[@id=$library]/@href"/>
+	<xsl:message><xsl:value-of select="$library"/></xsl:message>
 	<xsl:apply-templates 
 		select="document(
-			substring($href, 1, string-length() - 4), '.odl.xml')/
+			concat($library, '.odl.xml'), .)/
 			odl:library/odl:interface[@id=$id]" mode="odl:cs.interface.type"/>
 </xsl:template>
 

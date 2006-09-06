@@ -65,9 +65,11 @@
 </xsl:template>
 
 <xsl:template match="api:*" mode="api:html.table">
+<!--
 	<xsl:attribute name="id">
 		<xsl:apply-templates select="." mode="api:html.id"/>
 	</xsl:attribute>
+-->
 	<li>
 		<a href="{concat('#', @id)}">
 			<xsl:apply-templates select="." mode="api:html.name"/>
