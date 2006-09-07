@@ -38,6 +38,7 @@
 
 <xsl:template match="odl:attribute" mode="odl:cs.attribute"/>
 
+<!--
 <xsl:template match="odl:attribute[@id='version']" mode="odl:cs.attribute">
 	<id.ref type="()">
 		<id.ref type=".">
@@ -47,6 +48,7 @@
 		<id.ref value="{concat('&quot;', odl:value, '&quot;')}"/>
 	</id.ref>
 </xsl:template>
+-->
 
 <xsl:template match="odl:attribute[@id='helpstring']" mode="odl:cs.attribute">
 	<id.ref type="()">
@@ -116,6 +118,7 @@
 </xsl:template>
 
 <xsl:template match="odl:attribute[@id='custom']" mode="odl:cs.assembly"/>
+<xsl:template match="odl:attribute[@id='version']" mode="odl:cs.assembly"/>
 
 <xsl:template match="odl:attribute" mode="odl:cs.type"/>
 
