@@ -68,7 +68,7 @@ typename registry::root_list<Char> coclass_registry(
 	static const string CurVerKey = CBEAR_BERLIOS_DE_SELECT_STRING(Char, "CurVer");
 	static const string LocalServer32Key = ServerType==local_server32 ? 
 		move::copy<string>(CBEAR_BERLIOS_DE_SELECT_STRING(Char, "LocalServer32")):
-		move::copy<string>(CBEAR_BERLIOS_DE_SELECT_STRING(Char, "InProcServer32"));
+		move::copy<string>(CBEAR_BERLIOS_DE_SELECT_STRING(Char, "InprocServer32"));
 	static const string TypeLibKey = 
 		CBEAR_BERLIOS_DE_SELECT_STRING(Char, "TypeLib");
 	static const string ViProgIdKey = 
