@@ -108,15 +108,16 @@
 </xsl:template>
 
 <xsl:template match="*" mode="api:body.uuid">
+	<xsl:variable name="uuid">
+		<xsl:call-template name="U:create">
+			<xsl:with-param name="namespace" select="U:cbear.id"/>
+			<xsl:with-param name="name">
+				<xsl:apply-templates select="." mode="api:body.id.full"/>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:variable>
 	<xsl:apply-templates select="." mode="api:body.uuid.explicit">
-		<xsl:with-param name="uuid"> 
-			<xsl:call-template name="U:create">
-				<xsl:with-param name="namespace" select="U:cbear.id"/>
-				<xsl:with-param name="name">
-					<xsl:apply-templates select="." mode="api:body.id.full"/>
-				</xsl:with-param>
-			</xsl:call-template>
-		</xsl:with-param>
+		<xsl:with-param name="uuid" select="translate($uuid, 'abcdef', 'ABCDEF')"/>
 	</xsl:apply-templates>
 </xsl:template>
 
