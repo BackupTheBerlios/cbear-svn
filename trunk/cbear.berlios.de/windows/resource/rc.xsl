@@ -89,7 +89,13 @@
 		'BEGIN', $rc:line,
 		'VALUE &#x22;Translation&#x22;, 0, 1200', $rc:line,
 		'END', $rc:line,
-		'END')"/>
+		'END', $rc:line)"/>
+
+	<xsl:for-each select="C:library">
+		<xsl:value-of select="concat(
+			position(), ' TYPELIB &quot;', @path, @id, '.tlb&quot;', $rc:line)"/>
+	</xsl:for-each>
+
 </xsl:template>
 
 </xsl:stylesheet>

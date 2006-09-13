@@ -170,6 +170,7 @@ class scoped_typelib
 public:
 	static const itypelib &typelib() { return TypeLib; }
 protected:
+	/*
 	scoped_typelib(const std::wstring &Name, const hmodule Module = hmodule())
 	{ 
 		boost::filesystem::path ThisFileName(
@@ -179,6 +180,12 @@ protected:
 			Path / locale::cast<std::string>(Name + L".tlb");
 		TypeLib = loadtypelib(
 			locale::cast<bstr_t>(TlbFileName.native_file_string()));
+	}
+	*/
+	scoped_typelib(
+		::UUID const &Uuid, ushort_t Major, ushort_t Minor, lcid_t const &Lcid)
+	{
+		TypeLib = loadregtypelib(uuid::cpp_in(&Uuid), Major, Minor, Lcid);
 	}
 private:
 	static itypelib TypeLib;

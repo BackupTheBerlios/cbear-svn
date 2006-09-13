@@ -1110,6 +1110,28 @@
 						</xsl:for-each>
 						<method>
 							<id.ref id="info"/>
+
+							<ctor>
+								<id.ref>
+									<xsl:copy-of select="$parent"/>
+									<id.ref type="()">
+										<id.ref type="::">
+											<id.ref/>
+											<id.ref id="{concat('LIBID_', @id)}"/>
+										</id.ref>
+										<xsl:variable 
+											name="version" 
+											select="odl:attribute[@id='version']/odl:value"/>
+										<id.ref 
+											type="value" id="{substring-before($version, '.')}"/>
+										<id.ref 
+											type="value" id="{substring-after($version, '.')}"/>
+										<id.ref type="value" id="0"/>
+									</id.ref>
+
+								</id.ref>
+							</ctor>
+<!--
 							<parameter id="Hmodule">
 								<id.ref type="::">
 									<id.ref/>
@@ -1130,6 +1152,7 @@
 									</id.ref>
 								</id.ref>
 							</ctor>
+-->
 							<body/>
 						</method>
 					</access>
