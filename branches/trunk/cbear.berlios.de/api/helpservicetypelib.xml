@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="../api/html.xsl"?>
+<library 
+	xmlns="http://cbear.berlios.de/api"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://cbear.berlios.de/api main.xsd"
+	xmlns:com.idl="http://cbear.berlios.de/windows/com"
+	id="cbear_berlios_de.api.helpservicetypelib"
+	uuid="BBB1D4F4-325F-4ecb-81B8-DBD4DC702B9E">
+
+<pragma>
+	<com.idl:alias 
+		filename="HelpServiceInterfaces.tlb"
+		id="helpservicetypelib" 
+		strong.filename="HelpServiceInterfaces.tlb"
+		strong.prefix=""/>
+</pragma>
+
+<interface id="itypelib">
+	<pragma>
+		<com.idl:alias id="ITypeLib"/>
+	</pragma>
+</interface>
+
+<interface id="itypeinfo">
+	<pragma>
+		<com.idl:alias id="ITypeInfo"/>
+	</pragma>
+</interface>
+
+</library>

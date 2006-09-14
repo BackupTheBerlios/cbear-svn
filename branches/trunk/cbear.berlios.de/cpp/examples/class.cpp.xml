@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="../html.xsl"?>
+<unit
+	xmlns="http://cbear.berlios.de/cpp"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://cbear.berlios.de/cpp ../main.xsd"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	id="net/sourceforge/cbear/cpp/examples/class">
+
+<header>
+
+<namespace id="net">
+<namespace id="sourceforge">
+<namespace id="cbear">
+<namespace id="cpp">
+<namespace id="examples">
+
+	<class>
+		<id.ref type="::">
+			<id.ref id="Class1"/>
+			<id.ref id="Class2" type="&lt;&gt;">
+				<id.ref id="Class3"/>
+				<id.ref id="Class4"/>
+			</id.ref>
+			<id.ref id="Class5"/>
+		</id.ref>
+
+		<access access="public">
+			<id.ref id="Class6"/>
+		</access>
+
+		<access access="private">
+			<class>
+				<id.ref id="Class10"/>
+			</class>
+		</access>
+
+	</class>
+
+	<class>
+		<id.ref id="Class10"/>
+
+	</class>
+
+	<class>
+		<id.ref id="Class11"/>
+
+		<access access="protected">
+			<id.ref id="Class16"/>
+		</access>
+
+		<access access="private">
+			<id.ref id="Class17" type="&lt;&gt;">
+				<id.ref type="::">
+					<id.ref id="Class23"/>
+					<id.ref id="Class24"/>
+					<id.ref id="Class25"/>
+				</id.ref>
+				<id.ref id="Class18" type="&lt;&gt;">
+					<id.ref id="Class19"/>
+				</id.ref>
+			</id.ref>
+		</access>
+
+	</class>
+
+</namespace>
+
+	<class>
+		<id.ref id="Class10"/>
+	</class>
+
+</namespace>
+</namespace>
+</namespace>
+</namespace>
+
+</header>
+
+<code>
+
+<namespace id="net">
+<namespace id="sourceforge">
+<namespace id="cbear">
+<namespace id="cpp">
+<namespace id="examples">
+</namespace>
+</namespace>
+</namespace>
+</namespace>
+</namespace>
+
+</code>
+
+</unit>

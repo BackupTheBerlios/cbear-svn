@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../cms/html.xsl"?>
+<section 
+	xmlns="http://cbear.berlios.de/cms" 
+	name="API" 
+	title="Application Programming Interface"
+	xml:lang="ru">
+	<ul>
+		<li>
+XML Schema <a href="main.xsd"/>. 
+		</li>
+		<li>
+Базовый модуль <a href="base.xml"/>.
+		</li>
+		<li>
+Пример <a href="example.xml"/>. 
+		</li>
+		<li>
+HTML XSLT <a href="html.xsl"/>.
+		</li>
+	</ul>
+</section>

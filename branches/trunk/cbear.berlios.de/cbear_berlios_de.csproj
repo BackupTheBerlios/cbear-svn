@@ -1,0 +1,65 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EE063AA3-9EAF-4BDC-B02C-EF61A1651477}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>cbear_berlios_de</RootNamespace>
+    <AssemblyName>cbear_berlios_de</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <Compile Include="base\uint16.cs" />
+    <Compile Include="base\uint32.cs" />
+    <Compile Include="base\uint64.cs" />
+    <Compile Include="stream\binary\byte.cs" />
+    <Compile Include="stream\binary\single.cs" />
+    <Compile Include="stream\binary\dynamic.cs" />
+    <Compile Include="stream\binary\dynamic_implementation.cs" />
+    <Compile Include="stream\binary\int16.cs" />
+    <Compile Include="stream\binary\int32.cs" />
+    <Compile Include="stream\binary\int64.cs" />
+    <Compile Include="stream\binary\sbyte.cs" />
+    <Compile Include="stream\binary\uint16.cs" />
+    <Compile Include="stream\binary\uint32.cs" />
+    <Compile Include="stream\binary\uint64.cs" />
+    <Compile Include="stream\binary\primitive_type.cs" />
+    <Compile Include="stream\binary\uuid.cs" />
+    <Compile Include="windows\com\io.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+</Project>
