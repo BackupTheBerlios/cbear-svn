@@ -27,11 +27,15 @@ template<class T>
 class minidump
 {
 protected:
-	static std::wstring FileName;
+	static ::std::wstring FileName;
+	static ::LPTOP_LEVEL_EXCEPTION_FILTER Prior;
 };
 
 template<class T>
-std::wstring minidump<T>::FileName;
+::std::wstring minidump<T>::FileName;
+
+template<class T>
+::LPTOP_LEVEL_EXCEPTION_FILTER minidump<T>::Prior;
 
 }
 
@@ -41,10 +45,10 @@ public:
 	static void init(hmodule Module)
 	{
 		FileName = Module.file_name<wchar_t>() + L".dmp";
-		::SetUnhandledExceptionFilter(&filter);
+		Prior = ::SetUnhandledExceptionFilter(&filter);
 	}
 private:
-	static long_t __stdcall filter(EXCEPTION_POINTERS *ExceptionPointers)
+	static long_t __stdcall filter(::EXCEPTION_POINTERS *ExceptionPointers)
 	{
 		::MINIDUMP_EXCEPTION_INFORMATION ExInfo;
 		ExInfo.ThreadId = ::GetCurrentThreadId();
@@ -58,17 +62,28 @@ private:
 			CREATE_ALWAYS, 
 			FILE_ATTRIBUTE_NORMAL, 
 			NULL);
-		if(hFile==INVALID_HANDLE_VALUE) return EXCEPTION_CONTINUE_SEARCH;
-		if(!::MiniDumpWriteDump(
-			::GetCurrentProcess(), 
-			::GetCurrentProcessId(), 
-			hFile, 
-			MiniDumpNormal, 
-			&ExInfo, 
-			0, 
-			0)) return EXCEPTION_CONTINUE_SEARCH;
-		CloseHandle(hFile);
-		return EXCEPTION_CONTINUE_SEARCH;
+		if(hFile != INVALID_HANDLE_VALUE)
+		{
+			if(::MiniDumpWriteDump(
+				::GetCurrentProcess(), 
+				::GetCurrentProcessId(), 
+				hFile, 
+				MiniDumpNormal, 
+				&ExInfo, 
+				0, 
+				0))
+			{
+				CloseHandle(hFile);
+			}
+		}
+		if(Prior)
+		{
+			return (*Prior)(ExceptionPointers);
+		}
+		else
+		{
+			return EXCEPTION_CONTINUE_SEARCH;
+		}
 	}
 };
 
