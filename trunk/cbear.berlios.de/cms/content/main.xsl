@@ -15,5 +15,6 @@
 
 	<xsl:import href="section.xsl"/>
 	<xsl:import href="a.xsl"/>
+	<xsl:import href="library.xsl"/>
 
 </xsl:stylesheet>
