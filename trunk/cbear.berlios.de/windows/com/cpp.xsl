@@ -536,6 +536,33 @@
 	</id.ref>
 </xsl:template>
 
+<xsl:template match="odl:importlib" mode="odl:cpp.library">
+	<xsl:param 
+		name="library" select="substring(@href, 1, string-length(@href) - 4)"/>
+	<xsl:choose>
+		<xsl:when test="contains($library, '.')">
+			<id.ref id="{substring-before($library, '.')}"/>
+			<xsl:apply-templates select="." mode="odl:cpp.library">
+				<xsl:with-param name="library" select="substring-after($library, '.')"/>
+			</xsl:apply-templates>
+		</xsl:when>
+		<xsl:otherwise>
+			<id.ref id="{$library}"/>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+
+<xsl:template match="odl:type.ref[@library]" mode="odl:cpp">
+	<id.ref type="::">
+		<xsl:apply-templates 
+			select="/odl:library/odl:importlib[
+				translate(substring(@href, 1, string-length(@href) - 4), '.', '_') =
+				current()/@library]" 
+			mode="odl:cpp.library"/>
+		<id.ref id="{@id}"/>
+	</id.ref>
+</xsl:template>
+
 <xsl:template match="odl:type.ref[@id='*']" mode="odl:cpp">
 	<xsl:apply-templates select="odl:type.ref" mode="odl:cpp"/>
 </xsl:template>

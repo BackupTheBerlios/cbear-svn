@@ -150,8 +150,23 @@
 
 <!-- type.ref -->
 
-<xsl:template match="odl:type.ref" mode="odl:cs">
+<xsl:template match="odl:type.ref" mode="odl:cs.type.ref">
 	<id.ref id="{@id}"/>	
+</xsl:template>
+
+<xsl:template match="odl:type.ref[@library]" mode="odl:cs.type.ref">
+	<id.ref type=".">
+		<xsl:for-each select="/odl:library/odl:importlib[
+				translate(substring(@href, 1, string-length(@href) - 4), '.', '_') = 
+				current()/@library]">
+			<id.ref id="{substring(@href, 1, string-length(@href) - 4)}"/>
+		</xsl:for-each>
+		<id.ref id="{@id}"/>	
+	</id.ref>
+</xsl:template>
+
+<xsl:template match="odl:type.ref" mode="odl:cs">
+	<xsl:apply-templates select="." mode="odl:cs.type.ref"/>
 </xsl:template>
 
 <xsl:template match="odl:type.ref[@id='BSTR']" mode="odl:cs">

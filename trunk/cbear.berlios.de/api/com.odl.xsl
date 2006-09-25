@@ -243,7 +243,7 @@
 </xsl:template>
 
 <xsl:template match="/api:library" mode="api:body.type.ref.library">
-	<xsl:value-of select="@id"/>	
+	<xsl:value-of select="translate(@id, '.', '_')"/>
 </xsl:template>
 
 <xsl:template 
