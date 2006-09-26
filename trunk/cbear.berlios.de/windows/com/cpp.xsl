@@ -552,7 +552,7 @@
 	</xsl:choose>
 </xsl:template>
 
-<xsl:template match="odl:type.ref[@library]" mode="odl:cpp">
+<xsl:template match="odl:type.ref" mode="odl:cpp.library">
 	<id.ref type="::">
 		<xsl:apply-templates 
 			select="/odl:library/odl:importlib[
@@ -561,6 +561,14 @@
 			mode="odl:cpp.library"/>
 		<id.ref id="{@id}"/>
 	</id.ref>
+</xsl:template>
+
+<xsl:template match="odl:type.ref[@library='stdole']" mode="odl:cpp.library">
+	<xsl:apply-templates select="." mode="odl:cpp.type"/>
+</xsl:template>
+
+<xsl:template match="odl:type.ref[@library]" mode="odl:cpp">
+	<xsl:apply-templates select="." mode="odl:cpp.library"/>
 </xsl:template>
 
 <xsl:template match="odl:type.ref[@id='*']" mode="odl:cpp">
