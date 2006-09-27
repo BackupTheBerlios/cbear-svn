@@ -669,7 +669,11 @@
 <xsl:template match="cpp:header" mode="cpp:html">
 	<div style="{$cpp:html.header}">
 		<xsl:variable name="define" select="concat(
-			translate(../@id, './', '__'), '_hpp_included')"/>
+			translate(
+				translate(../@id, './', '__'), 
+				$txt:main.lowercase, 
+				$txt:main.uppercase),
+			'_HPP_INCLUDED')"/>
 		<xsl:call-template name="cpp:html.preprocessor">
 			<xsl:with-param name="text" select="concat('#ifndef ', $define)"/>
 		</xsl:call-template>

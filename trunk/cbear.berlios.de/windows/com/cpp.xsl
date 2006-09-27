@@ -1238,6 +1238,7 @@
 			<include href="cbear.berlios.de/windows/com/exception.hpp"/>
 			<include href="cbear.berlios.de/windows/com/coclass.hpp"/>
 			<include href="cbear.berlios.de/windows/com/idispatch.hpp"/>
+			<include href="cbear.berlios.de/windows/com/itypelib.hpp"/>
 			<include href="cbear.berlios.de/windows/com/static/interface_content.hpp"/>
 			<include href="cbear.berlios.de/windows/com/static/interface.hpp"/>
 			<include href="cbear.berlios.de/windows/com/static/idispatch.hpp"/>

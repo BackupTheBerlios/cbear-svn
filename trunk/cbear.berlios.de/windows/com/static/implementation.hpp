@@ -1,6 +1,7 @@
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_IMPLEMENTATION_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_IMPLEMENTATION_HPP_INCLUDED
 
+#include <cbear.berlios.de/atomic/main.hpp>
 #include <cbear.berlios.de/windows/com/static/interface_list.hpp>
 #include <cbear.berlios.de/windows/com/static/idispatch.hpp>
 #include <cbear.berlios.de/windows/com/static/isupporterrorinfo.hpp>
