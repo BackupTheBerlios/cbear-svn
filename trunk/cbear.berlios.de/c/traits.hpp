@@ -1,6 +1,8 @@
 #ifndef CBEAR_BERLIOS_DE_C_TRAITS_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_C_TRAITS_HPP_INCLUDED
 
+#include <boost/type_traits/is_class.hpp>
+
 namespace cbear_berlios_de
 {
 namespace c
