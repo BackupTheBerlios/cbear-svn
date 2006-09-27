@@ -49,7 +49,7 @@ public:
 		}
 	};
 
-	void push_back_range(const const_range_type &N)
+	void push_back_range(const_range_type const &N)
 	{
 		if(N.size() > this->R.size()) throw exception();
 		this->R.begin() = range::copy(N, this->R.begin());
