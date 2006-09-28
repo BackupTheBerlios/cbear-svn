@@ -8,6 +8,13 @@ namespace cbear_berlios_de
 namespace range
 {
 
+template<class Container>
+void sort(Container &X)
+{
+	typedef traits<Container> traits_t;
+	return ::std::sort(traits_t::begin(X), traits_t::end(X));
+}
+
 template<class Container, class Less>
 void sort(Container &X, Less L)
 { 

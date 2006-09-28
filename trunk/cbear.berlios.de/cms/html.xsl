@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- XHTML 1.1. -->
+<!-- XHTML 1.0 -->
 <xsl:stylesheet 
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -10,6 +10,7 @@
 
 	<xsl:import href="content/main.xsl"/>
 
+	<!-- XHTML 1.0 -->
 <!-- fucking XSLT output... You can not switch off "doctype" once it declared.
 	<xsl:output 
 		method="xml" 
