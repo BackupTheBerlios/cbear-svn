@@ -20,7 +20,10 @@ public:
 	typedef range::iterator_range<char *> range_type;
 	typedef range::iterator_range<const char *> const_range_type;
 
-	orange(const range_type &R): R(R) {}
+	orange(const range_type &R): 
+		R(R) 
+	{
+	}
 
 	class exception: 
 		public stream::virtual_write,

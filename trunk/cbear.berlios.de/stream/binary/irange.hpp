@@ -18,9 +18,12 @@ class irange
 public:
 
 	typedef range::iterator_range<char *> range_type;
-	typedef range::iterator_range<const char *> const_range_type;
+	typedef range::iterator_range<char const *> const_range_type;
 
-	irange(const const_range_type &R): R(R) {}
+	irange(const const_range_type &R): 
+		R(R) 
+	{
+	}
 
 	class exception: 
 		public stream::virtual_write,
@@ -49,10 +52,13 @@ public:
 		}
 	};
 
-	void pop_front_range(const range_type &N)
+	void pop_front_range(range_type const &N)
 	{
-		if(N.size() > this->R.size()) throw exception();
-		const const_range_type RI(R.begin(), N.size());
+		if(N.size() > this->R.size()) 
+		{
+			throw exception();
+		}
+		const_range_type const RI(R.begin(), N.size());
 		range::copy(RI, N.begin());
 		this->R.begin() = RI.end();
 	}
