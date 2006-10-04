@@ -40,7 +40,7 @@ public:
 	}	
 
 	template<class R>
-	void push_back(R &r, boost::uint8_t value)
+	void operator()(R &r, boost::uint8_t value)
 	{
 		switch(this->state)
 		{
@@ -51,7 +51,7 @@ public:
 				this->state = state_t::dle;
 				break;
 			default:
-				r.push_back(data_t(value));
+				r(data_t(value));
 				break;
 			}
 			break;
@@ -60,13 +60,13 @@ public:
 			switch(value)
 			{
 			case dle:
-				r.push_back(data_t(dle));
+				r(data_t(dle));
 				break;
 			case etx:
-				r.push_back(end_t());
+				r(end_t());
 				break;
 			default:
-				r.push_back(id_t(value));
+				r(id_t(value));
 				break;
 			}
 			break;

@@ -20,7 +20,7 @@ public:
 	typedef range::iterator_range<char *> range_type;
 	typedef range::iterator_range<const char *> const_range_type;
 
-	orange(const range_type &R): 
+	orange(range_type const &R): 
 		R(R) 
 	{
 	}
