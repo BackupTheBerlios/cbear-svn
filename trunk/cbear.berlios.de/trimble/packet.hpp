@@ -64,6 +64,95 @@ public:
 		};
 	};	
 
+	class _8FAC_t
+	{
+	public:
+
+		typedef typename C::child_8FAC_t child_t;
+
+		class receiver_mode_t: public stream::binary::big_endian<boost::uint8_t>
+		{
+		};
+
+		class disciplining_mode_t: public stream::binary::big_endian<boost::uint8_t>
+		{
+		};
+
+		class self_survey_progress_t: 
+			public stream::binary::big_endian<boost::uint8_t>
+		{
+		};
+
+		class holdover_duration_t:
+			public stream::binary::big_endian<boost::uint32_t>
+		{
+		};
+
+		class critical_alarms_t:
+			public stream::binary::big_endian<boost::uint16_t>
+		{
+		};
+
+		class minor_alarms_t:
+			public stream::binary::big_endian<boost::uint16_t>
+		{
+		};
+
+		class gps_decoding_status_t: 
+			public stream::binary::big_endian<boost::uint8_t>
+		{
+		};
+
+		class disciplining_activity_t:
+			public stream::binary::big_endian<boost::uint8_t>
+		{
+		};
+
+		class spare_status_1_t: public stream::binary::big_endian<boost::uint8_t>
+		{
+		};
+
+		class spare_status_2_t: public stream::binary::big_endian<boost::uint8_t>
+		{
+		};
+
+		class pps_offset_t: public stream::binary::float_t
+		{
+		};
+
+		class _10_mhz_offset_t: public stream::binary::float_t
+		{
+		};
+
+		class dac_value_t: public stream::binary::big_endian<boost::uint32_t>
+		{
+		};
+
+		class dac_voltage_t: public stream::binary::float_t
+		{
+		};
+
+		class temperature_t: public stream::binary::float_t
+		{
+		};
+
+		class latitude_t: public stream::binary::double_t
+		{
+		};
+
+		class longitude_t: public stream::binary::double_t
+		{
+		};
+
+		class altitude_t: public stream::binary::double_t
+		{
+		};
+
+		class spare_t: public stream::binary::double_t
+		{
+		};
+	};
+
 	template<class S>
 	void binary_read(S &s)
 	{
@@ -95,7 +184,10 @@ private:
 		switch(id)
 		{
 		case 0xAB:
-			read_8FAB(s);
+			this->read_8FAB(s);
+			break;
+		case 0xAC:
+			this->read_8FAC(s);
 			break;
 		default:
 			this->child()(unknown_t());
@@ -125,6 +217,15 @@ private:
 		read_value<_8FAB_t::day_of_month_t>(s, p);
 		read_value<_8FAB_t::month_t>(s, p);
 		read_value<_8FAB_t::year_t>(s, p);
+		this->child()(p);
+	}
+
+	template<class S>
+	void read_8FAC(S &s)
+	{
+		_8FAC_t::child_t p(this->child());
+		read_value<_8FAC_t::receiver_mode_t>(s, p);
+		read_value<_8FAC_t::disciplining_mode_t>(s, p);
 		this->child()(p);
 	}
 };
