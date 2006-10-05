@@ -2,6 +2,8 @@
 #define CBEAR_BERLIOS_DE_TRIMBLE_PACKET_HPP_INCLUDED
 
 #include <cbear.berlios.de/stream/binary/big_endian.hpp>
+#include <cbear.berlios.de/stream/binary/single.hpp>
+#include <cbear.berlios.de/stream/binary/double.hpp>
 
 namespace cbear_berlios_de
 {
@@ -16,6 +18,11 @@ public:
 	class unknown_t
 	{
 	};
+
+	// typedef stream::binary::single_t single_t;
+	typedef stream::binary::big_endian<float> single_t;
+	// typedef stream::binary::double_t double_t;
+	typedef stream::binary::big_endian<double> double_t;
 
 	class _8FAB_t
 	{
@@ -116,11 +123,11 @@ public:
 		{
 		};
 
-		class pps_offset_t: public stream::binary::float_t
+		class pps_offset_t: public single_t
 		{
 		};
 
-		class _10_mhz_offset_t: public stream::binary::float_t
+		class _10_mhz_offset_t: public single_t
 		{
 		};
 
@@ -128,27 +135,27 @@ public:
 		{
 		};
 
-		class dac_voltage_t: public stream::binary::float_t
+		class dac_voltage_t: public single_t
 		{
 		};
 
-		class temperature_t: public stream::binary::float_t
+		class temperature_t: public single_t
 		{
 		};
 
-		class latitude_t: public stream::binary::double_t
+		class latitude_t: public double_t
 		{
 		};
 
-		class longitude_t: public stream::binary::double_t
+		class longitude_t: public double_t
 		{
 		};
 
-		class altitude_t: public stream::binary::double_t
+		class altitude_t: public double_t
 		{
 		};
 
-		class spare_t: public stream::binary::double_t
+		class spare_t: public double_t
 		{
 		};
 	};
@@ -226,6 +233,23 @@ private:
 		_8FAC_t::child_t p(this->child());
 		read_value<_8FAC_t::receiver_mode_t>(s, p);
 		read_value<_8FAC_t::disciplining_mode_t>(s, p);
+		read_value<_8FAC_t::self_survey_progress_t>(s, p);
+		read_value<_8FAC_t::holdover_duration_t>(s, p);
+		read_value<_8FAC_t::critical_alarms_t>(s, p);
+		read_value<_8FAC_t::minor_alarms_t>(s, p);
+		read_value<_8FAC_t::gps_decoding_status_t>(s, p);
+		read_value<_8FAC_t::disciplining_activity_t>(s, p);
+		read_value<_8FAC_t::spare_status_1_t>(s, p);
+		read_value<_8FAC_t::spare_status_2_t>(s, p);
+		read_value<_8FAC_t::pps_offset_t>(s, p);
+		read_value<_8FAC_t::_10_mhz_offset_t>(s, p);
+		read_value<_8FAC_t::dac_value_t>(s, p);
+		read_value<_8FAC_t::dac_voltage_t>(s, p);
+		read_value<_8FAC_t::temperature_t>(s, p);
+		read_value<_8FAC_t::latitude_t>(s, p);
+		read_value<_8FAC_t::longitude_t>(s, p);
+		read_value<_8FAC_t::altitude_t>(s, p);
+		read_value<_8FAC_t::spare_t>(s, p);
 		this->child()(p);
 	}
 };

@@ -64,6 +64,18 @@ struct int_t: detail::integer_helper<boost::int_t<Bits>, Bits> {};
 template<std::size_t Bits>
 struct uint_t: detail::integer_helper<boost::uint_t<Bits>, Bits> {};
 
+template<>
+struct uint_t<64>
+{
+	typedef unsigned __int64 type;
+};
+
+template<>
+struct int_t<64>
+{
+	typedef __int64 type;
+};
+
 /// The built-in signed integral type with the same number of bits (including 
 /// the sign bit) as the given type has.
 template<class Type>
