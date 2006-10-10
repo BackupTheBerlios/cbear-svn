@@ -45,5 +45,16 @@ namespace cbear_berlios_de.windows
 			}
 			return null;
 		}
+
+		public static void remove_all(F.TreeNodeCollection collection, find_delegate d)
+		{
+			foreach (F.TreeNode n in collection)
+			{			
+				if(d(n))
+				{
+					collection.Remove(n);
+				}
+			}
+		}
 	}
 }
