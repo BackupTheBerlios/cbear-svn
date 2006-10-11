@@ -13,7 +13,7 @@
 
 	<xsl:template match="C:library" mode="C:content">
 		<div>
-			<b>COM Library:</b>
+			<b>Library:</b>
 			<xsl:value-of select="' '"/>
 			<a href="{concat(@href, @id, '.odl.xml')}">
 				<xsl:value-of select="@id"/>
