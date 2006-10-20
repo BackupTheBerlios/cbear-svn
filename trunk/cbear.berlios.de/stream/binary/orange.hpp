@@ -2,6 +2,7 @@
 #define CBEAR_BERLIOS_DE_STREAM_BINARY_ORANGE_HPP_INCLUDED
 
 #include <cbear.berlios.de/range/iterator_range.hpp>
+#include <cbear.berlios.de/range/copy.hpp>
 #include <cbear.berlios.de/stream/virtual_write.hpp>
 #include <cbear.berlios.de/stream/binary/write.hpp>
 #include <cbear.berlios.de/select/traits.hpp>
