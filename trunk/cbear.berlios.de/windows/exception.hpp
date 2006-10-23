@@ -41,7 +41,10 @@ public:
 	class scope_last_error: boost::noncopyable
 	{
 	public:
-		scope_last_error() { ::SetLastError(0); }
+		scope_last_error() 
+		{ 
+			::SetLastError(0); 
+		}
 		~scope_last_error() 
 		{
 			dword_t LastError = ::GetLastError(); 

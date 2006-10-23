@@ -38,9 +38,12 @@
   </Target>
   -->
   <ItemGroup>
+    <Compile Include="base\inumeric.cs" />
+    <Compile Include="base\compare.cs" />
     <Compile Include="base\uint16.cs" />
     <Compile Include="base\uint32.cs" />
     <Compile Include="base\uint64.cs" />
+    <Compile Include="base\uint8.cs" />
     <Compile Include="stream\binary\byte.cs" />
     <Compile Include="stream\binary\single.cs" />
     <Compile Include="stream\binary\dynamic.cs" />
