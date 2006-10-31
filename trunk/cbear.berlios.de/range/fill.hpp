@@ -5,6 +5,7 @@
 
 #include <cbear.berlios.de/range/begin.hpp>
 #include <cbear.berlios.de/range/end.hpp>
+#include <cbear.berlios.de/range/helper.hpp>
 
 namespace cbear_berlios_de
 {
