@@ -1,6 +1,8 @@
 namespace cbear_berlios_de.windows
 {
 	using F = global::System.Windows.Forms;
+	using C = global::System.Collections;
+	using G = global::System.Collections.Generic;
 
 	public class webbrowser
 	{
@@ -32,9 +34,9 @@ namespace cbear_berlios_de.windows
 		{
 		}
 
-		public delegate bool find_delegate(F.TreeNode node);
+		public delegate bool @predicate(F.TreeNode node);
 
-		public static F.TreeNode find(F.TreeNodeCollection collection, find_delegate d)
+		public static F.TreeNode find(F.TreeNodeCollection collection, @predicate d)
 		{
 			foreach (F.TreeNode n in collection)
 			{
@@ -46,7 +48,7 @@ namespace cbear_berlios_de.windows
 			return null;
 		}
 
-		public static void remove_all(F.TreeNodeCollection collection, find_delegate d)
+		public static void remove_all(F.TreeNodeCollection collection, @predicate d)
 		{
 			foreach (F.TreeNode n in collection)
 			{			
@@ -54,6 +56,17 @@ namespace cbear_berlios_de.windows
 				{
 					collection.Remove(n);
 				}
+			}
+		}
+
+		public delegate void @delegate(F.TreeNode node);
+
+		public static void all_for_each(F.TreeNodeCollection collection, @delegate d)
+		{
+			foreach (F.TreeNode n in collection)
+			{
+				d(n);
+				all_for_each(n.Nodes, d);
 			}
 		}
 	}
