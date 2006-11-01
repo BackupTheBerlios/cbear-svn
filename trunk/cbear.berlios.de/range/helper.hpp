@@ -101,11 +101,11 @@ public:
 		return const_reverse_iterator(This().end()); 
 	}
 	
-	reverse_iterator end() 
+	reverse_iterator rend() 
 	{ 
 		return reverse_iterator(This().begin()); 
 	}
-	const_reverse_iterator end() const 
+	const_reverse_iterator rend() const 
 	{ 
 		return const_reverse_iterator(This().begin());
 	}
