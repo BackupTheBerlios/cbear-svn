@@ -95,7 +95,10 @@ public:
 		if(!this->get()) return;
 		{
 			exception::scope_last_error ScopeLastError;
-			::UnregisterDeviceNotification(this->get());
+			if(::UnregisterDeviceNotification(this->get()))
+			{
+				::SetLastError(0);
+			}
 		}
 		this->get() = 0;
 	}
@@ -113,6 +116,11 @@ public:
 				Recipient.get(),
 				&NotificationFilter.internal(),
 				Flags.get());
+		// to fix MS design bug.
+		if(this->get())
+		{
+			::SetLastError(0);
+		}
 	}
 };
 

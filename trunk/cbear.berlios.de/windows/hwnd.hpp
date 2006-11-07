@@ -187,6 +187,10 @@ public:
 		{
 			exception::scope_last_error ScopeLastError;
 			::DestroyWindow(this->get());
+			if(this->get())
+			{
+				::SetLastError(0);
+			}
 		}
 		this->get() = 0;
 	}
