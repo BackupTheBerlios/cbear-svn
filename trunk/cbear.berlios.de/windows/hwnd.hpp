@@ -121,6 +121,7 @@ public:
 	const hinstance &Instance() const { return this->internal().hInstance; }
 };
 
+template<class Char>
 class atom: public base::initialized< ::ATOM>
 {
 public:
@@ -129,10 +130,9 @@ public:
 		this->Unregister(); 
 	}
 
-	template<class Char>
-	basic_lpstr<const Char> Id() const
+	basic_lpstr<Char const> Id() const
 	{
-		return reinterpret_cast<const Char *>(this->get());
+		return reinterpret_cast<Char const *>(this->get());
 	}
 
 	void Unregister()
@@ -140,18 +140,19 @@ public:
 		if(!this->get()) return;
 		{
 			exception::scope_last_error ScopeLastError;
-			::UnregisterClassW(this->Id<wchar_t>().get(), 0);
+			CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(Char, ::UnregisterClass)(
+				this->Id().get(), 0);
 		}
 		this->get() = 0;
 	}
 
-	template<class Char>
 	void Register(const basic_wndclass<Char> &WndClass)
 	{
 		this->Unregister();
 		{
 			exception::scope_last_error ScopeLastError;
-			this->get() = ::RegisterClass(&WndClass.internal());
+			this->get() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
+				Char, ::RegisterClass)(&WndClass.internal());
 			// to fix MS design bug.
 			if(this->get()) ::SetLastError(0);
 		}
