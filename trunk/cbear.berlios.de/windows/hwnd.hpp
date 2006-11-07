@@ -154,7 +154,10 @@ public:
 			this->get() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
 				Char, ::RegisterClass)(&WndClass.internal());
 			// to fix MS design bug.
-			if(this->get()) ::SetLastError(0);
+			if(this->get()) 
+			{
+				::SetLastError(0);
+			}
 		}
 	}
 };
@@ -316,9 +319,17 @@ public:
 					Menu,
 					Instance,
 					Param);
+			// to fix MS design bug.
+			if(this->get())
+			{
+				::SetLastError(0);
+			}
 		}
 		// to fix MS design bug.
-		if(!this->get()) throw create_exception();
+		if(!this->get()) 
+		{
+			throw create_exception();
+		}
 	}
 
 	template<class Char>
