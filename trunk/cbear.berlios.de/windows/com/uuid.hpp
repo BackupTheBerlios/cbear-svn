@@ -57,6 +57,11 @@ public:
 		return (this->V == B.V) != 0;
 	}
 
+	bool operator!=(const uuid &B) const
+	{
+		return !this->operator==(B);
+	}
+
 public:
 
 	template<class S>
