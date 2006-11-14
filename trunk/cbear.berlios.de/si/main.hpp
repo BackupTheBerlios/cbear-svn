@@ -11,6 +11,11 @@ inline double mega()
 	return 1.0e+6;
 }
 
+inline double nano()
+{
+	return 1.0e-9;
+}
+
 }
 }
 
