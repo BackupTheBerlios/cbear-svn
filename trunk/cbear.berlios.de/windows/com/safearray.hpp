@@ -106,12 +106,22 @@ public:
 		construct_copy(X, C);
 	}
 
-	class wrap_type:
-		public policy::wrap<safearray_t, ::SAFEARRAY *, safearray_policy>
+	typedef policy::wrap<safearray_t, ::SAFEARRAY *, safearray_policy>
+		wrap_internal_type;
+
+	class wrap_type: public wrap_internal_type
 	{
 	public:
 		typedef typename safearray_policy::iterator iterator;
 		typedef typename safearray_policy::const_iterator const_iterator;
+		wrap_type()
+		{
+		}
+		template<class T1, class T2>
+		wrap_type(T1 const &X1, T2 const &X2):
+			wrap_internal_type(X1, X2)
+		{
+		}
 	};
 	typedef range::helper_t<safearray_t, /*iterator, const_iterator,*/ wrap_type> 
 		helper_type;
