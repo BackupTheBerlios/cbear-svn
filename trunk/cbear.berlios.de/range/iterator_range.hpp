@@ -13,40 +13,40 @@ namespace cbear_berlios_de
 namespace range
 {
 
-/*
-template<class Iterator>
-class iterator_range;
-
 namespace detail
 {
 
 template<class Iterator>
-struct iterator_range_traits
+class iterator_range_base_t
 {
-	typedef iterator_range<Iterator> type;
-	typedef std::pair<Iterator, Iterator> internal_type;
-	typedef policy::wrap<type, internal_type> wrap_type;
-	typedef helper<type, Iterator, Iterator> helper_type;
+public:
+
+	typedef Iterator iterator;
+	typedef Iterator const_iterator;
+
+private:
+	typedef base::initialized<iterator> initialized_iterator;
+	initialized_iterator B, E;
 };
 
 }
-*/
 
 template<class Iterator>
 class iterator_range: 
-	//public detail::iterator_range_traits<Iterator>::wrap_type,
-	//public detail::iterator_range_traits<Iterator>::helper_type
-	public helper<iterator_range<Iterator>, Iterator, Iterator>
+	// public helper<iterator_range<Iterator>, Iterator, Iterator>
+	public helper_t<
+		iterator_range<Iterator>, detail::iterator_range_base_t<Iterator> >
 {
+private:
+	typedef helper_t<
+		iterator_range<Iterator>, detail::iterator_range_base_t<Iterator> >
+		helper_t;
 public:
-	//typedef typename detail::iterator_range_traits<Iterator>::wrap_type wrap_type;
-	//typedef typename wrap_type::internal_type internal_type;
-	typedef helper<iterator_range, Iterator, Iterator> helper_type;
-	typedef typename helper_type::size_type size_type;
-	typedef typename helper_type::value_type value_type;
+	// typedef helper<iterator_range, Iterator, Iterator> helper_type;
+	typedef typename helper_t::size_type size_type;
+	typedef typename helper_t::value_type value_type;
 	
 	iterator_range() {}
-	// explicit iterator_range(const internal_type &X): wrap_type(X) {}
 	
 	typedef Iterator iterator;
 	typedef Iterator const_iterator;
@@ -83,15 +83,13 @@ public:
 	{
 	}
 
-	/*
-	template<class Stream>
-	typename boost::enable_if<boost::is_same<
-		value_type, typename Stream::value_type> >::type
-	write(Stream &S) const
+	template<class T>
+	void swap(T &x)
 	{
-		S.push_back_range(*this);
+		BOOST_STATIC_ASSERT((::boost::is_same<T, iterator_range>::value));
+		base::swap(this->B, x.B);
+		base::swap(this->E, x.E);
 	}
-	*/
 
 private:
 

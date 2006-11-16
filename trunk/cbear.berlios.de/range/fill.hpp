@@ -35,6 +35,10 @@ public:
 	{
 		return this->V;
 	}
+	bool operator==(fill_iterator_t const &B) const
+	{
+		return this->I == B.I;
+	}
 	bool operator!=(fill_iterator_t const &B) const
 	{
 		return this->I != B.I;
@@ -58,9 +62,22 @@ private:
 	fill_iterator_t &operator=(fill_iterator_t const &);
 };
 
+namespace detail
+{
+
 template<class T>
-class fill_t: 
-	public helper<fill_t<T>, fill_iterator_t<T>, fill_iterator_t<T> >
+class fill_base_t
+{
+public:
+	typedef fill_iterator_t<T> iterator;
+	typedef iterator const_iterator;
+};
+
+}
+
+template<class T>
+class fill_t:
+	public helper_t<fill_t<T>, detail::fill_base_t<T> >
 {
 public:
 

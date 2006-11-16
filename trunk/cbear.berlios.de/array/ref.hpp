@@ -11,8 +11,21 @@ namespace cbear_berlios_de
 namespace array
 {
 
+namespace detail
+{
+
+template<class T>
+class ref_base_t
+{
+public:
+	typedef T *iterator;
+	typedef T *const_iterator;
+};
+
+}
+
 template<class T, ::std::size_t RealSize>
-class ref_t: public range::helper<ref_t<T, RealSize>, T *, T *>
+class ref_t: public range::helper_t<ref_t<T, RealSize>, detail::ref_base_t<T> >
 { 
 public:
 

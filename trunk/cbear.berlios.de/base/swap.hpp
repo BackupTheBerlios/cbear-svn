@@ -17,14 +17,20 @@ class class_swap_traits
 {
 public:
 	template<class T>
-	static void swap(T &A, T &B) { A.swap(B); }
+	static void swap(T &A, T &B) 
+	{ 
+		A.swap(B); 
+	}
 };
 
 class std_swap_traits
 {
 public:
 	template<class T>
-	static void swap(T &A, T &B) { std::swap(A, B); }
+	static void swap(T &A, T &B) 
+	{ 
+		std::swap(A, B); 
+	}
 };
 
 }

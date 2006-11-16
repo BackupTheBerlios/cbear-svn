@@ -52,17 +52,19 @@ public:
 		return this->A; 
 	}
 protected:
-	t_base() {}
-	t_base(const t_base &B) 
+	t_base() 
+	{
+	}
+	t_base(const t_base &B)
 	{ 
 		move::assign(this->A, B.A);
 	}
 	template<class T1>
-	t_base(const t_base<T1> &B) 
+	t_base(const t_base<T1> &B)
 	{ 
 		move::assign(this->A, B.get());
 	}
-	explicit t_base(T &B) 
+	explicit t_base(T &B)
 	{ 
 		move::assign(this->A, B);
 	}
@@ -76,12 +78,12 @@ class t_base<T &>
 public:
 	typedef T &reference;
 	typedef T *pointer;
-	T &get() const 
+	T &get() const throw()
 	{ 
 		return this->A; 
 	}
 protected:
-	t_base(T &A): 
+	t_base(T &A) throw():
 		A(A) 
 	{
 	}
@@ -116,43 +118,43 @@ public:
 	{
 	}
 
-	const t &operator=(const t &B) const 
+	const t &operator=(const t &B) const
 	{ 
 		move::assign(this->get(), B.get()); 
 	}
 
 	template<class T1>
-	const t &operator=(const t<T1> &B) const 
+	const t &operator=(const t<T1> &B) const
 	{ 
 		move::assign(this->get(), B.get()); 
 	}
 
 	template<class T1>
-	void assign(const t<T1> &B) const 
+	void assign(const t<T1> &B) const
 	{ 
 		move::assign(this->get(), B.get()); 
 	}
 
 	template<class T1>
-	void assign(T1 &B) const 
+	void assign(T1 &B) const
 	{ 
 		move::assign(this->get(), B); 
 	}
 
 	using base_t::get;
 
-	reference operator*() const 
+	reference operator*() const throw()
 	{ 
 		return this->get(); 
 	}
-	pointer operator->() const 
+	pointer operator->() const throw()
 	{ 
 		return &this->get();
 	}
 };
 
 template<class T>
-t<T> make(const T &B) 
+t<T> make(const T &B)
 { 
 	return t<T>(B);
 }
@@ -172,7 +174,7 @@ t<T> copy(const T &B)
 }
 
 template<class T>
-t<T &> ref(T &B)
+t<T &> ref(T &B) throw()
 {
 	return t<T &>(B);
 }
