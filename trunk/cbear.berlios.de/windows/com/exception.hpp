@@ -231,17 +231,23 @@ public:
 			{
 				throw;				
 			}
-			catch(const com::exception &B)
+			catch(com::exception const &B)
 			{
 				return B.set();
 			}
-			catch(const ::cbear_berlios_de::stream::wvirtual_write &W)
+			catch(windows::exception const &W)
+			{
+				return hresult(
+					false, 
+					hresult::facility_type::win32, 
+					hresult::code_type(static_cast<hresult::code_type::internal_type>(
+						W.result())));
+			}
+			catch(::cbear_berlios_de::stream::wvirtual_write const &W)
 			{			
-				//std::wostringstream O;
-				//O << W;
 				return create_exception().Description(base::to_stream<bstr_t>(W)).set();
 			}
-			catch(const ::std::exception &S)
+			catch(::std::exception const &S)
 			{
 				return create_exception().
 					Description(locale::cast<bstr_t>(std::string(S.what()))).

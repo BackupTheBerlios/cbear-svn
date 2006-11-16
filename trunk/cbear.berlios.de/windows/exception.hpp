@@ -64,7 +64,7 @@ public:
 		typedef typename S::value_type char_type;
 		// policy::std_wrap<char_type *, buffer_policy<char_type> > Buffer;
 		buffer<char_type> Buffer;
-		const dword_t Size = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
+		dword_t const Size = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
 			char_type, ::FormatMessage)(
 				FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
 				0,
@@ -86,23 +86,6 @@ public:
 	explicit exception(dword_t X): Result(X) {}
 
 private:
-
-	/*
-	template<class Char>
-	class buffer_policy: private policy::standard_policy<Char *>
-	{
-	public:
-		typedef policy::standard_policy<Char *> std_policy_type;
-		typedef typename std_policy_type::reference reference;
-		typedef typename std_policy_type::pointer pointer;
-		using std_policy_type::construct;
-		using std_policy_type::output;
-		static void destroy(Char * &X)
-		{
-			if(X) ::LocalFree(X);
-		}
-	};
-	*/
 
 	template<class Char>
 	class buffer: public base::initialized<Char *>
