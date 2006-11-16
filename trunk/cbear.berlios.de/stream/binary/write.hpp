@@ -29,7 +29,7 @@ typename boost::enable_if<boost::is_class<T> >::type write(S &s, T const &t)
 template<class S, class T, std::size_t Size>
 void write(S &s, T const (&t)[Size])
 { 
-	for(range::iterator_range<T *> R(t); !R.empty(); ++R.begin())
+	for(range::iterator_range<T const *> R(t); !R.empty(); ++R.begin())
 	{
 		binary::write(s, R.front());
 	}

@@ -9,7 +9,7 @@ namespace stream
 {
 
 template<class S, class T>
-void write(S &s, const T &t)
+void write(S &s, T const &t)
 {
 	traits<S, T>::write(s, t);
 }

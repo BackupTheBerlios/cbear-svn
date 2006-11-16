@@ -106,8 +106,14 @@ public:
 		construct_copy(X, C);
 	}
 
-	typedef policy::wrap<safearray_t, ::SAFEARRAY *, safearray_policy> wrap_type;
-	typedef range::helper<safearray_t, iterator, const_iterator, wrap_type> 
+	class wrap_type:
+		public policy::wrap<safearray_t, ::SAFEARRAY *, safearray_policy>
+	{
+	public:
+		typedef typename safearray_policy::iterator iterator;
+		typedef typename safearray_policy::const_iterator const_iterator;
+	};
+	typedef range::helper_t<safearray_t, /*iterator, const_iterator,*/ wrap_type> 
 		helper_type;
 
 	static bool equal(const type &A, const type &B)

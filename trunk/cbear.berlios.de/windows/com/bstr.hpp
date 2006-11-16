@@ -249,12 +249,29 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 	//}
 };
 
-typedef policy::wrap<bstr_t, ::BSTR, bstr_policy> bstr_wrap;
+typedef policy::wrap<bstr_t, ::BSTR, bstr_policy> bstr_wrap_internal;
 
-typedef range::helper<
+class bstr_wrap: public bstr_wrap_internal
+{
+public:
+	typedef bstr_policy::iterator iterator; 
+	typedef bstr_policy::const_iterator const_iterator; 
+	bstr_wrap()
+	{
+	}
+	template<class T1, class T2>
+	bstr_wrap(T1 const &X1, T2 const &X2):
+		bstr_wrap_internal(X1, X2)
+	{
+	}
+};
+
+typedef range::helper_t<
 	bstr_t, 
+	/*
 	bstr_policy::iterator, 
 	bstr_policy::const_iterator, 
+	*/
 	bstr_wrap> bstr_helper;
 
 }

@@ -55,6 +55,12 @@ public:
 		Base(X)
 	{
 	}
+
+	template<class T1, class T2>
+	helper_t(T1 const &X1, T2 const &X2): 
+		Base(X1, X2)
+	{
+	}
 	
 	bool empty() const 
 	{ 
