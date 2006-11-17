@@ -20,9 +20,11 @@ public:
 	};
 
 	// typedef stream::binary::single_t single_t;
-	typedef stream::binary::big_endian<float> single_t;
+	// typedef base::initialized<float> single_t;
+	typedef base::initialized<float> single_t;
 	// typedef stream::binary::double_t double_t;
-	typedef stream::binary::big_endian<double> double_t;
+	// typedef base::initialized<double> double_t;
+	typedef base::initialized<double> double_t;
 
 	class _8FAB_t
 	{
@@ -30,43 +32,43 @@ public:
 
 		typedef typename C::child_8FAB_t child_t;
 
-		class time_of_week_t: public stream::binary::big_endian<boost::uint32_t>
+		class time_of_week_t: public base::initialized<boost::uint32_t>
 		{
 		};
 
-		class week_number_t: public stream::binary::big_endian<boost::uint16_t>
+		class week_number_t: public base::initialized<boost::uint16_t>
 		{
 		};
 
-		class utc_offset_t: public stream::binary::big_endian<boost::int16_t>
+		class utc_offset_t: public base::initialized<boost::int16_t>
 		{
 		};
 
-		class timing_flag_t: public stream::binary::big_endian<boost::uint8_t>
+		class timing_flag_t: public base::initialized<boost::uint8_t>
 		{
 		};
 
-		class seconds_t: public stream::binary::big_endian<boost::uint8_t>
+		class seconds_t: public base::initialized<boost::uint8_t>
 		{
 		};
 
-		class minutes_t: public stream::binary::big_endian<boost::uint8_t>
+		class minutes_t: public base::initialized<boost::uint8_t>
 		{
 		};
 
-		class hours_t: public stream::binary::big_endian<boost::uint8_t>
+		class hours_t: public base::initialized<boost::uint8_t>
 		{
 		};
 
-		class day_of_month_t: public stream::binary::big_endian<boost::uint8_t>
+		class day_of_month_t: public base::initialized<boost::uint8_t>
 		{
 		};
 
-		class month_t: public stream::binary::big_endian<boost::uint8_t>
+		class month_t: public base::initialized<boost::uint8_t>
 		{
 		};
 
-		class year_t: public stream::binary::big_endian<boost::uint16_t>
+		class year_t: public base::initialized<boost::uint16_t>
 		{
 		};
 	};	
@@ -77,49 +79,49 @@ public:
 
 		typedef typename C::child_8FAC_t child_t;
 
-		class receiver_mode_t: public stream::binary::big_endian<boost::uint8_t>
+		class receiver_mode_t: public base::initialized<boost::uint8_t>
 		{
 		};
 
-		class disciplining_mode_t: public stream::binary::big_endian<boost::uint8_t>
+		class disciplining_mode_t: public base::initialized<boost::uint8_t>
 		{
 		};
 
 		class self_survey_progress_t: 
-			public stream::binary::big_endian<boost::uint8_t>
+			public base::initialized<boost::uint8_t>
 		{
 		};
 
 		class holdover_duration_t:
-			public stream::binary::big_endian<boost::uint32_t>
+			public base::initialized<boost::uint32_t>
 		{
 		};
 
 		class critical_alarms_t:
-			public stream::binary::big_endian<boost::uint16_t>
+			public base::initialized<boost::uint16_t>
 		{
 		};
 
 		class minor_alarms_t:
-			public stream::binary::big_endian<boost::uint16_t>
+			public base::initialized<boost::uint16_t>
 		{
 		};
 
 		class gps_decoding_status_t: 
-			public stream::binary::big_endian<boost::uint8_t>
+			public base::initialized<boost::uint8_t>
 		{
 		};
 
 		class disciplining_activity_t:
-			public stream::binary::big_endian<boost::uint8_t>
+			public base::initialized<boost::uint8_t>
 		{
 		};
 
-		class spare_status_1_t: public stream::binary::big_endian<boost::uint8_t>
+		class spare_status_1_t: public base::initialized<boost::uint8_t>
 		{
 		};
 
-		class spare_status_2_t: public stream::binary::big_endian<boost::uint8_t>
+		class spare_status_2_t: public base::initialized<boost::uint8_t>
 		{
 		};
 
@@ -131,7 +133,7 @@ public:
 		{
 		};
 
-		class dac_value_t: public stream::binary::big_endian<boost::uint32_t>
+		class dac_value_t: public base::initialized<boost::uint32_t>
 		{
 		};
 

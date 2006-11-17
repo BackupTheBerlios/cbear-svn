@@ -71,7 +71,7 @@ It is possible to use the API.XML as an <b>IDL</b> but it is not the easiest way
 to define interfaces. The best way is to use a specific language. DCE IDL and 
 COM IDL are too specific and not user friendly so they can not be a main IDL 
 language. CORBA IDL and XPIDL are much better as an IDL language but it is not 
-clear about all its possibilities.
+clear about all their possibilities.
 				</p>
 				<p>
 Currently, we use the API.XML.
@@ -192,7 +192,7 @@ Serialized in <a href="big endian" type="wikipedia"/>.
 			The size of an enumeration is one byte.
 		</section>
 		<section name="Structures">
-			Serialized in the order of its fields. Aligment is one byte.
+			Serialized in the order of their fields. Aligment is one byte.
 		</section>
 		<section name="Fixed Arrays">
 			Serialized in the order of their items.

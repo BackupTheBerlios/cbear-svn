@@ -20,6 +20,7 @@ public:
 
 	size(): V(0) {}
 
+	/*
 	void push_back_range(const const_range_type &N)
 	{
 		this->V += N.size();
@@ -28,6 +29,13 @@ public:
 	void pop_front_range(const range_type &N)
 	{
 		this->V += N.size();
+	}
+	*/
+
+	template<class T>
+	void push_back_pod(T const &)
+	{
+		this->V += sizeof(T);
 	}
 
 	template<class T>

@@ -30,6 +30,12 @@ public:
 		base::swap(this->V, X.V);
 	}
 
+	template<class S>
+	void binary_read(S &s)
+	{
+		s >> this->V;
+	}
+
 private:
 	T V;
 };

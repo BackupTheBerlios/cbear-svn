@@ -13,6 +13,7 @@ namespace stream
 namespace binary
 {
 
+template<class E>
 class irange
 {
 public:
@@ -61,6 +62,12 @@ public:
 		const_range_type const RI(R.begin(), N.size());
 		range::copy(RI, N.begin());
 		this->R.begin() = RI.end();
+	}
+
+	template<class T>
+	void pop_front_pod(T &t)
+	{
+		E::pop_front_pod(*this, t);
 	}
 
 	template<class T>
