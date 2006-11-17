@@ -141,8 +141,13 @@ public:
 		{
 			return range_t(
 				cast::traits<Char *>::reinterpret(this->c_t::bString),
-				(sizeof(c_t::bString) + (this->bLength - sizeof(c_t))) / sizeof(Char));
+				this->bLength < sizeof(c_t) ? 
+					0: 
+					(this->bLength - (sizeof(c_t) - sizeof(c_t::bString))) / 
+						sizeof(Char));
 		}
+	private:
+		//static ::std::size_t const offset = sizeof(c_t) - sizeof(c_t::bString);
 	};
 
 	explicit descriptor_request(
