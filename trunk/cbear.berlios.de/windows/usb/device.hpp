@@ -146,8 +146,6 @@ public:
 					(this->bLength - (sizeof(c_t) - sizeof(c_t::bString))) / 
 						sizeof(Char));
 		}
-	private:
-		//static ::std::size_t const offset = sizeof(c_t) - sizeof(c_t::bString);
 	};
 
 	explicit descriptor_request(
