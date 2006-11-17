@@ -14,6 +14,7 @@ namespace stream
 namespace binary
 {
 
+template<class E>
 class orange
 {
 public:
@@ -57,6 +58,12 @@ public:
 	{
 		if(N.size() > this->R.size()) throw exception();
 		this->R.begin() = range::copy(N, this->R.begin());
+	}
+
+	template<class T>
+	void push_back_pod(T const &X)
+	{
+		E::push_back_pod(*this, X);
 	}
 
 	template<class T>
