@@ -23,9 +23,21 @@ public:
 
 	dynamic(): buffer(min_size) {}
 
+	class exception: public stream::wvirtual_write
+	{
+	public:
+		void detail_write(stream &S) const
+		{
+			S << L"cbear_berlios_de::windows::dynamic::resize, wrong size";
+		}
+	};
+
 	void resize(std::size_t Size) 
 	{
-		BOOST_ASSERT(Size >= min_size);
+		if(Size < min_size)
+		{
+			throw exception();
+		}
 		this->buffer::resize(Size);
 	}
 
