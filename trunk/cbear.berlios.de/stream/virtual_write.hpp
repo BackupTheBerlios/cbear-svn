@@ -19,16 +19,16 @@ public:
 
 		typedef Char value_type;
 
-		typedef range::iterator_range<const Char *> range_type;
+		typedef range::iterator_range<Char const *> range_type;
 
 		template<class Container>
-		void push_back_range(const Container &R) 
+		void push_back_range(Container const &R) 
 		{ 
 			this->detail_push_back_range(range_type(R)); 
 		}
 
 		template<class T>
-		stream &operator<<(const T &t)
+		stream &operator<<(T const &t)
 		{
 			::cbear_berlios_de::stream::write(*this, t);
 			return *this;
@@ -36,7 +36,7 @@ public:
 
 	protected:
 
-		virtual void detail_push_back_range(const range_type &R) = 0;
+		virtual void detail_push_back_range(range_type const &R) = 0;
 	};
 
 private:
@@ -47,13 +47,13 @@ private:
 	public:
 		stream_implementation(S &s): s(s) {}
 	protected:
-		void detail_push_back_range(const range::iterator_range<const Char *> &R) 
+		void detail_push_back_range(range::iterator_range<Char const *> const &R)
 		{ 
 			this->s.push_back_range(R);
 		}
 	private:
 		S &s;
-		stream_implementation &operator=(const stream_implementation &)
+		stream_implementation &operator=(stream_implementation const &)
 		{
 			return *this;
 		}
