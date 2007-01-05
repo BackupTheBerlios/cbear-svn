@@ -1,6 +1,8 @@
 #ifndef CBEAR_BERLIOS_DE_BASE_TIME_OUT_LOOP_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_BASE_TIME_OUT_LOOP_HPP_INCLUDED
 
+#include <boost/timer.hpp>
+
 namespace cbear_berlios_de
 {
 namespace base
