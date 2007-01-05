@@ -20,10 +20,10 @@ public:
 	};
 
 	template<class P>
-	static result_t do_(double period, P const &predicate)
+	static result_t do_(double period, P &predicate)
 	{
-		::boost::timer timer;
 		result_t result;
+		::boost::timer timer;
 		do
 		{
 			result.elapsed = timer.elapsed();
