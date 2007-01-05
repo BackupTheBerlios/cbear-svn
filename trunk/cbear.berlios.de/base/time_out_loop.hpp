@@ -18,7 +18,7 @@ public:
 	};
 
 	template<class P>
-	result_t do_(double period, P const &predicate)
+	static result_t do_(double period, P const &predicate)
 	{
 		::boost::timer timer;
 		result_t result;
