@@ -65,6 +65,15 @@
 	</xsl:message>
 </xsl:template>
 
+<!-- @id -->
+
+<xsl:template match="@id" mode="cpp:html">
+	<span style="{$cpp:html.id}">
+		<xsl:value-of select="."/>
+		<xsl:if test=".='private'">_</xsl:if>
+	</span>
+</xsl:template>
+
 <!-- block -->
 
 <xsl:template name="cpp:html.block">
@@ -97,7 +106,10 @@
 	<xsl:param name="end"/>
 	<xsl:param name="separator"/>
 
+	<!--
 	<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
+	-->
+	<xsl:apply-templates select="@id" mode="cpp:html"/>
 	<xsl:value-of select="$begin"/>
 	<xsl:apply-templates select="cpp:id.ref" mode="cpp:html.id.ref.separator">
 		<xsl:with-param name="separator" select="$separator"/>
@@ -647,7 +659,10 @@
 		<xsl:with-param name="text">
 			<span style="{$cpp:html.keyword}">namespace</span>
 			<xsl:value-of select="' '"/>
+			<!--
 			<span style="{$cpp:html.id}"><xsl:value-of select="@id"/></span>
+			-->
+			<xsl:apply-templates select="@id" mode="cpp:html"/>
 		</xsl:with-param>
 	</xsl:call-template>
 	<xsl:call-template name="cpp:html.block"/>
