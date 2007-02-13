@@ -45,10 +45,20 @@ public:
 		{ 
 			::SetLastError(0); 
 		}
+		static void reset_if(bool X)
+		{
+			if(X)
+			{
+				::SetLastError(0);
+			}
+		}
 		~scope_last_error() 
 		{
 			dword_t LastError = ::GetLastError(); 
-			if(LastError) throw exception(LastError);
+			if(LastError) 
+			{
+				throw exception(LastError);
+			}
 		}
 	};
 
