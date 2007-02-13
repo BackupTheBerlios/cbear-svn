@@ -195,6 +195,11 @@ public:
 				DeviceInfoSet.internal(),
 				MachineName.get(),
 				0);
+		// Windows 2000 hack.
+		if(this->internal() != INVALID_HANDLE_VALUE)
+		{
+			::SetLastError(0);
+		}
 	}
 
 	~hdevinfo() { this->Destroy(); }
