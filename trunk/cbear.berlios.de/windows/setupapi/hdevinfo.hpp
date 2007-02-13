@@ -206,7 +206,10 @@ public:
 
 	void Destroy()
 	{
-		if(!this->internal()) return;
+		if(!this->internal()) 
+		{
+			return;
+		}
 		exception::scope_last_error ScopeLastError;
 		::SetupDiDestroyDeviceInfoList(this->internal());
 		this->internal() = 0;
