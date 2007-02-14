@@ -185,7 +185,7 @@ public:
 			exception::scope_last_error ScopeLastError;
 			::DestroyWindow(this->get());
 			// to fix MS design bug.
-			ScopeLastError.reset_if(this->get());
+			ScopeLastError.reset_if(this->get() != 0);
 		}
 		this->get() = 0;
 	}
