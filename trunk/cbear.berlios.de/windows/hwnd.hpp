@@ -154,7 +154,7 @@ public:
 			this->get() = CBEAR_BERLIOS_DE_WINDOWS_FUNCTION(
 				Char, ::RegisterClass)(&WndClass.internal());
 			// to fix MS design bug.
-			ScopeLastError.reset_if(this->get());
+			ScopeLastError.reset_if(this->get() != 0);
 		}
 	}
 };
@@ -318,7 +318,7 @@ public:
 					Menu,
 					Instance,
 					Param);
-			ScopeLastError.reset_if(this->get());
+			ScopeLastError.reset_if(this->get() != 0);
 		}
 		// to fix MS design bug.
 		if(!this->get()) 

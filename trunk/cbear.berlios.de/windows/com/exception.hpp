@@ -238,7 +238,7 @@ public:
 			catch(windows::exception const &W)
 			{
 				return hresult(
-					false, 
+					true, 
 					hresult::facility_type::win32, 
 					hresult::code_type(static_cast<hresult::code_type::internal_type>(
 						W.result())));

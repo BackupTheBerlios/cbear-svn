@@ -95,7 +95,7 @@ public:
 		if(!this->get()) return;
 		{
 			exception::scope_last_error ScopeLastError;
-			ScopeLastError.reset_if(::UnregisterDeviceNotification(this->get()));
+			ScopeLastError.reset_if(::UnregisterDeviceNotification(this->get()) != FALSE);
 		}
 		this->get() = 0;
 	}
@@ -113,7 +113,7 @@ public:
 				Recipient.get(),
 				&NotificationFilter.internal(),
 				Flags.get());
-		ScopeLastError.reset_if(this->get());
+		ScopeLastError.reset_if(this->get() != 0);
 	}
 };
 
