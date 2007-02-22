@@ -80,8 +80,27 @@ public:
 		generic_write = GENERIC_WRITE,
 	};
 
-	desired_access() {}
-	desired_access(enum_ E): base_t(E) {}
+	desired_access() 
+	{
+	}
+
+	desired_access(enum_ E): 
+		base_t(E) 
+	{
+	}
+
+	desired_access &operator|=(const desired_access &X)
+	{
+		this->get() |= X.get();
+		return *this;
+	}
+
+	desired_access operator|(const desired_access &X) const
+	{
+		desired_access R(*this);
+		R |= X;
+		return R;
+	}
 };
 
 class file_share: public base::initialized<dword_t>
