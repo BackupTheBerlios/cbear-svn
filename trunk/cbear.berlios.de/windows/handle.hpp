@@ -282,6 +282,19 @@ public:
 			&findFileData);
 	}
 
+	dword_t ReadFile(byte_range const &Out) const
+	{
+		dword_t result;
+		exception::scope_last_error ScopeLastError;
+		::ReadFile(
+			this->get(), 
+			Out.begin(),
+			static_cast<dword_t>(Out.size()),
+			&result,
+			0);
+		return result;
+	}
+
 	void Close()
 	{
 		::CloseHandle(this->get());
