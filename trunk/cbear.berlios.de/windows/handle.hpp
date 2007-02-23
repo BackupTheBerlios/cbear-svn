@@ -295,6 +295,19 @@ public:
 		return result;
 	}
 
+	dword_t WriteFile(const_byte_range const &In) const
+	{
+		dword_t result;
+		exception::scope_last_error ScopeLastError;
+		::WriteFile(
+			this->get(), 
+			In.begin(),
+			static_cast<dword_t>(In.size()),
+			&result,
+			0);
+		return result;
+	}
+
 	void Close()
 	{
 		::CloseHandle(this->get());

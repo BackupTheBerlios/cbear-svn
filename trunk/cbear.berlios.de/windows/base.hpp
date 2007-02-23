@@ -71,6 +71,8 @@ typedef SYSTEMTIME systemtime_t;
 
 typedef range::iterator_range<byte *> byte_range;
 
+typedef range::iterator_range<byte const *> const_byte_range;
+
 template<class T>
 byte_range pod_range(T &X)
 {
