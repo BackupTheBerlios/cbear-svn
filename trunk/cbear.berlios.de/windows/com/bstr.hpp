@@ -297,6 +297,16 @@ public:
 
 	typedef value_type char_type;
 
+	typedef ::BSTR c_in_t;
+	typedef ::BSTR *c_out_t;
+	typedef ::BSTR *c_in_out_t;
+
+	static bstr_t &cpp_out(c_out_t X)
+	{
+		*X = 0;
+		return cast::traits<bstr_t &>::reinterpret(*X);
+	}
+
 	static const vartype_t::enum_t vt = vartype_t::bstr;
 
 	bstr_t() {}

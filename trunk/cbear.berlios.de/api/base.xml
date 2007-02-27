@@ -156,6 +156,12 @@ See <html:a href="http://cbear.berlios.de/api"
 	</pragma>	
 </interface>
 
+<interface id="ierrorinfo">
+	<pragma>
+		<com.idl:alias id="IErrorInfo"/>
+	</pragma>
+</interface>
+
 <interface id="itypelib">
 	<pragma>
 		<com.idl:alias id="ITypeLib"/>

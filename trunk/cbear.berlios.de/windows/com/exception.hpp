@@ -153,18 +153,18 @@ public:
 		return hresult(true, hresult::facility_type::itf, hresult::code_type::min); 
 	}
 
+	explicit exception(
+		hresult Result = user(), const ierrorinfo &ErrorInfo = ierrorinfo()): 
+		Result(Result), ErrorInfo(ErrorInfo)
+	{
+	}
+
 private:
 
 	friend class create_exception;
 
 	hresult Result;
 	ierrorinfo ErrorInfo;
-
-	exception(
-		hresult Result = user(), const ierrorinfo &ErrorInfo = ierrorinfo()): 
-		Result(Result), ErrorInfo(ErrorInfo)
-	{
-	}
 
 	hresult set() const
 	{
