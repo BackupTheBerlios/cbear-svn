@@ -222,11 +222,14 @@
 	<xsl:param name="library"/>
 	<type.ref id="*">
 		<type.ref>
-			<xsl:if test="$library">
-				<xsl:attribute name="library">
-					<xsl:value-of select="$library"/>
-				</xsl:attribute>
-			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="$library = 'stdole' and @id = 'ierrorinfo'"/>
+				<xsl:when test="$library">
+					<xsl:attribute name="library">
+						<xsl:value-of select="$library"/>
+					</xsl:attribute>
+				</xsl:when>
+			</xsl:choose>
 			<xsl:apply-templates select="@id" mode="api:body.local"/>
 		</type.ref>
 	</type.ref>

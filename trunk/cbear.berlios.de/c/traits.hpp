@@ -2,6 +2,7 @@
 #define CBEAR_BERLIOS_DE_C_TRAITS_HPP_INCLUDED
 
 #include <boost/type_traits/is_class.hpp>
+#include <cbear.berlios.de/meta/if.hpp>
 
 namespace cbear_berlios_de
 {

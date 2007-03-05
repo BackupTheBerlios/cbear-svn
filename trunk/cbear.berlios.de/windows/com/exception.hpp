@@ -62,7 +62,7 @@ public:
 	}
 };
 
-typedef pointer< ::IErrorInfo> ierrorinfo;
+typedef pointer< ::IErrorInfo> ierrorinfo_t;
 
 template<class Base>
 class pointer_content<Base, ::ICreateErrorInfo>:
@@ -109,7 +109,7 @@ public:
 	hresult result() const throw() { return this->Result; }
 
 	// error info.
-	const ierrorinfo &errorinfo() const throw() { return this->ErrorInfo; }
+	const ierrorinfo_t &errorinfo() const throw() { return this->ErrorInfo; }
 	
 	// print.
 	template<class Stream>
@@ -137,7 +137,7 @@ public:
 		{
 			return;
 		}
-		ierrorinfo ErrorInfo;
+		ierrorinfo_t ErrorInfo;
 		::GetErrorInfo(0, com::internal<out>(ErrorInfo));
 		throw exception(Value, ErrorInfo);
 	}
@@ -154,7 +154,7 @@ public:
 	}
 
 	explicit exception(
-		hresult Result = user(), const ierrorinfo &ErrorInfo = ierrorinfo()): 
+		hresult Result = user(), const ierrorinfo_t &ErrorInfo = ierrorinfo_t()):
 		Result(Result), ErrorInfo(ErrorInfo)
 	{
 	}
@@ -164,7 +164,7 @@ private:
 	friend class create_exception;
 
 	hresult Result;
-	ierrorinfo ErrorInfo;
+	ierrorinfo_t ErrorInfo;
 
 	hresult set() const
 	{
@@ -189,7 +189,7 @@ public:
 	{
 		::CreateErrorInfo(com::internal<out>(this->CreateErrorInfo));
 		this->com::exception::ErrorInfo = *CreateErrorInfo.
-			query_interface<ierrorinfo::interface_t>();
+			query_interface<ierrorinfo_t::interface_t>();
 	}
 
 	const create_exception &Description(lpcwstr_t X) const

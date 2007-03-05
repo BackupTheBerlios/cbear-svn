@@ -45,6 +45,13 @@
 	</id.ref>
 </xsl:template>
 
+<xsl:template match="odl:type.ref[@id = 'IErrorInfo']" mode="odl:internal">
+	<id.ref type="::">
+		<id.ref/>
+		<id.ref id="IErrorInfo"/>
+	</id.ref>
+</xsl:template>
+
 <!-- attribute -->
 
 <xsl:template match="odl:attribute" mode="odl:cpp"/>
