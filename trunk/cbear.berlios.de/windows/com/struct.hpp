@@ -24,7 +24,7 @@ public:
 		typedef ValueType type;
 		static void construct(type &X)
 		{
-			new(&X) struct_t();
+			new(&X) Type();
 		}
 	};
 
