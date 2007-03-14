@@ -43,6 +43,10 @@
 	color: magenta;
 </xsl:variable>
 
+<xsl:variable name="cpp:html.comment">
+  color: red;
+</xsl:variable>
+
 <!-- Preprocessor Line -->
 
 <xsl:template name="cpp:html.preprocessor">
@@ -50,6 +54,19 @@
 	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">
 			<span style="{$cpp:html.preprocessor}">
+				<xsl:copy-of select="$text"/>
+			</span>
+		</xsl:with-param>
+	</xsl:call-template>
+</xsl:template>
+  
+<!-- Comment Line -->
+
+<xsl:template name="cpp:html.comment">
+	<xsl:param name="text"/>
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">
+			<span style="{$cpp:html.comment}">
 				<xsl:copy-of select="$text"/>
 			</span>
 		</xsl:with-param>
@@ -668,6 +685,14 @@
 	<xsl:call-template name="cpp:html.block"/>
 </xsl:template>
 
+<!-- comment -->
+<xsl:template match="cpp:comment" mode="cpp:html">
+  <xsl:call-template name="cpp:html.comment">
+    <xsl:with-param 
+      name="text" select="concat('/** ', child::text() ,' */')"/>
+  </xsl:call-template>
+</xsl:template>
+
 <!-- include -->
 
 <xsl:template match="cpp:include" mode="cpp:html">
@@ -695,6 +720,15 @@
 		<xsl:call-template name="cpp:html.preprocessor">
 			<xsl:with-param name="text" select="concat('#define ', $define)"/>
 		</xsl:call-template>
+    <xsl:call-template name="cpp:html.preprocessor">
+      <xsl:with-param name="text" select="'#if defined(_MSC_VER) &amp;&amp; _MSC_VER &gt; 1000'"/>
+    </xsl:call-template>
+    <xsl:call-template name="cpp:html.preprocessor">
+      <xsl:with-param name="text" select="'#pragma once'"/>
+    </xsl:call-template>
+    <xsl:call-template name="cpp:html.preprocessor">
+      <xsl:with-param name="text" select="'#endif // _MSC_VER &amp;&amp; _MSC_VER &gt; 1000'"/>
+    </xsl:call-template>
 		<xsl:apply-templates select="*" mode="cpp:html"/>
 		<xsl:call-template name="cpp:html.preprocessor">
 			<xsl:with-param name="text" select="'#endif'"/>
