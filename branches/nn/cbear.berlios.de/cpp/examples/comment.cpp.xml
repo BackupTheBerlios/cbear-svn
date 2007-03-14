@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="../html.xsl"?>
+<unit
+	xmlns="http://cbear.berlios.de/cpp"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://cbear.berlios.de/cpp ../main.xsd"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	id="cbear.berlios.de/cpp/examples/typedef">
+
+<header>
+
+<namespace id="cbear_berlios_de">
+<namespace id="cpp">
+<namespace id="examples">
+
+  <comment>Some type comment</comment>
+	<typedef id="Type1">
+		<id.ref id="ClassN"/>
+	</typedef>
+
+</namespace>
+</namespace>
+</namespace>
+
+</header>
+
+</unit>
