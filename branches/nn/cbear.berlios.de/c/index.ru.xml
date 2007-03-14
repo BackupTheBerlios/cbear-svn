@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../cms/html.xsl"?>
+<section 
+	xmlns="http://cbear.berlios.de/cms" 
+	xml:lang="ru"
+	name="Взаимодействие C и C++">
+	<p>
+Есть необходимость создавать и работать с COM объектами (указателями на 
+интерфейсы, структурами, динамическими массивами (SAFEARRAY), строками (BSTR) 
+и т.п. на C++. То что предоставляет Microsoft для COM имеет C интерфейс. Есть 
+ATL для C++, но он мне жутко не нравится и не удовлетворяет моим потребностям.
+	</p>
+	<p>
+Есть еще другие C бибилиотеки которые хотелось бы использовать в C++. 
+	</p>
+	<section name="Проблемы связанные с функциями и объектами языка C">
+		<ul>
+			<li>
+Передача параметров по указателю, а не по ссылке.
+<pre><![CDATA[// С функция
+HRESULT CFunction(/*IN*/ IUnknown *P, /*IN,OUT*/IUnknown **PP);
+// C++ функция
+void CFunction(const pointer<IUnknown> &P, pointer<IUnknown> &PP);]]></pre>
+			</li>				
+			<li>
+Передача указателей на неинициализированные объекты, например [OUT] аргументы.
+<pre><![CDATA[// С функция
+HRESULT Function(/*IN*/ IUnknown *P, /*RETVAL,OUT*/IUnknown **PP);
+// C++ функция
+pointer<IUnknown> Function(const pointer<IUnknown> &P);]]></pre>
+			</li>
+			<li>
+Использование неавтономных объектов, отсутствие корректных конструкторов, 
+деструкторов и присваиваний. Например:
+				<ul>
+					<li>
+Указатель на интерфейс: Interface *, вместо 
+<em>class pointer&lt;Interface&gt;</em>.
+<pre><![CDATA[// C:
+{
+	// создание
+	IUnknown *P0 = 0;
+	...
+	// создание
+	IUnknown *P = P1;
+	if(P) P->AddRef();
+	...
+	// присваивание
+	if(P) P->Release();
+	P = P2;
+	if(P) P->AddRef();
+	...
+	// уничтожение
+	if(P) P->Release();
+	if(P0) P0->Release();
+}
+// С++
+{
+	// создание
+	pointer<IUnknown> P0;
+	...
+	// создание
+	pointer<IUnknown> P = P1;
+	...
+	// присваивание
+	P = P2;
+	...	
+	// уничтожение (автоматически)
+}]]></pre>
+					</li>
+					<li>
+Строка: WCHAR *, вместо <em>class bstr</em>.
+					</li>
+					<li>
+Динамические массивы: SAFEARRAY *, вместо 
+<em>class safearray&lt;ValueType&gt;</em>.
+					</li>
+				</ul>
+			</li>
+			<li>
+Сложный механизм передачи и обработки исключительных ситуаций. Например, 
+использование HRESULT как признак ошибки.
+<pre><![CDATA[// C:
+{
+	HRESULT R = S_OK;
+	IUnknown P = P1;
+	IUnknown PP = P2;
+	if(P) P->AddRef();
+	if(PP) PP->AddRef();
+	...
+	R = Function(P, &PP);
+	if(FAILED(R)) goto End;
+	...
+End:
+	if(P) P->Relase();
+	if(PP) P->Release();
+	return R;
+}]]></pre>
+<pre><![CDATA[// С++
+{
+	pointer<IUnknown> P(P1);
+	pointer<IUnknown> PP(P2);
+	...
+	PP = Function(P);
+	...
+}]]></pre>
+			</li>
+		</ul>
+		<p>
+Основная проблема это даже не количество кода, а растущая вероятность 
+количества ошибок времени исполнения. Например, в предыдущем С коде при 
+уничтожении PP я, случайно, при копировании, сделал ошибку.
+		</p>
+		<p>
+Практически все эти проблемы можно отнести к любой C библиотеке.
+		</p>
+	</section>
+	<section name="Автономные C++ объекты">
+		<p>
+Автономными объектами будем называть такие объекты, которые имеют корректные 
+конструкторы, деструкторы и операторы присваивания. 
+		</p>
+		<p>
+Используя автономные объекты можно частично решить некоторые проблемы, но 
+возникает новая - проблема совместимости с C библиотеками. Нужен набор функций
+преобразования из C++ объектов в параметры C функций и обратно.
+		</p>
+	</section>
+	<section name="Функции преобразования">
+Каждому типу поставим в соответствие набор функций преобразования в параметры и 
+из параметров C функций.
+<pre><![CDATA[// С тип.
+template<class T>
+class c_t; 
+
+// Тип C [IN] параметра.
+template<class T>
+class c_in_t;
+	
+// Тип C [IN, OUT] параметра.
+template<class T>
+class c_in_out_t;
+
+// Тип C [OUT] параметра.
+template<class T>
+class c_out_t;
+
+// Функция преобразующая константый объект в C [IN] параметр.
+template<class T>
+typename c_in_t<T>::type c_in(const T &);
+
+// Функция преобразующая объект в C [IN, OUT] параметр.
+template<class T>
+typename c_in_out_t<T>::type c_in_out(T &);
+
+// Функция преобразующая объект в C [OUT] параметр.
+template<class T>
+typename c_out_t<T>::type c_out(T &);
+	
+// Функция возвращающая ссылку на константный объект по C [IN] параметру.
+template<class T>
+const T & cpp_in(const typename c_in_t<T>::type &X);
+
+// Функция возвращающая ссылку на объект по C [IN, OUT] параметру.
+template<class T>
+T & cpp_in_out(const typename c_in_out_t<T>::type &X);
+
+// Функция возвращающая ссылку на объект по C [OUT] параметру.
+template<class T>
+T & cpp_out(const typename c_out_t<T>::type &X);]]></pre>
+Примеры использования:
+		<ul>
+			<li>
+Тогда, вызов такой C функции
+<pre><![CDATA[HRESULT Function(/*IN*/ IUnknown *P, /*IN,OUT*/IUnknown **PP);]]></pre>
+будет выглядеть так:
+<pre><![CDATA[pointer<IUnknown> P;
+pointer<IUnknown> PP;
+...
+HRESULT R = Function(c_in(P), c_in_out(P));]]></pre>
+			</li>
+			<li>
+Реализация C функции на C++:
+<pre><![CDATA[HRESULT Function(/*IN*/ IUnknown *P_, /*IN,OUT*/IUnknown **PP_)
+{
+	const pointer<IUnknown> &P = cpp_in<pointer<IUnknown> >(P_);
+	pointer<IUnknown> &PP = cpp_in_out<pointer<IUnknown> >(PP_);
+	// Дальше, безопасно работаем с P и c PP, вместо небезопасных P_ и PP_.
+	...
+	PP = P;
+	...
+	return S_OK;
+}]]></pre>
+			</li>
+		</ul>			
+Осталось только специализировать.
+	</section>
+	<section name="Самодостаточность объектов">
+Для облегчения специализации функций преобразования, будем считать что, по 
+умолчанию, объект сам реализует все свои функции преобразования. Например 
+указатель:
+<pre><![CDATA[template<class Interface>
+class pointer
+{
+public:
+	typedef Interface *c_t; // С тип.
+	typedef Interface *c_in_t; // Тип C [IN] параметра.
+	typedef Interface **c_in_out_t; // Тип C [IN, OUT] параметра.
+	typedef Interface **c_out_t; //< Тип C [OUT] параметра.
+
+	// Функция преобразующая константый объект в C [IN] параметр.
+	c_in_t c_in() const;
+	// Функция преобразующая объект в C [IN, OUT] параметр.
+	c_in_out_t c_in_out() const;
+	// Функция преобразующая объект в C [OUT] параметр.
+	c_out_t c_out() const;
+	
+	// Статическая функция возвращающая ссылку на константный объект по C [IN] 
+	// параметру. Поведение возвращаемого объекта - const object &.
+	static ... cpp_in(const c_in_t &X);
+	// Статическая функция возвращающая ссылку на объект по C [IN, OUT] 
+	// параметру. Поведение возвращаемого объекта - object &.
+	static ... cpp_in_out(const c_in_out_t &X);	
+	// Статическая функция возвращающая ссылку на объект по C [OUT] параметру.
+	// Поведение возвращаемого объекта - object &.
+	static ... cpp_out(const c_out_t &X);
+	
+	...
+};]]></pre>
+	</section>
+	<section name="Бинарная совместимость">
+Хотелось бы, что бы все конвертаций из С++ объектов в C параметры и обратно 
+происходили достаточно быстро. Этого можно достичь договорившись использовать 
+только бинарно совместимые автономные объекты. В таком случае, все функции 
+конвертации будут работать используя reinterpret_cast. Например, реализация функций
+преобразования в типа pointer:
+<pre><![CDATA[template<class Interface>
+class pointer
+{
+public:
+	typedef Interface *c_t; // С тип.
+	typedef Interface *c_in_t; // Тип C [IN] параметра.
+	typedef Interface **c_in_out_t; // Тип C [IN, OUT] параметра.
+	typedef Interface **c_out_t; //< Тип C [OUT] параметра.
+
+	// Функция преобразующая константый объект в C [IN] параметр.
+	c_in_t c_in() const
+	{
+		return this->P;
+	}
+	// Функция преобразующая объект в C [IN, OUT] параметр.
+	c_in_out_t c_in_out() const
+	{
+		return &this->P
+	}
+	// Функция преобразующая объект в C [OUT] параметр.
+	c_out_t c_out() const
+	{
+		*this = pointer();
+		return &this->P;
+	}
+	
+	// Статическая функция возвращающая ссылку на константный объект по C [IN] 
+	// параметру.
+	static const pointer &cpp_in(const c_in_t &X)
+	{
+		STATIC_ASSERT(sizeof(pointer)==sizeof(c_t);
+		return reinterpret_cast<const pointer &>(this->X)
+	}
+	// Статическая функция возвращающая ссылку на объект по C [IN, OUT] параметру.
+	static pointer &cpp_in_out(const c_in_out_t &X)
+	{
+		STATIC_ASSERT(sizeof(pointer)==sizeof(c_t);
+		return reinterpret_cast<pointer &>(*this->X);
+	}
+	// Статическая функция возвращающая ссылку на объект по C [OUT] параметру.
+	static pointer &cpp_out(const c_out_t &X)
+	{
+		X = 0;
+		STATIC_ASSERT(sizeof(pointer)==sizeof(c_t);
+		return reinterpret_cast<pointer &>(*this->X);	
+	}
+	
+	...
+private:
+	Interface *P;
+};]]></pre>
+	</section>
+</section>
+

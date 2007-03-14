@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../../cms/html.xsl"?>
+<section xmlns="http://cbear.berlios.de/cms" name="COM System">
+	
+	<p>
+Namespace <em>cbear_berlios_de::com</em>.
+	</p>
+	<p>
+<a href="system.hpp"/>. It can't be a singleton because it has to be
+created for each thread which uses <em>COM</em>.
+	</p>
+</section>

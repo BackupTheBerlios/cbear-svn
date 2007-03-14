@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="../html.xsl"?>
+<unit
+	xmlns="http://cbear.berlios.de/cpp"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://cbear.berlios.de/cpp ../main.xsd"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	id="net/sourceforge/cbear/cpp/examples/method">
+
+<header>
+
+<namespace id="net">
+<namespace id="sourceforge">
+<namespace id="cbear">
+<namespace id="cpp">
+<namespace id="examples">
+
+	<template>
+		<id id="Class3"/>
+		<id id="Class6"/>
+		<class>
+			<id.ref type="::">
+				<id.ref id="Class1"/>
+				<id.ref id="Class2" type="&lt;&gt;">
+					<id.ref id="Class3"/>
+					<id.ref id="Class4" type="&lt;&gt;"/>
+				</id.ref>
+				<id.ref id="Class5"/>
+			</id.ref>
+
+			<access access="protected">
+				<id.ref id="Class6"/>
+			</access>
+
+			<access access="protected">
+				<template>
+					<id id="Class100"/>
+					<class>
+						<id.ref id="Class10"/>
+					</class>
+				</template>
+			</access>
+
+			<access access="private">
+
+				<method id="Function">
+					<id.ref id="void"/>
+					<stdcall/>
+				</method>
+
+				<method id="My">
+					<body/>
+				</method>
+
+				<method id="Class5">
+					<ctor><id.ref id="A"/></ctor>
+					<body/>
+				</method>
+
+				<method id="Class5">
+					<parameter id="A"><id.ref id="int"/></parameter>
+					<ctor>
+						<id.ref id="A" type="()">
+							<id.ref id="A"/>
+						</id.ref>
+					</ctor>
+					<body/>
+				</method>
+
+				<method id="Function">
+					<virtual/>
+					<id.ref id="Class5" type="&lt;&gt;">
+						<id.ref id="void"/>
+					</id.ref>
+					<parameter><id.ref id="int"/></parameter>
+				</method>
+
+				<method id="Function">
+					<virtual/>
+					<id.ref id="void"/>
+					<parameter><id.ref id="int"/></parameter>
+					<parameter><id.ref id="Class3"/></parameter>
+					<const/>
+					<abstract/>
+				</method>
+			</access>
+
+		</class>
+	</template>
+
+	<template>
+		<id id="Class100"/>
+		<class>
+			<id.ref id="Class10"/>
+		</class>
+	</template>
+
+	<template>
+		<class>
+			<id.ref id="Class11"/>
+
+			<access access="public">
+
+				<id.ref id="Class16"/>
+
+				<id.ref id="Class17" type="&lt;&gt;">
+					<id.ref id="Class23"/>
+					<id.ref id="Class24"/>
+					<id.ref id="Class25"/>
+					<id.ref id="Class18" type="&lt;&gt;">
+						<id.ref id="Class19"/>
+					</id.ref>
+				</id.ref>
+
+				<class>
+					<id.ref id="Class10"/>
+				</class>
+			</access>
+
+		</class>
+	</template>
+
+</namespace>
+</namespace>
+</namespace>
+</namespace>
+</namespace>
+
+</header>
+
+<code>
+
+<namespace id="net">
+<namespace id="sourceforge">
+<namespace id="cbear">
+<namespace id="cpp">
+<namespace id="examples">
+</namespace>
+</namespace>
+</namespace>
+</namespace>
+</namespace>
+
+</code>
+
+</unit>
