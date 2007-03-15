@@ -720,15 +720,17 @@
 		<xsl:call-template name="cpp:html.preprocessor">
 			<xsl:with-param name="text" select="concat('#define ', $define)"/>
 		</xsl:call-template>
-    <xsl:call-template name="cpp:html.preprocessor">
-      <xsl:with-param name="text" select="'#if defined(_MSC_VER) &amp;&amp; _MSC_VER &gt; 1000'"/>
-    </xsl:call-template>
-    <xsl:call-template name="cpp:html.preprocessor">
-      <xsl:with-param name="text" select="'#pragma once'"/>
-    </xsl:call-template>
-    <xsl:call-template name="cpp:html.preprocessor">
-      <xsl:with-param name="text" select="'#endif // _MSC_VER &amp;&amp; _MSC_VER &gt; 1000'"/>
-    </xsl:call-template>
+		<xsl:call-template name="cpp:html.preprocessor">
+			<xsl:with-param 
+				name="text" 
+				select="'#if defined(_MSC_VER) &amp;&amp; _MSC_VER &gt; 1000'"/>
+		</xsl:call-template>
+		<xsl:call-template name="cpp:html.preprocessor">
+			<xsl:with-param name="text" select="'#pragma once'"/>
+		</xsl:call-template>
+		<xsl:call-template name="cpp:html.preprocessor">
+			<xsl:with-param name="text" select="'#endif'"/>
+		</xsl:call-template>
 		<xsl:apply-templates select="*" mode="cpp:html"/>
 		<xsl:call-template name="cpp:html.preprocessor">
 			<xsl:with-param name="text" select="'#endif'"/>
