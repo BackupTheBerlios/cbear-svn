@@ -1,5 +1,4 @@
 ## This is a directory/file filter for WinMerge
-## This filter lets through only files XML/HTML developer cares about
 name: No SVN
 
 ## This is an inclusive (loose) filter
@@ -10,4 +9,5 @@ def: include
 ## Filters for directories begin with d:
 ## (Inline comments begin with " ##" and extend to the end of the line)
 
+d: \\_svn$
 d: \\.svn$
