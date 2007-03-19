@@ -330,6 +330,12 @@
 <xsl:template match="api:method" mode="api:body">
 	<method>
 		<xsl:apply-templates select="@id" mode="api:body"/>
+		<!--
+		<attribute id="custom">
+			<value>204d5a28-46a0-3f04-bd7c-b5672631e57f</value>
+			<value>""</value>
+		</attribute>
+		-->
 		<xsl:call-template name="api:method.header"/>
 		<xsl:apply-templates select="api:parameter" mode="api:body"/>
 		<xsl:apply-templates select="api:type.ref" mode="api:body.result"/>
