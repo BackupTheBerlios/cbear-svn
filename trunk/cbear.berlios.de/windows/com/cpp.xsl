@@ -902,6 +902,12 @@
 										<parameter><id.ref id="..."/></parameter>
 										<body>
 											<id.ref type="return">
+<!--
+												<id.ref type="-&gt;">
+													<id.ref type="this"/>
+													<id.ref id="internal_catch" type="()"/>
+												</id.ref>
+-->
 												<id.ref type=".">
 													<id.ref type="::">
 														<id.ref id="create_exception"/>

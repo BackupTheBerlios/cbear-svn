@@ -222,7 +222,7 @@ public:
 		return *this;
 	}
 
-	// It catchs all exceptions and sets system COM error info.
+	// It catchs all exceptions and sets the system COM error info.
 	static hresult catch_()
 	{
 		try

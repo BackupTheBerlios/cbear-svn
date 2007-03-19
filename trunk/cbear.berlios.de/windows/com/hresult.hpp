@@ -39,6 +39,8 @@ class hresult: public hresult_wrap
 {
 public:
 
+	typedef internal_type c_t;
+
 	hresult() {}
 
 	enum enumeration

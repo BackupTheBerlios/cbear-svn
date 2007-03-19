@@ -2,6 +2,7 @@
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_INTERFACE_CONTENT_HPP_INCLUDED
 
 #include <cbear.berlios.de/windows/com/iunknown.hpp>
+#include <cbear.berlios.de/windows/com/hresult.hpp>
 
 namespace cbear_berlios_de
 {
@@ -39,6 +40,12 @@ protected:
 		}
 		return iunknown_t::move_t();
 	}
+	/*
+	hresult::c_t internal_catch() throw()
+	{
+		return static_cast<implementation_t *>(this)->catch_().c_in();
+	}
+	*/
 };
 
 }
