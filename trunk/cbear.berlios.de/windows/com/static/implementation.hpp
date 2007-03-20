@@ -54,19 +54,20 @@ public:
 		}
 	};
 
-	implementation() 
-	{
-	}
-
-	template<class P>
-	implementation(const P &P_): 
-		base_t(P_)
-	{
-	}		
-
 	static typename pointer_t::move_t this_pointer(base_t *B)
 	{
 		return move::copy(pointer_t::cpp_in(static_cast<implementation *>(B)));
+	}
+
+	static typename pointer_t::move_t new_()
+	{
+		return move::copy(pointer_t::cpp_in(new implementation()));
+	}
+
+	template<class P>
+	static typename pointer_t::move_t new_(P const &P_)
+	{
+		return move::copy(pointer_t::cpp_in(new implementation(P_)));
 	}
 
 // ::IUnknown
@@ -100,7 +101,19 @@ public:
 #endif
 
 private:
+
 	atomic::wrap<ulong_t> Counter;
+
+	implementation() 
+	{
+	}
+
+	template<class P>
+	implementation(const P &P_): 
+		base_t(P_)
+	{
+	}
+
 };
 
 }

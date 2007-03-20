@@ -63,7 +63,7 @@ pointer<T> create_instance(
 		internal<in>(UnkOuter), 
 		internal<in>(ClsContext), 
 		*uuid::of<T>().c_in(), 
-		(void**)internal<out>(Result)));
+		cast::traits<void**>::reinterpret(internal<out>(Result))));
 /*
 	exception::throw_unless(::CoCreateInstanceEx(
 		*Uuid.c_in(), 

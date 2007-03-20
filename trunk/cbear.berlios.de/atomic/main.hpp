@@ -117,16 +117,16 @@ struct pointer_traits
 
 	static type exchange(volatile type &This, type Exchange)
 	{
-		return reinterpret_cast<type>(InterlockedExchangePointer(
-			reinterpret_cast<internal_type *>(&(type &)(This)), 
+		return cast::traits<type>::reinterpret<type>(InterlockedExchangePointer(
+			cast::traits<internal_type *>::reinterpret(&static_cast<type &>(This)),
 			Exchange));
 	}
 
 	static type compare_exchange(
 		volatile type &This, type Exchange, type Comperand)
 	{
-		return reinterpret_cast<type>(InterlockedCompareExchangePointer(
-			reinterpret_cast<internal_type *>(&(type &)(This)),
+		return cast::traits<type>::reinterpret(InterlockedCompareExchangePointer(
+			cast::traits<internal_type *>::reinterpret(&static_cast<type &>(This)),
 			Exchange, 
 			Comperand));
 	}

@@ -18,17 +18,13 @@ class pointer_t: public meta::identity<com::pointer<implementation<T> > > {};
 template<class T>
 typename pointer<implementation<T> >::move_t new_()
 {
-	typedef implementation<T> implementation_t;
-	typedef pointer<implementation_t> pointer_t;
-	return move::copy(pointer_t::cpp_in(new implementation_t()));
+	return implementation<T>::new_();
 }
 
 template<class T, class P>
-typename pointer<implementation<T> >::move_t new_(const P &P_)
+typename pointer<implementation<T> >::move_t new_(P const &P_)
 {
-	typedef implementation<T> implementation_t;
-	typedef pointer<implementation_t> pointer_t;
-	return move::copy(pointer_t::cpp_in(new implementation_t(P_)));
+	return implementation<T>::new_(P_);
 }
 
 }
