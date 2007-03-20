@@ -150,12 +150,12 @@ struct integer_parts
 
 	static half_type *array(Type &X) 
 	{ 
-		return cast::traits<half_type *>::reinterpret(&X);
+		return reinterpret_cast<half_type *>(&X);
 	}
 
 	static const half_type *array(const Type &X) 
 	{ 
-		return cast::traits<half_type const *>::reinterpret(&X);
+		return reinterpret_cast<half_type const *>(&X);
 	}
 };
 
