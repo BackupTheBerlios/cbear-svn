@@ -686,10 +686,20 @@
 </xsl:template>
 
 <!-- comment -->
+    
 <xsl:template match="cpp:comment" mode="cpp:html">
+  <!-- Make all comment one line comment, thus we can use any character in the comment -->
+  <xsl:variable name="comment">
+    <xsl:call-template name="txt:replace-string">
+      <xsl:with-param name="text" select="child::text()"/>
+      <xsl:with-param name="from" select="'&#xA;'"/>
+      <xsl:with-param name="to" select="'&#xA;///'"/>
+    </xsl:call-template>
+  </xsl:variable>
+
   <xsl:call-template name="cpp:html.comment">
-    <xsl:with-param 
-      name="text" select="concat('/** ', child::text() ,' */')"/>
+    <!-- Add comment to the first line -->
+    <xsl:with-param name="text" select="concat('///', $comment)"/>
   </xsl:call-template>
 </xsl:template>
 
