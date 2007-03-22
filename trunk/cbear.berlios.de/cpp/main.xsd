@@ -13,8 +13,11 @@
 	<element name="unit">
 		<complexType>
 			<sequence>
-				<element ref="cpp:header"/>
-				<element ref="cpp:code" minOccurs="0"/>
+        <element ref="cpp:comment" minOccurs="0" maxOccurs="unbounded"/>
+        <element ref="cpp:header"/>
+        <element ref="cpp:comment" minOccurs="0" maxOccurs="unbounded"/>
+        <element ref="cpp:code" minOccurs="0"/>
+        <element ref="cpp:comment" minOccurs="0" maxOccurs="unbounded"/>
 			</sequence>
 			<attribute name="id" type="cpp:id"/>
 		</complexType>
@@ -26,8 +29,13 @@
 	<!-- A content contains namespaces, templates and classes. -->
 	<complexType name="content">
 		<sequence>
-			<element ref="cpp:include" minOccurs="0" maxOccurs="unbounded"/>
-			<choice minOccurs="0" maxOccurs="unbounded">
+      <choice minOccurs="0" maxOccurs="unbounded">
+        <element ref="cpp:comment"/>
+        <element ref="cpp:include"/>
+        <element ref="cpp:qinclude"/>
+      </choice>
+      <choice minOccurs="0" maxOccurs="unbounded">
+        <element ref="cpp:comment"/>
 				<element ref="cpp:namespace"/>
 				<element ref="cpp:class"/>
 				<element ref="cpp:template"/>
@@ -43,6 +51,20 @@
 			<attribute name="href" type="cpp:href"/>
 		</complexType>
 	</element>
+
+  <!-- A qinclude. -->
+  <element name="qinclude">
+    <complexType>
+      <attribute name="href" type="cpp:href"/>
+    </complexType>
+  </element>
+
+  <!-- A comment -->
+  <element name="comment">
+    <simpleType>
+      <restriction base="string"/>
+    </simpleType>
+  </element>
 
 	<!-- href. -->
 	<simpleType name="href">
@@ -61,6 +83,7 @@
 	<element name="namespace">
 		<complexType>
 			<choice minOccurs="0" maxOccurs="unbounded">
+        <element ref="cpp:comment"/>
 				<element ref="cpp:namespace"/>
 				<element ref="cpp:class"/>
 				<element ref="cpp:template"/>
@@ -198,7 +221,8 @@
 		<complexType>
 			<choice minOccurs="0" maxOccurs="unbounded">
 				<element ref="cpp:id.ref"/>
-				<element ref="cpp:try"/>
+        <element ref="cpp:try"/>
+        <element ref="cpp:comment"/>
 			</choice>
 		</complexType>
 	</element>

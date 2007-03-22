@@ -28,15 +28,15 @@
 <xsl:variable name="cpp:html.code" select="$cpp:html.header"/>
 
 <xsl:variable name="cpp:html.preprocessor">
-	color: navy;
-</xsl:variable>
-
-<xsl:variable name="cpp:html.keyword">
 	color: green;
 </xsl:variable>
 
-<xsl:variable name="cpp:html.id">
+<xsl:variable name="cpp:html.keyword">
 	color: blue;
+</xsl:variable>
+
+<xsl:variable name="cpp:html.id">
+	color: black;
 </xsl:variable>
 
 <xsl:variable name="cpp:html.const">
@@ -44,7 +44,7 @@
 </xsl:variable>
 
 <xsl:variable name="cpp:html.comment">
-  color: red;
+  color: navy;
 </xsl:variable>
 
 <!-- Preprocessor Line -->
@@ -688,19 +688,22 @@
 <!-- comment -->
     
 <xsl:template match="cpp:comment" mode="cpp:html">
-  <!-- Make all comment one line comment, thus we can use any character in the comment -->
-  <xsl:variable name="comment">
-    <xsl:call-template name="txt:replace-string">
-      <xsl:with-param name="text" select="child::text()"/>
-      <xsl:with-param name="from" select="'&#xA;'"/>
-      <xsl:with-param name="to" select="'&#xA;///'"/>
-    </xsl:call-template>
-  </xsl:variable>
+  <xsl:if test="string-length(child::text()) > 0">  
+    <!-- Make all comment one line comment,
+         thus we can use any character in the comment -->
+    <xsl:variable name="comment">
+      <xsl:call-template name="txt:replace-string">
+        <xsl:with-param name="text" select="child::text()"/>
+        <xsl:with-param name="from" select="'&#xA;'"/>
+        <xsl:with-param name="to" select="'&#xA;///'"/>
+      </xsl:call-template>
+    </xsl:variable>
 
-  <xsl:call-template name="cpp:html.comment">
-    <!-- Add comment to the first line -->
-    <xsl:with-param name="text" select="concat('///', $comment)"/>
-  </xsl:call-template>
+    <xsl:call-template name="cpp:html.comment">
+      <!-- Add comment to the first line -->
+      <xsl:with-param name="text" select="concat('///', $comment)"/>
+    </xsl:call-template>
+  </xsl:if>
 </xsl:template>
 
 <!-- include -->
@@ -712,12 +715,26 @@
 	</xsl:call-template>
 </xsl:template>
 
+<!-- quotes include -->
+
+<xsl:template match="cpp:qinclude" mode="cpp:html">
+  <xsl:call-template name="cpp:html.preprocessor">
+    <xsl:with-param 
+      name="text" select="concat('#include &quot;', @href, '&quot;')"/>
+  </xsl:call-template>
+</xsl:template>
+
 <!-- header -->
 
 <xsl:template match="cpp:header" mode="txt:main.indent"/>
 
 <xsl:template match="cpp:header" mode="cpp:html">
 	<div style="{$cpp:html.header}">
+    <!--
+    This should be refactored.
+    The file does not always has hpp extention.
+    Maybe extention should be added as @idext with default hpp.
+    -->
 		<xsl:variable name="define" select="concat(
 			translate(
 				translate(../@id, './', '__'), 
@@ -731,9 +748,9 @@
 			<xsl:with-param name="text" select="concat('#define ', $define)"/>
 		</xsl:call-template>
 		<xsl:call-template name="cpp:html.preprocessor">
-			<xsl:with-param 
-				name="text" 
-				select="'#if defined(_MSC_VER) &amp;&amp; _MSC_VER &gt; 1000'"/>
+			<xsl:with-param
+        name="text"
+        select="'#if defined(_MSC_VER) &amp;&amp; _MSC_VER &gt; 1000'"/>
 		</xsl:call-template>
 		<xsl:call-template name="cpp:html.preprocessor">
 			<xsl:with-param name="text" select="'#pragma once'"/>
@@ -756,7 +773,7 @@
 	<div style="{$cpp:html.code}">
 		<xsl:call-template name="cpp:html.preprocessor">
 			<xsl:with-param 
-				name="text" select="concat('#include &lt;', ../@id, '.hpp&gt;')"/>
+				name="text" select="concat('#include &quot;', ../@id, '.hpp&quot;')"/>
 		</xsl:call-template>
 		<xsl:apply-templates select="*" mode="cpp:html"/>
 	</div>
@@ -767,6 +784,16 @@
 <xsl:template match="cpp:unit" mode="txt:main.indent"/>
 
 <xsl:template name="cpp:html.unit">
+
+  <div style="{$cpp:html.header}">
+    <!-- Add comment about generation -->
+    <xsl:call-template name="cpp:html.comment">
+      <xsl:with-param
+        name="text"
+        select="'/// This file was generated.&#xA;/// Do not edit !!!'"/>
+    </xsl:call-template>
+  </div>
+  
 	<xsl:apply-templates select="*" mode="cpp:html"/>
 </xsl:template>
 
