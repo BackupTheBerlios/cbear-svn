@@ -116,7 +116,8 @@ class one_reference_t
 public:
 
 	typedef Type t;
-	typedef typename base::make_unsigned<t>::type unsigned_t;
+	typedef typename ::boost::remove_const<t>::type value_t;
+	typedef typename base::make_unsigned<value_t>::type unsigned_t;
 
 	static unsigned_t mask(::std::size_t N, bool V = true)
 	{
