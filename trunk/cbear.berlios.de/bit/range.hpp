@@ -14,26 +14,27 @@ namespace cbear_berlios_de
 namespace bit
 {
 
-namespace detail
-{
-
 // To avoid conversion warnings.
 template<class To>
-struct casting
+struct cast
 {
 	template<class From>
-	static To cast(From X) { return To(X); }
+	static To static_(From X) 
+	{ 
+		return static_cast<To>(X); 
+	}
 };
 
 // To avoid conversion warnings.
 template<>
-struct casting<bool>
+struct cast<bool>
 {
 	template<class From>
-	static bool cast(From X) { return X != 0; }
+	static bool static_(From X) 
+	{ 
+		return X != 0; 
+	}
 };
-
-}
 
 template<
 	class Type, std::size_t First, std::size_t Last, class ValueType = Type>
@@ -43,17 +44,16 @@ struct range
 	typedef ValueType value_type;
 	typedef typename base::make_unsigned<type>::type unsigned_type;
 
-	static const std::size_t first = First;
-	static const std::size_t last = Last;
-	static const std::size_t size = last - first + 1;
-	static const unsigned_type mask = 
-		((unsigned_type(1) << size) - unsigned_type(1)) << first;
+	static ::std::size_t const first = First;
+	static ::std::size_t const last = Last;
+	static ::std::size_t const size = last - first + 1;
+	static unsigned_type const _1 = static_cast<unsigned_type>(1);
+	static const unsigned_type mask = ((_1 << size) - _1) << first;
 	static const unsigned_type inverse_mask = ~mask;
 
 	static value_type get(type X) 
 	{ 
-		return detail::casting<value_type>::cast(
-			(unsigned_type(X) & mask) >> first); 
+		return cast<value_type>::static_((unsigned_type(X) & mask) >> first);
 	}
 	static void set(type &D, value_type S) 
 	{ 
@@ -65,20 +65,32 @@ struct range
 	class reference
 	{
 	public:
-		explicit reference(type &X): X(&X) {}
+		explicit reference(type &X): 
+			X(X) 
+		{
+		}
+		reference(reference const &R):
+			X(R.X)
+		{
+		}
 		operator value_type() const 
 		{ 
-			return get(*this->X);
+			return get(this->X);
 		}
-		const reference &operator=(value_type V) const 
+		reference &operator=(value_type V)
 		{ 
-			set(*this->X, V); return *this; 
-		}
+			set(this->X, V); 
+			return *this; 
+		}		
 	private:
-		type *X;
+		type &X;
+		reference &operator=(reference const &);
 	};
 
-	static reference make_reference(type &X) { return reference(X); }
+	static reference make_reference(type &X) 
+	{ 
+		return reference(X); 
+	}
 };
 
 /* Because of
@@ -94,7 +106,72 @@ struct range
 	to true.
 */
 template<class Type, std::size_t Number>
-struct one: range<Type, Number, Number, bool> {};
+class one: public range<Type, Number, Number, bool> 
+{
+};
+
+template<class Type>
+class one_reference_t
+{
+public:
+
+	typedef Type t;
+	typedef typename base::make_unsigned<t>::type unsigned_t;
+
+	static unsigned_t mask(::std::size_t N, bool V = true)
+	{
+		return cast<unsigned_t>::static_(V) << cast<unsigned_t>::static_(N);
+	}
+
+	static unsigned_t inverse_mask(::std::size_t N)
+	{
+		return ~mask(N);
+	}
+
+	one_reference_t(Type &R, ::std::size_t N):
+		R(R), N(N)
+	{
+	}
+
+	one_reference_t(one_reference_t const &X):
+		R(X.R), N(X.N)
+	{
+	}
+
+	void set(bool V)
+	{
+		this->R = this->R & inverse_mask(this->N) | mask(this->N, V);
+	}
+
+	bool get() const
+	{
+		return cast<bool>::static_(
+			(cast<unsigned_t>::static_(this->R) >> this->N) & 
+			static_cast<unsigned_t>(1));
+	}
+
+	operator bool() const
+	{
+		return this->get();
+	}
+
+	one_reference_t &operator=(bool V)
+	{
+		this->set(V);
+		return *this;
+	}
+
+private:
+	Type &R;
+	::std::size_t const N;
+	one_reference_t &operator=(one_reference_t const &);
+};
+
+template<class Type>
+one_reference_t<Type> make_one_reference(Type &R, ::std::size_t N)
+{
+	return one_reference_t<Type>(R, N);
+}
 
 }
 }

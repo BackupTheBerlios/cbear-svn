@@ -169,7 +169,7 @@ public:
 	public:
 		explicit facility_reference(hresult &X): Value(X.internal()) {}
 		operator facility_type() const { return facility_type(this->Value); }
-		const facility_reference &operator=(facility_type X) const
+		facility_reference &operator=(facility_type X)
 		{
 			this->Value = X.internal();
 			return *this;
@@ -218,7 +218,7 @@ public:
 	public:
 		explicit code_reference(hresult &X): Value(X.internal()) {}
 		operator code_type() const { return code_type(this->Value); }
-		const code_reference &operator=(code_type X) const
+		code_reference &operator=(code_type X)
 		{
 			this->Value = X.internal();
 			return *this;
