@@ -44,7 +44,7 @@
 </xsl:variable>
 
 <xsl:variable name="cpp:html.comment">
-  color: navy;
+	color: navy;
 </xsl:variable>
 
 <!-- Preprocessor Line -->
@@ -688,21 +688,23 @@
 <!-- comment -->
     
 <xsl:template match="cpp:comment" mode="cpp:html">
-  <xsl:if test="string-length(child::text()) > 0">  
-    <!-- Make all comment one line comment,
-         thus we can use any character in the comment -->
-    <xsl:variable name="comment">
-      <xsl:call-template name="txt:replace-string">
-        <xsl:with-param name="text" select="child::text()"/>
-        <xsl:with-param name="from" select="'&#xA;'"/>
-        <xsl:with-param name="to" select="'&#xA;///'"/>
-      </xsl:call-template>
-    </xsl:variable>
+	<xsl:if test="string-length(child::text()) > 0">  
+		<!-- 
+			Make all comment one line comment, thus we can use any character in the
+			comment 
+		-->
+		<xsl:variable name="comment">
+			<xsl:call-template name="txt:replace-string">
+				<xsl:with-param name="text" select="child::text()"/>
+				<xsl:with-param name="from" select="'&#xA;'"/>
+				<xsl:with-param name="to" select="'&#xA;///'"/>
+			</xsl:call-template>
+		</xsl:variable>
 
-    <xsl:call-template name="cpp:html.comment">
-      <!-- Add comment to the first line -->
-      <xsl:with-param name="text" select="concat('///', $comment)"/>
-    </xsl:call-template>
+		<xsl:call-template name="cpp:html.comment">
+			<!-- Add comment to the first line -->
+			<xsl:with-param name="text" select="concat('///', $comment)"/>
+		</xsl:call-template>
   </xsl:if>
 </xsl:template>
 
@@ -717,6 +719,9 @@
 
 <!-- quotes include -->
 
+<!-- 
+	Alternative syntax: <cpp:include quot="&quot" href="..."/>. Sergey Shandar.
+-->
 <xsl:template match="cpp:qinclude" mode="cpp:html">
   <xsl:call-template name="cpp:html.preprocessor">
     <xsl:with-param 
@@ -730,10 +735,10 @@
 
 <xsl:template match="cpp:header" mode="cpp:html">
 	<div style="{$cpp:html.header}">
-    <!--
-    This should be refactored.
-    The file does not always has hpp extention.
-    Maybe extention should be added as @idext with default hpp.
+		<!--
+			This should be refactored.
+			The file does not always has hpp extention.
+			Maybe extention should be added as @idext with default hpp.
     -->
 		<xsl:variable name="define" select="concat(
 			translate(
@@ -749,8 +754,8 @@
 		</xsl:call-template>
 		<xsl:call-template name="cpp:html.preprocessor">
 			<xsl:with-param
-        name="text"
-        select="'#if defined(_MSC_VER) &amp;&amp; _MSC_VER &gt; 1000'"/>
+				name="text"
+				select="'#if defined(_MSC_VER) &amp;&amp; _MSC_VER &gt; 1000'"/>
 		</xsl:call-template>
 		<xsl:call-template name="cpp:html.preprocessor">
 			<xsl:with-param name="text" select="'#pragma once'"/>
@@ -784,16 +789,21 @@
 <xsl:template match="cpp:unit" mode="txt:main.indent"/>
 
 <xsl:template name="cpp:html.unit">
-
-  <div style="{$cpp:html.header}">
-    <!-- Add comment about generation -->
-    <xsl:call-template name="cpp:html.comment">
-      <xsl:with-param
-        name="text"
-        select="'/// This file was generated.&#xA;/// Do not edit !!!'"/>
-    </xsl:call-template>
-  </div>
-  
+	<!-- 
+	<!- -
+		On hold. The comment can only be seen in HTML. So it is useless.
+		IMHO, it should be nowhere.
+		(Sergey Shandar).
+	- ->
+	<div style="{$cpp:html.header}">
+		<!- - Add comment about generation - ->
+		<xsl:call-template name="cpp:html.comment">
+			<xsl:with-param
+				name="text"
+				select="'/// This file was generated.&#xA;/// Do not edit!!!'"/>
+		</xsl:call-template>
+	</div>
+	-->
 	<xsl:apply-templates select="*" mode="cpp:html"/>
 </xsl:template>
 
