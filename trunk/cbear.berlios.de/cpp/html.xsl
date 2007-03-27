@@ -689,19 +689,13 @@
     
 <xsl:template match="cpp:comment" mode="cpp:html">
 	<xsl:if test="string-length(.) > 0">
-		<!-- 
-			Make all comment one line comment, thus we can use any character in the
-			comment 
-		-->
 		<xsl:variable name="firstline">
 			<xsl:value-of select="'//'"/>
 			<xsl:if test="@doxygen = 'true'">
 				<xsl:value-of select="'/'"/>
 			</xsl:if>
 		</xsl:variable>
-
 		<xsl:call-template name="cpp:html.comment">
-			<!-- Add comment to the first line -->
 			<xsl:with-param name="text">
 				<xsl:value-of select="$firstline"/>
 				<xsl:call-template name="txt:replace-string">
@@ -791,12 +785,6 @@
 
 <xsl:template match="cpp:code" mode="cpp:html">
 	<div style="{$cpp:html.code}">
-		<!--
-		<xsl:call-template name="cpp:html.preprocessor">
-			<xsl:with-param 
-				name="text" select="concat('#include &lt;', ../@id, '.hpp&gt;')"/>
-		</xsl:call-template>
-		-->
 		<xsl:call-template name="cpp:html.include">
 			<xsl:with-param name="href" select="concat(../@id, '.hpp')"/>
 		</xsl:call-template>
