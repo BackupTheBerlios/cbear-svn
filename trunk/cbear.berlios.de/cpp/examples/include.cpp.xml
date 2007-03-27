@@ -8,11 +8,11 @@
 	id="net/sourceforge/cbear/cpp/examples/empty">
 
 <header>
-  <qinclude href="class.hpp"/>
+  <include href="class.hpp" quoted="true"/>
 
   <include href="iostream"/>
     
-  <qinclude href="module/class.hpp"/>
+  <include href="module/class.hpp" quoted="true"/>
 
   <include href="boost/shared_ptr.hpp"/>
 </header>

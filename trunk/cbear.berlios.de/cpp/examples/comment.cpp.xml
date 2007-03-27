@@ -8,10 +8,17 @@
 	id="net/sourceforge/cbear/cpp/examples/empty">
 
 <header>
-  <comment>This method does something
+	<comment>This method does something
 This coment is multiline to check multiline comment.
-Some addition for comment</comment>
+Some addition for comment</comment>	
 	<method id="A">
+		<body>
+		</body>
+	</method>
+	<comment doxygen="true">This method does something
+This coment is multiline to check multiline comment.
+Some addition for comment</comment>	
+	<method id="B">
 		<body>
 		</body>
 	</method>

@@ -32,7 +32,9 @@
       <choice minOccurs="0" maxOccurs="unbounded">
         <element ref="cpp:comment"/>
         <element ref="cpp:include"/>
+				<!--
         <element ref="cpp:qinclude"/>
+				-->
       </choice>
       <choice minOccurs="0" maxOccurs="unbounded">
         <element ref="cpp:comment"/>
@@ -49,21 +51,28 @@
 	<element name="include">
 		<complexType>
 			<attribute name="href" type="cpp:href"/>
+			<attribute name="quoted" type="boolean" use="optional"/>
 		</complexType>
 	</element>
 
   <!-- A qinclude. -->
+	<!--
   <element name="qinclude">
     <complexType>
       <attribute name="href" type="cpp:href"/>
     </complexType>
   </element>
+	-->
 
   <!-- A comment -->
   <element name="comment">
-    <simpleType>
-      <restriction base="string"/>
-    </simpleType>
+    <complexType>
+			<simpleContent>
+				<extension base="string">
+		      <attribute name="doxygen" type="boolean"/>
+				</extension>
+			</simpleContent>
+    </complexType>
   </element>
 
 	<!-- href. -->
