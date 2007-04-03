@@ -303,6 +303,9 @@
 	<xsl:apply-templates select="api:pragma" mode="api:body.pragma"/>
 	<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 	<type.ref id="HRESULT"/>
+	<!--
+	<type.ref id="IUnknown"/>
+	-->
 </xsl:template>
 
 <xsl:template match="api:type.ref" mode="api:body.result">
@@ -330,6 +333,12 @@
 <xsl:template match="api:method" mode="api:body">
 	<method>
 		<xsl:apply-templates select="@id" mode="api:body"/>
+		<!--
+		<attribute id="custom">
+			<value>48d0cfe7-3128-3d2c-a5b5-8c7b82b4ab4f</value>
+			<value>"global::System.Runtime.CompilerServices.MethodImplOptions.InternalCall | System.Runtime.CompilerServices.MethodImplOptions.PreserveSig, MethodCodeType=global::System.Runtime.CompilerServices.MethodCodeType.Runtime"</value>
+		</attribute>
+		-->
 		<!--
 		<attribute id="custom">
 			<value>204d5a28-46a0-3f04-bd7c-b5672631e57f</value>
@@ -442,6 +451,12 @@
 		<xsl:apply-templates select="@brief" mode="api:body"/>
 		<xsl:apply-templates select="." mode="api:body.dual"/>
 		<xsl:apply-templates select="." mode="api:body.custom"/>
+<!--
+		<attribute id="custom">
+			<value>204d5a28-46a0-3f04-bd7c-b5672631e57f</value>
+			<value>""</value>
+		</attribute>
+-->
 		<attribute id="oleautomation"/>
 		<xsl:apply-templates select="api:pragma" mode="api:body.pragma"/>
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>

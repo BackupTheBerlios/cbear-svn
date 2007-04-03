@@ -5,6 +5,7 @@
 
 #include <boost/preprocessor/wstringize.hpp>
 
+#include <cbear.berlios.de/windows/com/exception_base.hpp>
 #include <cbear.berlios.de/base/exception.hpp>
 #include <cbear.berlios.de/base/integer.hpp>
 #include <cbear.berlios.de/base/lexical_cast.hpp>
