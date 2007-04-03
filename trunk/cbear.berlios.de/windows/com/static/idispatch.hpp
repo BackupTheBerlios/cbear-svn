@@ -24,6 +24,7 @@ template<class T, class B>
 class interface_content<T, B, ::IDispatch>: public interface_<T, B, ::IUnknown>
 {
 public:
+
 	::HRESULT __stdcall GetTypeInfoCount(c::out_t<uint_t>::type R_)
 	{
 		// parameters:
@@ -32,13 +33,14 @@ public:
 		R = 1;
 		return hresult::s_ok;
 	}
+
 	::HRESULT __stdcall GetTypeInfo(
 		c::in_t<uint_t>::type N_, 
 		c::in_t<lcid_t>::type, 
 		itypeinfo_t::c_out_t P_)
 	{
 		// parameters:
-		const uint_t &N = c::cpp_in<uint_t>(N_);
+		uint_t const &N = c::cpp_in<uint_t>(N_);
 		itypeinfo_t &P = c::cpp_out<itypeinfo_t>(P_);
 		//
 		if(N != 0) return hresult::disp_e_badindex;
@@ -46,8 +48,8 @@ public:
 		return hresult::s_ok;
 	}
 
-	hresult::internal_type __stdcall GetIDsOfNames(
-		const uuid::c_t &, 
+	::HRESULT __stdcall GetIDsOfNames(
+		uuid::c_t const &, 
 		lpolestr_t::internal_type *rgszNames, 
 		uint_t cNames, 
 		lcid_t, 
@@ -60,7 +62,7 @@ public:
 			rgDispId);
 	}
 
-	HRESULT __stdcall Invoke(
+	::HRESULT __stdcall Invoke(
 		dispid_t dispidMember,
 		const uuid::c_t &,
 		lcid_t,
