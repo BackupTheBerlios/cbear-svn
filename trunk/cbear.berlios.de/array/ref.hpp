@@ -83,7 +83,9 @@ ref_t<T, Size> ref(T (&X)[Size])
 }
 }
 
+#define CBEAR_BERLIOS_DE_ARRAY_SIZE(X) (sizeof(X)/sizeof(*(X)))
+
 #define CBEAR_BERLIOS_DE_ARRAY_REF(X) \
-	::cbear_berlios_de::array::detail::ref<sizeof(X)/sizeof(*(X))>(X)
+	::cbear_berlios_de::array::detail::ref<CBEAR_BERLIOS_DE_ARRAY_SIZE(X)>(X)
 
 #endif

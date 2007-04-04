@@ -43,4 +43,9 @@ typename traits<C, const A &, const W &>::type get(const A &A_, const W &W_)
 		CBEAR_BERLIOS_DE_ARRAY_REF(X), \
 		CBEAR_BERLIOS_DE_ARRAY_REF(CBEAR_BERLIOS_DE_PP_WIDEN(X)))
 
+#define CBEAR_BERLIOS_DE_SELECT_ID(X) \
+	template<class C> static \
+	::cbear_berlios_de::array::ref_t<C const, CBEAR_BERLIOS_DE_ARRAY_SIZE(X)> \
+	id() { return CBEAR_BERLIOS_DE_SELECT_STRING(C, X); }
+
 #endif
