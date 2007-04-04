@@ -31,13 +31,23 @@ public:
 		void **ppObject)
 	{
 		// Cannot aggregate.
-		if(Outer) return hresult::class_e_noaggregation;
+		if(Outer) 
+		{
+			return hresult::class_e_noaggregation;
+		}
 		return this->QueryInterface(Uuid, ppObject);
 	}
 
 	hresult::internal_type __stdcall LockServer(bool_t::value_t fLock)
 	{
-		if(fLock) this->AddRef(); else this->Release();
+		if(fLock) 
+		{
+			this->AddRef(); 
+		}
+		else 
+		{
+			this->Release();
+		}
 		return hresult::s_ok;
 	}
 
