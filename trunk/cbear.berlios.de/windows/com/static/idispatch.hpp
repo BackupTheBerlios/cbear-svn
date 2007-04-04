@@ -73,7 +73,7 @@ public:
 		uint_t * puArgErr)
 	{
 		return DispInvoke(
-			(B *)this, 
+			static_cast<B *>(this), 
 			internal<in>(scoped_type_info<B>::typeinfo()),
 			dispidMember, 
 			wFlags, 
