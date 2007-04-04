@@ -10,8 +10,8 @@
 #include <cbear.berlios.de/base/integer.hpp>
 #include <cbear.berlios.de/base/lexical_cast.hpp>
 #include <cbear.berlios.de/locale/cast.hpp>
+#include <cbear.berlios.de/windows/hresult.hpp>
 #include <cbear.berlios.de/windows/com/uint.hpp>
-#include <cbear.berlios.de/windows/com/hresult.hpp>
 #include <cbear.berlios.de/windows/com/bstr.hpp>
 #include <cbear.berlios.de/windows/com/uuid.hpp>
 #include <cbear.berlios.de/windows/com/pointer.hpp>

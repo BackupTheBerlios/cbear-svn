@@ -2,7 +2,7 @@
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_STATIC_INTERFACE_CONTENT_HPP_INCLUDED
 
 #include <cbear.berlios.de/windows/com/iunknown.hpp>
-#include <cbear.berlios.de/windows/com/hresult.hpp>
+#include <cbear.berlios.de/windows/hresult.hpp>
 
 namespace cbear_berlios_de
 {

@@ -1,7 +1,7 @@
 #ifndef CBEAR_BERLIOS_DE_COM_EXCEPTION_BASE_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_COM_EXCEPTION_BASE_HPP_INCLUDED
 
-#include <cbear.berlios.de/windows/com/hresult.hpp>
+#include <cbear.berlios.de/windows/hresult.hpp>
 
 namespace cbear_berlios_de
 {

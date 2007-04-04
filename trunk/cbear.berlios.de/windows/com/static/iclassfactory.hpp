@@ -5,10 +5,10 @@
 #include <cbear.berlios.de/c/cpp_in.hpp>
 #include <cbear.berlios.de/c/out.hpp>
 #include <cbear.berlios.de/c/cpp_out.hpp>
+#include <cbear.berlios.de/windows/hresult.hpp>
+#include <cbear.berlios.de/windows/bool.hpp>
 #include <cbear.berlios.de/windows/com/static/interface_content.hpp>
 #include <cbear.berlios.de/windows/com/static/interface.hpp>
-#include <cbear.berlios.de/windows/com/hresult.hpp>
-#include <cbear.berlios.de/windows/bool.hpp>
 
 namespace cbear_berlios_de
 {
