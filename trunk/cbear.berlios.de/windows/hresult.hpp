@@ -16,8 +16,6 @@ namespace cbear_berlios_de
 {
 namespace windows
 {
-namespace com
-{
 
 class hresult;
 
@@ -493,7 +491,6 @@ public:
 	explicit hresult(const internal_type &X): hresult_wrap(X) {}
 };
 
-}
 }
 }
 
