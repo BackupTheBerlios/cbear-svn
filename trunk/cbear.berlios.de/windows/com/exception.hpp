@@ -96,7 +96,7 @@ public:
 typedef pointer< ::ICreateErrorInfo> icreateerrorinfo;
 
 class exception: 
-	public std::exception,
+	public ::std::exception,
 	public stream::wvirtual_write
 {
 public:
@@ -107,10 +107,16 @@ public:
 	}
 
 	// hresult.
-	hresult result() const throw() { return this->Result; }
+	hresult result() const throw() 
+	{ 
+		return this->Result; 
+	}
 
 	// error info.
-	const ierrorinfo_t &errorinfo() const throw() { return this->ErrorInfo; }
+	const ierrorinfo_t &errorinfo() const throw() 
+	{ 
+		return this->ErrorInfo; 
+	}
 	
 	// print.
 	template<class Stream>
@@ -149,13 +155,13 @@ public:
 		throw_unless(hresult(Value));
 	}
 
-	static const hresult user() 
+	static hresult user() 
 	{ 
 		return hresult(true, hresult::facility_type::itf, hresult::code_type::min); 
 	}
 
 	explicit exception(
-		hresult Result = user(), const ierrorinfo_t &ErrorInfo = ierrorinfo_t()):
+		hresult Result = user(), ierrorinfo_t const &ErrorInfo = ierrorinfo_t()):
 		Result(Result), ErrorInfo(ErrorInfo)
 	{
 	}
@@ -167,7 +173,7 @@ private:
 	hresult Result;
 	ierrorinfo_t ErrorInfo;
 
-	hresult set() const
+	hresult const &set() const
 	{
 		if(this->ErrorInfo) 
 		{
