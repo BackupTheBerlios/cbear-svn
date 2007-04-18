@@ -6,12 +6,12 @@ namespace cbear_berlios_de
 namespace si
 {
 
-inline double mega()
+inline double mega() throw()
 {
 	return 1.0e+6;
 }
 
-inline double nano()
+inline double nano() throw()
 {
 	return 1.0e-9;
 }
