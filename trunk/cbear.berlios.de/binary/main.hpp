@@ -1,0 +1,301 @@
+#ifndef CBEAR_BERLIOS_DE_BINARY_MAIN_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_BINARY_MAIN_HPP_INCLUDED
+
+namespace cbear_berlios_de
+{
+namespace binary
+{
+
+static ::boost::uint8_t const _0000 = 0x0;
+static ::boost::uint8_t const _0001 = 0x1;
+static ::boost::uint8_t const _0010 = 0x2;
+static ::boost::uint8_t const _0011 = 0x3;
+static ::boost::uint8_t const _0100 = 0x4;
+static ::boost::uint8_t const _0101 = 0x5;
+static ::boost::uint8_t const _0110 = 0x6;
+static ::boost::uint8_t const _0111 = 0x7;
+static ::boost::uint8_t const _1000 = 0x8;
+static ::boost::uint8_t const _1001 = 0x9;
+static ::boost::uint8_t const _1010 = 0xA;
+static ::boost::uint8_t const _1011 = 0xB;
+static ::boost::uint8_t const _1100 = 0xC;
+static ::boost::uint8_t const _1101 = 0xD;
+static ::boost::uint8_t const _1110 = 0xE;
+static ::boost::uint8_t const _1111 = 0xF;
+
+static ::boost::uint8_t const _0000_0000 = 0x00;
+static ::boost::uint8_t const _0000_0001 = 0x01;
+static ::boost::uint8_t const _0000_0010 = 0x02;
+static ::boost::uint8_t const _0000_0011 = 0x03;
+static ::boost::uint8_t const _0000_0100 = 0x04;
+static ::boost::uint8_t const _0000_0101 = 0x05;
+static ::boost::uint8_t const _0000_0110 = 0x06;
+static ::boost::uint8_t const _0000_0111 = 0x07;
+static ::boost::uint8_t const _0000_1000 = 0x08;
+static ::boost::uint8_t const _0000_1001 = 0x09;
+static ::boost::uint8_t const _0000_1010 = 0x0A;
+static ::boost::uint8_t const _0000_1011 = 0x0B;
+static ::boost::uint8_t const _0000_1100 = 0x0C;
+static ::boost::uint8_t const _0000_1101 = 0x0D;
+static ::boost::uint8_t const _0000_1110 = 0x0E;
+static ::boost::uint8_t const _0000_1111 = 0x0F;
+
+static ::boost::uint8_t const _0001_0000 = 0x10;
+static ::boost::uint8_t const _0001_0001 = 0x11;
+static ::boost::uint8_t const _0001_0010 = 0x12;
+static ::boost::uint8_t const _0001_0011 = 0x13;
+static ::boost::uint8_t const _0001_0100 = 0x14;
+static ::boost::uint8_t const _0001_0101 = 0x15;
+static ::boost::uint8_t const _0001_0110 = 0x16;
+static ::boost::uint8_t const _0001_0111 = 0x17;
+static ::boost::uint8_t const _0001_1000 = 0x18;
+static ::boost::uint8_t const _0001_1001 = 0x19;
+static ::boost::uint8_t const _0001_1010 = 0x1A;
+static ::boost::uint8_t const _0001_1011 = 0x1B;
+static ::boost::uint8_t const _0001_1100 = 0x1C;
+static ::boost::uint8_t const _0001_1101 = 0x1D;
+static ::boost::uint8_t const _0001_1110 = 0x1E;
+static ::boost::uint8_t const _0001_1111 = 0x1F;
+
+static ::boost::uint8_t const _0010_0000 = 0x20;
+static ::boost::uint8_t const _0010_0001 = 0x21;
+static ::boost::uint8_t const _0010_0010 = 0x22;
+static ::boost::uint8_t const _0010_0011 = 0x23;
+static ::boost::uint8_t const _0010_0100 = 0x24;
+static ::boost::uint8_t const _0010_0101 = 0x25;
+static ::boost::uint8_t const _0010_0110 = 0x26;
+static ::boost::uint8_t const _0010_0111 = 0x27;
+static ::boost::uint8_t const _0010_1000 = 0x28;
+static ::boost::uint8_t const _0010_1001 = 0x29;
+static ::boost::uint8_t const _0010_1010 = 0x2A;
+static ::boost::uint8_t const _0010_1011 = 0x2B;
+static ::boost::uint8_t const _0010_1100 = 0x2C;
+static ::boost::uint8_t const _0010_1101 = 0x2D;
+static ::boost::uint8_t const _0010_1110 = 0x2E;
+static ::boost::uint8_t const _0010_1111 = 0x2F;
+
+static ::boost::uint8_t const _0011_0000 = 0x30;
+static ::boost::uint8_t const _0011_0001 = 0x31;
+static ::boost::uint8_t const _0011_0010 = 0x32;
+static ::boost::uint8_t const _0011_0011 = 0x33;
+static ::boost::uint8_t const _0011_0100 = 0x34;
+static ::boost::uint8_t const _0011_0101 = 0x35;
+static ::boost::uint8_t const _0011_0110 = 0x36;
+static ::boost::uint8_t const _0011_0111 = 0x37;
+static ::boost::uint8_t const _0011_1000 = 0x38;
+static ::boost::uint8_t const _0011_1001 = 0x39;
+static ::boost::uint8_t const _0011_1010 = 0x3A;
+static ::boost::uint8_t const _0011_1011 = 0x3B;
+static ::boost::uint8_t const _0011_1100 = 0x3C;
+static ::boost::uint8_t const _0011_1101 = 0x3D;
+static ::boost::uint8_t const _0011_1110 = 0x3E;
+static ::boost::uint8_t const _0011_1111 = 0x3F;
+
+static ::boost::uint8_t const _0100_0000 = 0x40;
+static ::boost::uint8_t const _0100_0001 = 0x41;
+static ::boost::uint8_t const _0100_0010 = 0x42;
+static ::boost::uint8_t const _0100_0011 = 0x43;
+static ::boost::uint8_t const _0100_0100 = 0x44;
+static ::boost::uint8_t const _0100_0101 = 0x45;
+static ::boost::uint8_t const _0100_0110 = 0x46;
+static ::boost::uint8_t const _0100_0111 = 0x47;
+static ::boost::uint8_t const _0100_1000 = 0x48;
+static ::boost::uint8_t const _0100_1001 = 0x49;
+static ::boost::uint8_t const _0100_1010 = 0x4A;
+static ::boost::uint8_t const _0100_1011 = 0x4B;
+static ::boost::uint8_t const _0100_1100 = 0x4C;
+static ::boost::uint8_t const _0100_1101 = 0x4D;
+static ::boost::uint8_t const _0100_1110 = 0x4E;
+static ::boost::uint8_t const _0100_1111 = 0x4F;
+
+static ::boost::uint8_t const _0101_0000 = 0x50;
+static ::boost::uint8_t const _0101_0001 = 0x51;
+static ::boost::uint8_t const _0101_0010 = 0x52;
+static ::boost::uint8_t const _0101_0011 = 0x53;
+static ::boost::uint8_t const _0101_0100 = 0x54;
+static ::boost::uint8_t const _0101_0101 = 0x55;
+static ::boost::uint8_t const _0101_0110 = 0x56;
+static ::boost::uint8_t const _0101_0111 = 0x57;
+static ::boost::uint8_t const _0101_1000 = 0x58;
+static ::boost::uint8_t const _0101_1001 = 0x59;
+static ::boost::uint8_t const _0101_1010 = 0x5A;
+static ::boost::uint8_t const _0101_1011 = 0x5B;
+static ::boost::uint8_t const _0101_1100 = 0x5C;
+static ::boost::uint8_t const _0101_1101 = 0x5D;
+static ::boost::uint8_t const _0101_1110 = 0x5E;
+static ::boost::uint8_t const _0101_1111 = 0x5F;
+
+static ::boost::uint8_t const _0110_0000 = 0x60;
+static ::boost::uint8_t const _0110_0001 = 0x61;
+static ::boost::uint8_t const _0110_0010 = 0x62;
+static ::boost::uint8_t const _0110_0011 = 0x63;
+static ::boost::uint8_t const _0110_0100 = 0x64;
+static ::boost::uint8_t const _0110_0101 = 0x65;
+static ::boost::uint8_t const _0110_0110 = 0x66;
+static ::boost::uint8_t const _0110_0111 = 0x67;
+static ::boost::uint8_t const _0110_1000 = 0x68;
+static ::boost::uint8_t const _0110_1001 = 0x69;
+static ::boost::uint8_t const _0110_1010 = 0x6A;
+static ::boost::uint8_t const _0110_1011 = 0x6B;
+static ::boost::uint8_t const _0110_1100 = 0x6C;
+static ::boost::uint8_t const _0110_1101 = 0x6D;
+static ::boost::uint8_t const _0110_1110 = 0x6E;
+static ::boost::uint8_t const _0110_1111 = 0x6F;
+
+static ::boost::uint8_t const _0111_0000 = 0x70;
+static ::boost::uint8_t const _0111_0001 = 0x71;
+static ::boost::uint8_t const _0111_0010 = 0x72;
+static ::boost::uint8_t const _0111_0011 = 0x73;
+static ::boost::uint8_t const _0111_0100 = 0x74;
+static ::boost::uint8_t const _0111_0101 = 0x75;
+static ::boost::uint8_t const _0111_0110 = 0x76;
+static ::boost::uint8_t const _0111_0111 = 0x77;
+static ::boost::uint8_t const _0111_1000 = 0x78;
+static ::boost::uint8_t const _0111_1001 = 0x79;
+static ::boost::uint8_t const _0111_1010 = 0x7A;
+static ::boost::uint8_t const _0111_1011 = 0x7B;
+static ::boost::uint8_t const _0111_1100 = 0x7C;
+static ::boost::uint8_t const _0111_1101 = 0x7D;
+static ::boost::uint8_t const _0111_1110 = 0x7E;
+static ::boost::uint8_t const _0111_1111 = 0x7F;
+
+static ::boost::uint8_t const _1000_0000 = 0x80;
+static ::boost::uint8_t const _1000_0001 = 0x81;
+static ::boost::uint8_t const _1000_0010 = 0x82;
+static ::boost::uint8_t const _1000_0011 = 0x83;
+static ::boost::uint8_t const _1000_0100 = 0x84;
+static ::boost::uint8_t const _1000_0101 = 0x85;
+static ::boost::uint8_t const _1000_0110 = 0x86;
+static ::boost::uint8_t const _1000_0111 = 0x87;
+static ::boost::uint8_t const _1000_1000 = 0x88;
+static ::boost::uint8_t const _1000_1001 = 0x89;
+static ::boost::uint8_t const _1000_1010 = 0x8A;
+static ::boost::uint8_t const _1000_1011 = 0x8B;
+static ::boost::uint8_t const _1000_1100 = 0x8C;
+static ::boost::uint8_t const _1000_1101 = 0x8D;
+static ::boost::uint8_t const _1000_1110 = 0x8E;
+static ::boost::uint8_t const _1000_1111 = 0x8F;
+
+static ::boost::uint8_t const _1001_0000 = 0x90;
+static ::boost::uint8_t const _1001_0001 = 0x91;
+static ::boost::uint8_t const _1001_0010 = 0x92;
+static ::boost::uint8_t const _1001_0011 = 0x93;
+static ::boost::uint8_t const _1001_0100 = 0x94;
+static ::boost::uint8_t const _1001_0101 = 0x95;
+static ::boost::uint8_t const _1001_0110 = 0x96;
+static ::boost::uint8_t const _1001_0111 = 0x97;
+static ::boost::uint8_t const _1001_1000 = 0x98;
+static ::boost::uint8_t const _1001_1001 = 0x99;
+static ::boost::uint8_t const _1001_1010 = 0x9A;
+static ::boost::uint8_t const _1001_1011 = 0x9B;
+static ::boost::uint8_t const _1001_1100 = 0x9C;
+static ::boost::uint8_t const _1001_1101 = 0x9D;
+static ::boost::uint8_t const _1001_1110 = 0x9E;
+static ::boost::uint8_t const _1001_1111 = 0x9F;
+
+static ::boost::uint8_t const _1010_0000 = 0xA0;
+static ::boost::uint8_t const _1010_0001 = 0xA1;
+static ::boost::uint8_t const _1010_0010 = 0xA2;
+static ::boost::uint8_t const _1010_0011 = 0xA3;
+static ::boost::uint8_t const _1010_0100 = 0xA4;
+static ::boost::uint8_t const _1010_0101 = 0xA5;
+static ::boost::uint8_t const _1010_0110 = 0xA6;
+static ::boost::uint8_t const _1010_0111 = 0xA7;
+static ::boost::uint8_t const _1010_1000 = 0xA8;
+static ::boost::uint8_t const _1010_1001 = 0xA9;
+static ::boost::uint8_t const _1010_1010 = 0xAA;
+static ::boost::uint8_t const _1010_1011 = 0xAB;
+static ::boost::uint8_t const _1010_1100 = 0xAC;
+static ::boost::uint8_t const _1010_1101 = 0xAD;
+static ::boost::uint8_t const _1010_1110 = 0xAE;
+static ::boost::uint8_t const _1010_1111 = 0xAF;
+
+static ::boost::uint8_t const _1011_0000 = 0xB0;
+static ::boost::uint8_t const _1011_0001 = 0xB1;
+static ::boost::uint8_t const _1011_0010 = 0xB2;
+static ::boost::uint8_t const _1011_0011 = 0xB3;
+static ::boost::uint8_t const _1011_0100 = 0xB4;
+static ::boost::uint8_t const _1011_0101 = 0xB5;
+static ::boost::uint8_t const _1011_0110 = 0xB6;
+static ::boost::uint8_t const _1011_0111 = 0xB7;
+static ::boost::uint8_t const _1011_1000 = 0xB8;
+static ::boost::uint8_t const _1011_1001 = 0xB9;
+static ::boost::uint8_t const _1011_1010 = 0xBA;
+static ::boost::uint8_t const _1011_1011 = 0xBB;
+static ::boost::uint8_t const _1011_1100 = 0xBC;
+static ::boost::uint8_t const _1011_1101 = 0xBD;
+static ::boost::uint8_t const _1011_1110 = 0xBE;
+static ::boost::uint8_t const _1011_1111 = 0xBF;
+
+static ::boost::uint8_t const _1100_0000 = 0xC0;
+static ::boost::uint8_t const _1100_0001 = 0xC1;
+static ::boost::uint8_t const _1100_0010 = 0xC2;
+static ::boost::uint8_t const _1100_0011 = 0xC3;
+static ::boost::uint8_t const _1100_0100 = 0xC4;
+static ::boost::uint8_t const _1100_0101 = 0xC5;
+static ::boost::uint8_t const _1100_0110 = 0xC6;
+static ::boost::uint8_t const _1100_0111 = 0xC7;
+static ::boost::uint8_t const _1100_1000 = 0xC8;
+static ::boost::uint8_t const _1100_1001 = 0xC9;
+static ::boost::uint8_t const _1100_1010 = 0xCA;
+static ::boost::uint8_t const _1100_1011 = 0xCB;
+static ::boost::uint8_t const _1100_1100 = 0xCC;
+static ::boost::uint8_t const _1100_1101 = 0xCD;
+static ::boost::uint8_t const _1100_1110 = 0xCE;
+static ::boost::uint8_t const _1100_1111 = 0xCF;
+
+static ::boost::uint8_t const _1101_0000 = 0xD0;
+static ::boost::uint8_t const _1101_0001 = 0xD1;
+static ::boost::uint8_t const _1101_0010 = 0xD2;
+static ::boost::uint8_t const _1101_0011 = 0xD3;
+static ::boost::uint8_t const _1101_0100 = 0xD4;
+static ::boost::uint8_t const _1101_0101 = 0xD5;
+static ::boost::uint8_t const _1101_0110 = 0xD6;
+static ::boost::uint8_t const _1101_0111 = 0xD7;
+static ::boost::uint8_t const _1101_1000 = 0xD8;
+static ::boost::uint8_t const _1101_1001 = 0xD9;
+static ::boost::uint8_t const _1101_1010 = 0xDA;
+static ::boost::uint8_t const _1101_1011 = 0xDB;
+static ::boost::uint8_t const _1101_1100 = 0xDC;
+static ::boost::uint8_t const _1101_1101 = 0xDD;
+static ::boost::uint8_t const _1101_1110 = 0xDE;
+static ::boost::uint8_t const _1101_1111 = 0xDF;
+
+static ::boost::uint8_t const _1110_0000 = 0xE0;
+static ::boost::uint8_t const _1110_0001 = 0xE1;
+static ::boost::uint8_t const _1110_0010 = 0xE2;
+static ::boost::uint8_t const _1110_0011 = 0xE3;
+static ::boost::uint8_t const _1110_0100 = 0xE4;
+static ::boost::uint8_t const _1110_0101 = 0xE5;
+static ::boost::uint8_t const _1110_0110 = 0xE6;
+static ::boost::uint8_t const _1110_0111 = 0xE7;
+static ::boost::uint8_t const _1110_1000 = 0xE8;
+static ::boost::uint8_t const _1110_1001 = 0xE9;
+static ::boost::uint8_t const _1110_1010 = 0xEA;
+static ::boost::uint8_t const _1110_1011 = 0xEB;
+static ::boost::uint8_t const _1110_1100 = 0xEC;
+static ::boost::uint8_t const _1110_1101 = 0xED;
+static ::boost::uint8_t const _1110_1110 = 0xEE;
+static ::boost::uint8_t const _1110_1111 = 0xEF;
+
+static ::boost::uint8_t const _1111_0000 = 0xF0;
+static ::boost::uint8_t const _1111_0001 = 0xF1;
+static ::boost::uint8_t const _1111_0010 = 0xF2;
+static ::boost::uint8_t const _1111_0011 = 0xF3;
+static ::boost::uint8_t const _1111_0100 = 0xF4;
+static ::boost::uint8_t const _1111_0101 = 0xF5;
+static ::boost::uint8_t const _1111_0110 = 0xF6;
+static ::boost::uint8_t const _1111_0111 = 0xF7;
+static ::boost::uint8_t const _1111_1000 = 0xF8;
+static ::boost::uint8_t const _1111_1001 = 0xF9;
+static ::boost::uint8_t const _1111_1010 = 0xFA;
+static ::boost::uint8_t const _1111_1011 = 0xFB;
+static ::boost::uint8_t const _1111_1100 = 0xFC;
+static ::boost::uint8_t const _1111_1101 = 0xFD;
+static ::boost::uint8_t const _1111_1110 = 0xFE;
+static ::boost::uint8_t const _1111_1111 = 0xFF;
+
+}
+}
+
+#endif

@@ -8,6 +8,7 @@
 #include <boost/noncopyable.hpp>
 
 #include <cbear.berlios.de/base/integer.hpp>
+#include <cbear.berlios.de/meta/const.hpp>
 
 namespace cbear_berlios_de
 {
