@@ -1,6 +1,8 @@
 #ifndef CBEAR_BERLIOS_DE_BINARY_MAIN_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_BINARY_MAIN_HPP_INCLUDED
 
+#include <boost/cstdint.hpp>
+
 namespace cbear_berlios_de
 {
 namespace binary
