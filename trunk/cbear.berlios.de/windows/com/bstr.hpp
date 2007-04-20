@@ -12,6 +12,7 @@
 #include <cbear.berlios.de/windows/com/traits.hpp>
 #include <cbear.berlios.de/stream/read.hpp>
 #include <cbear.berlios.de/base/string.hpp>
+#include <cbear.berlios.de/range/lexicographic/less.hpp>
 
 // ::SysStringLen
 #pragma comment(lib, "oleaut32.lib")
@@ -237,6 +238,11 @@ struct bstr_policy: private policy::standard_policy< ::BSTR>
 		}
 		//
 		realloc(This, This, NewSize);
+	}
+
+	static bool less(type const &a, type const &b)
+	{
+		return range::lexicographic::less(make_sub_range(a), make_sub_range(b));
 	}
 
 	//using standard_policy_type::output;
