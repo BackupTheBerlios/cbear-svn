@@ -2,7 +2,7 @@
 <A:library 
 	xmlns:A="http://cbear.berlios.de/api" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://cbear.berlios.de/api c:/cbear/cbear.berlios.de/api/main.xsd"
+	xsi:schemaLocation="../main.xsd"
 	id="cbear_berlios_de.api.examples">
 
 	<A:config>
@@ -16,7 +16,7 @@
 		<A:dotnet.key>c:/cbear/cbear.berlios.de/key.snk</A:dotnet.key>
 	</A:config>
 
-	<A:using id="base" href="file:///c:/cbear/cbear.berlios.de/api/base.xml"/>
+	<A:using id="base" href="../base.xml"/>
 
 	<A:interface id="IMy">
 		<A:property id="Str">
