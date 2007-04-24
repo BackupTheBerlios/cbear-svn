@@ -49,8 +49,8 @@ struct range
 	static ::std::size_t const last = Last;
 	static ::std::size_t const size = last - first + 1;
 	static unsigned_type const _1 = static_cast<unsigned_type>(1);
-	static const unsigned_type mask = ((_1 << size) - _1) << first;
-	static const unsigned_type inverse_mask = ~mask;
+	static unsigned_type const mask = ((_1 << size) - _1) << first;
+	static unsigned_type const inverse_mask = static_cast<unsigned_type>(~mask);
 
 	static value_type get(type X) 
 	{ 
