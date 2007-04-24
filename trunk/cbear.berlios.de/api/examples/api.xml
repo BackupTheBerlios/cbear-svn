@@ -11,8 +11,8 @@
 		<A:cbear>c:/cbear/</A:cbear>
 		<A:nxslt>c:\nxslt-2.1\nxslt2</A:nxslt>
 
-		<A:psdk>C:\Program Files\Microsoft Platform SDK\</A:psdk>
-		<A:tlbimp>"C:\Program Files\Microsoft.Net\FrameworkSDK\Bin\tlbimp.exe"</A:tlbimp>
+		<A:psdk>C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\</A:psdk>
+		<A:tlbimp>C:\Program Files\Microsoft.Net\FrameworkSDK\Bin\tlbimp.exe</A:tlbimp>
 		<A:dotnet.key>c:/cbear/cbear.berlios.de/key.snk</A:dotnet.key>
 	</A:config>
 
