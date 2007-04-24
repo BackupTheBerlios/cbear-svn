@@ -1,12 +1,11 @@
 <?xml version="1.0"?>
 <library 
 	xmlns="http://cbear.berlios.de/api" 
-	id="A" 
-	uuid="A54C9F22-E543-4586-A145-F7CAB55F0BD1">
+	id="cbear_berlios_de.api.examples">
 
-	<using id="base" href="../base.xml"/>
+	<using id="base" href="file:///c:/cbear/cbear.berlios.de/api/base.xml"/>
 
-	<interface id="IMy" uuid="2D88E4E3-AD04-4308-93B3-209065633E39">
+	<interface id="IMy">
 		<property id="Str">
 			<get/>
 			<set/>
@@ -14,7 +13,7 @@
 		</property>
 	</interface>
 
-	<object id="My" uuid="C3F4BACC-E78D-4c33-B9EA-99F88580A049">
+	<object id="My">
 		<type.ref id="IMy"/>
 	</object>
 
