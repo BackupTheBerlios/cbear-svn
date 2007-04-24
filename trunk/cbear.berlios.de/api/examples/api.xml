@@ -6,10 +6,10 @@
 	id="cbear_berlios_de.api.examples">
 
 	<A:config>
-		<A:api.xml>c:/cbear/cbear.berlios.de/api/example/api.xml</A:api.xml>
-		<A:output>c:/cbear/global</A:output>
+		<A:api.xml>c:/cbear/cbear.berlios.de/api/examples/api.xml</A:api.xml>
+		<A:output>c:/cbear/global/</A:output>
 		<A:cbear>c:/cbear/</A:cbear>
-		<A:nxslt>c:\nxslt-2.0.1\bin\nxslt2</A:nxslt>
+		<A:nxslt>c:\nxslt-2.1\nxslt2</A:nxslt>
 
 		<A:psdk>C:\Program Files\Microsoft Platform SDK\</A:psdk>
 		<A:tlbimp>"C:\Program Files\Microsoft.Net\FrameworkSDK\Bin\tlbimp.exe"</A:tlbimp>
