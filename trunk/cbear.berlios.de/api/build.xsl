@@ -180,7 +180,7 @@
 
 		<xsl:variable name="tlb2dotnet.dll">
 			<xsl:value-of select="concat(
-				$A:tlbimp, ' ',
+				'&#34;', $A:tlbimp, '&#34; ',
 				$A:tlb, ' ',
 				'/primary ',
 				'/keyfile:', $A:dotnet.key, ' ',
@@ -236,6 +236,7 @@
 				'-pi ',
 				'-o ', $A:html)}"/>
 
+<!--
 		<B:command
 			name="ODL.XML to REMOTE.XML"
 			text="{concat(
@@ -287,6 +288,7 @@
 				$A:odl.cs.xml, ' ',
 				$A:cbear, 'cbear.berlios.de/cs/cs.xsl ',
 				'-o ', $A:odl.cs)}"/>
+-->
 
 	</B:bat>
 </xsl:template>
