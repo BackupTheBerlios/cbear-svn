@@ -1,20 +1,33 @@
 <?xml version="1.0"?>
-<library 
-	xmlns="http://cbear.berlios.de/api" 
+<A:library 
+	xmlns:A="http://cbear.berlios.de/api" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://cbear.berlios.de/api c:/cbear/cbear.berlios.de/api/main.xsd"
 	id="cbear_berlios_de.api.examples">
 
-	<using id="base" href="file:///c:/cbear/cbear.berlios.de/api/base.xml"/>
+	<A:config>
+		<A:api.xml>c:/cbear/cbear.berlios.de/api/example/api.xml</A:api.xml>
+		<A:output>c:/cbear/global</A:output>
+		<A:cbear>c:/cbear/</A:cbear>
+		<A:nxslt>c:\nxslt-2.0.1\bin\nxslt2</A:nxslt>
 
-	<interface id="IMy">
-		<property id="Str">
-			<get/>
-			<set/>
-			<type.ref library="base" id="string"/>
-		</property>
-	</interface>
+		<A:psdk>C:\Program Files\Microsoft Platform SDK\</A:psdk>
+		<A:tlbimp>"C:\Program Files\Microsoft.Net\FrameworkSDK\Bin\tlbimp.exe"</A:tlbimp>
+		<A:dotnet.key>c:/cbear/cbear.berlios.de/key.snk</A:dotnet.key>
+	</A:config>
 
-	<object id="My">
-		<type.ref id="IMy"/>
-	</object>
+	<A:using id="base" href="file:///c:/cbear/cbear.berlios.de/api/base.xml"/>
 
-</library>
+	<A:interface id="IMy">
+		<A:property id="Str">
+			<A:get/>
+			<A:set/>
+			<A:type.ref library="base" id="string"/>
+		</A:property>
+	</A:interface>
+
+	<A:object id="My">
+		<A:type.ref id="IMy"/>
+	</A:object>
+
+</A:library>
