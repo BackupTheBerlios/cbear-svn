@@ -20,6 +20,8 @@
 // boost::mpl::bool_
 #include <boost/mpl/bool.hpp>
 
+#include <cbear.berlios.de/meta/const.hpp>
+
 namespace cbear_berlios_de
 {
 namespace base
@@ -91,7 +93,6 @@ struct make_unsigned: uint_t<sizeof(Type)*CHAR_BIT>
 {
 	BOOST_STATIC_ASSERT(is_integer<Type>::value);
 };
-
 template<>
 struct make_unsigned<std::ptrdiff_t>
 {
@@ -394,6 +395,19 @@ uint_fixed_read<16, T> hex(T &X, std::size_t I)
 {
 	return uint_fixed_read<16, T>(X, I);
 }
+
+template< 
+	::std::size_t n, 
+	typename uint_t<n / 2>::type hi, 
+	typename uint_t<n / 2>::type low>
+class compose_t: 
+	public meta::const_< 
+		typename uint_t<n>::type, 
+		static_cast<typename uint_t<n>::type>(hi) << (n / 2) | 
+			static_cast<typename uint_t<n>::type>(low)>
+{
+	BOOST_STATIC_ASSERT(n % 2 == 0);
+};
 
 }
 }

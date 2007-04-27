@@ -86,7 +86,7 @@
 
 <xsl:template match="@id" mode="cpp:html">
 	<span style="{$cpp:html.id}">
-		<xsl:value-of select="."/>
+		<xsl:value-of select="translate(., '.', '_')"/>
 		<xsl:if test=".='private'">_</xsl:if>
 	</span>
 </xsl:template>
@@ -276,9 +276,9 @@
 </xsl:template>
 
 <xsl:template match="cpp:id.ref[@type='const']" mode="cpp:html.id.ref">
-	<span style="{$cpp:html.keyword}">const</span>
-	<xsl:value-of select="' '"/>
 	<xsl:apply-templates select="." mode="cpp:html.id.ref.type"/>
+	<xsl:value-of select="' '"/>
+	<span style="{$cpp:html.keyword}">const</span>
 </xsl:template>
 
 <xsl:template match="cpp:id.ref[@type='typename']" mode="cpp:html.id.ref">
@@ -344,13 +344,21 @@
 	<xsl:value-of select="' '"/>
 </xsl:template>
 
-<xsl:template match="cpp:body/cpp:id.ref" mode="cpp:html">
+<xsl:template name="cpp:id.ref.line">
 	<xsl:call-template name="txt:main.line">
 		<xsl:with-param name="text">	
 			<xsl:apply-templates select="." mode="cpp:html.id.ref"/>
 			<xsl:text>;</xsl:text>
 		</xsl:with-param>
 	</xsl:call-template>
+</xsl:template>
+
+<xsl:template match="cpp:body/cpp:id.ref" mode="cpp:html">
+	<xsl:call-template name="cpp:id.ref.line"/>
+</xsl:template>
+
+<xsl:template match="cpp:namespace/cpp:id.ref" mode="cpp:html">
+	<xsl:call-template name="cpp:id.ref.line"/>
 </xsl:template>
 
 <!-- item -->
