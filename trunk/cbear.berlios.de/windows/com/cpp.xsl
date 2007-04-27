@@ -899,7 +899,7 @@
 											</id.ref>
 									</body>
 									<catch>
-										<parameter><id.ref id="..."/></parameter>
+										<parameter><id.ref type="..."/></parameter>
 										<body>
 											<id.ref type="return">
 <!--

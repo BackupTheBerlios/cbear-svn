@@ -152,6 +152,10 @@
 	</xsl:apply-templates>
 </xsl:template>
 
+<xsl:template match="cpp:id.ref[@type='...']" mode="cpp:html.id.ref">
+	<xsl:value-of select="'...'"/>
+</xsl:template>
+
 <xsl:template match="cpp:id.ref[@type='.']" mode="cpp:html.id.ref">
 	<xsl:apply-templates select="." mode="cpp:html.id.ref.type">
 		<xsl:with-param name="separator" select="'.'"/>
