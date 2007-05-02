@@ -149,7 +149,7 @@
 		<B:command
 			name="MIDL: ODL to TLB"
 			text="{concat(
-				'midl /W4 /robust /error all /nologo /env win32 ', 
+				'midl /W4 /robust /error all /nologo /env win32 /mktyplib203 ', 
 				'/I ', $A:output, ' ',
 				'/I &#34;', $A:psdk, 'lib&#34; ',
 				'/tlb ', $A:tlb, ' ',
@@ -166,7 +166,7 @@
 		<B:command
 			name="MIDL: STRONG.ODL to STRONG.TLB, H, IID"
 			text="{concat(
-				'midl /W4 /robust /error all /nologo /env win32 ', 
+				'midl /W4 /robust /error all /nologo /env win32 /mktyplib203 ', 
 				'/I ', $A:output, ' ',
 				'/I &#34;', $A:psdk, 'lib&#34; ',
 				'/tlb ', $A:strong.tlb, ' ',

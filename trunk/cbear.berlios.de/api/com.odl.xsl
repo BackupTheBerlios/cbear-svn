@@ -492,6 +492,9 @@
 -->
 		<xsl:apply-templates select="." mode="api:body.uuid"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
+<!--
+		<attribute id="v1_enum"/>
+-->
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:apply-templates select="*" mode="api:body"/>
 	</enum>
