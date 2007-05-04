@@ -707,13 +707,16 @@
 <xsl:template 
 	match="odl:method[odl:parameter/odl:attribute/@id='retval']" 
 	mode="odl:cpp.method.id.ref">
-	<id.ref type="::">
-		<id.ref id="traits" type="&lt;&gt;">
-			<xsl:apply-templates 
-				select="odl:parameter[odl:attribute/@id='retval']/odl:type.ref"
-				mode="odl:cpp"/>
+	<id.ref type="typename">
+		<id.ref type="::">
+			<id.ref id="traits" type="&lt;&gt;">
+				<xsl:apply-templates 
+					select="odl:parameter[odl:attribute/@id='retval']/odl:type.ref"
+					mode="odl:cpp"/>
+				<id.ref id="Base"/>
+			</id.ref>
+			<id.ref id="move_type"/>
 		</id.ref>
-		<id.ref id="move_type"/>
 	</id.ref>
 </xsl:template>
 
@@ -769,7 +772,7 @@
 </xsl:template>
 
 <xsl:template match="odl:method" mode="odl:cpp.method.id.long">
-	<xsl:value-of select="concat(../@id, '_')"/>
+	<xsl:value-of select="concat(../../@id, '_')"/>
 	<xsl:apply-templates select="." mode="odl:cpp.method.id.short"/>
 </xsl:template>
 
@@ -814,6 +817,7 @@
 <!-- interface -->
 
 <xsl:template match="odl:interface" mode="odl:cpp">
+<!--
 	<typedef id="{@id}">
 		<id.ref type="::">
 			<id.ref/>
@@ -825,9 +829,11 @@
 			</id.ref>
 		</id.ref>
 	</typedef>
+-->
 </xsl:template>
 
-<xsl:template match="odl:interface" mode="odl:cpp.object">
+<xsl:template match="odl:interface[odl:body]" mode="odl:cpp.object">
+<!--
 	<template>
 		<id id="Base"/>
 		<class>
@@ -840,10 +846,11 @@
 					<id.ref id="Base"/>
 					<xsl:apply-templates select="odl:type.ref" mode="odl:internal"/>
 				</id.ref>
-				<xsl:apply-templates select="odl:method" mode="odl:cpp"/>
+				<xsl:apply-templates select="odl:body/odl:method" mode="odl:cpp"/>
 			</access>
 		</class>
 	</template>
+-->
 	<namespace id="static_">
 		<template>
 			<id id="T"/>
@@ -860,7 +867,7 @@
 						<id.ref id="B"/>
 						<xsl:apply-templates select="odl:type.ref" mode="odl:internal"/>
 					</id.ref>
-					<xsl:for-each select="odl:method">
+					<xsl:for-each select="odl:body/odl:method">
 						<xsl:variable name="id">
 							<xsl:apply-templates select="." mode="odl:cpp.method.id"/>
 						</xsl:variable>
@@ -1105,109 +1112,94 @@
 
 <!-- odl:library, namespace -->
 
-<xsl:template match="odl:library" mode="odl:cpp.namespace">
+<xsl:template match="odl:library" mode="odl:cpp.namespace.declare">
 	<xsl:param name="id"/>
+	<xsl:param name="content"/>
 	<xsl:choose>
 		<xsl:when test="contains($id, '.')">
 			<namespace id="{substring-before($id, '.')}">
-				<xsl:apply-templates select="." mode="odl:cpp.namespace">
+				<xsl:apply-templates select="." mode="odl:cpp.namespace.declare">
 					<xsl:with-param name="id" select="substring-after($id, '.')"/>
+					<xsl:with-param name="content" select="$content"/>
 				</xsl:apply-templates>
 			</namespace>
 		</xsl:when>
 		<xsl:otherwise>
-			<xsl:variable name="full.id">
-				<xsl:apply-templates select="." mode="odl:cpp.id"/>
-			</xsl:variable>
 			<namespace id="{$id}">
-				<class>
-					<id.ref id="info"/>
-				</class>
-				<xsl:apply-templates select="*" mode="odl:cpp"/>
-				<class>
-					<id.ref id="info"/>
-					<access access="public">
-						<xsl:variable name="parent">
-							<id.ref type="::">
-								<id.ref/>
-								<id.ref id="cbear_berlios_de"/>
-								<id.ref id="windows"/>
-								<id.ref id="com"/>
-								<id.ref type="&lt;&gt;" id="scoped_typelib">
-									<id.ref id="info"/>
-								</id.ref>
-							</id.ref>
-						</xsl:variable>
-						<xsl:copy-of select="$parent"/>
-						<xsl:for-each select="odl:typedef/odl:struct">
-							<id.ref type="::">
-								<id.ref id="{@id}"/>
-								<id.ref id="scoped_info"/>
-							</id.ref>
-						</xsl:for-each>
-						<xsl:for-each select="odl:interface">
-							<id.ref type="::">
-								<id.ref/>
-								<id.ref id="cbear_berlios_de"/>
-								<id.ref id="windows"/>
-								<id.ref id="com"/>
-								<id.ref type="&lt;&gt;" id="scoped_type_info">
-									<xsl:apply-templates select="." mode="odl:internal"/>
-								</id.ref>
-							</id.ref>
-						</xsl:for-each>
-						<method>
-							<id.ref id="info"/>
-
-							<ctor>
-								<id.ref>
-									<xsl:copy-of select="$parent"/>
-									<id.ref type="()">
-										<id.ref type="::">
-											<id.ref/>
-											<id.ref id="{concat('LIBID_', @id)}"/>
-										</id.ref>
-										<xsl:variable 
-											name="version" 
-											select="odl:attribute[@id='version']/odl:value"/>
-										<id.ref 
-											type="value" id="{substring-before($version, '.')}"/>
-										<id.ref 
-											type="value" id="{substring-after($version, '.')}"/>
-										<id.ref type="value" id="0"/>
-									</id.ref>
-
-								</id.ref>
-							</ctor>
-<!--
-							<parameter id="Hmodule">
-								<id.ref type="::">
-									<id.ref/>
-									<id.ref id="cbear_berlios_de"/>
-									<id.ref id="windows"/>
-									<id.ref id="hmodule"/>
-								</id.ref>
-							</parameter>
-							<ctor>
-								<id.ref>
-									<xsl:copy-of select="$parent"/>
-									<id.ref type="()">
-										<id.ref 
-											type="value" 
-											id="{concat(
-												'L&#x22;', $full.id, '&#x22;')}"/>
-										<id.ref id="Hmodule"/>										
-									</id.ref>
-								</id.ref>
-							</ctor>
--->
-							<body/>
-						</method>
-					</access>
-				</class>
+				<xsl:copy-of select="$content"/>
 			</namespace>
 		</xsl:otherwise>
 	</xsl:choose>
+</xsl:template>
+
+<xsl:template match="odl:library" mode="odl:cpp.namespace">
+	<xsl:param name="id"/>
+	<xsl:variable name="full.id">
+		<xsl:apply-templates select="." mode="odl:cpp.id"/>
+	</xsl:variable>
+	<xsl:apply-templates select="." mode="odl:cpp.namespace.declare">
+		<xsl:with-param name="id" select="$id"/>
+		<xsl:with-param name="content">
+			<xsl:apply-templates select="*" mode="odl:cpp"/>
+			<class>
+				<id.ref id="info"/>
+				<access access="public">
+					<xsl:variable name="parent">
+						<id.ref type="::">
+							<id.ref/>
+							<id.ref id="cbear_berlios_de"/>
+							<id.ref id="windows"/>
+							<id.ref id="com"/>
+							<id.ref type="&lt;&gt;" id="scoped_typelib">
+								<id.ref id="info"/>
+							</id.ref>
+						</id.ref>
+					</xsl:variable>
+					<xsl:copy-of select="$parent"/>
+					<xsl:for-each select="odl:typedef/odl:struct">
+						<id.ref type="::">
+							<id.ref id="{@id}"/>
+							<id.ref id="scoped_info"/>
+						</id.ref>
+					</xsl:for-each>
+					<xsl:for-each select="odl:interface[odl:body]">
+						<id.ref type="::">
+							<id.ref/>
+							<id.ref id="cbear_berlios_de"/>
+							<id.ref id="windows"/>
+							<id.ref id="com"/>
+							<id.ref type="&lt;&gt;" id="scoped_type_info">
+								<xsl:apply-templates select="." mode="odl:internal"/>
+							</id.ref>
+						</id.ref>
+					</xsl:for-each>
+					<method>
+						<id.ref id="info"/>
+						<ctor>
+							<id.ref>
+								<xsl:copy-of select="$parent"/>
+								<id.ref type="()">
+									<id.ref type="::">
+										<id.ref/>
+										<id.ref id="{concat('LIBID_', @id)}"/>
+									</id.ref>
+									<xsl:variable 
+										name="version" 
+										select="odl:attribute[@id='version']/odl:value"/>
+									<id.ref 
+										type="value" id="{substring-before($version, '.')}"/>
+									<id.ref 
+										type="value" id="{substring-after($version, '.')}"/>
+									<id.ref type="value" id="0"/>
+								</id.ref>
+							</id.ref>
+						</ctor>
+						<body/>
+					</method>
+				</access>
+			</class>
+		</xsl:with-param>
+	</xsl:apply-templates>
 </xsl:template>
 
 <!-- libray -->
@@ -1256,9 +1248,67 @@
 			<include href="cbear.berlios.de/windows/com/static/interface.hpp"/>
 			<include href="cbear.berlios.de/windows/com/static/idispatch.hpp"/>
 			<include href="cbear.berlios.de/base/swap.hpp"/>
+
+			<xsl:apply-templates select="." mode="odl:cpp.namespace.declare">
+				<xsl:with-param name="id" select="$path"/>
+				<xsl:with-param name="content">
+					<class>
+						<id.ref id="info"/>
+					</class>
+					<xsl:for-each select="odl:interface[odl:body]">
+						<typedef id="{@id}">
+							<id.ref type="::">
+								<id.ref/>
+								<id.ref id="cbear_berlios_de"/>
+								<id.ref id="windows"/>
+								<id.ref id="com"/>
+								<id.ref id="pointer" type="&lt;&gt;">				
+									<xsl:apply-templates select="." mode="odl:internal"/>
+								</id.ref>
+							</id.ref>
+						</typedef>
+					</xsl:for-each>
+					<xsl:for-each select="odl:typedef/odl:struct">
+						<class>
+							<id.ref id="{@id}"/>
+						</class>
+					</xsl:for-each>
+				</xsl:with-param>
+			</xsl:apply-templates>
+
+			<namespace id="cbear_berlios_de">
+				<namespace id="windows">
+					<namespace id="com">						
+						<!--
+						<xsl:apply-templates select="odl:typedef/odl:struct" mode="odl:cpp.uuid"/>
+						<xsl:apply-templates select="odl:interface" mode="odl:cpp.object"/>
+						-->
+						<xsl:for-each select="odl:interface[odl:body]">			
+							<template>
+								<id id="Base"/>
+								<class>
+									<id.ref id="pointer_content" type="&lt;&gt;">
+										<id.ref id="Base"/>
+										<xsl:apply-templates select="." mode="odl:internal"/>
+									</id.ref>
+									<access access="public">
+										<id.ref id="pointer_content" type="&lt;&gt;">
+											<id.ref id="Base"/>
+											<xsl:apply-templates select="odl:type.ref" mode="odl:internal"/>
+										</id.ref>
+										<xsl:apply-templates select="odl:body/odl:method" mode="odl:cpp"/>
+									</access>
+								</class>
+							</template>
+						</xsl:for-each>
+					</namespace>
+				</namespace>
+			</namespace>
+
 			<xsl:apply-templates select="." mode="odl:cpp.namespace">
 				<xsl:with-param name="id" select="$path"/>
 			</xsl:apply-templates>
+
 			<namespace id="cbear_berlios_de">
 				<namespace id="windows">
 					<namespace id="com">						
@@ -1267,6 +1317,7 @@
 					</namespace>
 				</namespace>
 			</namespace>
+
 		</header>
 	</unit>
 </xsl:template>

@@ -25,7 +25,7 @@ namespace com
 
 using namespace windows;
 
-template<class Type>
+template<class Type, class = void>
 struct traits;
 
 enum io_type
@@ -175,7 +175,7 @@ struct enum_traits: default_traits<Type, vartype_t::int_>
 {
 };
 
-template<class Type>
+template<class Type, class = void>
 struct traits: 
 	boost::mpl::if_<
 		boost::is_class<Type>, 

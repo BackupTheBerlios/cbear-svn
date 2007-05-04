@@ -288,6 +288,10 @@
 	</xsl:apply-templates>
 </xsl:template>
 
+<!--
+<xsl:template match="api:interface/api:type.ref" mode="api:body"/>
+-->
+
 <xsl:template match="api:type.ref" mode="api:body">
 	<xsl:apply-templates select="." mode="api:body.type.ref"/>
 </xsl:template>
@@ -398,7 +402,10 @@
 
 <!-- interface -->
 
-<xsl:template match="api:interface/api:type.ref" mode="api:body">
+<xsl:template match="api:interface/api:type.ref" mode="api:body"/>
+
+<xsl:template 
+	match="api:interface/api:type.ref" mode="api:body.interface.type.ref">
 	<xsl:variable name="type.ref">
 		<xsl:apply-templates select="." mode="api:body.type.ref"/>
 	</xsl:variable>
@@ -411,11 +418,22 @@
 
 <xsl:template 
 	match="api:interface/api:type.ref[count(preceding-sibling::api:type.ref)=0]"
-	mode="api:body">
+	mode="api:body.interface.type.ref">
 	<xsl:variable name="type">
 		<xsl:apply-templates select="." mode="api:body.type.ref"/>
 	</xsl:variable>
 	<xsl:copy-of select="exsl:node-set($type)/odl:type.ref/odl:type.ref"/>
+</xsl:template>
+
+<xsl:template 
+	match="api:interface" mode="api:body.interface.type.ref">
+	<type.ref library="stdole" id="IUnknown"/>
+</xsl:template>
+
+<xsl:template 
+	match="api:interface[api:type.ref]" mode="api:body.interface.type.ref">
+	<xsl:apply-templates 
+		select="api:type.ref" mode="api:body.interface.type.ref"/>
 </xsl:template>
 
 <xsl:template match="api:interface" mode="api:body.dual"/>
@@ -444,26 +462,17 @@
 <xsl:template match="api:interface" mode="api:body">
 	<interface>
 		<xsl:apply-templates select="@id" mode="api:body.local"/>
-<!--
-		<xsl:apply-templates select="@uuid" mode="api:body"/>
--->
 		<xsl:apply-templates select="." mode="api:body.uuid"/>
 		<xsl:apply-templates select="@brief" mode="api:body"/>
 		<xsl:apply-templates select="." mode="api:body.dual"/>
 		<xsl:apply-templates select="." mode="api:body.custom"/>
-<!--
-		<attribute id="custom">
-			<value>204d5a28-46a0-3f04-bd7c-b5672631e57f</value>
-			<value>""</value>
-		</attribute>
--->
 		<attribute id="oleautomation"/>
 		<xsl:apply-templates select="api:pragma" mode="api:body.pragma"/>
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
-		<xsl:if test="not(api:type.ref)">
-			<type.ref library="stdole" id="IUnknown"/>
-		</xsl:if>
-		<xsl:apply-templates select="*" mode="api:body"/>
+		<xsl:apply-templates select="." mode="api:body.interface.type.ref"/>
+		<body>
+			<xsl:apply-templates select="*" mode="api:body"/>
+		</body>
 	</interface>
 </xsl:template>
 
@@ -602,6 +611,12 @@
 		<xsl:apply-templates select="." mode="api:body.custom"/>
 		<xsl:apply-templates select="api:comment" mode="api:body.comment"/>
 		<xsl:apply-templates select="api:using" mode="api:body"/>
+		<!-- -->
+		<xsl:for-each select="api:interface">
+			<interface>
+				<xsl:apply-templates select="@id" mode="api:body.local"/>
+			</interface>
+		</xsl:for-each>
 		<xsl:apply-templates select="api:enum" mode="api:body"/>
 		<xsl:apply-templates select="api:struct" mode="api:body"/>
 		<xsl:apply-templates select="api:interface" mode="api:body"/>

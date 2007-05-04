@@ -46,17 +46,7 @@
 			<xsl:apply-templates select="." mode="odl:color.header"/>
 		</xsl:with-param>
 	</xsl:call-template>
-	<xsl:call-template name="txt:main.block">
-		<xsl:with-param name="begin">
-			<xsl:apply-templates select="." mode="odl:color.begin"/>
-		</xsl:with-param>
-		<xsl:with-param name="end">
-			<xsl:apply-templates select="." mode="odl:color.end"/>
-		</xsl:with-param>
-		<xsl:with-param name="content">
-			<xsl:apply-templates select="*" mode="odl:color"/>
-		</xsl:with-param>
-	</xsl:call-template>
+	<xsl:apply-templates select="." mode="odl:color.body"/>
 </xsl:template>
 
 <xsl:template match="odl:*" mode="odl:color.header">
@@ -73,6 +63,20 @@
 
 <xsl:template match="odl:*" mode="odl:color.end">
 	<xsl:text>};</xsl:text>
+</xsl:template>
+
+<xsl:template match="odl:*" mode="odl:color.body">
+	<xsl:call-template name="txt:main.block">
+		<xsl:with-param name="begin">
+			<xsl:apply-templates select="." mode="odl:color.begin"/>
+		</xsl:with-param>
+		<xsl:with-param name="end">
+			<xsl:apply-templates select="." mode="odl:color.end"/>
+		</xsl:with-param>
+		<xsl:with-param name="content">
+			<xsl:apply-templates select="*" mode="odl:color"/>
+		</xsl:with-param>
+	</xsl:call-template>
 </xsl:template>
 
 <!-- comment -->
@@ -295,14 +299,31 @@
 
 <!-- interface -->
 
+<xsl:template match="odl:interface" mode="txt:main.indent"/>
+
 <xsl:template match="odl:interface" mode="odl:color.header">
 	<span style="{$odl:color.keyword}">interface</span>
 	<xsl:value-of select="' '"/>
 	<span style="{$odl:color.id}"><xsl:value-of select="@id"/></span>
-	<xsl:text>: </xsl:text>
-	<span style="{$odl:color.id}">
-		<xsl:apply-templates select="odl:type.ref" mode="odl:color.type.ref"/>
-	</span>
+	<xsl:if test="odl:type.ref">
+		<xsl:text>: </xsl:text>
+		<span style="{$odl:color.id}">
+			<xsl:apply-templates select="odl:type.ref" mode="odl:color.type.ref"/>
+		</span>
+	</xsl:if>
+</xsl:template>
+
+<xsl:template match="odl:interface" mode="odl:color">
+	<xsl:apply-templates select="." mode="odl:color.attribute.list"/>
+	<xsl:call-template name="txt:main.line">
+		<xsl:with-param name="text">
+			<xsl:apply-templates select="." mode="odl:color.header"/>
+			<xsl:if test="not(odl:body)">
+				<xsl:value-of select="';'"/>
+			</xsl:if>
+		</xsl:with-param>
+	</xsl:call-template>
+	<xsl:apply-templates select="odl:body" mode="odl:color.body"/>
 </xsl:template>
 
 <!-- Entry Points -->
