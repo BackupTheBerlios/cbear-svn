@@ -175,7 +175,7 @@ struct enum_traits: default_traits<Type, vartype_t::int_>
 {
 };
 
-template<class Type, class = void>
+template<class Type, class>
 struct traits: 
 	boost::mpl::if_<
 		boost::is_class<Type>, 
@@ -294,7 +294,7 @@ typename wrap_out_result<Type>::type wrap_out(
 }
 
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_DECLARE_DEFAULT_TRAITS(T, VT) \
-	template<> struct traits<T>: default_traits<T, VT> {}
+	template<class X> struct traits<T, X>: default_traits<T, VT> {}
 
 }
 }

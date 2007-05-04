@@ -816,41 +816,9 @@
 
 <!-- interface -->
 
-<xsl:template match="odl:interface" mode="odl:cpp">
-<!--
-	<typedef id="{@id}">
-		<id.ref type="::">
-			<id.ref/>
-			<id.ref id="cbear_berlios_de"/>
-			<id.ref id="windows"/>
-			<id.ref id="com"/>
-			<id.ref id="pointer" type="&lt;&gt;">				
-				<xsl:apply-templates select="." mode="odl:internal"/>
-			</id.ref>
-		</id.ref>
-	</typedef>
--->
-</xsl:template>
+<xsl:template match="odl:interface" mode="odl:cpp"/>
 
 <xsl:template match="odl:interface[odl:body]" mode="odl:cpp.object">
-<!--
-	<template>
-		<id id="Base"/>
-		<class>
-			<id.ref id="pointer_content" type="&lt;&gt;">
-				<id.ref id="Base"/>
-				<xsl:apply-templates select="." mode="odl:internal"/>
-			</id.ref>
-			<access access="public">
-				<id.ref id="pointer_content" type="&lt;&gt;">
-					<id.ref id="Base"/>
-					<xsl:apply-templates select="odl:type.ref" mode="odl:internal"/>
-				</id.ref>
-				<xsl:apply-templates select="odl:body/odl:method" mode="odl:cpp"/>
-			</access>
-		</class>
-	</template>
--->
 	<namespace id="static_">
 		<template>
 			<id id="T"/>
@@ -1268,10 +1236,12 @@
 							</id.ref>
 						</typedef>
 					</xsl:for-each>
-					<xsl:for-each select="odl:typedef/odl:struct">
-						<class>
-							<id.ref id="{@id}"/>
-						</class>
+					<xsl:for-each select="odl:typedef">
+						<xsl:for-each select="odl:struct|odl:enum">
+							<class>
+								<id.ref id="{@id}"/>
+							</class>
+						</xsl:for-each>
 					</xsl:for-each>
 				</xsl:with-param>
 			</xsl:apply-templates>
