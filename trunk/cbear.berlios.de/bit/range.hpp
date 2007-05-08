@@ -82,10 +82,14 @@ struct range
 		{ 
 			set(this->X, V); 
 			return *this; 
-		}		
+		}
+		reference &operator=(reference const &V)
+		{
+			set(this->X, get(V.X));
+			return *this;
+		}
 	private:
 		type &X;
-		reference &operator=(reference const &);
 	};
 
 	static reference make_reference(type &X) 
@@ -163,10 +167,15 @@ public:
 		return *this;
 	}
 
+	one_reference_t &operator=(one_reference_t const &V)
+	{
+		this->set(V.get());
+		return *this;
+	}
+
 private:
 	Type &R;
 	::std::size_t const N;
-	one_reference_t &operator=(one_reference_t const &);
 };
 
 template<class Type>

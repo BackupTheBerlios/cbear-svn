@@ -177,12 +177,30 @@
 						</id.ref>
 						<id.ref type="return">
 							<id.ref type="*">
-								<id.ref id="this"/>
+								<id.ref type="this"/>
 							</id.ref>
 						</id.ref>
 					</body>
 				</method>
 			</template>
+			<method id="operator type">
+				<const/>
+				<body>
+					<id.ref type="return">
+						<id.ref>
+							<id.ref id="static_cast" type="&lt;&gt;">
+								<id.ref id="type"/>
+							</id.ref>
+							<id.ref type="()">
+								<id.ref type="-&gt;">
+									<id.ref type="this"/>
+									<id.ref id="internal" type="()"/>
+								</id.ref>			
+							</id.ref>			
+						</id.ref>
+					</id.ref>
+				</body>
+			</method>
 		</access>
 	</class>
 </xsl:template>
