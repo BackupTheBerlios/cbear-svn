@@ -183,7 +183,8 @@
 					</body>
 				</method>
 			</template>
-			<method id="operator type">
+			<method id="enum_">
+				<id.ref id="type"/>
 				<const/>
 				<body>
 					<id.ref type="return">
