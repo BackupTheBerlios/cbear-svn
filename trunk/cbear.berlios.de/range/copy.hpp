@@ -14,7 +14,7 @@ namespace range
 template<class Container, class OutputIterator>
 OutputIterator copy(Container const &From, OutputIterator To) 
 { 
-	return std::copy(range::begin(From), range::end(From), To);
+	return ::std::copy(range::begin(From), range::end(From), To);
 }
 
 }
