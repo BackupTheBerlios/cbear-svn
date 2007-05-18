@@ -139,13 +139,18 @@ private:
   void constructor(I1 *P1) throw()
   {
     this->P = P1;
-    if(this->P) this->P->AddRef();
+    if(this->P) 
+		{
+			this->P->AddRef();
+		}
   }
 
   void destructor() throw()
   {
-    if(!this->P) return;
-    this->P->Release();
+    if(this->P) 
+		{
+			this->P->Release();
+		}    
   }
 
 	template<class I1>
