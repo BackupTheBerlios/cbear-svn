@@ -554,12 +554,19 @@
 	</xsl:choose>
 </xsl:template>
 
-<xsl:template 
-	match="odl:type.ref[/odl:library/odl:*/@id=@id]" mode="odl:cpp">
+<xsl:template match="*" mode="odl:cpp.local.type.id">
+	<xsl:param name="post"/>
 	<id.ref type="::">
+		<id.ref/>
 		<xsl:apply-templates select="/odl:library" mode="odl:cpp.id.ref"/>
 		<id.ref id="{@id}"/>
+		<xsl:copy-of select="$post"/>
 	</id.ref>
+</xsl:template>
+
+<xsl:template 
+	match="odl:type.ref[/odl:library/odl:*/@id=@id]" mode="odl:cpp">
+	<xsl:apply-templates select="." mode="odl:cpp.local.type.id"/>
 </xsl:template>
 
 <xsl:template match="odl:importlib" mode="odl:cpp.library">
@@ -799,13 +806,14 @@
 	
 	<xsl:param name="P"/>
 
-	<xsl:variable name="id.long">
-		<xsl:apply-templates select="." mode="odl:cpp.method.id.long"/>
-	</xsl:variable>
-
 	<id.ref type="-&gt;">
 		<id.ref id="{$P}"/>
-		<id.ref id="{$id.long}" type="()">
+		<id.ref id="{@id}" type="()">
+			<xsl:apply-templates select="../.." mode="odl:cpp.local.type.id">
+				<xsl:with-param name="post">
+					<id.ref id="tag_t" type="()"/>
+				</xsl:with-param>
+			</xsl:apply-templates>
 			<xsl:apply-templates 
 				select="odl:parameter" mode="odl:cpp.implementation.call"/>
 		</id.ref>

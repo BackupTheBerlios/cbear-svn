@@ -28,6 +28,10 @@ public:
 
 	typedef I interface_t;
 
+	class tag_t
+	{
+	};
+
 	typedef move::t<pointer> move_t;
 
 	class access_t: public interface_t::access_t
