@@ -1,7 +1,7 @@
 #ifndef CBEAR_BERLIOS_DE_BINARY_BINARY_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_BINARY_BINARY_HPP_INCLUDED
 
-// #pragma once
+#include <cbear.berlios.de/meta/const.hpp>
 
 namespace cbear_berlios_de
 {
@@ -9,18 +9,15 @@ namespace binary
 {
 
 template<unsigned int N>
-struct binary
+class binary: public meta::const_<unsigned int, N>
 {
-	static const unsigned int value = N;
+public:
 
-private:
 	template<unsigned int N2>
-	struct binary_ : binary<N>
+	class binary_: public binary<N << 4 | N2>
 	{
-		static const unsigned int value = (N << 4) | N2;
 	};
 
-public:
 	typedef binary_<0>  _0000;
 	typedef binary_<1>  _0001;
 	typedef binary_<2>  _0010;
