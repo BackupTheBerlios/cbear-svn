@@ -29,7 +29,7 @@ public:
 	template<class T>
 	static void swap(T &A, T &B) 
 	{ 
-		std::swap(A, B); 
+		::std::swap(A, B);
 	}
 };
 
@@ -38,8 +38,8 @@ public:
 template<class T>
 void swap(T &A, T &B) 
 { 
-	boost::mpl::if_<
-		boost::is_class<T>, detail::class_swap_traits, detail::std_swap_traits>::
+	meta::if_< 
+		::boost::is_class<T>, detail::class_swap_traits, detail::std_swap_traits>::
 		type::swap(A, B);
 }
 

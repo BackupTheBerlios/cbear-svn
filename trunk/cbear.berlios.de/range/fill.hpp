@@ -13,18 +13,18 @@ namespace range
 {
 
 template<class Container, class T>
-void fill(Container &X, const T &Value) 
+void fill(Container &X, T const &Value) 
 { 
-	std::fill(range::begin(X), range::end(X), Value);
+	::std::fill(range::begin(X), range::end(X), Value);
 }
 
 template<class T>
 class fill_iterator_t
 {
 public:
-	typedef std::random_access_iterator_tag iterator_category;
+	typedef ::std::random_access_iterator_tag iterator_category;
 	typedef T value_type;
-	typedef std::ptrdiff_t difference_type;
+	typedef ::std::ptrdiff_t difference_type;
 	typedef T const *pointer;
 	typedef T const &reference;
 	fill_iterator_t(T const &V, difference_type I):
@@ -55,6 +55,17 @@ public:
 	difference_type operator-(fill_iterator_t const &B) const
 	{
 		return this->I - B.I;
+	}
+	fill_iterator_t &operator+=(difference_type d)
+	{
+		this->I += d;
+		return *this;
+	}
+	fill_iterator_t operator+(difference_type d) const
+	{
+		fill_iterator_t t(*this);
+		t += d;
+		return t;
 	}
 private:
 	T const &V;

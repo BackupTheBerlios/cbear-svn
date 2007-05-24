@@ -16,9 +16,9 @@ namespace windows
 namespace usb
 {
 
-inline const com::uuid &device_uuid()
+inline com::uuid const &device_uuid()
 {
-	static const com::uuid Result(
+	static com::uuid const Result(
 		0xA5DCBF10L, 
 		0x6530, 
 		0x11D2, 
@@ -33,9 +33,9 @@ inline const com::uuid &device_uuid()
 	return Result;
 }
 
-inline const com::uuid &hub_uuid()
+inline com::uuid const &hub_uuid()
 {
-	static const com::uuid Result(
+	static com::uuid const Result(
 		0xf18a0e88, 
 		0xc30c, 
 		0x11d0, 
@@ -50,9 +50,9 @@ inline const com::uuid &hub_uuid()
 	return Result;
 }
 
-inline const com::uuid &host_controller_uuid()
+inline com::uuid const &host_controller_uuid()
 {
-	static const com::uuid Result(
+	static com::uuid const Result(
 		0x3abf6f2d, 
 		0x71c4, 
 		0x462a, 

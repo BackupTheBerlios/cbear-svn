@@ -12,11 +12,11 @@ namespace base
 template<class Char>
 Char to_lower(Char c)
 {
-	static const Char A = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, 'A');
-	static const Char Z = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, 'Z');
-	static const Char a = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, 'a');
-	static const Char z = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, 'z');
-	static const Char dif = A - a;
+	static Char const A = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, 'A');
+	static Char const Z = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, 'Z');
+	static Char const a = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, 'a');
+	static Char const z = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, 'z');
+	static Char const dif = A - a;
 	return a <= c && c <= z ? c + dif: c;
 }
 

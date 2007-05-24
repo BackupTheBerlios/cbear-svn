@@ -1,14 +1,16 @@
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_COM_SAFEARRAY_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_COM_SAFEARRAY_HPP_INCLUDED
 
-#include <vector>
-
+#include <cbear.berlios.de/range/reverse_iterator_range.hpp>
+#include <cbear.berlios.de/range/move.hpp>
 #include <cbear.berlios.de/range/empty.hpp>
 #include <cbear.berlios.de/base/undefined.hpp>
 #include <cbear.berlios.de/windows/com/traits.hpp>
 #include <cbear.berlios.de/windows/com/ushort.hpp>
 #include <cbear.berlios.de/windows/com/double.hpp>
 #include <cbear.berlios.de/windows/com/exception.hpp>
+
+#include <vector>
 
 namespace cbear_berlios_de
 {
@@ -178,6 +180,11 @@ public:
 	typedef range::iterator_range<iterator> iterator_range_t;
 	typedef range::iterator_range<const_iterator> const_iterator_range_t;
 
+	typedef typename range::reverse_iterator_range<iterator_range_t>::type 
+		reverse_iterator_range_t;
+	typedef typename range::reverse_iterator_range<const_iterator_range_t>::type 
+		const_reverse_iterator_range_t;
+
 	static vartype_t::enum_t const value_type_vt = traits<ValueType>::vt;
 	static vartype_t::enum_t const vt = 
 		vartype_t::or_<vartype_t::array, value_type_vt>::value;
@@ -243,7 +250,7 @@ public:
 		return this->begin() + this->size();
 	}
 
-	const_reference operator[](std::size_t I) const
+	const_reference operator[](::std::size_t I) const
 	{
 		if(this->size() <= I) throw std::exception("Wrong index");
 		return this->begin()[I];
@@ -259,9 +266,9 @@ public:
 		internal_policy::clear(this->internal());
 	}
 
-	void push_back(const value_type &R)
+	void push_back(value_type const &R)
 	{
-		const std::size_t I = this->size();
+		::std::size_t const I = this->size();
 		this->resize(I + 1);
 		this->begin()[I] = R;
 	}
@@ -272,16 +279,39 @@ public:
 		this->resize(boost::prior(this->size()));
 	}
 
+	template<class R>
+	iterator insert_range(iterator i, R const &r)
+	{
+		if(range::empty(r))
+		{
+			return i;
+		}
+		size_type const size = this->size();
+		size_type const r_size = range::size(r);
+		difference_type const i_n = i - this->begin();
+		this->resize(size + r_size);
+		iterator const b = this->begin();
+		i = b + i_n;
+		range::move(
+			range::make_reverse_iterator_range(i, b + size),
+			reverse_iterator(this->end()));
+		range::copy(r, i);
+		return i;
+	}
+
 	void erase(iterator I)
 	{
-		const iterator E = this->end();
+		iterator const E = this->end();
 		BOOST_ASSERT((this->begin()<=I) && (I<=E));
 		if(I!=E) 
 		{
-			for(iterator N = boost::next(I); N!=E; I = N++)
+			range::move(iterator_range(I, ::boost::prior(E)), ::boost::next(I));
+			/*
+			for(iterator N = ::boost::next(I); N!=E; I = N++)
 			{
 				move::assign(*I, *N);
 			}
+			*/
 			this->pop_back();
 		}
 	}
