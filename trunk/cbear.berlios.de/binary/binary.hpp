@@ -1,8 +1,10 @@
-#pragma once
+#ifndef CBEAR_BERLIOS_DE_BINARY_BINARY_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_BINARY_BINARY_HPP_INCLUDED
 
-namespace cbear
+// #pragma once
+
+namespace cbear_berlios_de
 {
-
 namespace binary
 {
 
@@ -56,4 +58,6 @@ typedef binary<15> _1111;
 
 
 } // namespace binary
-} // namespace cbear
+} // namespace cbear_berlios_de
+
+#endif
