@@ -1,0 +1,240 @@
+<?xml version="1.0"?>
+<schema 
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://cbear.berlios.de/api"
+	xmlns:api="http://cbear.berlios.de/api"
+	elementFormDefault="qualified">
+
+	<element name="library">	
+		<complexType>
+			<complexContent>
+				<extension base="api:definition">
+					<sequence>
+						<element ref="api:using" minOccurs="0" maxOccurs="unbounded"/>
+						<choice maxOccurs="unbounded">
+							<element ref="api:interface"/>
+							<element ref="api:struct"/>
+							<element ref="api:type"/>
+							<element ref="api:enum"/>
+							<element ref="api:object"/>
+						</choice>
+					</sequence>
+					<attribute name="version" use="optional" type="api:version"/>
+				</extension>
+			</complexContent>
+		</complexType>	
+	</element>
+
+	<element name="using">
+		<complexType>
+			<complexContent>
+				<extension base="api:definition">
+					<attribute name="id" type="api:id"/>
+					<attribute name="href" type="api:href"/>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="interface">
+		<complexType>
+			<complexContent>
+				<extension base="api:definition">
+					<sequence>
+						<element ref="api:type.ref" minOccurs="0" maxOccurs="unbounded"/>
+						<choice minOccurs="0" maxOccurs="unbounded">
+							<element ref="api:property"/>
+							<element ref="api:method"/>
+						</choice>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="property">
+		<complexType>
+			<complexContent>
+				<extension base="api:definition">
+					<sequence>
+						<element ref="api:get" minOccurs="0"/>
+						<element ref="api:set" minOccurs="0"/>
+						<element ref="api:type.ref"/>
+						<element ref="api:parameter" minOccurs="0" maxOccurs="unbounded"/>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="get"/>
+	<element name="set"/>
+
+	<element name="method">
+		<complexType>
+			<complexContent>
+				<extension base="api:definition">
+					<sequence>
+						<element ref="api:type.ref" minOccurs="0"/>
+						<element ref="api:parameter" minOccurs="0" maxOccurs="unbounded"/>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="parameter">
+		<complexType>
+			<sequence>
+				<element ref="api:in" minOccurs="0"/>
+				<element ref="api:out" minOccurs="0"/>
+				<element ref="api:type.ref"/>
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="in"/>
+	<element name="out"/>
+
+	<element name="struct">
+		<complexType>
+			<complexContent>
+				<extension base="api:definition">
+					<sequence>
+						<element ref="api:object" minOccurs="0" maxOccurs="unbounded"/>
+					</sequence>
+				</extension>			
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="enum">
+		<complexType>
+			<complexContent>
+				<extension base="api:definition">
+					<sequence>
+						<element ref="api:item" minOccurs="0" maxOccurs="unbounded"/>
+					</sequence>
+				</extension>
+			</complexContent>		
+		</complexType>
+	</element>
+
+	<element name="item">
+		<complexType>
+			<complexContent>
+				<extension base="api:definition">
+					<sequence>
+						<element ref="api:const"/>
+					</sequence>
+				</extension>
+			</complexContent>		
+		</complexType>
+	</element>
+
+	<element name="type">
+		<complexType>
+			<complexContent>
+				<extension base="api:definition">
+					<choice minOccurs="0" maxOccurs="unbounded">
+						<element ref="api:type.parameter"/>
+					</choice>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="type.parameter">
+		<complexType>
+			<attribute name="id" type="api:id"/>
+		</complexType>
+	</element>
+
+	<element name="object">
+		<complexType>
+			<complexContent>
+				<extension base="api:definition">
+					<sequence>
+						<element ref="api:type.ref"/>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="type.ref">
+		<complexType>
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<element ref="api:type.ref"/>
+				<element ref="api:const"/>
+			</choice>
+			<attribute name="id" type="api:id"/>
+			<attribute name="library" type="api:library"/>
+		</complexType>
+	</element>
+
+	<element name="const">
+		<complexType>
+			<attribute name="value" type="api:value"/>
+		</complexType>
+	</element>
+
+	<simpleType name="id">
+		<restriction base="token"/>
+	</simpleType>
+
+	<simpleType name="library">
+		<restriction base="token"/>
+	</simpleType>
+
+	<simpleType name="uuid">
+		<restriction base="token"/>
+	</simpleType>
+
+	<simpleType name="version">
+		<restriction base="token"/>
+	</simpleType>
+
+	<simpleType name="libray">
+		<restriction base="token"/>
+	</simpleType>
+
+	<simpleType name="brief">
+		<restriction base="string"/>
+	</simpleType>
+
+	<simpleType name="value">
+		<restriction base="token"/>
+	</simpleType>
+
+	<simpleType name="href">
+		<restriction base="token"/>
+	</simpleType>
+
+	<complexType name="definition">
+		<sequence>
+			<element ref="api:comment" minOccurs="0"/>
+			<element ref="api:pragma" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+		<attribute name="id" type="api:id"/>
+		<attribute name="uuid" use="optional" type="api:id"/>
+		<attribute name="brief" use="optional" type="api:brief"/>
+	</complexType>
+
+	<element name="pragma">
+		<complexType mixed="true">
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<any processContents="skip"/>
+			</choice>
+		</complexType>
+	</element>
+
+	<element name="comment">
+		<complexType mixed="true">
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<any processContents="skip"/>
+			</choice>
+		</complexType>
+	</element>
+
+</schema>

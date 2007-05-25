@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+The MIT License
+
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of 
+this software and associated documentation files (the "Software"), to deal in 
+the Software without restriction, including without limitation the rights to 
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so, 
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<?xml-stylesheet type="text/xsl" href="../project/html.xsl"?>
+<section 
+	xmlns="http://cbear.berlios.de/project" name="Организационный вопросы">
+	<section name="Subversion">
+Для будущих возможных версий и ответвлений, лучше сделать директорию trunk у 
+основания. Т.е. вместо:
+<a href="https://svn.sourceforge.net/svnroot/cpp-object/">https://svn.sourceforge.net/svnroot/cpp-object/</a>
+основной директорией сделать 
+<a href="https://svn.sourceforge.net/svnroot/cpp-object/trunk">https://svn.sourceforge.net/svnroot/cpp-object/trunk</a>
+(broken link). Вполне возможно, что кроме <em>trunk</em>, позже появятся 
+директории <em>stable</em>, <em>v.3.0</em> и т.п. Так как, разветвления в 
+Subversion делаются только 
+<a href="http://svnbook.red-bean.com/en/1.1/ch04s02.html#svn-ch-4-sect-2.3">через директории</a>,
+что меня вполне устраивает.
+	</section>
+	<section name="Организация директорий">
+Я предпочитаю делать разделение директорий по 
+подпроектам, а не по типам файлов. Т.е. вместо такой организации:
+<pre>
+inc\a.hpp
+   \b.hpp
+   \supbproject\c.hpp
+doc\a.html
+   \b.html
+   \subproject\c.html
+test\a.cpp
+    \b.cpp
+    \subproject\c.cpp
+</pre>
+сделать такую:
+<pre>
+a.hpp
+a.html
+a.test.cpp
+b.hpp
+b.html
+b.test.cpp
+suproject\c.hpp
+         \c.html
+         \c.test.cpp
+</pre>
+В такой структуре гораздо легче выделять/копировать/переносить подпроекты.
+Например: переименовать, перенести, а тем более удалить устаревший проект 
+subproject не составляет труда. Делаем одно действие с директорией subproject.
+При этом, никто не запрещает сделать BATCH файл который будет просто копировать 
+из всех директорий, например, только HTML файлы в отдельную директорию (если 
+нужен пакет только с документацией на все подпроекты).
+	</section>
+	<section name="Расширения файлов">
+		<ul>
+			<li>
+Заголовочные <em>С++</em> файлы имеют расширение <em>hpp</em>.
+			</li>
+			<li>
+Заголовочные <em>C</em> файлы имеют расширение <em>h</em>. Если заголовочный 
+файл предназначен и для <em>C</em> и для <em>C++</em>, то он имеет расширение
+<em>h</em>.
+			</li>
+		</ul>
+	</section>
+</section>

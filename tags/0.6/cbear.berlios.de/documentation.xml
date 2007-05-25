@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+The MIT License
+
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of 
+this software and associated documentation files (the "Software"), to deal in 
+the Software without restriction, including without limitation the rights to 
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so, 
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<?xml-stylesheet type="text/xsl" href="project/html.xsl"?>
+<section xmlns="http://cbear.berlios.de/project" name="Documentation">	
+	<section name="C++ Libraries">		
+		<p>
+Each class should implement swap and move constructor.
+		</p>
+		<section href="base/index.xml"/>
+		<section href="bit/index.xml"/>
+		<section href="policy/index.xml"/>
+		<section href="range/index.xml"/>
+		<section href="atomic/index.xml"/>
+		<section href="meta/index.xml"/>
+		<section href="c/index.xml"/>
+		<section href="move/index.xml"/>
+	</section>
+	<section name="XSLT Libraires">	
+		<section href="text/index.xml"/>
+		<section href="url/index.xml"/>
+		<section href="docbook/index.xml"/>
+		<section href="test/index.xml"/>
+	</section>
+	<section href="xsd/index.xml"/>
+	<section href="windows/index.xml"/>
+	<section href="cpp/index.xml"/>
+	<section href="api/index.xml"/>
+	<section href="others/index.ru.xml"/>
+</section>
