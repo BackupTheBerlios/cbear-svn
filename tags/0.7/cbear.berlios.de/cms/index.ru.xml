@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="html.xsl"?>
+<section 
+	xmlns="http://cbear.berlios.de/cms" 
+	name="CMS"
+	title="Система управление содержанием"
+	xml:lang="ru">
+Преимущества:
+	<ol>
+		<li>
+Данные храняться в <a href="XML" type="wikipedia"/> файлах.
+		</li>
+		<li>
+Описание документов базируется на <a href="XHTML" type="wikipedia"/> синтаксисе.
+		</li>
+		<li>
+Информация храниться в <a href="SVN" type="wikipedia">SVN</a>. Что позволяет 
+использовать одну систему контроля версий.
+		</li>
+		<li>
+Поддержка нескольких языков.
+		</li>
+	</ol>
+</section>

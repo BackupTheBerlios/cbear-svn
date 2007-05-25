@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../cms/html.xsl"?>
+<section xmlns="http://cbear.berlios.de/cms" name="Device API">
+	<section name="Main Target">
+The system should allow the user to create a programming interface of a 
+particular device type for high level programming languages such as Java, C#, 
+C++. This also should provide a safe way to communicate with the devices by using 
+the defined interfaces. The comunication is actually a Remote Procedure Call 
+(<a href="http://en.wikipedia.org/wiki/Remote_procedure_call">RPC</a>).
+	</section>
+	<section name="Platforms">
+Different operation systems and platforms have different ways to define 
+programming interfaces.
+		<section name="Windows">
+The main program communication system on Windows is <a href=
+"http://en.wikipedia.org/wiki/Component_Object_Model">COM</a> and its 
+descendants such as COM+, DCOM, ActiveX. Also <a href=
+"http://en.wikipedia.org/wiki/.NET_Framework">.NET</a> can easily interface to 
+COM interfaces. Most programming languges and systems on Windows can use COM.
+			<section name="Interface Definition Language (IDL)">
+COM has its own <a href=
+"http://en.wikipedia.org/wiki/Interface_definition_language">IDL</a> to define 
+interfaces. It is based on DCE IDL but has a lot of Microsoft specific features. 
+The language is hard to use. Other names are MIDL (Microsoft IDL) and ODL (more 
+strict subset).
+			</section>
+			<section name="Binary Representation">
+TLB is a binary representation of COM interfaces.
+			</section>
+			<section name="Code Generators">
+Microsoft provides an IDL compiler MIDL. MIDL generates a TLB file and pure C 
+code (not modern C++) from a COM IDL file. The C code is difficult and unsafe to 
+use. Also, it is genererated for Visual C only. The MIDL compiler is not 
+supported properly any more because the main priority of Microsoft is .NET.
+			</section>
+		</section>
+		<section name="UNIX, LINUX, Free BSD and MacOS X">
+<a href="http://en.wikipedia.org/wiki/DCE/RPC">DCE/RPC</a> and 
+<a href="http://en.wikipedia.org/wiki/CORBA">CORBA</a>.
+			<section name="Interface Definition Language">
+The CORBA also has its own IDL. However, it is not COM IDL and not DCE IDL.
+			</section>
+		</section>
+		<section name=".NET">
+.NET has its own Run Time Type Information (<a href=
+"http://en.wikipedia.org/wiki/RTTI">RTTI</a>). Since RTTI contains full 
+information about types, it contains interface definitions as well. However, 
+.NET can easy understand COM TLB files and use COM servers and DLL libraries.
+		</section>		
+		<section name="Java">
+Can use CORBA, COM (on Windows) and also its own systems since Java has its own 
+RTTI such as JavaIDL.
+		</section>
+		<section name="XPCOM">
+<a href="http://en.wikipedia.org/wiki/XPCOM">XPCOM</a> is Cross Platform COM 
+used in Mozilla browsers. They have their own IDL (XPIDL) which is close to 
+CORBA IDL. The main problem with that, it has GPL like license.
+		</section>
+	</section>
+	<section name="Interface Definition">
+		<section name="Structure">
+The best way to represent interface definition structure is to use XML as the
+most clear way to structure any data. Lets call it <b>API.XML</b>. Since it is 
+based on XML, it is very easy to write a proper converter to any other system or
+language without writting complicated parsers or binary serializators. In most 
+cases, XSLT can cover all required convertions. XSLT is also the best way to 
+represent interface definition in the most popular web browsers such as Microsoft 
+Internet Explorer and Mozilla Firefox. No additional tools are required to see 
+interface definition structure.
+		</section>
+		<section name="Language">
+			<section name="Alternatives">
+				<p>
+It is possible to use the API.XML as an <b>IDL</b> but it is not the easiest way 
+to define interfaces. The best way is to use a specific language. DCE IDL and 
+COM IDL are too specific and not user friendly so they can not be a main IDL 
+language. CORBA IDL and XPIDL are much better as an IDL language but it is not 
+clear about all its possibilities.
+				</p>
+				<p>
+Currently, we use the API.XML.
+				</p>
+			</section>
+			<section name="Compilers">
+Only one requirement: the compiler has to be able to convert IDL into the 
+API.XML.
+			</section>
+		</section>
+		<section name="GUI and Wizards">
+One requirement: they should work with the API.XML.
+		</section>
+	</section>
+	<section name="Implemented Generators">
+		<section name="API.XML to ODL.XML">
+<b>ODL.XML</b> is an XML structure of COM IDL.
+			<section name="ODL.XML to ODL">
+ODL is a strict COM IDL. MIDL can generate TLB, H and IID.C files by using ODL.
+			</section>
+			<section name="ODL.XML to CPP.XML">
+<b>CPP.XML</b> is an XML structute of a C++ module. Can be used to write either 
+a C++ COM server or a client.
+				<section name="CPP.XML to HPP">
+<b>HPP</b> is a C++ header file.
+				</section>
+			</section>
+			<section name="ODL.XML to CS.XML">
+<b>CS.XML</b> is an XML structute of a C# module. Can be used only to write a
+C# COM server. C# COM clients must use COM TLB.
+				<section name="CS.XML to CS">
+<b>CS</b> is a C# file.
+				</section>
+			</section>
+		</section>
+		<section name="API.XML to XHTML">
+<b>XHTML</b> based documentation. XHTML is an XML based HTML, a W3C standard.
+		</section>
+	</section>
+	<section name="Required Work">
+Firstly, the main requirement is to define an RPC. This defines how high level
+function calls will be serialized. There are a lot of different RPC standards 
+such as DCE RPC, <a href="http://en.wikipedia.org/wiki/MSRPC">MSRPC</a>, 
+<a href="http://en.wikipedia.org/wiki/XML_RPC">XML RPC</a> and others. Because 
+our devices have limited resources, we can define our own RPC, and not only one. 
+It can also depends on a particular device type and its resources. Different 
+generators are required for different RPC.
+		<section name="Generators">
+			<section name="ODL.XML to RPCNAME.CPP">
+<b>RPCNAME.CPP</b> is a C++ module which can serialize and desirialize 
+specific interface function calls to a simple flat message such as an array of 
+bytes by using RPCNAME agreements.
+			</section>
+			<section name="ODL.XML to RPCNAME.C">
+<b>RPCNAME.C</b> is a C module which can serialize and desirialize specific 
+interface function calls to a simple flat message such as an array of bytes by 
+using RPCNAME agreements.
+			</section>
+		</section>
+	</section>
+	<section name="Simplest RPC, version 1.0">
+		<section name="Interfaces And Function Identifiers">
+One module has only one class which can contain multiple interfaces. An 
+interface pointer is a one byte. A function identifier is one byte that is a 
+sum of its interface pointer and a function offset. A function # 0 always 
+returns a table of descriptors of all interfaces. The interface decriptor 
+contains UUID and an interface pointer. The descriptor size is 17 bytes (UUID - 
+16 bytes, pointer - 1 byte).
+			<section name="IUnknown">
+No AddRef, no Release, no QueryInterface.
+			</section>
+		</section>
+		<section name="Exceptions">
+			No exceptions.
+		</section>
+		<section name="Primitive Types">
+			Serialized in big or little <a href=
+"http://en.wikipedia.org/wiki/Little_endian">endian</a>. It has to be specified.
+			<ul>
+				<li>
+					<b>uint8</b> - an 8-bits unsigned integer.
+				</li>
+				<li>
+					<b>int8</b> - an 8-bits signed integer.
+				</li>
+				<li>
+					<b>uint16</b> - a 16-bits unsigned integer.
+				</li>
+				<li>
+					<b>int16</b> - a 16-bits signed integer.
+				</li>
+				<li>
+					<b>uint32</b> - a 32-bits unsigned integer.
+				</li>
+				<li>
+					<b>int32</b> - a 32-bits signed integer.
+				</li>
+			</ul>
+		</section>
+		<section name="Enumerations">
+			The size of an enumeration depends on possible values.
+		</section>
+		<section name="Structures">
+			Serialized in the order of its fields. Aligment is one byte.
+		</section>
+		<section name="Fixed Arrays">
+			Serialized in the order of its items.
+		</section>		
+	</section>
+</section>

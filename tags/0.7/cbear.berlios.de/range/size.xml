@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="../cpp/html.xsl"?>
+<unit 
+	xmlns="http://cbear.berlios.de/cpp" 
+	id="cbear.berlios.de/range/size"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://cbear.berlios.de/cpp ../cpp/main.xsd">
+<header>
+<namespace id="cbear_berlios_de">
+<namespace id="range">
+
+<template>
+	<id id="Container"/>
+	<method id="size">
+		<id.ref type="typename">
+			<id.ref type="::">
+				<id.ref id="size_type" type="&lt;&gt;">
+					<id.ref type="const"><id.ref id="Container"/></id.ref>
+				</id.ref>
+				<id.ref id="type"/>
+			</id.ref>
+		</id.ref>
+		<parameter>
+			<id.ref type="&amp;">
+				<id.ref type="const"><id.ref id="Container"/></id.ref>
+			</id.ref>
+		</parameter>
+	</method>
+</template>
+
+</namespace>
+</namespace>
+</header>
+</unit>
