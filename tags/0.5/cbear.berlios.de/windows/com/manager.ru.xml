@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../../project/html.xsl"?>
+<!--
+The MIT License
+
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of 
+this software and associated documentation files (the "Software"), to deal in 
+the Software without restriction, including without limitation the rights to 
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so, 
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<section 
+	xmlns="http://cbear.berlios.de/project" 
+	name="Управление динамическими объектами">
+	<section name="Проблемма">
+		<p>
+Основной вопрос - когда и кто решает, что объект больше не нужен, и что ему пора 
+освобождать память?
+		</p>
+		<p>
+Возможные варианты и проблеммы связанные с каждым вариантом:
+		</p>
+		<section name="Один владелец">
+			<p>
+C++: std::auto_ptr, boost::scoped_ptr.
+			</p>
+			<p>				
+У каждого объекта есть свой единственный владелец, который и решает когда убить
+объект. Это, как то, решает проблемму с потерей памяти (Memory Leak). Зато, 
+создает гораздо более серьезную проблемму. Могут существовать ссылки на объект, 
+которые и не подозревают что объекта больше нет. При обращении к такому объекту, 
+дальнейщее поведение программы - неопределенно.
+			</p>
+			<p>
+Проблемму доступа к уже убитому объекту можно решить, добавив дополнительную 
+проверку перед самим доступом. В случае если объект уже убит, ничего не остается 
+делать, как считать это исключительной ситуацией.
+			</p>
+		</section>
+		<section name="Разделение владения">
+			<p>
+C++: boost::shared_ptr, boost::intrusive_ptr.				
+			</p>
+			<p>
+В этом случае, объект не может быть разрушен до тех пор, пока есть хотя бы один 
+владелец.
+			</p>
+			<section name="Счетчик ссылок (Reference Counter)">
+				<p>
+Существует опасность циклических ссылок. Соотвественно, потери памяти во время 
+работы программы.
+				</p>
+				<p>
+Для того что бы избежать циклических ссылок, приходится серьезно переделывать 
+дизайн и проверять взаимодействие объектов. Обычно, такой переделанный дизайн 
+менее эффективный. Например, два объекта которые в изначальном дизайне должны 
+были ссылатся друг на друга, теперь будут ссылатся на третий промежуточный 
+объект. В итоге, имеем вместо двух объектов - три, соотвественно, большая 
+фрагментация памяти и замедление скорости работы приложения.
+				</p>
+			</section>			
+			<section 
+				name="Автоматический сборщик мусора (GC, Garbage Collection)">
+Достаточно сложный процесс, который трудно реализовать эффективно без информации
+о составляющих типа объекта во время компиляции 
+(CTTI, Compile Time Type Information).
+			</section>
+			<p>
+Во многих случаях, разделение владения это просто перекладывание проблеммы 
+времени жизни объекта на сам объект. Т.е. каждый объект имеет, как минимум, два 
+основных состояния, т.е. живой и не живой. Например:
+			</p>
+			<ul>
+				<li>
+У файла и окна есть метод Close, после вызова которого, делать что либо с этим
+объектом становится не возможным.
+				</li>
+				<li>
+У объекта отображающего физическое устройство обычно есть состояние, когда 
+устройство не доступно (Disconected). Объект находится в нерабочем состоянии и 
+на все запросы отвечает ошибкой.
+				</li>
+			</ul>
+			<p>
+Получается, что объекты имитируют вариант с единственным владельцем.
+			</p>
+		</section>
+	</section>
+	<section name="Решение проблеммы доступа к убитому объекту">
+		<p>
+Создается объект заместитель (Proxy Object), который живет по правилам 
+разделения владения. Заместитель опционально содержит в себе сам объект.
+Ссылатся можно только на объект заместитель. Сам объект может быть убит в любое 
+время. Если объект убит, то заместитель будет отвечать на все запросы 
+соответствующей ошибкой.
+		</p>
+		<p>
+Для определения времени жизни заместителя можно использовать счетчик ссылок. 
+Так как сам заместитель не ссылается на другие объекты, то циклических ссылок 
+быть не может.
+		</p>
+	</section>
+</section>

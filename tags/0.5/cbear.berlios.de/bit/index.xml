@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../project/html.xsl"?><!--
+The MIT License
+
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of 
+this software and associated documentation files (the "Software"), to deal in 
+the Software without restriction, including without limitation the rights to 
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so, 
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--><section xmlns="http://cbear.berlios.de/project" name="Integer Bit Mask Operations">
+	
+	<p>
+Namespace <em>cbear_berlios_de::bit</em>.
+	</p>
+	<p>
+Header <a href="range.hpp"/>.
+	</p>
+	<section name="Range Of Bits">
+		
+<pre>template&lt;
+	class Type, std::size_t First, std::size_t Last, class ValueType = Type&gt;
+struct range
+{
+	static ValueType get(Type);
+	static void set(Type &amp;, ValueType);
+
+	// Noncopyable.
+	class reference
+	{
+	public:
+		reference(Type &amp;);
+		operator ValueType() const;
+		const reference &amp;operator=(ValueType) const;
+	};
+};</pre>
+		<p>
+For example:
+		</p>
+<pre>namespace Bit = cbear_berlios_de::bit;
+int A = 0;
+Bit::range&lt;int, 3, 7&gt;::reference A_3_7(A);
+A_3_7 = 5; // A = 5 &lt;&lt; 3;
+int B = A_3_7;</pre>
+	</section>
+	<section name="One Bit">
+		
+<pre>template&lt;class Type, std::size_t Number&gt;
+struct one
+{
+	static bool get(Type);
+	static void set(Type &amp;, bool);
+
+	// Noncopyable.
+	class reference
+	{
+	public:
+		reference(Type &amp;);
+		operator bool() const;
+		const reference &amp;operator=(bool) const;
+	};
+};</pre>
+	</section>
+</section>
