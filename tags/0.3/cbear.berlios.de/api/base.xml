@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<!--
+The MIT License
+
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of 
+this software and associated documentation files (the "Software"), to deal in 
+the Software without restriction, including without limitation the rights to 
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so, 
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<?xml-stylesheet type="text/xsl" href="../api/html.xsl"?>
+<library 
+	xmlns="http://cbear.berlios.de/api"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://cbear.berlios.de/api main.xsd"
+	xmlns:com.idl="http://cbear.berlios.de/windows/com"
+	id="cbear.berlios.de/api/base"
+	uuid="1C5A19C7-7ADA-456b-B9A2-58C09AF5BAF8">
+
+<comment>
+	<public>
+See <html:a href="http://cbear.berlios.de/api"
+>http://cbear.berlios.de/api</html:a>.
+	</public>
+</comment>
+
+<pragma>
+	<com.idl:alias id="STDOLE2"/>
+</pragma>
+
+<type id="int">
+	<pragma>
+		<com.idl:alias id="INT"/>
+	</pragma>
+</type>
+
+<type id="uint">
+	<pragma>
+		<com.idl:alias id="UINT"/>
+	</pragma>
+</type>
+
+<type id="int8">
+	<pragma>
+		<com.idl:alias id="CHAR"/>
+	</pragma>
+</type>
+
+<type id="uint8">	
+	<pragma>
+		<com.idl:alias id="BYTE"/>
+	</pragma>
+</type>
+
+<type id="int16">
+	<pragma>
+		<com.idl:alias id="SHORT"/>
+	</pragma>
+</type>
+	
+<type id="uint16">	
+	<pragma>
+		<com.idl:alias id="USHORT"/>
+	</pragma>
+</type>
+
+<type id="int32">
+	<pragma>
+		<com.idl:alias id="LONG"/>
+	</pragma>
+</type>
+
+<type id="uint32">
+	<pragma>
+		<com.idl:alias id="ULONG"/>
+	</pragma>
+</type>
+
+<type id="int64">
+	<pragma>
+		<com.idl:alias id="LONGLONG"/>
+	</pragma>
+</type>
+
+<type id="uint64">
+	<pragma>
+		<com.idl:alias id="ULONGLONG"/>
+	</pragma>
+</type>
+
+<type id="bool">
+	<pragma>
+		<com.idl:alias id="VARIANT_BOOL"/>
+	</pragma>
+</type>
+
+<type id="float">
+	<pragma>
+		<com.idl:alias id="FLOAT"/>
+	</pragma>	
+</type>
+
+<type id="double">
+	<pragma>
+		<com.idl:alias id="DOUBLE"/>
+	</pragma>	
+</type>
+
+<type id="string">
+	<pragma>
+		<com.idl:alias id="BSTR"/>
+	</pragma>	
+</type>
+
+<type id="date">
+	<pragma>
+		<com.idl:alias id="DATE"/>
+	</pragma>	
+</type>
+
+<type id="optional">
+	<type.parameter id="type"/>
+</type>
+
+<type id="fixed.array">
+	<type.parameter id="type"/>
+	<type.parameter id="size"/>
+</type>
+
+<type id="vector">
+	<pragma>
+		<com.idl:alias id="SAFEARRAY"/>
+	</pragma>	
+	<type.parameter id="type"/>
+</type>
+
+<type id="multi.array">
+	<type.parameter id="type"/>
+	<type.parameter id="dimension"/>
+</type>
+
+<interface id="iunknown">
+	<pragma>
+		<com.idl:alias id="IUnknown"/>
+	</pragma>	
+</interface>
+
+<interface id="idispatch">
+	<pragma>
+		<com.idl:alias id="IDispatch"/>
+	</pragma>	
+</interface>
+
+<interface id="itypelib">
+	<pragma>
+		<com.idl:alias id="ITypeLib"/>
+	</pragma>
+</interface>
+
+</library>

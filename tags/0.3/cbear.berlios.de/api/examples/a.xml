@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<library xmlns="http://cbear.berlios.de/api" id="A">
+
+	<using id="base" href="../base.xml"/>
+
+	<interface id="IMy">
+		<property id="Str">
+			<get/>
+			<set/>
+			<type.ref library="base" id="string"/>
+		</property>
+	</interface>
+
+	<object id="My">
+		<type.ref id="IMy"/>
+	</object>
+
+</library>

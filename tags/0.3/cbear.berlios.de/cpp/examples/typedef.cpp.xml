@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<!--
+The MIT License
+
+Copyright (c) 2005 C Bear (http://cbear.berlios.de)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of 
+this software and associated documentation files (the "Software"), to deal in 
+the Software without restriction, including without limitation the rights to 
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so, 
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<?xml-stylesheet type="text/xsl" href="../html.xsl"?>
+<unit
+	xmlns="http://cbear.berlios.de/cpp"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://cbear.berlios.de/cpp ../main.xsd"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	id="cbear.berlios.de/cpp/examples/typedef">
+
+<header>
+
+<namespace id="cbear_berlios_de">
+<namespace id="cpp">
+<namespace id="examples">
+
+	<typedef id="Type1">
+		<id.ref id="ClassN"/>
+	</typedef>
+
+	<template>
+		<id id="Class3"/>
+		<id id="Class6"/>
+		<class>
+			<id.ref type="::">
+				<id.ref id="Class1"/>
+				<id.ref id="Class2" type="&lt;&gt;">
+					<id.ref id="Class3"/>
+					<id.ref id="Class4" type="&lt;&gt;"/>
+				</id.ref>
+				<id.ref id="Class5"/>
+			</id.ref>
+
+			<access access="protected">
+				<id.ref id="Class6"/>
+			</access>
+
+			<access access="protected">
+				<template>
+					<id id="Class100"/>
+					<class>
+						<id.ref id="Class10"/>
+					</class>
+				</template>
+			</access>
+
+			<access access="private">
+
+				<method id="Function">
+					<id.ref id="void"/>
+				</method>
+
+				<method id="Function">
+					<virtual/>
+					<id.ref id="Class5" type="&lt;&gt;">
+						<id.ref id="void"/>
+					</id.ref>
+					<parameter><id.ref id="int"/></parameter>
+				</method>
+
+				<method id="Function">
+					<virtual/>
+					<id.ref id="void"/>
+					<parameter><id.ref id="int"/></parameter>
+					<parameter><id.ref id="Class3"/></parameter>
+					<const/>
+					<abstract/>
+				</method>
+			</access>
+
+		</class>
+	</template>
+
+	<template>
+		<id id="Class100"/>
+		<class>
+			<id.ref id="Class10"/>
+		</class>
+	</template>
+
+	<template>
+		<class>
+			<id.ref id="Class11"/>
+
+			<access access="public">
+
+				<id.ref id="Class16"/>
+
+				<id.ref id="Class17" type="&lt;&gt;">
+					<id.ref type="::">
+						<id.ref id="Class23"/>
+						<id.ref id="Class24"/>
+						<id.ref id="Class25"/>
+					</id.ref>
+					<id.ref id="Class18" type="&lt;&gt;">
+						<id.ref id="Class19"/>
+					</id.ref>
+				</id.ref>
+
+				<class>
+					<id.ref id="Class10"/>
+
+				</class>
+			</access>
+
+		</class>
+	</template>
+
+</namespace>
+</namespace>
+</namespace>
+
+</header>
+
+<code>
+
+<namespace id="cbear_berlios_de">
+<namespace id="cpp">
+<namespace id="examples">
+</namespace>
+</namespace>
+</namespace>
+
+</code>
+
+</unit>

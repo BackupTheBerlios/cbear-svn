@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<schema 
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://cbear.berlios.de/windows/com"
+	xmlns:odl="http://cbear.berlios.de/windows/com"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+
+	<element name="library">	
+		<complexType>
+			<complexContent>
+				<extension base="odl:definition">
+					<sequence>
+						<element ref="odl:importlib" minOccurs="0" maxOccurs="unbounded"/>
+						<choice minOccurs="0" maxOccurs="unbounded">
+							<element ref="odl:interface"/>
+							<element ref="odl:typedef"/>
+							<element ref="odl:coclass"/>
+						</choice>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="importlib">
+		<complexType>
+			<attribute name="href" type="odl:href"/>
+		</complexType>
+	</element>
+
+	<element name="interface">
+		<complexType>
+			<complexContent>
+				<extension base="odl:definition">
+					<sequence>
+						<element ref="odl:type.ref" minOccurs="0"/>
+						<element ref="odl:method" minOccurs="0" maxOccurs="unbounded"/>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="method">
+		<complexType>
+			<complexContent>
+				<extension base="odl:definition">
+					<sequence>
+						<element ref="odl:type.ref" minOccurs="0"/>
+						<element ref="odl:parameter" minOccurs="0" maxOccurs="unbounded"/>	
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="parameter">
+		<complexType>
+			<complexContent>
+				<extension base="odl:definition">
+					<sequence>
+						<element ref="odl:type.ref"/>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="typedef">
+		<complexType>
+			<sequence>
+				<choice>
+					<element ref="odl:struct"/>
+					<element ref="odl:enum"/>
+				</choice>
+			</sequence>
+			<attribute name="id" type="odl:id"/>
+		</complexType>
+	</element>
+
+	<element name="struct">
+		<complexType>
+			<complexContent>
+				<extension base="odl:definition">
+					<sequence>
+						<element ref="odl:object" minOccurs="0" maxOccurs="unbounded"/>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="object">
+		<complexType>
+			<complexContent>
+				<extension base="odl:definition">
+					<sequence>
+						<element ref="odl:type.ref"/>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>	
+	</element>
+
+	<element name="enum">
+		<complexType>
+			<complexContent>
+				<extension base="odl:definition">
+					<sequence>
+						<element ref="odl:item" minOccurs="0" maxOccurs="unbounded"/>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="item">
+		<complexType>
+			<complexContent>
+				<extension base="odl:definition">
+					<sequence>
+						<element ref="odl:const"/>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="coclass">
+		<complexType>
+			<complexContent>
+				<extension base="odl:definition">
+					<sequence>
+						<element ref="odl:type.ref"/>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>	
+	</element>
+
+	<element name="type.ref">
+		<complexType>
+			<complexContent>
+				<extension base="odl:list.attribute">
+					<choice minOccurs="0" maxOccurs="unbounded">
+						<element ref="odl:type.ref"/>
+						<element ref="odl:const"/>
+					</choice>
+					<attribute name="id" type="odl:id"/>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<element name="const">
+		<complexType>
+			<attribute name="value" type="odl:value"/>
+		</complexType>
+	</element>
+
+	<complexType name="definition">
+		<complexContent>
+			<extension base="odl:list.attribute">
+				<sequence>
+					<element ref="odl:comment" minOccurs="0"/>
+				</sequence>
+				<attribute name="id" use="required" type="odl:id"/>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<element name="comment">
+		<complexType mixed="true">
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<any processContents="skip"/>
+			</choice>
+		</complexType>
+	</element>
+
+	<complexType name="list.attribute">
+		<sequence>
+			<element ref="odl:attribute" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+	<element name="attribute">
+		<complexType>
+			<attribute name="id" type="odl:id"/>
+			<attribute name="value" type="odl:value"/>
+		</complexType>
+	</element>
+
+	<simpleType name="id">
+		<restriction base="token"/>
+	</simpleType>
+
+	<simpleType name="href">
+		<restriction base="string"/>
+	</simpleType>
+
+	<simpleType name="value">
+		<restriction base="string"/>
+	</simpleType>
+
+</schema>
