@@ -152,7 +152,8 @@ public:
 	{
 		return this->This().insert_range(I, make_fill(X, 1));
 	}
-	void push_front(const_reference X)
+	template<class T>
+	void push_front(T const &X)
 	{
 		this->insert(this->This().begin(), X);
 	}
@@ -160,7 +161,8 @@ public:
 	{
 		this->insert(this->This().begin(), base::default_());
 	}
-	void push_back(const_reference X)
+	template<class T>
+	void push_back(T const &X)
 	{
 		this->insert(this->This().end(), X);
 	}
