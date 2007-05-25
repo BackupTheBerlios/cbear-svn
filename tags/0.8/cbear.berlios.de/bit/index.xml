@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../cms/html.xsl"?>
+<section 
+	xmlns="http://cbear.berlios.de/cms" name="Integer Bit Mask Operations">
+	
+	<p>
+Namespace <em>cbear_berlios_de::bit</em>.
+	</p>
+	<p>
+Header <a href="range.hpp"/>.
+	</p>
+	<section name="Range Of Bits">
+		
+<pre>template&lt;
+	class Type, std::size_t First, std::size_t Last, class ValueType = Type&gt;
+struct range
+{
+	static ValueType get(Type);
+	static void set(Type &amp;, ValueType);
+
+	// Noncopyable.
+	class reference
+	{
+	public:
+		reference(Type &amp;);
+		operator ValueType() const;
+		const reference &amp;operator=(ValueType) const;
+	};
+};</pre>
+		<p>
+For example:
+		</p>
+<pre>namespace Bit = cbear_berlios_de::bit;
+int A = 0;
+Bit::range&lt;int, 3, 7&gt;::reference A_3_7(A);
+A_3_7 = 5; // A = 5 &lt;&lt; 3;
+int B = A_3_7;</pre>
+	</section>
+	<section name="One Bit">
+		
+<pre>template&lt;class Type, std::size_t Number&gt;
+struct one
+{
+	static bool get(Type);
+	static void set(Type &amp;, bool);
+
+	// Noncopyable.
+	class reference
+	{
+	public:
+		reference(Type &amp;);
+		operator bool() const;
+		const reference &amp;operator=(bool) const;
+	};
+};</pre>
+	</section>
+</section>

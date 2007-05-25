@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../cms/html.xsl"?>
+<section 
+	xmlns="http://cbear.berlios.de/cms" 
+	name="Организационные вопросы"
+	xml:lang="ru">
+	<section name="Организация директорий">
+Директории разбиты по подпроектам, а не по типам файлов. Т.е. вместо такой организации:
+<pre>
+inc\a.hpp
+   \b.hpp
+   \supbproject\c.hpp
+doc\a.html
+   \b.html
+   \subproject\c.html
+test\a.cpp
+    \b.cpp
+    \subproject\c.cpp
+</pre>
+используется такую:
+<pre>
+a.hpp
+a.html
+a.test.cpp
+b.hpp
+b.html
+b.test.cpp
+suproject\c.hpp
+         \c.html
+         \c.test.cpp
+</pre>
+В такой структуре гораздо легче выделять/копировать/переносить подпроекты.
+Например: переименовать, перенести, а тем более удалить устаревший подпроект не 
+составляет труда.
+		<ul>
+			<li>
+В именах директорий и файлов нельзя использовать заглавные буквы.
+			</li>
+			<li>
+Имена директорий должны соотвествовать пространству имен, или префиксам в языках
+в которых нет пространств имен. Например файлу <a href=
+"cbear.berlios.de/meta/if.hpp" type="http"/> в языке <em>C++</em> соотвествует 
+пространство имен <em>cbear_berlios_de::meta</em>.
+			</li>
+		</ul>
+	</section>
+	<section name="Расширения файлов">
+		<ul>
+			<li>
+Заголовочные <em>С++</em> файлы имеют расширение <em>hpp</em>. Пример 
+<em>hpp</em> файла:
+<pre><![CDATA[#ifndef CBEAR_BERLIOS_DE_PROJECT_SUBPROJECT_OBJECT_HPP_INCLUDED
+#define CBEAR_BERLIOS_DE_PROJECT_SUBPROJECT_OBJECT_HPP_INCLUDED
+
+namespace cbear_berlios_de
+{
+namespace project
+{
+namespace subporject
+{
+
+class object
+{
+};
+
+}
+}
+}
+
+#endif]]></pre>
+			</li>
+			<li>
+Заголовочные <em>C</em> файлы имеют расширение <em>h</em>. Если заголовочный 
+файл предназначен и для <em>C</em> и для <em>C++</em>, то он имеет расширение
+<em>h</em>. Пример <em>h</em> файла:
+<pre><![CDATA[#ifndef CBEAR_BERLIOS_DE_REMOTE_UUID_H_INCLUDED
+#define CBEAR_BERLIOS_DE_REMOTE_UUID_H_INCLUDED
+
+#ifdef __cpluplus
+extern "C"
+{
+#endif
+
+typedef struct
+{
+	unsigned char value[16];
+} cbear_berlios_de_remote_uuid;
+
+#ifndef __cplusplus
+}
+#endif
+
+#endif]]></pre>
+			</li>
+		</ul>
+	</section>
+</section>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../../../cms/html.xsl"?>
+<section xmlns="http://cbear.berlios.de/cms" name="Static Implementation">
+	<p>
+Namespace <em>cbear_berlios_de::windows::com::static_</em>.
+	</p>
+	<p>
+File <a href="implementation.hpp"/>. Implementation info should be 
+based on <em>intrusive::map</em>. See also 
+<a href="implementation.svg"/>.
+	</p>
+</section>

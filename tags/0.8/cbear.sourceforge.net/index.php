@@ -1,0 +1,1 @@
+<?php header("Location: http://cbear.berlios.de/"); exit; ?>
