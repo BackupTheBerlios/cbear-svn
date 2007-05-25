@@ -53,7 +53,6 @@ typedef binary<13> _1101;
 typedef binary<14> _1110;
 typedef binary<15> _1111;
 
-
 } // namespace binary
 } // namespace cbear_berlios_de
 

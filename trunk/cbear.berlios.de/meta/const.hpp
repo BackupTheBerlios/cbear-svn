@@ -16,7 +16,10 @@ public:
 	typedef ValueType value_type;
 	static const value_type value = Value;
 
-	value_type operator()() const { return value; }
+	value_type operator()() const 
+	{ 
+		return value;
+	}
 
 #define CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(O, N) \
 	private:\
