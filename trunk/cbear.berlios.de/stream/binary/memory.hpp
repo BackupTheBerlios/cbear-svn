@@ -15,7 +15,7 @@ namespace binary
 {
 
 template<class E>
-class memory: private std::vector<char>
+class memory: private ::std::vector<char>
 {
 public:
 

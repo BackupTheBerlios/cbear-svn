@@ -20,7 +20,7 @@ class orange
 public:
 
 	typedef range::iterator_range<char *> range_type;
-	typedef range::iterator_range<const char *> const_range_type;
+	typedef range::iterator_range<char const *> const_range_type;
 
 	orange(range_type const &R): 
 		R(R) 
@@ -56,7 +56,10 @@ public:
 
 	void push_back_range(const_range_type const &N)
 	{
-		if(N.size() > this->R.size()) throw exception();
+		if(N.size() > this->R.size()) 
+		{
+			throw exception();
+		}
 		this->R.begin() = range::copy(N, this->R.begin());
 	}
 

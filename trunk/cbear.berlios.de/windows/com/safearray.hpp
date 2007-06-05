@@ -6,6 +6,7 @@
 #include <cbear.berlios.de/range/empty.hpp>
 #include <cbear.berlios.de/base/undefined.hpp>
 #include <cbear.berlios.de/windows/com/traits.hpp>
+#include <cbear.berlios.de/windows/com/char.hpp>
 #include <cbear.berlios.de/windows/com/ushort.hpp>
 #include <cbear.berlios.de/windows/com/double.hpp>
 #include <cbear.berlios.de/windows/com/exception.hpp>

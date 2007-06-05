@@ -21,7 +21,7 @@ public:
 	typedef range::iterator_range<char *> range_type;
 	typedef range::iterator_range<char const *> const_range_type;
 
-	irange(const const_range_type &R): 
+	irange(const_range_type const &R): 
 		R(R) 
 	{
 	}

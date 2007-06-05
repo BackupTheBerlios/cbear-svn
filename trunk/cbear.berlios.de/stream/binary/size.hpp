@@ -18,7 +18,9 @@ public:
 	typedef range::iterator_range<const char *> const_range_type;
 	typedef range::iterator_range<char *> range_type;
 
-	size(): V(0) {}
+	size(): V(0) 
+	{
+	}
 
 	/*
 	void push_back_range(const const_range_type &N)
@@ -45,7 +47,10 @@ public:
 		return *this;
 	}
 
-	std::size_t operator()() const { return this->V; }
+	std::size_t operator()() const 
+	{ 
+		return this->V; 
+	}
 
 private:
 	std::size_t V;

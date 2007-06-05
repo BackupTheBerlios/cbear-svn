@@ -1,6 +1,7 @@
 #ifndef CBEAR_BERLIOS_DE_STREAM_BINARY_BIG_ENDIAN_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_STREAM_BINARY_BIG_ENDIAN_HPP_INCLUDED
 
+#include <boost/cstdint.hpp>
 #include <cbear.berlios.de/base/integer.hpp>
 
 namespace cbear_berlios_de
