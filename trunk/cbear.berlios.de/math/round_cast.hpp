@@ -3,6 +3,8 @@
 
 namespace cbear_berlios_de
 {
+namespace math
+{
 
 template<class To, class From>
 To round_cast(From f)
@@ -10,6 +12,7 @@ To round_cast(From f)
 	return static_cast<To>(f + 0.5);
 }
 
+}
 }
 
 #endif
