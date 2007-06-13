@@ -133,9 +133,17 @@ namespace detail
 {
 
 #ifdef BOOST_LITTLE_ENDIAN
-enum endian_offset { low_offset, high_offset };
+enum endian_offset 
+{ 
+	low_offset, 
+	high_offset 
+};
 #elif defined(BOOST_BIG_ENDIAN)
-enum endian_offset { high_offset, low_offset };
+enum endian_offset 
+{ 
+	high_offset, 
+	low_offset 
+};
 #else
 #error Unknown machine endianness detected.
 #endif
@@ -373,10 +381,16 @@ private:
 };
 
 template<std::size_t Base, class T>
-out_t<Base, T> out(T X) { return out_t<Base, T>(X); }
+out_t<Base, T> out(T X) 
+{ 
+	return out_t<Base, T>(X); 
+}
 
 template<std::size_t Base, class T>
-out_t<Base, T> out(T X, std::size_t I) { return out_t<Base, T>(X, I); }
+out_t<Base, T> out(T X, std::size_t I) 
+{ 
+	return out_t<Base, T>(X, I); 
+}
 
 template<class T>
 uint_read<10, T> dec(T &X) 
@@ -385,10 +399,16 @@ uint_read<10, T> dec(T &X)
 }
 
 template<class T>
-out_t<16, T> hex(T X) { return out_t<16, T>(X); }
+out_t<16, T> hex(T X) 
+{ 
+	return out_t<16, T>(X); 
+}
 
 template<class T>
-out_t<16, T> hex(T const &X, std::size_t I) { return out_t<16, T>(X, I); }
+out_t<16, T> hex(T const &X, std::size_t I) 
+{ 
+	return out_t<16, T>(X, I); 
+}
 
 template<class T>
 uint_fixed_read<16, T> hex(T &X, std::size_t I)
