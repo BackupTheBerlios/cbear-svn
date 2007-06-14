@@ -31,7 +31,10 @@ public:
 	typedef base::undefined pointer;
 	typedef base::undefined reference;
 
-	static bool cast(type This) { return This!=FALSE; }
+	static bool cast(type This) 
+	{ 
+		return This != VARIANT_FALSE; 
+	}
 
 	template<class Stream>
 	static void output(Stream &S, type This) 
@@ -56,7 +59,7 @@ public:
 	{
 	}
 	explicit variant_bool_t(bool X): 
-		detail::variant_bool_wrap(X) 
+		detail::variant_bool_wrap(X ? VARIANT_TRUE: VARIANT_FALSE)
 	{
 	}
 	operator bool() const 
@@ -87,7 +90,7 @@ public:
 	{
 		char V;
 		S >> V;
-		this->internal() = V ? TRUE: FALSE;
+		this->internal() = V ? VARIANT_TRUE: VARIANT_FALSE;
 	}
 };
 
