@@ -16,14 +16,20 @@ template<class A, class W>
 struct traits<char, A, W>
 {
 	typedef A type;
-	static type get(A X, W ) { return X; }
+	static type get(A X, W) 
+	{ 
+		return X; 
+	}
 };
 
 template<class A, class W>
 struct traits<wchar_t, A, W>
 {
 	typedef W type;
-	static type get(A, W X) { return X; }
+	static type get(A, W X) 
+	{ 
+		return X; 
+	}
 };
 
 template<class C, class A, class W>
@@ -36,7 +42,15 @@ typename traits<C, const A &, const W &>::type get(const A &A_, const W &W_)
 }
 
 #define CBEAR_BERLIOS_DE_SELECT_CHAR(Char, X) \
-	::cbear_berlios_de::select::get<Char>(X, CBEAR_BERLIOS_DE_PP_WIDEN(X))
+	::cbear_berlios_de::select::traits< \
+		Char, \
+		::cbear_berlios_de::meta::const_<char, X>, \
+		::cbear_berlios_de::meta::const_< \
+			wchar_t, CBEAR_BERLIOS_DE_PP_WIDEN(X)> >:: \
+		type::value
+
+//	#define CBEAR_BERLIOS_DE_SELECT_CHAR(Char, X) \
+//		::cbear_berlios_de::select::get<Char>(X, CBEAR_BERLIOS_DE_PP_WIDEN(X))
 
 #define CBEAR_BERLIOS_DE_SELECT_STRING(Char, X) \
 	::cbear_berlios_de::select::get<Char>( \

@@ -10,21 +10,55 @@ namespace base
 {
 
 template<class Char>
-Char to_lower(Char c)
+class case_traits
 {
+public:
 	static Char const A = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, 'A');
 	static Char const Z = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, 'Z');
 	static Char const a = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, 'a');
 	static Char const z = CBEAR_BERLIOS_DE_SELECT_CHAR(Char, 'z');
-	static Char const dif = A - a;
-	return a <= c && c <= z ? c + dif: c;
-}
+	static Char const dif = static_cast<Char>(A - a);
+};
 
-template<class Char>
-bool latin_case_insensetive_equal(Char c1, Char c2)
+class to_lower
 {
-	return to_lower(c1) == to_lower(c2);
-}
+public:
+	template<class Char>
+	void operator()(Char &c) const
+	{
+		typedef case_traits<Char> traits;
+		if(traits::A <= c && c <= traits::Z) 
+		{
+			c -= traits::dif;
+		}
+	}
+};
+
+class to_upper
+{
+public:
+	template<class Char>
+	void operator()(Char &c) const
+	{
+		typedef case_traits<Char> traits;
+		if(traits::a <= c && c <= traits::z)
+		{
+			c += traits::dif;
+		}
+	}
+};
+
+class latin_case_insensetive_equal
+{
+public:
+	template<class Char>
+	bool operator()(Char c1, Char c2) const
+	{
+		to_lower()(c1);
+		to_lower()(c2);
+		return c1 == c2;
+	}
+};
 
 }
 }

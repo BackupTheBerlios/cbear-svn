@@ -1,6 +1,10 @@
 #ifndef CBEAR_BERLIOS_DE_RANGE_HELPER_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_RANGE_HELPER_HPP_INCLUDED
 
+#include <cbear.berlios.de/base/default.hpp>
+#include <cbear.berlios.de/base/empty.hpp>
+#include <cbear.berlios.de/base/integer.hpp>
+
 // std::distance
 #include <iterator>
 
@@ -9,14 +13,13 @@
 // boost::is_same
 #include <boost/type_traits/is_same.hpp>
 
-#include <cbear.berlios.de/base/default.hpp>
-#include <cbear.berlios.de/base/empty.hpp>
-#include <cbear.berlios.de/base/integer.hpp>
-
 namespace cbear_berlios_de
 {
 namespace range
 {
+
+template<class Iterator>
+class iterator_range;
 
 template<class Container, class Base>
 class helper_t: public Base

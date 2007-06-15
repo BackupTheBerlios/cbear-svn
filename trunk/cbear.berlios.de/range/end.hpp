@@ -15,9 +15,9 @@ typename traits<Container>::iterator end(Container &X)
 }
 
 template<class Container>
-typename traits<const Container>::iterator end(const Container &X)
+typename traits<Container const>::iterator end(Container const &X)
 { 
-	return traits<const Container>::end(X); 
+	return traits<Container const>::end(X);
 }
 
 }
