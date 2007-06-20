@@ -49,7 +49,8 @@ struct range
 	static ::std::size_t const last = Last;
 	static ::std::size_t const size = last - first + 1;
 	static unsigned_type const _1 = static_cast<unsigned_type>(1);
-	static unsigned_type const mask = ((_1 << size) - _1) << first;
+	static unsigned_type const unshifted_mask = (_1 << size) - _1;
+	static unsigned_type const mask = unshifted_mask << first;
 	static unsigned_type const inverse_mask = static_cast<unsigned_type>(~mask);
 
 	static value_type get(type X) 
@@ -115,6 +116,81 @@ class one: public range<Type, Number, Number, bool>
 {
 };
 
+template<class Type, ::std::size_t Size, class ValueT = Type>
+class range_t
+{
+public:
+
+	typedef Type t;
+	typedef ValueT value_t;
+	typedef typename base::make_unsigned<t>::type unsigned_t;
+
+	static unsigned_t const _1 = static_cast<unsigned_t>(1);
+	static ::std::size_t const size = Size;
+	static unsigned_t const unshifted_mask = (_1 << size) - _1;
+
+	static unsigned_t mask(::std::size_t F, unsigned_t V = unshifted_mask)
+	{
+		return V << cast<unsigned_t>::static_(F);
+	}
+
+	static unsigned_t inverse_mask(::std::size_t F)
+	{
+		return ~mask(F);
+	}
+
+	class reference
+	{
+	public:
+
+		reference(Type &R, ::std::size_t F):
+			R(R), F(F)
+		{
+		}
+
+		void set(value_t V)
+		{
+			this->R = 
+				this->R & 
+				inverse_mask(this->F) | 
+				mask(this->F, cast<unsigned_t>::static_(V));
+		}
+
+		value_t get() const
+		{
+			return cast<value_t>::static_(
+				(cast<unsigned_t>::static_(this->R) >> this->F) & unshifted_mask);
+		}
+
+		operator value_t() const
+		{
+			return this->get();
+		}
+
+		reference &operator=(value_t V)
+		{
+			this->set(V);
+			return *this;
+		}
+
+		reference &operator=(reference const &V)
+		{
+			this->set(V.get());
+			return *this;
+		}
+
+	private:
+		Type &R;
+		::std::size_t F;
+	};                
+};
+
+template<class Type>
+class one_t: public range_t<Type, 1, bool>
+{
+};
+
+/*
 template<class Type>
 class one_reference_t
 {
@@ -152,7 +228,7 @@ public:
 	bool get() const
 	{
 		return cast<bool>::static_(
-			(cast<unsigned_t>::static_(this->R) >> this->N) & 
+			(cast<unsigned_t>::static_(this->R) >> this->F) & 
 			static_cast<unsigned_t>(1));
 	}
 
@@ -177,11 +253,12 @@ private:
 	Type &R;
 	::std::size_t const N;
 };
+*/
 
 template<class Type>
-one_reference_t<Type> make_one_reference(Type &R, ::std::size_t N)
+typename one_t<Type>::reference make_one_reference(Type &R, ::std::size_t N)
 {
-	return one_reference_t<Type>(R, N);
+	return one_t<Type>::reference<Type>(R, N);
 }
 
 }
