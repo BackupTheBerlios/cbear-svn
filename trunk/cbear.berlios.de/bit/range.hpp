@@ -131,7 +131,7 @@ public:
 
 	static unsigned_t mask(::std::size_t F, unsigned_t V = unshifted_mask)
 	{
-		return V << cast<unsigned_t>::static_(F);
+		return V << static_cast<unsigned_t>(F);
 	}
 
 	static unsigned_t inverse_mask(::std::size_t F)
