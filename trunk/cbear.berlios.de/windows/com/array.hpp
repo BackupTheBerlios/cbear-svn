@@ -23,14 +23,28 @@ public:
 	typedef range::iterator_range<iterator> range_type;
 	typedef range::iterator_range<const_iterator> const_range_type;
 
+	array_t()
+	{
+		for(range_type R(*this); !R.empty(); ++R.begin())
+		{
+			R.front() = ValueType();
+		}		
+	}
+
 	reference operator[](std::size_t I) 
 	{ 
-		if(I>=Size) throw std::exception("Wrong index");
+		if(I>=Size) 
+		{
+			throw ::std::exception("Wrong index");
+		}
 		return this->parent::operator[](I); 
 	}
 	const_reference operator[](std::size_t I) const
 	{ 
-		if(I>=Size) throw std::exception("Wrong index");
+		if(I>=Size)
+		{
+			throw std::exception("Wrong index");
+		}
 		return this->parent::operator[](I); 
 	}
 
