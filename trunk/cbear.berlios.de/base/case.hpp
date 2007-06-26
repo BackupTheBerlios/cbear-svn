@@ -40,6 +40,7 @@ public:
 	template<class Char>
 	void operator()(Char &c) const
 	{
+		BOOST_STATIC_ASSERT(!::boost::is_const<Char>::value);
 		typedef case_traits<Char> traits;
 		if(traits::a <= c && c <= traits::z)
 		{
