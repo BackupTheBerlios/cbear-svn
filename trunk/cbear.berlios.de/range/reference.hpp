@@ -9,7 +9,11 @@ namespace range
 {
 
 template<class Container>
-struct reference { typedef typename traits<Container>::reference type; };
+class reference 
+{ 
+public:
+	typedef typename traits<Container>::reference type; 
+};
 
 }
 }

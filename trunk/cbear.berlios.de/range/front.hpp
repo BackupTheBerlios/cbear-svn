@@ -15,9 +15,9 @@ typename reference<Container>::type front(Container &X)
 }
 
 template<class Container>
-typename reference<const Container>::type front(const Container &X) 
+typename reference<Container const>::type front(Container const &X)
 { 
-	return traits<const Container>::front(X); 
+	return traits<Container const>::front(X); 
 }
 
 }
