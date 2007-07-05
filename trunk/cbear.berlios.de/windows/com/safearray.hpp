@@ -300,21 +300,24 @@ public:
 		return i;
 	}
 
+	/*
 	void erase(iterator I)
 	{
 		iterator const E = this->end();
 		BOOST_ASSERT((this->begin()<=I) && (I<=E));
 		if(I!=E) 
 		{
-			range::move(iterator_range(I, ::boost::prior(E)), ::boost::next(I));
-			/*
-			for(iterator N = ::boost::next(I); N!=E; I = N++)
-			{
-				move::assign(*I, *N);
-			}
-			*/
+			// range::move(iterator_range(I, ::boost::prior(E)), ::boost::next(I));
+			range::move(iterator_range(::boost::next(I), E), I);
 			this->pop_back();
 		}
+	}
+	*/
+
+	void erase_range(iterator_range_t const &r)
+	{
+		range::move(iterator_range_t(r.end(), this->end()), r.begin());
+		this->resize(this->size() - r.size());
 	}
 };
 

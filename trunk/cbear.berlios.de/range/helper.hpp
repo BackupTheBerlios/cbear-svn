@@ -164,6 +164,11 @@ public:
 	{
 		this->insert(this->This().begin(), base::default_());
 	}
+	template<class R>
+	void push_front_range(R const &source)
+	{
+		this->This().insert_range(this->This().begin(), source);
+	}
 	template<class T>
 	void push_back(T const &X)
 	{
@@ -172,6 +177,11 @@ public:
 	void push_back()
 	{
 		this->insert(this->This().end(), base::default_());
+	}
+	template<class R>
+	void push_back_range(R const &source)
+	{
+		this->This().insert_range(this->This().end(), source);
 	}
 
 	void erase(iterator I)
