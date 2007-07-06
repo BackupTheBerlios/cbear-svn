@@ -179,6 +179,20 @@ t<T &> ref(T &B) throw()
 	return t<T &>(B);
 }
 
+template<class T>
+t<T> &cast(T &t)
+{
+	return ::cbear_berlios_de::cast<t<T> &>::reinterpret(t);
+}
+
+template<class T>
+void swap(T &a, T &b)
+{
+	t<T> tmp = make(a);
+	move::assign(a, b);
+	move::assign(b, *tmp);
+}
+
 }
 }
 
