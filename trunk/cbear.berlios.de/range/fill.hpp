@@ -18,6 +18,12 @@ void fill(Container &X, T const &Value)
 	::std::fill(range::begin(X), range::end(X), Value);
 }
 
+template<class Container, class T>
+void fill(Container const &X, T const &Value) 
+{ 
+	::std::fill(range::begin(X), range::end(X), Value);
+}
+
 template<class T>
 class fill_iterator_t
 {
