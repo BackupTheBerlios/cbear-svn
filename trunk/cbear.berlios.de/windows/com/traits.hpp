@@ -48,7 +48,10 @@ struct class_traits
 
 	static const vartype_t::enum_t vt = type::vt;
 
-	static typename type::extra_result extra() { return type::extra(); }
+	static typename type::extra_result extra() 
+	{ 
+		return type::extra(); 
+	}
 
 	template<io_type Io, class = void>
 	struct io_traits;
@@ -118,7 +121,10 @@ struct default_traits
 
 	static vartype_t::enum_t const vt = Vt;
 
-	static void *extra() { return 0; }
+	static void *extra() 
+	{ 
+		return 0; 
+	}
 
 	template<io_type Io, class D = void>
 	struct io_traits;

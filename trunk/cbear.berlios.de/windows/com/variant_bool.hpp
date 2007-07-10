@@ -62,6 +62,10 @@ public:
 		detail::variant_bool_wrap(X ? VARIANT_TRUE: VARIANT_FALSE)
 	{
 	}
+	static extra_result extra()
+	{
+		return 0;
+	}
 	operator bool() const 
 	{ 
 		return internal_policy::cast(this->internal()); 

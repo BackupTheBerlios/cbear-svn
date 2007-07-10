@@ -6,13 +6,13 @@
 #include <cbear.berlios.de/range/fill.hpp>
 #include <cbear.berlios.de/range/copy.hpp>
 #include <cbear.berlios.de/range/lexicographic/compare.hpp>
+#include <cbear.berlios.de/range/lexicographic/less.hpp>
 #include <cbear.berlios.de/range/empty.hpp>
 #include <cbear.berlios.de/base/const_ref.hpp>
-#include <cbear.berlios.de/base/swap.hpp>
-#include <cbear.berlios.de/windows/com/traits.hpp>
-#include <cbear.berlios.de/stream/read.hpp>
 #include <cbear.berlios.de/base/string.hpp>
-#include <cbear.berlios.de/range/lexicographic/less.hpp>
+#include <cbear.berlios.de/base/swap.hpp>
+#include <cbear.berlios.de/stream/read.hpp>
+#include <cbear.berlios.de/windows/com/traits.hpp>
 
 // ::SysStringLen
 #pragma comment(lib, "oleaut32.lib")
