@@ -104,7 +104,7 @@ public:
 		}
 		vector_t New(this->size() + range::size(R));
 		iterator result = range::move(
-			iterator_range_t(this->begin(), P), New.begin());
+			iterator_range_t(this->begin(), P), New.begin()).begin();
 		range::move(iterator_range_t(P, this->end()), range::copy(R, result));
 		this->move_assign(New);
 		return result;
@@ -121,7 +121,7 @@ public:
 			iterator_range_t(R.end(), this->end()), 
 			range::move(
 				iterator_range_t(this->begin(), R.begin()), 
-				New.begin()));
+				New.begin()).begin());
 		this->move_assign(New);
 	}
 

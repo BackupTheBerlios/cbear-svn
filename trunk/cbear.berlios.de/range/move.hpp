@@ -53,17 +53,16 @@ class move_t:
 }
 
 template<class Container, class OutputIterator>
-typename sub_range<Container const>::type move(
-	Container const &From, OutputIterator To)
+iterator_range<OutputIterator> move(Container const &From, OutputIterator To)
 { 
-	return sub_range<Container const>::type(
+	return iterator_range<OutputIterator>(
 		To, detail::move_t<Container const, OutputIterator>::do_(From, To));
 }
 
 template<class Container, class OutputIterator>
-typename sub_range<Container>::type move(Container &From, OutputIterator To)
+iterator_range<OutputIterator> move(Container &From, OutputIterator To)
 {
-	return typename sub_range<Container>::type(
+	return iterator_range<OutputIterator>(
 		To, detail::move_t<Container, OutputIterator>::do_(From, To));
 }
 
