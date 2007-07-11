@@ -21,9 +21,9 @@ typename sub_range<Range>::type make_sub_range(Range &R)
 }
 
 template<class Range>
-typename sub_range<const Range>::type make_sub_range(const Range &R)
+typename sub_range<Range const>::type make_sub_range(Range const &R)
 {
-	return sub_range<const Range>::type(R);
+	return sub_range<Range const>::type(R);
 }
 
 }
