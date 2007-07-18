@@ -109,7 +109,7 @@ private:
 	}
 
 	template<class P>
-	implementation(const P &P_): 
+	implementation(P const &P_): 
 		base_t(P_)
 	{
 	}
