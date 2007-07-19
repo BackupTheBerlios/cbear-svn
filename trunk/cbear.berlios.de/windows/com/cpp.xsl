@@ -587,6 +587,7 @@
 
 <xsl:template match="odl:type.ref" mode="odl:cpp.library">
 	<id.ref type="::">
+		<id.ref/>
 		<xsl:apply-templates 
 			select="/odl:library/odl:importlib[
 				translate(substring(@href, 1, string-length(@href) - 4), '.', '_') =
