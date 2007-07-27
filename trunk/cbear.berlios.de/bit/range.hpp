@@ -41,8 +41,8 @@ template<
 	class Type, std::size_t First, std::size_t Last, class ValueType = Type>
 struct range
 {
-	typedef Type type;
-	typedef ValueType value_type;
+	typedef typename ::boost::remove_const<Type>::type type;
+	typedef typename ::boost::remove_const<ValueType>::type value_type;
 	typedef typename base::make_unsigned<type>::type unsigned_type;
 
 	static ::std::size_t const first = First;
@@ -64,10 +64,12 @@ struct range
 			((unsigned_type(S) << first) & mask);
 	}
 
+	typedef Type &type_reference;
+
 	class reference
 	{
 	public:
-		explicit reference(type &X): 
+		explicit reference(type_reference X): 
 			X(X) 
 		{
 		}
@@ -90,7 +92,7 @@ struct range
 			return *this;
 		}
 	private:
-		type &X;
+		type_reference X;
 	};
 
 	static reference make_reference(type &X) 
