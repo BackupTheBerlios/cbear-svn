@@ -225,9 +225,7 @@
 
 	<xsl:template match="/C:section" mode="C:path">
 		<xsl:for-each select="document($C:path.prior, .)/C:section">
-			<xsl:if test="not(@id)">
-				<xsl:apply-templates select="." mode="C:path.prior"/>
-			</xsl:if>
+			<xsl:apply-templates select="." mode="C:path.prior"/>
 		</xsl:for-each>
 	</xsl:template>
 
@@ -249,7 +247,9 @@
 
 	<xsl:template match="/C:section" mode="C:id">
 		<xsl:variable name="prior">
-			<xsl:apply-templates select="document($C:path.prior, .)/*" mode="C:id"/>
+			<xsl:if test="not(@id)">
+				<xsl:apply-templates select="document($C:path.prior, .)/*" mode="C:id"/>
+			</xsl:if>
 		</xsl:variable>
 		<xsl:if test="string($prior)!=''">
 			<xsl:value-of select="concat($prior, '.')"/>
@@ -266,8 +266,10 @@
 	<!-- Version -->
 
 	<xsl:template match="/C:section" mode="C:version.user">
-		<xsl:apply-templates 
-			select="document($C:path.prior, .)/*" mode="C:version.user"/>
+		<xsl:if test="not(@id)">
+			<xsl:apply-templates 
+				select="document($C:path.prior, .)/*" mode="C:version.user"/>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="/C:section[@version]" mode="C:version.user">
@@ -289,7 +291,10 @@
 
 	<xsl:template match="/C:section" mode="C:date">
 		<xsl:variable name="prior">
-			<xsl:apply-templates select="document($C:path.prior, .)/*" mode="C:date"/>
+			<xsl:if test="not(@id)">
+				<xsl:apply-templates 
+					select="document($C:path.prior, .)/*" mode="C:date"/>
+			</xsl:if>
 		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="string($prior)">
