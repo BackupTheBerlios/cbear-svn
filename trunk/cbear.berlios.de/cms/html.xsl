@@ -225,7 +225,9 @@
 
 	<xsl:template match="/C:section" mode="C:path">
 		<xsl:for-each select="document($C:path.prior, .)/C:section">
-			<xsl:apply-templates select="." mode="C:path.prior"/>
+			<xsl:if test="not(@id)">
+				<xsl:apply-templates select="." mode="C:path.prior"/>
+			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
 
