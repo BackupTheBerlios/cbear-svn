@@ -37,6 +37,13 @@ struct cast<bool>
 	}
 };
 
+template<class T, T x>
+class not
+{
+public:
+	static T const value = static_cast<T>(~x & static_cast<T>(~0));
+};
+
 template<
 	class Type, std::size_t First, std::size_t Last, class ValueType = Type>
 struct range
@@ -50,8 +57,9 @@ struct range
 	static ::std::size_t const size = last - first + 1;
 	static unsigned_type const _1 = static_cast<unsigned_type>(1);
 	static unsigned_type const unshifted_mask = (_1 << size) - _1;
-	static unsigned_type const mask = unshifted_mask << first;
-	static unsigned_type const inverse_mask = static_cast<unsigned_type>(~mask);
+	static unsigned_type const mask = 
+		static_cast<unsigned_type>(unshifted_mask << first);
+	static unsigned_type const inverse_mask = not<unsigned_type, mask>::value;
 
 	static value_type get(type X) 
 	{ 
