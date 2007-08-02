@@ -41,6 +41,7 @@ template<class T, T x>
 class not
 {
 public:
+	// ~x & static_cast<T>(~0) instead of ~x against VC8.0 warning.
 	static T const value = static_cast<T>(~x & static_cast<T>(~0));
 };
 
