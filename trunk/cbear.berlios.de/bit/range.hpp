@@ -132,8 +132,8 @@ class range_t
 {
 public:
 
-	typedef Type t;
-	typedef ValueT value_t;
+	typedef typename ::boost::remove_const<Type>::type t;
+	typedef typename ::boost::remove_const<ValueT>::type value_t;
 	typedef typename base::make_unsigned<t>::type unsigned_t;
 
 	static unsigned_t const _1 = static_cast<unsigned_t>(1);
