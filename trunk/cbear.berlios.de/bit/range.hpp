@@ -17,24 +17,30 @@ namespace bit
 
 // To avoid conversion warnings.
 template<class To>
-struct cast
+class cast
 {
+public:
+
 	template<class From>
 	static To static_(From X) 
 	{ 
 		return static_cast<To>(X); 
 	}
+
 };
 
 // To avoid conversion warnings.
 template<>
-struct cast<bool>
+class cast<bool>
 {
+public:
+
 	template<class From>
 	static bool static_(From X) 
 	{ 
 		return X != 0; 
 	}
+
 };
 
 template<class T, T x>
