@@ -15,11 +15,11 @@ namespace static_
 
 template<class T, class L>
 class interface_list: 
-	public interface_<T, typename L::front::type>, 
+	public interface_<T, typename L::front::type::interface_t>, 
 	public interface_list<T, typename L::pop_front::type>
 {
 protected:
-	typedef interface_<T, typename L::front::type> interface_t;
+	typedef interface_<T, typename L::front::type::interface_t> interface_t;
 	typedef interface_list<T, typename L::pop_front::type> pop_front_t;
 	iunknown_t::move_t query_interface(const uuid &U) throw()
 	{

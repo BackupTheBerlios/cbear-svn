@@ -5,6 +5,7 @@
 #include <cbear.berlios.de/windows/com/static/interface_list.hpp>
 #include <cbear.berlios.de/windows/com/static/idispatch.hpp>
 #include <cbear.berlios.de/windows/com/static/isupporterrorinfo.hpp>
+#include <cbear.berlios.de/windows/com/isupporterrorinfo.hpp>
 
 namespace cbear_berlios_de
 {
@@ -25,7 +26,7 @@ public:
 	typedef typename T::template implementation_t<implementation<T> > base_t;
 	typedef typename T::interface_list_t base_interface_list_t;
 	typedef typename base_interface_list_t::template push_back< 
-		::ISupportErrorInfo>::type 
+		isupporterrorinfo_t/*::interface_t*/>::type 
 		base_extension_interface_list_t;
 	typedef interface_list<T, base_extension_interface_list_t> interface_list_t;
 };
