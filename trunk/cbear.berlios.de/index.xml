@@ -4,9 +4,9 @@
 	xmlns="http://cbear.berlios.de/cms" 
 	id="cbear_berlios_de"
 	version="0.9.0"
-	company="C Bear"
-	name="C Bear"
-	title="The C Bear framework is a set of libraries and common utilities.">
+	company="cbear"
+	name="cbear"
+	title="The 'cbear' framework is a set of libraries and common utilities.">
 It supports different programming languages and platforms.
 	<ul>
 		<li>
@@ -51,7 +51,7 @@ It supports different programming languages and platforms.
 			</a>
 		</div>
 	</section>
-	<section name="Support" title="Support C Bear. Donations.">
+	<section name="Support" title="Support cbear. Donations.">
 		<div>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_s-xclick"/>
