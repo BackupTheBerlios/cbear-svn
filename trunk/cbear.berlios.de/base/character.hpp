@@ -27,10 +27,8 @@ class or: public meta::const_<bool, T::value || U::value>
 {
 };
 
-template<class Type>
-struct is_character: public meta::const_<
-	bool,
-	or<is_same<Type, char>, is_same<Type, wchar_t> > >
+template<class T>
+class is_character: public is_same<T, char>::template or_<is_same<T, wchar_t> >
 {
 };
 

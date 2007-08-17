@@ -21,13 +21,21 @@ public:
 		return value;
 	}
 
+	/*
 #define CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(O, N) \
 	private:\
 	template<class _2> class detail_##N;\
 	template<value_type Value2>	class detail_##N<const_<value_type, Value2> >: \
-	public const_<value_type, Value + Value2> {};\
+	public const_<value_type, Value O Value2> {};\
 	public:\
 	template<class _2> class N: public detail_##N<typename _2::type> {};\
+	template<class _2> typename N<_2>::type operator O(_2) const\
+	{ return N<_2>::type(); }
+	*/
+
+#define CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(O, N) \
+	public:\
+	template<class _2> class N: public const_<value_type, Value O _2::value> {};\
 	template<class _2> typename N<_2>::type operator O(_2) const\
 	{ return N<_2>::type(); }
 
@@ -50,8 +58,8 @@ CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(&, and_)
 
 CBEAR_BERLIOS_DE_META_CONST_OPERATOR(!, not_, !Value);
 CBEAR_BERLIOS_DE_META_CONST_OPERATOR(+, plus, +Value);
-CBEAR_BERLIOS_DE_META_CONST_OPERATOR(-, minus, static_cast<value_type>(-value));
-CBEAR_BERLIOS_DE_META_CONST_OPERATOR(++, next, value+1);
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR(-, minus, static_cast<value_type>(0-value));
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR(++, next, static_cast<value_type>(value+1));
 CBEAR_BERLIOS_DE_META_CONST_OPERATOR(
 	--, prior, static_cast<value_type>(value-1));
 
