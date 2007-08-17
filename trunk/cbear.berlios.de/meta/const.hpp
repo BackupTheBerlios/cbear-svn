@@ -1,7 +1,7 @@
 #ifndef CBEAR_BERLIOS_DE_META_CONST_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_META_CONST_HPP_INCLUDED
 
-#pragma warning(disable: 4146)
+// #pragma warning(disable: 4146)
 
 namespace cbear_berlios_de
 {
@@ -14,10 +14,10 @@ class const_
 public:
 	typedef const_ type;
 	typedef ValueType value_type;
-	static const value_type value = Value;
+	static value_type const value = Value;
 
-	value_type operator()() const 
-	{ 
+	value_type operator()() const
+	{
 		return value;
 	}
 
@@ -25,7 +25,7 @@ public:
 	private:\
 	template<class _2> class detail_##N;\
 	template<value_type Value2>	class detail_##N<const_<value_type, Value2> >: \
-	public const_<value_type, value + Value2> {};\
+	public const_<value_type, Value + Value2> {};\
 	public:\
 	template<class _2> class N: public detail_##N<typename _2::type> {};\
 	template<class _2> typename N<_2>::type operator O(_2) const\
@@ -45,21 +45,22 @@ CBEAR_BERLIOS_DE_META_CONST_OPERATOR2(&, and_)
 	private:\
 	static const value_type N##_value = V;\
 	public:\
-	typedef const_<value_type, N##_value> N;\
+	typedef const_<value_type, const_::N##_value> N;\
 	N operator O() const { return N(); }
 
-CBEAR_BERLIOS_DE_META_CONST_OPERATOR(!, not_, !value);
-CBEAR_BERLIOS_DE_META_CONST_OPERATOR(+, plus, +value);
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR(!, not_, !Value);
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR(+, plus, +Value);
 CBEAR_BERLIOS_DE_META_CONST_OPERATOR(-, minus, static_cast<value_type>(-value));
 CBEAR_BERLIOS_DE_META_CONST_OPERATOR(++, next, value+1);
-CBEAR_BERLIOS_DE_META_CONST_OPERATOR(--, prior, static_cast<value_type>(value-1));
+CBEAR_BERLIOS_DE_META_CONST_OPERATOR(
+	--, prior, static_cast<value_type>(value-1));
 
 #undef CBEAR_BERLIOS_DE_META_CONST_OPERATOR
 
 };
 
 typedef const_<bool, true> true_;
-typedef const_<bool, true> false_;
+typedef const_<bool, false> false_;
 
 namespace detail
 {

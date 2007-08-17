@@ -35,8 +35,12 @@ struct is_integer: boost::mpl::bool_<std::numeric_limits<Type>::is_integer> {};
 /// Meta functions. Returns 'true' if the given type is signed integer type.
 /// Use boost::is_signed instead.
 template<class Type>
-struct is_signed: boost::mpl::bool_<std::numeric_limits<Type>::is_signed> {};
+struct is_signed:
+	::boost::mpl::bool_< ::std::numeric_limits<Type>::is_signed>
+{
+};
 
+/*
 namespace detail
 {
 
@@ -49,7 +53,7 @@ struct integer_helper1<Least, Bits, Bits>
 	typedef Least type;
 };
 
-template<class Type, std::size_t Bits> 
+template<class Type, std::size_t Bits>
 struct integer_helper: integer_helper1<
 	typename Type::least, Bits, sizeof(typename Type::least)*CHAR_BIT>
 {
@@ -57,7 +61,7 @@ struct integer_helper: integer_helper1<
 
 }
 
-/// The built-in signed integral type with the given number of bits, 
+/// The built-in signed integral type with the given number of bits,
 /// including the sign bit.
 template<std::size_t Bits>
 struct int_t: detail::integer_helper<boost::int_t<Bits>, Bits> {};
@@ -65,6 +69,69 @@ struct int_t: detail::integer_helper<boost::int_t<Bits>, Bits> {};
 /// The built-in unsigned integral type with the given number of bits.
 template<std::size_t Bits>
 struct uint_t: detail::integer_helper<boost::uint_t<Bits>, Bits> {};
+*/
+
+namespace detail
+{
+	template< ::std::size_t S, class T>
+	class sized_t
+	{
+	public:
+		BOOST_STATIC_ASSERT(sizeof(T) == S);
+		typedef T type;
+	};
+}
+
+/// The built-in signed integral type with the given number of bits,
+/// including the sign bit.
+template< ::std::size_t Bits>
+struct int_t
+{
+	class type;
+};
+
+/// The built-in unsigned integral type with the given number of bits.
+template< ::std::size_t Bits>
+struct uint_t
+{
+	class type;
+};
+
+template<>
+struct uint_t<8>
+{
+	typedef unsigned __int8 type;
+};
+
+template<>
+struct int_t<8>
+{
+	typedef signed __int8 type;
+};
+
+template<>
+struct uint_t<16>
+{
+	typedef unsigned __int16 type;
+};
+
+template<>
+struct int_t<16>
+{
+	typedef signed __int16 type;
+};
+
+template<>
+struct uint_t<32>
+{
+	typedef unsigned __int32 type;
+};
+
+template<>
+struct int_t<32>
+{
+	typedef signed __int32 type;
+};
 
 template<>
 struct uint_t<64>
@@ -75,10 +142,10 @@ struct uint_t<64>
 template<>
 struct int_t<64>
 {
-	typedef __int64 type;
+	typedef signed __int64 type;
 };
 
-/// The built-in signed integral type with the same number of bits (including 
+/// The built-in signed integral type with the same number of bits (including
 /// the sign bit) as the given type has.
 template<class Type>
 struct make_signed: int_t<sizeof(Type)*CHAR_BIT> 
@@ -154,11 +221,13 @@ struct integer_parts
 	BOOST_STATIC_ASSERT(is_integer<Type>::value);
 	BOOST_STATIC_ASSERT(sizeof(Type) % 2 == 0);
 
-	static const std::size_t half_size = sizeof(Type) / 2;
-	typedef typename uint_t<half_size * CHAR_BIT>::type half_type;
+	static ::std::size_t const half_size = sizeof(Type) / 2;
+	static ::std::size_t const half_bit_size =
+		integer_parts::half_size * CHAR_BIT;
+	typedef typename uint_t<integer_parts::half_bit_size>::type half_type;
 
 	static half_type *array(Type &X) 
-	{ 
+	{
 		return reinterpret_cast<half_type *>(&X);
 	}
 
@@ -416,15 +485,17 @@ uint_fixed_read<16, T> hex(T &X, std::size_t I)
 	return uint_fixed_read<16, T>(X, I);
 }
 
-template< 
-	::std::size_t n, 
-	typename uint_t<n / 2>::type hi, 
+template<
+	::std::size_t n,
+	typename uint_t<n / 2>::type hi,
 	typename uint_t<n / 2>::type low>
-class compose_t: 
-	public meta::const_< 
-		typename uint_t<n>::type, 
-		static_cast<typename uint_t<n>::type>(hi) << (n / 2) | 
-			static_cast<typename uint_t<n>::type>(low)>
+class compose_t:
+	public meta::const_<
+		typename uint_t<n>::type,
+		meta::const_<typename uint_t<n>::type, hi>::value
+		/*static_cast<typename uint_t<n>::type>(hi)*/ << (n / 2) |
+		meta::const_<typename uint_t<n>::type, low>::value
+		/*static_cast<typename uint_t<n>::type>(low)*/>
 {
 	BOOST_STATIC_ASSERT(n % 2 == 0);
 };
