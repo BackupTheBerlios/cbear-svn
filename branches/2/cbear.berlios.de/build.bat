@@ -1,0 +1,1 @@
+svn info --xml > svn.info.xml
