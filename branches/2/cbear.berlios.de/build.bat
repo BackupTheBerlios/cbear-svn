@@ -1,1 +1,1 @@
-svn info --xml > svn.info.xml
+svn info --xml --recursive > svn.info.xml
