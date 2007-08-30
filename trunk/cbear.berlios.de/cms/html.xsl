@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- XHTML 1.0 -->
+<!--
 <xsl:stylesheet 
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -7,6 +8,13 @@
 	xmlns:C="http://cbear.berlios.de/cms"
 	xmlns:S="svn:"
 	exclude-result-prefixes="C S">
+-->
+<xsl:stylesheet 
+	version="1.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:C="http://cbear.berlios.de/cms"
+	exclude-result-prefixes="C">
 
 	<xsl:import href="content/main.xsl"/>
 
@@ -26,19 +34,7 @@
 	<xsl:param name="C:extension" select="'xml'"/>
 	<xsl:param name="C:languages" select="'languages.xml'"/>
 
-	<xsl:variable name="C:svn1" select="'.svn/entries'"/>
-	<xsl:variable name="C:svn2" select="'_svn/entries'"/>
-
-	<xsl:param name="C:svn">
-		<xsl:choose>
-			<xsl:when test="document($C:svn1, .)/*">
-				<xsl:value-of select="$C:svn1"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$C:svn2"/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:param>
+	<xsl:variable name="C:svn" select="'_svn.info.xml'"/>
 
 	<xsl:param name="C:style">
 		body, table
@@ -232,7 +228,7 @@
 	<!-- Id -->
 
 	<xsl:template name="C:id">
-		<xsl:param name="url" select="@url"/>
+		<xsl:param name="url" select="url"/>
 		<xsl:choose>
 			<xsl:when test="contains($url, '/')">
 				<xsl:call-template name="C:id">
@@ -254,7 +250,7 @@
 		<xsl:if test="string($prior)!=''">
 			<xsl:value-of select="concat($prior, '.')"/>
 		</xsl:if>
-		<xsl:for-each select="document($C:svn, .)/S:wc-entries/S:entry[@name='']">
+		<xsl:for-each select="document($C:svn, .)/info/entry[@path='.']">
 			<xsl:call-template name="C:id"/>
 		</xsl:for-each>
 	</xsl:template>
@@ -284,7 +280,7 @@
 			<xsl:value-of select="concat($user, '.')"/>
 		</xsl:if>
 		<xsl:value-of select="
-			document($C:svn, .)/S:wc-entries/S:entry[@name='']/@revision"/>
+			document($C:svn, .)/info/entry[@path='.']/@revision"/>
 	</xsl:template>
 
 	<!-- Date -->
@@ -302,7 +298,7 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="
-					document($C:svn, .)/S:wc-entries/S:entry[@name='']/@committed-date"/>
+					document($C:svn, .)/info/entry[@path='.']/commit/date"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -330,18 +326,21 @@
 			<xsl:for-each 
 				select="
 					document($C:svn, .)/
-					S:wc-entries/
-					S:entry[@kind='dir' and @name!='']">
-				<xsl:sort select="@name"/>
+					info/
+					entry[
+						@kind='dir' and 
+						@path!='.' and 
+						not(contains(translate(@path, '\', '/'), '/'))]">
+				<xsl:sort select="@path"/>
 				<xsl:variable 
 					name="index.xml" 
-					select="concat('../', @name, '/', $C:index.xml)"/>
+					select="concat(@path, '/', $C:index.xml)"/>
 				<div class="menu-item">
 					<xsl:choose>
 						<xsl:when test="document($index.xml, .)/C:section/@name">
 							<xsl:variable
 								name="index.link"
-								select="concat(@name, '/', $C:index.link)"/>
+								select="concat(@path, '/', $C:index.link)"/>
 							<xsl:for-each 
 								select="document($index.xml, .)/C:section">
 								<a 
@@ -353,8 +352,8 @@
 							</xsl:for-each>
 						</xsl:when>
 						<xsl:otherwise>
-							<a href="{@name}" class="disable">
-								<xsl:value-of select="concat(@name, '/')"/>
+							<a href="{@path}" class="disable">
+								<xsl:value-of select="concat(@path, '/')"/>
 							</a>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -373,12 +372,14 @@
 	<xsl:template match="/C:section" mode="C:files">
 		<xsl:variable name="menu">
 			<xsl:for-each select="
-				document($C:svn, .)/S:wc-entries/S:entry[
-					@kind='file' and substring-before(@name, '.')!='index']">
-				<xsl:sort select="@name"/>
+				document($C:svn, .)/info/entry[
+					@kind='file' and 
+					not(contains(translate(@path, '\', '/'), '/')) and
+					substring-before(@path, '.')!='index']">
+				<xsl:sort select="@path"/>
 				<div class="menu-item">
-					<a href="{@name}" class="disable">
-						<xsl:value-of select="translate(@name, ' ', '&#160;')"/>
+					<a href="{@path}" class="disable">
+						<xsl:value-of select="translate(@path, ' ', '&#160;')"/>
 					</a>
 				</div>
 			</xsl:for-each>

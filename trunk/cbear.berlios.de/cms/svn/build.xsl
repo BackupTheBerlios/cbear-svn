@@ -8,15 +8,18 @@
 	<xsl:param name="C:cbear"/>
 	<xsl:param name="C:target"/>
 	<xsl:template match="/info">
-		<xsl:for-each select="entry[@kind='dir' and @path!='.']">
+		<!--
+		<xsl:variable name="path" select="entry[1]/@path"/>
+		-->
+		<xsl:for-each select="entry[@kind='dir' and position() != 1]">
 			<xsl:value-of select="concat(
-				'call ',
+				'@call &#34;',
 				$C:cbear, 
-				'cbear.berlios.de/cms/svn/one.build.bat ', 
-				$C:target, 
-				'/', 
+				'/cbear.berlios.de/cms/svn/one.build.bat&#34; &#34;',
+				$C:target,
+				'/',
 				@path,
-				'&#10;')"/>
+				'&#34;&#10;')"/>
 		</xsl:for-each>
 	</xsl:template>
 </xsl:stylesheet>

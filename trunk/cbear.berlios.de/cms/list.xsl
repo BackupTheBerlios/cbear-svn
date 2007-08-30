@@ -4,7 +4,6 @@
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:S="svn:"
 	xmlns:C="http://cbear.berlios.de/cms"
 	xmlns:B="http://cbear.berlios.de/bat"
 	exclude-result-prefixes="C S B">
@@ -16,9 +15,9 @@
 	<xsl:param 
 		name="C:html" select="concat($C:cbear, 'cbear.berlios.de/cms/html.xsl')"/>
 
-	<!-- S:entry, index -->
+	<!-- entry, index -->
 
-	<xsl:template match="S:entry" mode="C:index">
+	<xsl:template match="entry" mode="C:index">
 		<xsl:param name="language"/>
 		<xsl:param name="path"/>
 		<B:command 
@@ -32,10 +31,10 @@
 				'C:extension=html')}"/>
 	</xsl:template>
 
-	<xsl:template match="S:entry"/>
+	<xsl:template match="entry"/>
 
 	<xsl:template 
-		match="S:entry[@kind='file' and substring-before(@name, '.')='index']">
+		match="entry[@kind='file' and substring-before(@name, '.')='index']">
 		<xsl:param name="path"/>
 		<xsl:variable name="after" select="substring-after(@name, '.')"/>
 		<xsl:choose>
@@ -55,9 +54,9 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<!-- S:entry, dir -->
+	<!-- entry, dir -->
 
-	<xsl:template match="S:entry[@kind='dir' and @name!='']">
+	<xsl:template match="entry[@kind='dir' and @name!='']">
 		<xsl:param name="path"/>
 		<xsl:apply-templates 
 			select="document(concat('../', @name, '/', $C:svn), .)/*/*">
