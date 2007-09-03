@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../../cms/html.xsl"?>
+<section 
+	xmlns="http://cbear.berlios.de/cms" 
+	name="Sergey Shandar">
+	<a href="comrades.id.au/sergey/index.html" type="http"/>
+	<section name="Tasks">
+		<ol>
+			<li>
+				<a href="XSD" type="wikipedia"/> for <a href="../../cms" type="cms"/>.
+			</li>
+			<li>
+				One <a href="XML" type="wikipedia"/> format for <a href="../../cms" type
+				="cms"/> and <a href="../../api" type="cms"/>.
+			</li>
+		</ol>
+	</section>
+</section>
