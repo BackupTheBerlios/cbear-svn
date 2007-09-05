@@ -3,7 +3,7 @@
 <section 
 	xmlns="http://cbear.berlios.de/cms" 
 	xml:lang="ru"
-	version="0.8.0"
+	version="0.9.1"
 	company="cbear" 
 	id="cbear_berlios_de"
 	name="cbear">
@@ -53,7 +53,7 @@
 		</div>
 		<a href="http://code.google.com/p/cbear/downloads/list">Google Code</a>.
 	</section>
-	<section name="Поддержать" title="Материальная помощь C Bear, пожертвования.">
+	<section name="Поддержать" title="Материальная помощь cbear, пожертвования.">
 		<div>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_s-xclick"/>
@@ -64,6 +64,9 @@
 		</div>
 	</section>
 	<section name="Subversion">
+Доступ к <a href="SVN" type="wikipedia"/>: <a href=
+"https://cbear.svn.sourceforge.net/svnroot/cbear/trunk"/>.
+		<!--
 		<ul>
 			<li>
 Анонимный доступ к <a href="SVN" type="wikipedia"/>:<br/>
@@ -85,5 +88,6 @@ href="HTTPS" type="wikipedia"/>:<br/>
 <a href="https://svn.berlios.de/svnroot/repos/cbear/trunk"/>.
 			</li>
 		</ul>
+		-->
 	</section>
 </section>
