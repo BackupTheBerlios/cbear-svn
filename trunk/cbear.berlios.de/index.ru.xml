@@ -64,9 +64,10 @@
 		</div>
 	</section>
 	<section name="Subversion">
+		<!--
 Доступ к <a href="SVN" type="wikipedia"/>: <a href=
 "https://cbear.svn.sourceforge.net/svnroot/cbear/trunk"/>.
-		<!--
+		-->
 		<ul>
 			<li>
 Анонимный доступ к <a href="SVN" type="wikipedia"/>:<br/>
@@ -88,6 +89,5 @@ href="HTTPS" type="wikipedia"/>:<br/>
 <a href="https://svn.berlios.de/svnroot/repos/cbear/trunk"/>.
 			</li>
 		</ul>
-		-->
 	</section>
 </section>
