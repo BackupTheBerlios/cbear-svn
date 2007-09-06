@@ -1,3 +1,3 @@
-@echo info: %1
-@cd %1
+@cd %target%
+@echo info: %target%
 @svn --xml --recursive info > _svn.info.xml
