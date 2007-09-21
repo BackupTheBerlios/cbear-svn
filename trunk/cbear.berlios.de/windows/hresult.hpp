@@ -80,6 +80,10 @@ public:
 			// meaning of the error is defined by the interface. That is, two 
 			// com::hresult with exactly the same 32-bit value returned from two 
 			// different interfaces might have different meanings.  
+			//
+			// Example: a user defined hresult: 
+			// hresult(false, hresult::facility::itf, hresult::code(N)),
+			// where N is a user error code.
 			itf = FACILITY_ITF,
  
 			// For broadly applicable common status codes such as hresult::s_ok. 

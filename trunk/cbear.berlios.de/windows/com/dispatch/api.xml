@@ -1,0 +1,49 @@
+﻿<?xml version="1.0"?>
+<A:library
+	xmlns:A="http://cbear.berlios.de/api"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="../../../api/main.xsd"
+	id="cbear_berlios_de.windows.com.dispatch">
+
+	<A:config>
+		<A:api.xml>c:/cbear/cbear.berlios.de/windows/com/dispatch/api.xml</A:api.xml>
+		<A:output>c:/cbear/global/</A:output>
+		<A:cbear>c:/cbear/</A:cbear>
+		<A:nxslt>c:\nxslt-2.1\nxslt2</A:nxslt>
+		<A:vc>C:\Program Files\Microsoft Visual Studio 8\VC\</A:vc>
+		<A:psdk>C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\</A:psdk>
+		<A:tlbimp>C:\Program Files\Microsoft.Net\FrameworkSDK\Bin\tlbimp.exe</A:tlbimp>
+		<A:dotnet.key>c:/cbear/cbear.berlios.de/key.snk</A:dotnet.key>
+	</A:config>
+
+	<A:using id="base" href="../../../api/base.xml"/>
+
+	<A:interface id="IWrap">
+		<A:type.ref library="base" id="idispatch"/>
+		<A:property id="Object">
+			<A:get/>
+			<A:type.ref library="base" id="iunknown"/>
+		</A:property>
+		<A:method id="QueryInterface">
+			<A:type.ref id="IWrap"/>
+			<A:parameter>
+				<A:type.ref library="base" id="string"/>
+			</A:parameter>
+		</A:method>
+	</A:interface>
+
+	<A:interface id="IDispatch">
+		<A:type.ref library="base" id="idispatch"/>
+		<A:method id="CreateObject">
+			<A:type.ref library="base" id="idispatch"/>
+			<A:parameter>
+				<A:type.ref library="base" id="string"/>
+			</A:parameter>
+		</A:method>
+	</A:interface>
+
+	<A:object id="Dispatch">
+		<A:type.ref id="IDispatch"/>
+	</A:object>
+
+</A:library>

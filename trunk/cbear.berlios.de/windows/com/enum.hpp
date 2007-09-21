@@ -33,11 +33,22 @@ public:
 	{
 		this->internal() = F.internal();
 	}
+	template<class S>
+	void binary_write(S &s) const
+	{
+		s << cast::traits<uint_t const &>::reinterpret(this->internal());
+	}
+	template<class S>
+	void binary_read(S &s)
+	{
+		s >> cast::traits<uint_t &>::reinterpret(this->internal());
+	}
 protected:
 	enum_t() {}
-	enum_t(ValueType X): policy::wrap<Type, ValueType, enum_policy<ValueType> >(X) 
+	enum_t(ValueType X): policy::wrap<Type, ValueType, enum_policy<ValueType> >(X)
 	{
 	}
+	typedef typename base::uint_t<sizeof(ValueType) * CHAR_BIT>::type uint_t;
 };
 
 }

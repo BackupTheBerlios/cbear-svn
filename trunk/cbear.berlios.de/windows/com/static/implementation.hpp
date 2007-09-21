@@ -26,7 +26,7 @@ public:
 	typedef typename T::template implementation_t<implementation<T> > base_t;
 	typedef typename T::interface_list_t base_interface_list_t;
 	typedef typename base_interface_list_t::template push_back< 
-		isupporterrorinfo_t/*::interface_t*/>::type 
+		isupporterrorinfo_t>::type 
 		base_extension_interface_list_t;
 	typedef interface_list<T, base_extension_interface_list_t> interface_list_t;
 };

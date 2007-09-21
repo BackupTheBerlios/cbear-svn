@@ -80,15 +80,27 @@ public:
 	typedef value_type *iterator;
 	typedef value_type *const_iterator;
 
-	static bool empty(const type &X) { return X == 0; }
+	static bool empty(type const &X) { return X == 0; }
 
-	static std::size_t size(const type &X)
+	typedef ulong_t native_size_t;
+
+	static native_size_t size(type const &X)
 	{
-		if(empty(X)) return 0;
+		if(empty(X)) 
+		{
+			return 0;
+		}
 		return X->rgsabound[0].cElements;
 	}
 
-	static iterator begin(const type &X)
+	/*
+	static std::size_t size(type const &X)
+	{
+		return native_size(X);
+	}
+	*/
+
+	static iterator begin(type const &X)
 	{
 		return empty(X) ? iterator(): iterator(X->pvData);
 	}
@@ -104,7 +116,7 @@ public:
 		construct(X);
 	}
 
-	static void assign(type &X, const type &C)
+	static void assign(type &X, type const &C)
 	{
 		destroy(X);
 		construct_copy(X, C);
@@ -173,6 +185,7 @@ public:
 	typedef move::t<safearray_t> move_type;
 
 	typedef ValueType value_type;
+	typedef typename internal_policy::native_size_t native_size_t;
 	typedef typename helper_type::size_type size_type;
 	typedef typename helper_type::iterator iterator;
 	typedef typename helper_type::const_iterator const_iterator;
@@ -319,6 +332,28 @@ public:
 	{
 		range::move(iterator_range_t(r.end(), this->end()), r.begin());
 		this->resize(this->size() - r.size());
+	}
+
+	template<class S>
+	void binary_read(S &s)
+	{
+		native_size_t new_size;
+		s >> new_size;
+		this->resize(new_size);
+		for(iterator_range_t r(*this); !r.empty(); ++r.begin())
+		{
+			s >> r.front();
+		}
+	}
+
+	template<class S>
+	void binary_write(S &s) const
+	{
+		s << static_cast<native_size_t>(this->size());
+		for(const_iterator_range_t r(*this); !r.empty(); ++r.begin())
+		{
+			s << r.front();
+		}
 	}
 };
 

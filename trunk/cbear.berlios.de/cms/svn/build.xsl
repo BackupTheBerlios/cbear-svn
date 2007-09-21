@@ -5,15 +5,21 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:C="http://cbear.berlios.de/cms">
 	<xsl:output method="text" encoding="ascii"/>
+	<xsl:param name="C:cbear"/>
 	<xsl:param name="C:target"/>
 	<xsl:template match="/info">
-		<xsl:value-of select="'@setlocal&#10;'"/>
+		<!--
+		<xsl:variable name="path" select="entry[1]/@path"/>
+		-->
 		<xsl:for-each select="entry[@kind='dir' and position() != 1]">
 			<xsl:value-of select="concat(
-				'@set target=', $C:target, @path, '/&#10;')"/>
-			<xsl:value-of select="
-				'@call %cbear%cbear.berlios.de/cms/svn/one.build.bat&#10;'"/>
+				'@call &#34;',
+				$C:cbear, 
+				'/cbear.berlios.de/cms/svn/one.build.bat&#34; &#34;',
+				$C:target,
+				'/',
+				@path,
+				'&#34;&#10;')"/>
 		</xsl:for-each>
-		<xsl:value-of select="'@endlocal&#10;'"/>
 	</xsl:template>
 </xsl:stylesheet>

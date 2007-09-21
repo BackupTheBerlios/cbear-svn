@@ -6,7 +6,10 @@ namespace cbear_berlios_de.stream.binary
     {
         #region dynamic Members
 
-        System.Type dynamic.type() { return typeof(T); }
+        System.Type dynamic.type() 
+				{ 
+					return typeof(T); 
+				}
 
         object dynamic.read(IO.Stream Stream)
         {

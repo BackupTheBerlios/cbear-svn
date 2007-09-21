@@ -6,6 +6,7 @@
 // ::boost::uint8_t, ::boost::uint16_t, ::boost::uint32_t
 #include <boost/cstdint.hpp>
 
+#include <cbear.berlios.de/range/copy.hpp>
 #include <cbear.berlios.de/windows/com/traits.hpp>
 
 namespace cbear_berlios_de
@@ -23,21 +24,34 @@ public:
 	typedef boost::uint16_t data2_t;
 	typedef boost::uint16_t data3_t;
 	typedef boost::uint8_t data4_value_t;
+	typedef data4_value_t data4_t[8];
 
 	uuid() {}
 
 	uuid(
-		const data1_t &D1,
-		const data2_t &D2, 
-		const data3_t &D3,
-		const data4_value_t &D40,
-		const data4_value_t &D41,
-		const data4_value_t &D42,
-		const data4_value_t &D43,
-		const data4_value_t &D44,
-		const data4_value_t &D45,
-		const data4_value_t &D46,
-		const data4_value_t &D47)
+		data1_t const &d1,
+		data2_t const &d2,
+		data3_t const &d3,
+		data4_t const &d4)
+	{
+		this->V.Data1 = d1;
+		this->V.Data2 = d2;
+		this->V.Data3 = d3;
+		range::copy(d4, this->V.Data4);
+	}
+
+	uuid(
+		data1_t const &D1,
+		data2_t const &D2, 
+		data3_t const &D3,
+		data4_value_t const &D40,
+		data4_value_t const &D41,
+		data4_value_t const &D42,
+		data4_value_t const &D43,
+		data4_value_t const &D44,
+		data4_value_t const &D45,
+		data4_value_t const &D46,
+		data4_value_t const &D47)
 	{
 		this->V.Data1 = D1;
 		this->V.Data2 = D2;
@@ -60,6 +74,16 @@ public:
 	bool operator!=(const uuid &B) const
 	{
 		return !this->operator==(B);
+	}
+
+	void swap(uuid &x)
+	{
+		::std::swap(*this, x);
+	}
+
+	void move_assign(uuid &x)
+	{
+		*this = x;
 	}
 
 public:

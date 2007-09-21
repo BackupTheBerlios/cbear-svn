@@ -32,6 +32,11 @@ public:
 
 	static const vartype_t::enum_t vt = vartype_t::record;
 
+	static com::uuid uuid()
+	{
+		return com::uuid::of<ValueType>();
+	}
+
 	typedef void *extra_result;
 
 	static irecordinfo record_info;

@@ -41,6 +41,18 @@ public:
 		push_back_pod(s, cast::traits<float_uint_t const &>::reinterpret(t));
 	}
 
+	template<class S>
+	static void pop_front_pod(S &s, double &t)
+	{
+		pop_front_pod(s, cast::traits<double_uint_t &>::reinterpret(t));
+	}
+
+	template<class S>
+	static void push_back_pod(S &s, double const &t)
+	{
+		push_back_pod(s, cast::traits<double_uint_t const &>::reinterpret(t));
+	}
+
 	template<class S, class T>
 	static void pop_front_pod(S &s, T &t)
 	{
@@ -58,6 +70,7 @@ public:
 private:
 
 	typedef base::uint_t<sizeof(float) * CHAR_BIT>::type float_uint_t;
+	typedef base::uint_t<sizeof(double) * CHAR_BIT>::type double_uint_t;
 
 };
 

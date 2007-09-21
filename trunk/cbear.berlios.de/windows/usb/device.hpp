@@ -1,6 +1,8 @@
 #ifndef CBEAR_BERLIOS_DE_WINDOWS_USB_DEVICE_HPP_INCLUDED
 #define CBEAR_BERLIOS_DE_WINDOWS_USB_DEVICE_HPP_INCLUDED
 
+#include <cbear.berlios.de/windows/com/uuid.hpp>
+#include <cbear.berlios.de/windows/handle.hpp>
 #include <cbear.berlios.de/windows/dynamic.hpp>
 #include <boost/array.hpp>
 
