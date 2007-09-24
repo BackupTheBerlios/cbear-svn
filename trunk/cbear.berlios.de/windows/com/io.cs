@@ -13,6 +13,30 @@ namespace cbear_berlios_de.windows.com
 			return (T)Field.GetCustomAttributes(typeof(T), Inherit)[I];
 		}
 
+		private static System.UInt32 read_size(
+			Reflection.FieldInfo F, IO.Stream Stream)
+		{
+			InteropServices.MarshalAsAttribute m = 
+				get_custom_attribute<InteropServices.MarshalAsAttribute>(F, false, 0);
+			if (m.Value == InteropServices.UnmanagedType.ByValArray)
+			{
+				return (System.UInt32)m.SizeConst;
+			}
+			return read<System.UInt32>(Stream);
+		}
+
+		private static void write_size(
+			Reflection.FieldInfo F, IO.Stream Stream, System.UInt32 Size)
+		{
+			InteropServices.MarshalAsAttribute m =
+				get_custom_attribute<InteropServices.MarshalAsAttribute>(F, false, 0);
+			if (m.Value == InteropServices.UnmanagedType.ByValArray)
+			{
+				return;
+			}
+			write(Stream, Size);
+		}
+
 		private static object read(IO.Stream Stream, System.Type T, object[] A)
 		{
 			if (T.IsPrimitive)
@@ -53,8 +77,11 @@ namespace cbear_berlios_de.windows.com
 							FT.IsArray ?
 								new object[] 
 								{
+									(int)read_size(F, Stream)
+					/*
 									get_custom_attribute<InteropServices.MarshalAsAttribute>(
 										F, false, 0).SizeConst
+					 * */
 								}:
 								null));
 				}
@@ -108,7 +135,13 @@ namespace cbear_berlios_de.windows.com
 				{
 					continue;
 				}
-				write(Stream, F.GetValue(Value));
+				System.Type FT = F.FieldType;
+				object FV = F.GetValue(Value);
+				if (FT.IsArray)
+				{
+					write_size(F, Stream, (System.UInt32)((System.Array)FV).Length);
+				}
+				write(Stream, FV);
 			}
 		}
 
