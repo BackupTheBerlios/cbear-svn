@@ -22,6 +22,10 @@ class enum_t: public policy::wrap<Type, ValueType, enum_policy<ValueType> >
 {
 public:
 	typedef void *extra_result;
+	static void *extra() 
+	{ 
+		return 0; 
+	}
 	typedef Type move_type;
 	static vartype_t::enum_t const vt = vartype_t::int_;
 	template<class ArchiveT>
