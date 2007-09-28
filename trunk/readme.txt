@@ -1,3 +1,4 @@
 SVN access:
 
-https://cbear.svn.sourceforge.net/svnroot/cbear
+http://tools.assembla.com/svn/cbear/trunk
+
