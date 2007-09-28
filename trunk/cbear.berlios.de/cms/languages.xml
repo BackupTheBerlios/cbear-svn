@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- See http://www.ietf.org/rfc/rfc3066.txt -->
-<!-- See http://www.sil.org/iso639-3/codes.asp?order=639_1 -->
-<C:languages xmlns:C="http://cbear.berlios.de/cms">
-	<C:language name="English"/>
-	<C:language id="ru" name="Русский"/>
-</C:languages>
